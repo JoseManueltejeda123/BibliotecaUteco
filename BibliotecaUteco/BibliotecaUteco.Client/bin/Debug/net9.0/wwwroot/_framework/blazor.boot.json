@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "BibliotecaUteco.Client",
   "resources": {
-    "hash": "sha256-HvSxZ0LUt3nDNApJXeV/SWqrtsnPOLIYwJ8D+8VgedE=",
+    "hash": "sha256-F6ZSwkLXslDV4R1mtQTbHtf5+dN1teUVZThFyxqEk7Y=",
     "fingerprinting": {
       "Microsoft.AspNetCore.Authorization.bvu82j4ad3.wasm": "Microsoft.AspNetCore.Authorization.wasm",
       "Microsoft.AspNetCore.Components.ptfrz3fits.wasm": "Microsoft.AspNetCore.Components.wasm",
@@ -201,8 +201,8 @@
       "icudt_CJK.tjcz0u77k5.dat": "icudt_CJK.dat",
       "icudt_EFIGS.tptq2av103.dat": "icudt_EFIGS.dat",
       "icudt_no_CJK.lfu7j35m59.dat": "icudt_no_CJK.dat",
-      "BibliotecaUteco.Client.6wcx9t8m97.wasm": "BibliotecaUteco.Client.wasm",
-      "BibliotecaUteco.Client.zb3nkco430.pdb": "BibliotecaUteco.Client.pdb"
+      "BibliotecaUteco.Client.3hoev9i1lh.wasm": "BibliotecaUteco.Client.wasm",
+      "BibliotecaUteco.Client.t1rylm5sgh.pdb": "BibliotecaUteco.Client.pdb"
     },
     "jsModuleNative": {
       "dotnet.native.st0ovrfdhi.js": "sha256-MBW/zayfv+YU6mhH7y4b8NNU4D1EYd7nf9gYrFshnnY="
@@ -412,10 +412,10 @@
       "WindowsBase.pg3o6xzigg.wasm": "sha256-dz62CHynC+zqTkbMOf3vm7YAhiRA8/pIoAwuqHfBL5M=",
       "mscorlib.jl2pswegra.wasm": "sha256-mSoCIDTdCQKTipW8VmFCypW/4AopZauaYRa8LoZdHvY=",
       "netstandard.uriri6ambh.wasm": "sha256-yuH/cvPd6r8N9nfPWihyckFD7hPFP+VQtQQxEqi7HIQ=",
-      "BibliotecaUteco.Client.6wcx9t8m97.wasm": "sha256-egPGg4Wj1jrICpb3GUQjhEIxdgDjX0v5m1ZJXX+ozzI="
+      "BibliotecaUteco.Client.3hoev9i1lh.wasm": "sha256-ZxbLT3vKQ4kn7wS+7YL0pWWRsdKiAtHb+N+ffeDqar8="
     },
     "pdb": {
-      "BibliotecaUteco.Client.zb3nkco430.pdb": "sha256-nzRG2NhdTfYZzOessoS4Pn+57a1NLNaybuVAkVyBXkg="
+      "BibliotecaUteco.Client.t1rylm5sgh.pdb": "sha256-j6V0Iks54nyILgqXTDHBCXyThiB58tvJHa5RtxxnPU8="
     }
   },
   "cacheBootResources": true,

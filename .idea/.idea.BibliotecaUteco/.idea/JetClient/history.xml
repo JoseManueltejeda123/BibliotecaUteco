@@ -474,6 +474,683 @@
           </option>
           <option name="workspaceId" value="drafts" />
         </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759532707892" />
+          <option name="id" value="fe149eb9-b8f4-4563-ba3d-85f82dc61202" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  username: &quot;juan.perez&quot;,&#10;  password: &quot;Juan.Perez1&quot;&#10;  &#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="1ccfc373-8d0a-4c4a-98da-adb2f931ca96" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/authenticate" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJkYXRhIjp7InRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhkV1FpT2lKb2RIUndPaTh2Ykc5allXeG9iM04wT2pVd01EQWlMQ0pwYzNNaU9pSm9kSFJ3T2k4dmJHOWpZV3hvYjNOME9qVXdNREFpTENKbGVIQWlPakUzTmpBeE16YzFNRGNzSW01cFkydHVZVzFsSWpvaWFuVmhiaTV3WlhKbGVpSXNJbk4xWWlJNklqRWlMQ0p3YVdOMGRYSmxJam9pSWl3aWJtRnRaU0k2SWtwMVlXNGdVTU9wY21WNklpd2ljbTlzWlNJNklreHBZbkpoY21saGJpSXNJbU55WldGMFpXUkJkQ0k2SWpFd0x6QXpMekl3TWpVZ01EVTZOVFU2TWpVaUxDSnBZWFFpT2pFM05UazFNekkzTURjc0ltNWlaaUk2TVRjMU9UVXpNamN3TjMwLnZURHJoZjMtR01vZzkwSjBuY3pvZEVmYWNOUFJyVVhsSGdsdWtpQW5OMzQiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjUtMTAtMTBUMjM6MDU6MDcuNzgwMTM4NFoiLCJpc3N1ZXIiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAifSwiaXNTdWNjZXNzIjpmYWxzZSwibWVzc2FnZXMiOlsiT2siXSwic3RhdHVzIjoyMDB9" />
+              <option name="bodyString" value="{&#10;  &quot;data&quot;: {&#10;    &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34&quot;,&#10;    &quot;expirationDate&quot;: &quot;2025-10-10T23:05:07.7801384Z&quot;,&#10;    &quot;issuer&quot;: &quot;http://localhost:5000&quot;&#10;  },&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Ok&quot;&#10;  ],&#10;  &quot;status&quot;: 200&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="15" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:05:07 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="fe149eb9-b8f4-4563-ba3d-85f82dc61202" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;data&quot;:{&quot;token&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34&quot;,&quot;expirationDate&quot;:&quot;2025-10-10T23:05:07.7801384Z&quot;,&quot;issuer&quot;:&quot;http://localhost:5000&quot;},&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Ok&quot;],&quot;status&quot;:200}" />
+              <option name="size" value="543" />
+              <option name="time" value="5545" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533244023" />
+          <option name="id" value="f44b8d73-47f7-44e4-9d83-8e1a1e541395" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJTdSBpZGVudGlkYWQgbm8gaGEgcG9kaWRvIHNlciBjb21wcm9iYWRhIl0sInN0YXR1cyI6NDAxfQ==" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Su identidad no ha podido ser comprobada&quot;&#10;  ],&#10;  &quot;status&quot;: 401&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="14" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:14:03 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="f44b8d73-47f7-44e4-9d83-8e1a1e541395" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Su identidad no ha podido ser comprobada&quot;],&quot;status&quot;:401}" />
+              <option name="size" value="88" />
+              <option name="time" value="564" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533317835" />
+          <option name="id" value="12342e9e-9483-4d90-a0e5-a22cf4cbbc4b" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="xd" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJTdSBpZGVudGlkYWQgbm8gaGEgcG9kaWRvIHNlciBjb21wcm9iYWRhIG8gZWwgdG9rZW4gZGUgYXV0b3JpemFjacOzbiBubyBoYSBwb2RpZG8gc2VyIGRldGVjdGFkbyJdLCJzdGF0dXMiOjQwMX0=" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Su identidad no ha podido ser comprobada o el token de autorización no ha podido ser detectado&quot;&#10;  ],&#10;  &quot;status&quot;: 401&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:15:16 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="12342e9e-9483-4d90-a0e5-a22cf4cbbc4b" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Su identidad no ha podido ser comprobada o el token de autorización no ha podido ser detectado&quot;],&quot;status&quot;:401}" />
+              <option name="size" value="143" />
+              <option name="time" value="87" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533437536" />
+          <option name="id" value="c96c3482-8107-4f39-b282-81f0a899ca55" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJFbCB0b2tlbiBkZSBhdXRvcml6YWNpw7NuIG5vIGhhIHBvZGlkbyBzZXIgZGV0ZWN0YWRvIl0sInN0YXR1cyI6NDAxfQ==" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;El token de autorización no ha podido ser detectado&quot;&#10;  ],&#10;  &quot;status&quot;: 401&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="7" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:17:17 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c96c3482-8107-4f39-b282-81f0a899ca55" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;El token de autorización no ha podido ser detectado&quot;],&quot;status&quot;:401}" />
+              <option name="size" value="100" />
+              <option name="time" value="533" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533445017" />
+          <option name="id" value="f6e4bd65-84ac-4f33-9fcc-7334973a3b5a" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="xd" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJTdSBpZGVudGlkYWQgbm8gaGEgcG9kaWRvIHNlciBjb21wcm9iYWRhLiJdLCJzdGF0dXMiOjQwMX0=" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Su identidad no ha podido ser comprobada.&quot;&#10;  ],&#10;  &quot;status&quot;: 401&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:17:24 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="f6e4bd65-84ac-4f33-9fcc-7334973a3b5a" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Su identidad no ha podido ser comprobada.&quot;],&quot;status&quot;:401}" />
+              <option name="size" value="89" />
+              <option name="time" value="103" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533456992" />
+          <option name="id" value="09416165-aec6-4ec9-973b-39d5eb5a01f9" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJDcmVkZW5jaWFsZXMgaW5jb3JyZWN0YXMiXSwic3RhdHVzIjo0MDR9" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Credenciales incorrectas&quot;&#10;  ],&#10;  &quot;status&quot;: 404&#10;}" />
+              <option name="code" value="404" />
+              <option name="connectionEstablishingTime" value="5" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:17:36 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="09416165-aec6-4ec9-973b-39d5eb5a01f9" />
+              <option name="message" value="Not Found" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Credenciales incorrectas&quot;],&quot;status&quot;:404}" />
+              <option name="size" value="72" />
+              <option name="time" value="1325" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533638840" />
+          <option name="id" value="62b7adb1-9cef-4e84-8e87-fc80c16a7561" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="TWljcm9zb2Z0LkFzcE5ldENvcmUuSHR0cC5CYWRIdHRwUmVxdWVzdEV4Y2VwdGlvbjogRmFpbGVkIHRvIHJlYWQgcGFyYW1ldGVyICJBdXRoZW50aWNhdGVVc2VyQ29tbWFuZCBjb21tYW5kIiBmcm9tIHRoZSByZXF1ZXN0IGJvZHkgYXMgSlNPTi4NCiAtLS0+IFN5c3RlbS5UZXh0Lkpzb24uSnNvbkV4Y2VwdGlvbjogSlNPTiBkZXNlcmlhbGl6YXRpb24gZm9yIHR5cGUgJ0JpYmxpb3RlY2FVdGVjby5GZWF0dXJlcy5Vc2VyRmVhdHVyZXMuQWN0aW9ucy5BdXRoZW50aWNhdGVVc2VyQ29tbWFuZCcgd2FzIG1pc3NpbmcgcmVxdWlyZWQgcHJvcGVydGllcyBpbmNsdWRpbmc6ICd1c2VybmFtZScsICdwYXNzd29yZCcuDQogICBhdCBTeXN0ZW0uVGV4dC5Kc29uLlRocm93SGVscGVyLlRocm93SnNvbkV4Y2VwdGlvbl9Kc29uUmVxdWlyZWRQcm9wZXJ0eU1pc3NpbmcoSnNvblR5cGVJbmZvIHBhcmVudCwgQml0QXJyYXkgcmVxdWlyZWRQcm9wZXJ0aWVzU2V0KQ0KICAgYXQgU3lzdGVtLlRleHQuSnNvbi5TZXJpYWxpemF0aW9uLkNvbnZlcnRlcnMuT2JqZWN0RGVmYXVsdENvbnZlcnRlcmAxLk9uVHJ5UmVhZChVdGY4SnNvblJlYWRlciYgcmVhZGVyLCBUeXBlIHR5cGVUb0NvbnZlcnQsIEpzb25TZXJpYWxpemVyT3B0aW9ucyBvcHRpb25zLCBSZWFkU3RhY2smIHN0YXRlLCBUJiB2YWx1ZSkNCiAgIGF0IFN5c3RlbS5UZXh0Lkpzb24uU2VyaWFsaXphdGlvbi5Kc29uQ29udmVydGVyYDEuVHJ5UmVhZChVdGY4SnNvblJlYWRlciYgcmVhZGVyLCBUeXBlIHR5cGVUb0NvbnZlcnQsIEpzb25TZXJpYWxpemVyT3B0aW9ucyBvcHRpb25zLCBSZWFkU3RhY2smIHN0YXRlLCBUJiB2YWx1ZSwgQm9vbGVhbiYgaXNQb3B1bGF0ZWRWYWx1ZSkNCiAgIGF0IFN5c3RlbS5UZXh0Lkpzb24uU2VyaWFsaXphdGlvbi5Kc29uQ29udmVydGVyYDEuUmVhZENvcmUoVXRmOEpzb25SZWFkZXImIHJlYWRlciwgVCYgdmFsdWUsIEpzb25TZXJpYWxpemVyT3B0aW9ucyBvcHRpb25zLCBSZWFkU3RhY2smIHN0YXRlKQ0KICAgYXQgU3lzdGVtLlRleHQuSnNvbi5TZXJpYWxpemF0aW9uLk1ldGFkYXRhLkpzb25UeXBlSW5mb2AxLkNvbnRpbnVlRGVzZXJpYWxpemUoUmVhZEJ1ZmZlclN0YXRlJiBidWZmZXJTdGF0ZSwgSnNvblJlYWRlclN0YXRlJiBqc29uUmVhZGVyU3RhdGUsIFJlYWRTdGFjayYgcmVhZFN0YWNrLCBUJiB2YWx1ZSkNCiAgIGF0IFN5c3RlbS5UZXh0Lkpzb24uU2VyaWFsaXphdGlvbi5NZXRhZGF0YS5Kc29uVHlwZUluZm9gMS5EZXNlcmlhbGl6ZUFzeW5jKFN0cmVhbSB1dGY4SnNvbiwgQ2FuY2VsbGF0aW9uVG9rZW4gY2FuY2VsbGF0aW9uVG9rZW4pDQogICBhdCBTeXN0ZW0uVGV4dC5Kc29uLlNlcmlhbGl6YXRpb24uTWV0YWRhdGEuSnNvblR5cGVJbmZvYDEuRGVzZXJpYWxpemVBc09iamVjdEFzeW5jKFN0cmVhbSB1dGY4SnNvbiwgQ2FuY2VsbGF0aW9uVG9rZW4gY2FuY2VsbGF0aW9uVG9rZW4pDQogICBhdCBNaWNyb3NvZnQuQXNwTmV0Q29yZS5IdHRwLkh0dHBSZXF1ZXN0SnNvbkV4dGVuc2lvbnMuUmVhZEZyb21Kc29uQXN5bmMoSHR0cFJlcXVlc3QgcmVxdWVzdCwgSnNvblR5cGVJbmZvIGpzb25UeXBlSW5mbywgQ2FuY2VsbGF0aW9uVG9rZW4gY2FuY2VsbGF0aW9uVG9rZW4pDQogICBhdCBNaWNyb3NvZnQuQXNwTmV0Q29yZS5IdHRwLkh0dHBSZXF1ZXN0SnNvbkV4dGVuc2lvbnMuUmVhZEZyb21Kc29uQXN5bmMoSHR0cFJlcXVlc3QgcmVxdWVzdCwgSnNvblR5cGVJbmZvIGpzb25UeXBlSW5mbywgQ2FuY2VsbGF0aW9uVG9rZW4gY2FuY2VsbGF0aW9uVG9rZW4pDQogICBhdCBNaWNyb3NvZnQuQXNwTmV0Q29yZS5IdHRwLlJlcXVlc3REZWxlZ2F0ZUZhY3RvcnkuPEhhbmRsZVJlcXVlc3RCb2R5QW5kQ29tcGlsZVJlcXVlc3REZWxlZ2F0ZUZvckpzb24+Z19fVHJ5UmVhZEJvZHlBc3luY3wxMDFfMChIdHRwQ29udGV4dCBodHRwQ29udGV4dCwgVHlwZSBib2R5VHlwZSwgU3RyaW5nIHBhcmFtZXRlclR5cGVOYW1lLCBTdHJpbmcgcGFyYW1ldGVyTmFtZSwgQm9vbGVhbiBhbGxvd0VtcHR5UmVxdWVzdEJvZHksIEJvb2xlYW4gdGhyb3dPbkJhZFJlcXVlc3QsIEpzb25UeXBlSW5mbyBqc29uVHlwZUluZm8pDQogICAtLS0gRW5kIG9mIGlubmVyIGV4Y2VwdGlvbiBzdGFjayB0cmFjZSAtLS0NCiAgIGF0IE1pY3Jvc29mdC5Bc3BOZXRDb3JlLkh0dHAuUmVxdWVzdERlbGVnYXRlRmFjdG9yeS5Mb2cuSW52YWxpZEpzb25SZXF1ZXN0Qm9keShIdHRwQ29udGV4dCBodHRwQ29udGV4dCwgU3RyaW5nIHBhcmFtZXRlclR5cGVOYW1lLCBTdHJpbmcgcGFyYW1ldGVyTmFtZSwgRXhjZXB0aW9uIGV4Y2VwdGlvbiwgQm9vbGVhbiBzaG91bGRUaHJvdykNCiAgIGF0IE1pY3Jvc29mdC5Bc3BOZXRDb3JlLkh0dHAuUmVxdWVzdERlbGVnYXRlRmFjdG9yeS48SGFuZGxlUmVxdWVzdEJvZHlBbmRDb21waWxlUmVxdWVzdERlbGVnYXRlRm9ySnNvbj5nX19UcnlSZWFkQm9keUFzeW5jfDEwMV8wKEh0dHBDb250ZXh0IGh0dHBDb250ZXh0LCBUeXBlIGJvZHlUeXBlLCBTdHJpbmcgcGFyYW1ldGVyVHlwZU5hbWUsIFN0cmluZyBwYXJhbWV0ZXJOYW1lLCBCb29sZWFuIGFsbG93RW1wdHlSZXF1ZXN0Qm9keSwgQm9vbGVhbiB0aHJvd09uQmFkUmVxdWVzdCwgSnNvblR5cGVJbmZvIGpzb25UeXBlSW5mbykNCiAgIGF0IE1pY3Jvc29mdC5Bc3BOZXRDb3JlLkh0dHAuUmVxdWVzdERlbGVnYXRlRmFjdG9yeS48PmNfX0Rpc3BsYXlDbGFzczEwMV8yLjw8SGFuZGxlUmVxdWVzdEJvZHlBbmRDb21waWxlUmVxdWVzdERlbGVnYXRlRm9ySnNvbj5iX18yPmQuTW92ZU5leHQoKQ0KLS0tIEVuZCBvZiBzdGFjayB0cmFjZSBmcm9tIHByZXZpb3VzIGxvY2F0aW9uIC0tLQ0KICAgYXQgTWljcm9zb2Z0LkFzcE5ldENvcmUuQXV0aG9yaXphdGlvbi5BdXRob3JpemF0aW9uTWlkZGxld2FyZS5JbnZva2UoSHR0cENvbnRleHQgY29udGV4dCkNCiAgIGF0IE1pY3Jvc29mdC5Bc3BOZXRDb3JlLkF1dGhlbnRpY2F0aW9uLkF1dGhlbnRpY2F0aW9uTWlkZGxld2FyZS5JbnZva2UoSHR0cENvbnRleHQgY29udGV4dCkNCiAgIGF0IE1pY3Jvc29mdC5Bc3BOZXRDb3JlLkRpYWdub3N0aWNzLkRldmVsb3BlckV4Y2VwdGlvblBhZ2VNaWRkbGV3YXJlSW1wbC5JbnZva2UoSHR0cENvbnRleHQgY29udGV4dCkNCg0KSEVBREVSUw0KPT09PT09PQ0KQWNjZXB0OiAqLyoNCkNvbm5lY3Rpb246IGtlZXAtYWxpdmUNCkhvc3Q6IGxvY2FsaG9zdDo1MDAwDQpVc2VyLUFnZW50OiBKZXRDbGllbnQNCkFjY2VwdC1FbmNvZGluZzogZ3ppcCwgZGVmbGF0ZSwgYnINCkF1dGhvcml6YXRpb246IEJlYXJlciBleUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaGRXUWlPaUpvZEhSd09pOHZiRzlqWVd4b2IzTjBPalV3TURBaUxDSnBjM01pT2lKb2RIUndPaTh2Ykc5allXeG9iM04wT2pVd01EQWlMQ0psZUhBaU9qRTNOakF4TXpjMU1EY3NJbTVwWTJ0dVlXMWxJam9pYW5WaGJpNXdaWEpsZWlJc0luTjFZaUk2SWpFaUxDSndhV04wZFhKbElqb2lJaXdpYm1GdFpTSTZJa3AxWVc0Z1VNT3BjbVY2SWl3aWNtOXNaU0k2SWt4cFluSmhjbWxoYmlJc0ltTnlaV0YwWldSQmRDSTZJakV3THpBekx6SXdNalVnTURVNk5UVTZNalVpTENKcFlYUWlPakUzTlRrMU16STNNRGNzSW01aVppSTZNVGMxT1RVek1qY3dOMzAudlREcmhmMy1HTW9nOTBKMG5jem9kRWZhY05QUnJVWGxIZ2x1a2lBbk4zNA0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uDQpDb250ZW50LUxlbmd0aDogMTcNCg==" />
+              <option name="bodyString" value="Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter &quot;AuthenticateUserCommand command&quot; from the request body as JSON.&#10; ---&gt; System.Text.Json.JsonException: JSON deserialization for type 'BibliotecaUteco.Features.UserFeatures.Actions.AuthenticateUserCommand' was missing required properties including: 'username', 'password'.&#10;   at System.Text.Json.ThrowHelper.ThrowJsonException_JsonRequiredPropertyMissing(JsonTypeInfo parent, BitArray requiredPropertiesSet)&#10;   at System.Text.Json.Serialization.Converters.ObjectDefaultConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)&#10;   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)&#10;   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(Stream utf8Json, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|101_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)&#10;   --- End of inner exception stack trace ---&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|101_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass101_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()&#10;--- End of stack trace from previous location ---&#10;   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#10;   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)&#10;   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)&#10;&#10;HEADERS&#10;=======&#10;Accept: */*&#10;Connection: keep-alive&#10;Host: localhost:5000&#10;User-Agent: JetClient&#10;Accept-Encoding: gzip, deflate, br&#10;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34&#10;Content-Type: application/json&#10;Content-Length: 17&#10;" />
+              <option name="code" value="400" />
+              <option name="connectionEstablishingTime" value="7" />
+              <option name="contentType" value="text/plain; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="text/plain; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:20:38 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="62b7adb1-9cef-4e84-8e87-fc80c16a7561" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="TEXT" />
+              <option name="rawBodyString" value="Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter &quot;AuthenticateUserCommand command&quot; from the request body as JSON.&#10; ---&gt; System.Text.Json.JsonException: JSON deserialization for type 'BibliotecaUteco.Features.UserFeatures.Actions.AuthenticateUserCommand' was missing required properties including: 'username', 'password'.&#10;   at System.Text.Json.ThrowHelper.ThrowJsonException_JsonRequiredPropertyMissing(JsonTypeInfo parent, BitArray requiredPropertiesSet)&#10;   at System.Text.Json.Serialization.Converters.ObjectDefaultConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)&#10;   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)&#10;   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)&#10;   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(Stream utf8Json, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|101_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)&#10;   --- End of inner exception stack trace ---&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|101_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)&#10;   at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass101_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()&#10;--- End of stack trace from previous location ---&#10;   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#10;   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)&#10;   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)&#10;&#10;HEADERS&#10;=======&#10;Accept: */*&#10;Connection: keep-alive&#10;Host: localhost:5000&#10;User-Agent: JetClient&#10;Accept-Encoding: gzip, deflate, br&#10;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34&#10;Content-Type: application/json&#10;Content-Length: 17&#10;" />
+              <option name="size" value="3745" />
+              <option name="time" value="524" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759533907815" />
+          <option name="id" value="d4b9daee-2e99-4a33-81ab-3262db7c5562" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJVbiBlcnJvciBoYSBvY3VycmlkbyBlbiBlbCBzZXJ2aWRvciJdLCJzdGF0dXMiOjUwMH0=" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Un error ha ocurrido en el servidor&quot;&#10;  ],&#10;  &quot;status&quot;: 500&#10;}" />
+              <option name="code" value="500" />
+              <option name="connectionEstablishingTime" value="13" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:25:07 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache,no-store" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="-1" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="d4b9daee-2e99-4a33-81ab-3262db7c5562" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Un error ha ocurrido en el servidor&quot;],&quot;status&quot;:500}" />
+              <option name="size" value="83" />
+              <option name="time" value="725" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759534181325" />
+          <option name="id" value="c0352e22-b0ba-4315-8bf1-1f01b6ec9860" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="code" value="403" />
+              <option name="connectionEstablishingTime" value="7" />
+              <option name="contentType" value="application/octet-stream" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:29:40 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c0352e22-b0ba-4315-8bf1-1f01b6ec9860" />
+              <option name="message" value="Forbidden" />
+              <option name="time" value="588" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759534231156" />
+          <option name="id" value="64ee7d2a-f7f9-4e75-89b6-dfc8fe51c172" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJTdSBpZGVudGlkYWQgbm8gaGEgcG9kaWRvIHNlciBjb21wcm9iYWRhLiJdLCJzdGF0dXMiOjQwNH0=" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;Su identidad no ha podido ser comprobada.&quot;&#10;  ],&#10;  &quot;status&quot;: 404&#10;}" />
+              <option name="code" value="403" />
+              <option name="connectionEstablishingTime" value="7" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:30:30 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="64ee7d2a-f7f9-4e75-89b6-dfc8fe51c172" />
+              <option name="message" value="Forbidden" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;Su identidad no ha podido ser comprobada.&quot;],&quot;status&quot;:404}" />
+              <option name="size" value="89" />
+              <option name="time" value="623" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1759534339974" />
+          <option name="id" value="0c611b05-1c2e-4052-8c10-057b6f5244b2" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3NjAxMzc1MDcsIm5pY2tuYW1lIjoianVhbi5wZXJleiIsInN1YiI6IjEiLCJwaWN0dXJlIjoiIiwibmFtZSI6Ikp1YW4gUMOpcmV6Iiwicm9sZSI6IkxpYnJhcmlhbiIsImNyZWF0ZWRBdCI6IjEwLzAzLzIwMjUgMDU6NTU6MjUiLCJpYXQiOjE3NTk1MzI3MDcsIm5iZiI6MTc1OTUzMjcwN30.vTDrhf3-GMog90J0nczodEfacNPRrUXlHglukiAnN34" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  number: 0&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="7a8ff161-c825-4103-8df1-35b100ab532d" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value=" http://localhost:5000/api/v1/users/test" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJpc1N1Y2Nlc3MiOmZhbHNlLCJtZXNzYWdlcyI6WyJObyB0aWVuZXMgbG9zIHBlcm1pc29zIHBhcmEgYWNjZWRlciBhIGVzdGUgbyBlc3RvcyByZWN1cnNvcyJdLCJzdGF0dXMiOjQwNH0=" />
+              <option name="bodyString" value="{&#10;  &quot;isSuccess&quot;: false,&#10;  &quot;messages&quot;: [&#10;    &quot;No tienes los permisos para acceder a este o estos recursos&quot;&#10;  ],&#10;  &quot;status&quot;: 404&#10;}" />
+              <option name="code" value="403" />
+              <option name="connectionEstablishingTime" value="9" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Fri, 03 Oct 2025 23:32:19 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Server" />
+                    <option name="value" value="Kestrel" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="0c611b05-1c2e-4052-8c10-057b6f5244b2" />
+              <option name="message" value="Forbidden" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;isSuccess&quot;:false,&quot;messages&quot;:[&quot;No tienes los permisos para acceder a este o estos recursos&quot;],&quot;status&quot;:404}" />
+              <option name="size" value="107" />
+              <option name="time" value="643" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
       </list>
     </option>
   </component>

@@ -85,6 +85,20 @@ public static class JwtDependencies
                 };
                 options.Events = new JwtBearerEvents()
                 {
+                    OnForbidden = context =>
+                    {
+                        context.Response.OnStarting(async () =>
+                        {
+                            context.Response.StatusCode = 403;
+                            context.Response.ContentType = "application/json";
+                            await context.Response.WriteAsJsonAsync(
+                                new ForbiddenApiResult()
+
+                            );
+                        });
+
+                        return Task.CompletedTask;
+                    },
                     OnChallenge = c =>
                     {
                         c.HandleResponse();
@@ -103,7 +117,7 @@ public static class JwtDependencies
                                 c.Response.StatusCode = 401;
                                 c.Response.ContentType = "application/json";
                                 await c.Response.WriteAsJsonAsync(
-                                   new UnauthorizedApiResult( "Su identidad no ha podido ser comprobada")
+                                   new UnauthorizedApiResult( "El token de autorización no ha podido ser detectado")
                                 );
                             });
                         }
@@ -116,7 +130,7 @@ public static class JwtDependencies
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(
-                                new UnauthorizedApiResult(  "Su identidad no ha podido ser comprobada o el token de autorización no ha podido ser detectado")
+                                new UnauthorizedApiResult(  "Su identidad no ha podido ser comprobada.")
 
                             );
                         });

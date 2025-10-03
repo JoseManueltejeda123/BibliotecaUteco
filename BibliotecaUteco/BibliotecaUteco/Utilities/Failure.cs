@@ -46,6 +46,15 @@ public class NotFoundApiResult : Failure
     }
     
 }
+public class ForbiddenApiResult : Failure
+{
+
+    public ForbiddenApiResult(string message = "No tienes los permisos para acceder a este o estos recursos", List<string>? messages = null)
+    {
+        Build(HttpStatus.NotFound, message, messages);
+    }
+    
+}
 
 
 public class UnauthorizedApiResult : Failure

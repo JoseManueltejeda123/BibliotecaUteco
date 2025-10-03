@@ -19,11 +19,11 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
 public class AuthenticateUserCommand : ICommand<IApiResult>
 {
     [Required, JsonPropertyName("username"), Description("El nombre de usuario del usuario a iniciar sesión"), FromBody, MinLength(5), MaxLength(15)]
-        public string Username { get; set; } = "";
+        public required string Username { get; set; } 
 
     [Required, JsonPropertyName("password"), Description("La contraseña del usuario a iniciar sesión"), FromBody,
      MinLength(8), MaxLength(30)]
-    public string Password { get; set; } = "";
+    public required string Password { get; set; } 
 }
 
 public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUserCommand>{

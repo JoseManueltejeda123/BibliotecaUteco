@@ -1,10 +1,14 @@
 using BibliotecaUteco;
 using BibliotecaUteco.Client.Pages;
 using BibliotecaUteco.Components;
+using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.Dependencies;
 using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Settings;
+using BibliotecaUteco.Utilities;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +53,25 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = 500;
 
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature is not null)
+        {
+            logger.LogCritical($"Server Error: {contextFeature.Error.Message}");
+
+            await context.Response.WriteAsJsonAsync(
+                new InternalServerErroApiResult("Un error ha ocurrido en el servidor")
+            );
+        }
+    });
+});
 app.UseAuthentication();
 app.UseRouting();
 app.UseHttpsRedirection();
@@ -62,5 +84,11 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BibliotecaUteco.Client._Imports).Assembly);
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
+    var context = services.GetRequiredService<IBibliotecaUtecoDbContext>();    
+    context.Database.Migrate();
+}
 app.Run();

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BibliotecaUteco")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fbc7b3ca4f9d12558a317368924a694d71905cb2")]
 [assembly: System.Reflection.AssemblyProductAttribute("BibliotecaUteco")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BibliotecaUteco")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

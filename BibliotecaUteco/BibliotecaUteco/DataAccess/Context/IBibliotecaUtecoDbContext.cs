@@ -1,6 +1,7 @@
 using BibliotecaUteco.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BibliotecaUteco.DataAccess.Context;
 
@@ -15,6 +16,8 @@ public interface IBibliotecaUtecoDbContext
     public DbSet<GenreBook> GenreBooks { get; set; }
     ChangeTracker ChangeTracker { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    DatabaseFacade Database { get; }
+
 
 
 }

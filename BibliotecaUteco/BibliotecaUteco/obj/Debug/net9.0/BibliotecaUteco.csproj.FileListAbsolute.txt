@@ -245,3 +245,4 @@ C:\Users\breid\RiderProjects\BibliotecaUteco\bibliotecauteco\bibliotecauteco\bin
 C:\Users\breid\RiderProjects\BibliotecaUteco\bibliotecauteco\bibliotecauteco\bin\Debug\net9.0\FluentValidation.AspNetCore.dll
 C:\Users\breid\RiderProjects\BibliotecaUteco\bibliotecauteco\bibliotecauteco\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
 C:\Users\breid\RiderProjects\BibliotecaUteco\bibliotecauteco\bibliotecauteco\bin\Debug\net9.0\OneOf.dll
+C:\Users\breid\RiderProjects\BibliotecaUteco\bibliotecauteco\bibliotecauteco\obj\Debug\net9.0\BibliotecaUteco.sourcelink.json
