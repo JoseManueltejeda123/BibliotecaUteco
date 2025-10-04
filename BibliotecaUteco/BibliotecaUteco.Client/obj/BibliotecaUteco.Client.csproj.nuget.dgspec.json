@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj": {}
+    "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj": {
+    "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
+        "projectUniqueName": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
         "projectName": "BibliotecaUteco.Client",
-        "projectPath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
+        "projectPath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
         "packagesPath": "C:\\Users\\breid\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\obj\\",
+        "outputPath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\breid\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,6 +44,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "LumexUI": {
+              "target": "Package",
+              "version": "[2.0.1, )"
+            },
             "Microsoft.AspNetCore.Components.WebAssembly": {
               "target": "Package",
               "version": "[9.0.7, )"

@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "xnr0WowR8u0=",
+  "dgSpecHash": "93a0D/UaeMA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
+  "projectFilePath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\breid\\.nuget\\packages\\lumexui\\2.0.1\\lumexui.2.0.1.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\lumexui.motion\\0.0.4\\lumexui.motion.0.0.4.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.authorization\\9.0.7\\microsoft.aspnetcore.authorization.9.0.7.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.components\\9.0.7\\microsoft.aspnetcore.components.9.0.7.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\9.0.7\\microsoft.aspnetcore.components.analyzers.9.0.7.nupkg.sha512",
@@ -29,6 +31,8 @@
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.jsinterop.webassembly\\9.0.7\\microsoft.jsinterop.webassembly.9.0.7.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.7\\microsoft.net.illink.tasks.9.0.7.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.net.sdk.webassembly.pack\\9.0.7\\microsoft.net.sdk.webassembly.pack.9.0.7.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\planetarium.lrucachenet\\1.2.0\\planetarium.lrucachenet.1.2.0.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\tailwindmerge.net\\1.0.0\\tailwindmerge.net.1.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\9.0.7\\microsoft.netcore.app.runtime.mono.browser-wasm.9.0.7.nupkg.sha512"
   ],
   "logs": []

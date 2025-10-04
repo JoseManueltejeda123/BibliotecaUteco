@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jAJrtF6YRpU=",
+  "dgSpecHash": "87cAFiWsedM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\bibliotecauteco\\bibliotecauteco\\BibliotecaUteco.csproj",
+  "projectFilePath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\bibliotecauteco\\bibliotecauteco\\BibliotecaUteco.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\breid\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -10,6 +10,8 @@
     "C:\\Users\\breid\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.1\\fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\lumexui\\2.0.1\\lumexui.2.0.1.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\lumexui.motion\\0.0.4\\lumexui.motion.0.0.4.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.9\\microsoft.aspnetcore.authentication.jwtbearer.9.0.9.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.authorization\\9.0.7\\microsoft.aspnetcore.authorization.9.0.7.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.aspnetcore.components\\9.0.7\\microsoft.aspnetcore.components.9.0.7.nupkg.sha512",
@@ -70,6 +72,7 @@
     "C:\\Users\\breid\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\oneof\\3.0.271\\oneof.3.0.271.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\planetarium.lrucachenet\\1.2.0\\planetarium.lrucachenet.1.2.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
@@ -101,7 +104,8 @@
     "C:\\Users\\breid\\.nuget\\packages\\system.text.json\\9.0.9\\system.text.json.9.0.9.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\breid\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\breid\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
+    "C:\\Users\\breid\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
+    "C:\\Users\\breid\\.nuget\\packages\\tailwindmerge.net\\1.0.0\\tailwindmerge.net.1.0.0.nupkg.sha512"
   ],
   "logs": []
 }

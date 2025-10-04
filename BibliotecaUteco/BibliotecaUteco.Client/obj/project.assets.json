@@ -2,6 +2,55 @@
   "version": 3,
   "targets": {
     "net9.0": {
+      "LumexUI/2.0.1": {
+        "type": "package",
+        "dependencies": {
+          "LumexUI.Motion": "0.0.4",
+          "Microsoft.AspNetCore.Components.Web": "9.0.1",
+          "TailwindMerge.NET": "1.0.0"
+        },
+        "compile": {
+          "lib/net9.0/LumexUI.Shared.Icons.dll": {},
+          "lib/net9.0/LumexUI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Shared.Icons.dll": {},
+          "lib/net9.0/LumexUI.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/LumexUI.props": {},
+          "buildTransitive/LumexUI.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/LumexUI.props": {}
+        }
+      },
+      "LumexUI.Motion/0.0.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.1"
+        },
+        "compile": {
+          "lib/net9.0/LumexUI.Motion.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Motion.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/LumexUI.Motion.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/LumexUI.Motion.props": {}
+        }
+      },
       "Microsoft.AspNetCore.Authorization/9.0.7": {
         "type": "package",
         "dependencies": {
@@ -425,10 +474,85 @@
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
+        }
+      },
+      "Planetarium.LruCacheNet/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/LruCacheNet.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LruCacheNet.dll": {}
+        }
+      },
+      "TailwindMerge.NET/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "9.0.2",
+          "Planetarium.LruCacheNet": "1.2.0"
+        },
+        "compile": {
+          "lib/net9.0/TailwindMerge.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/TailwindMerge.dll": {
+            "related": ".xml"
+          }
         }
       }
     },
     "net9.0/browser-wasm": {
+      "LumexUI/2.0.1": {
+        "type": "package",
+        "dependencies": {
+          "LumexUI.Motion": "0.0.4",
+          "Microsoft.AspNetCore.Components.Web": "9.0.1",
+          "TailwindMerge.NET": "1.0.0"
+        },
+        "compile": {
+          "lib/net9.0/LumexUI.Shared.Icons.dll": {},
+          "lib/net9.0/LumexUI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Shared.Icons.dll": {},
+          "lib/net9.0/LumexUI.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/LumexUI.props": {},
+          "buildTransitive/LumexUI.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/LumexUI.props": {}
+        }
+      },
+      "LumexUI.Motion/0.0.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.1"
+        },
+        "compile": {
+          "lib/net9.0/LumexUI.Motion.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Motion.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/LumexUI.Motion.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/LumexUI.Motion.props": {}
+        }
+      },
       "Microsoft.AspNetCore.Authorization/9.0.7": {
         "type": "package",
         "dependencies": {
@@ -852,11 +976,124 @@
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
+        }
+      },
+      "Planetarium.LruCacheNet/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/LruCacheNet.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LruCacheNet.dll": {}
+        }
+      },
+      "TailwindMerge.NET/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "9.0.2",
+          "Planetarium.LruCacheNet": "1.2.0"
+        },
+        "compile": {
+          "lib/net9.0/TailwindMerge.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/TailwindMerge.dll": {
+            "related": ".xml"
+          }
         }
       }
     }
   },
   "libraries": {
+    "LumexUI/2.0.1": {
+      "sha512": "TyeVWs4bsg3LFAGsfu8MIGTssVm+O+XF2r71FxaQ7CR3/ccAwTl7w0/iWE8LRjD8X1DKsn9+rUVBDWOB4sWIeA==",
+      "type": "package",
+      "path": "lumexui/2.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "build/LumexUI.props",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/LumexUI.props",
+        "buildTransitive/LumexUI.props",
+        "buildTransitive/LumexUI.targets",
+        "lib/net8.0/LumexUI.Shared.Icons.dll",
+        "lib/net8.0/LumexUI.dll",
+        "lib/net8.0/LumexUI.xml",
+        "lib/net9.0/LumexUI.Shared.Icons.dll",
+        "lib/net9.0/LumexUI.dll",
+        "lib/net9.0/LumexUI.xml",
+        "lumexui.2.0.1.nupkg.sha512",
+        "lumexui.nuspec",
+        "staticwebassets/js/LumexUI.js",
+        "staticwebassets/js/components/data-grid.js",
+        "staticwebassets/js/components/input.js",
+        "staticwebassets/js/components/popover.bundle.js",
+        "staticwebassets/js/components/popover.js",
+        "staticwebassets/js/elementReference.js",
+        "staticwebassets/js/utils/dom.js",
+        "staticwebassets/js/utils/theme.js",
+        "theme/_dark.css",
+        "theme/_layout.css",
+        "theme/_light.css",
+        "theme/components/Accordion.cs",
+        "theme/components/Alert.cs",
+        "theme/components/Avatar.cs",
+        "theme/components/Badge.cs",
+        "theme/components/Button.cs",
+        "theme/components/Card.cs",
+        "theme/components/Checkbox.cs",
+        "theme/components/Chip.cs",
+        "theme/components/Collapse.cs",
+        "theme/components/ColorVariants.cs",
+        "theme/components/DataGrid.cs",
+        "theme/components/Divider.cs",
+        "theme/components/Dropdown.cs",
+        "theme/components/InputField.cs",
+        "theme/components/Link.cs",
+        "theme/components/Listbox.cs",
+        "theme/components/Menu.cs",
+        "theme/components/Navbar.cs",
+        "theme/components/Popover.cs",
+        "theme/components/Radio.cs",
+        "theme/components/Select.cs",
+        "theme/components/Skeleton.cs",
+        "theme/components/Spinner.cs",
+        "theme/components/Switch.cs",
+        "theme/components/Tabs.cs",
+        "theme/components/Utils.cs",
+        "theme/theme.css"
+      ]
+    },
+    "LumexUI.Motion/0.0.4": {
+      "sha512": "3f9DlWoj+bmeUSc61KblaPVjF3ProSemT+AcCBme6/x4IoBq0qiQZWHiNMhnu+SKFpBOjaLjOE4ly5rAZcnGFQ==",
+      "type": "package",
+      "path": "lumexui.motion/0.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "build/LumexUI.Motion.props",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/LumexUI.Motion.props",
+        "buildTransitive/LumexUI.Motion.props",
+        "lib/net8.0/LumexUI.Motion.dll",
+        "lib/net8.0/LumexUI.Motion.xml",
+        "lib/net9.0/LumexUI.Motion.dll",
+        "lib/net9.0/LumexUI.Motion.xml",
+        "lumexui.motion.0.0.4.nupkg.sha512",
+        "lumexui.motion.nuspec",
+        "staticwebassets/motion.js",
+        "staticwebassets/utils.js"
+      ]
+    },
     "Microsoft.AspNetCore.Authorization/9.0.7": {
       "sha512": "P0Gej6X5cEoK+sS9XpgYSzg0Nz8OOlvfQb12aOAJW/P4b9nAzLQCVoNp1GDyR/P8eMSnoPARiKPaa6q51iR0oA==",
       "type": "package",
@@ -1566,10 +1803,41 @@
         "tools/net9.0/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
         "tools/net9.0/Microsoft.NET.WebAssembly.Webcil.dll"
       ]
+    },
+    "Planetarium.LruCacheNet/1.2.0": {
+      "sha512": "WE2eblbDjsOoJhOBA+Jiwk/c+xrbFTRu+KaUOhhRWklCyScWSGCFS3gNmuc7zjjdJPSjotGAoKjAJIkHsXPXxQ==",
+      "type": "package",
+      "path": "planetarium.lrucachenet/1.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/LruCacheNet.dll",
+        "planetarium.lrucachenet.1.2.0.nupkg.sha512",
+        "planetarium.lrucachenet.nuspec"
+      ]
+    },
+    "TailwindMerge.NET/1.0.0": {
+      "sha512": "ev537EF212+1nLJ71cVJrvL5237imsvEtNftBu2hyzUOtToehv4nZK9YVniQavI77bYluIj4wI49cNI/9KDAYw==",
+      "type": "package",
+      "path": "tailwindmerge.net/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "lib/net8.0/TailwindMerge.dll",
+        "lib/net8.0/TailwindMerge.xml",
+        "lib/net9.0/TailwindMerge.dll",
+        "lib/net9.0/TailwindMerge.xml",
+        "logo.png",
+        "tailwindmerge.net.1.0.0.nupkg.sha512",
+        "tailwindmerge.net.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "LumexUI >= 2.0.1",
       "Microsoft.AspNetCore.Components.WebAssembly >= 9.0.7",
       "Microsoft.NET.ILLink.Tasks >= 9.0.7",
       "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.7"
@@ -1581,11 +1849,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
+      "projectUniqueName": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
       "projectName": "BibliotecaUteco.Client",
-      "projectPath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
+      "projectPath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\BibliotecaUteco.Client.csproj",
       "packagesPath": "C:\\Users\\breid\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\breid\\RiderProjects\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\obj\\",
+      "outputPath": "C:\\Users\\breid\\OneDrive\\Desktop\\BibliotecaUteco\\BibliotecaUteco\\BibliotecaUteco.Client\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\breid\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1618,6 +1886,10 @@
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
+          "LumexUI": {
+            "target": "Package",
+            "version": "[2.0.1, )"
+          },
           "Microsoft.AspNetCore.Components.WebAssembly": {
             "target": "Package",
             "version": "[9.0.7, )"

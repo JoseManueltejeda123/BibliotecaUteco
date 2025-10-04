@@ -97,6 +97,34 @@
           }
         }
       },
+      "LumexUI/2.0.1": {
+        "dependencies": {
+          "LumexUI.Motion": "0.0.4",
+          "Microsoft.AspNetCore.Components.Web": "9.0.7",
+          "TailwindMerge.NET": "1.0.0"
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Shared.Icons.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          },
+          "lib/net9.0/LumexUI.dll": {
+            "assemblyVersion": "2.0.1.0",
+            "fileVersion": "2.0.1.0"
+          }
+        }
+      },
+      "LumexUI.Motion/0.0.4": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/LumexUI.Motion.dll": {
+            "assemblyVersion": "0.0.4.0",
+            "fileVersion": "0.0.4.0"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.9": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.0.1"
@@ -991,6 +1019,14 @@
           }
         }
       },
+      "Planetarium.LruCacheNet/1.2.0": {
+        "runtime": {
+          "lib/netstandard2.0/LruCacheNet.dll": {
+            "assemblyVersion": "1.2.0.0",
+            "fileVersion": "1.2.0.0"
+          }
+        }
+      },
       "System.ClientModel/1.0.0": {
         "dependencies": {
           "System.Memory.Data": "1.0.2",
@@ -1248,8 +1284,21 @@
           }
         }
       },
+      "TailwindMerge.NET/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Options": "9.0.9",
+          "Planetarium.LruCacheNet": "1.2.0"
+        },
+        "runtime": {
+          "lib/net9.0/TailwindMerge.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "BibliotecaUteco.Client/1.0.0": {
         "dependencies": {
+          "LumexUI": "2.0.1",
           "Microsoft.AspNetCore.Components.WebAssembly": "9.0.7"
         },
         "runtime": {
@@ -1308,6 +1357,20 @@
       "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
+    },
+    "LumexUI/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TyeVWs4bsg3LFAGsfu8MIGTssVm+O+XF2r71FxaQ7CR3/ccAwTl7w0/iWE8LRjD8X1DKsn9+rUVBDWOB4sWIeA==",
+      "path": "lumexui/2.0.1",
+      "hashPath": "lumexui.2.0.1.nupkg.sha512"
+    },
+    "LumexUI.Motion/0.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3f9DlWoj+bmeUSc61KblaPVjF3ProSemT+AcCBme6/x4IoBq0qiQZWHiNMhnu+SKFpBOjaLjOE4ly5rAZcnGFQ==",
+      "path": "lumexui.motion/0.0.4",
+      "hashPath": "lumexui.motion.0.0.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.9": {
       "type": "package",
@@ -1729,6 +1792,13 @@
       "path": "oneof/3.0.271",
       "hashPath": "oneof.3.0.271.nupkg.sha512"
     },
+    "Planetarium.LruCacheNet/1.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WE2eblbDjsOoJhOBA+Jiwk/c+xrbFTRu+KaUOhhRWklCyScWSGCFS3gNmuc7zjjdJPSjotGAoKjAJIkHsXPXxQ==",
+      "path": "planetarium.lrucachenet/1.2.0",
+      "hashPath": "planetarium.lrucachenet.1.2.0.nupkg.sha512"
+    },
     "System.ClientModel/1.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1952,6 +2022,13 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "TailwindMerge.NET/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ev537EF212+1nLJ71cVJrvL5237imsvEtNftBu2hyzUOtToehv4nZK9YVniQavI77bYluIj4wI49cNI/9KDAYw==",
+      "path": "tailwindmerge.net/1.0.0",
+      "hashPath": "tailwindmerge.net.1.0.0.nupkg.sha512"
     },
     "BibliotecaUteco.Client/1.0.0": {
       "type": "project",
