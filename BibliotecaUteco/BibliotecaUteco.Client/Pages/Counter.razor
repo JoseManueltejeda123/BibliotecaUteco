@@ -1,6 +1,6 @@
 ﻿@page "/home"
-@using Microsoft.IdentityModel.JsonWebTokens
-@layout MainLayout
+
+@attribute [Authorize] 
 
 <AuthorizeView>
     <Authorized>

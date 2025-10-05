@@ -10,12 +10,14 @@
 @using BibliotecaUteco.Client.Identity.Provider
 @using LumexUI
 @using Microsoft.AspNetCore.Components.Authorization
-@using BibliotecaUteco.Client.Layout
+@using BibliotecaUteco.Client.Layouts
 @using BibliotecaUteco.Client.ServicesInterfaces
 @using LumexUI.Shared.Icons
 @using Blazor.Sonner
 @using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces
-
+@using BibliotecaUteco.Client.Components
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.IdentityModel.JsonWebTokens
 @inject IUsersApiServices UsersApiServices
 @inject CustomAuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager

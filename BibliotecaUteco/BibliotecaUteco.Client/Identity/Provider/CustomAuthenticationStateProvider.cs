@@ -41,18 +41,17 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
     /// Actualiza el estado de autenticación.
     /// Si token es null, se cierra sesión.
     /// </summary>
-    public async Task UpdateAuthenticationStateAsync(string? token)
+    public async Task UpdateAuthenticationStateAsync(string? token, bool remindMe = false)
     {
         if (string.IsNullOrWhiteSpace(token))
         {
             await localStorageService.RemoveTokenAsync();
-            navManager.NavigateTo("/", true);
 
         }
         else
         {
           
-            await localStorageService.SaveTokenAsync(token);
+            await localStorageService.SaveTokenAsync(token, remindMe);
 
         }
         
