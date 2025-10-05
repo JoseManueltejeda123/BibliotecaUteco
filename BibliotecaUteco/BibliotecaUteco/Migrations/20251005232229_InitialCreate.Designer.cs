@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaUteco.Migrations
 {
     [DbContext(typeof(BibliotecaUtecoDbContext))]
-    [Migration("20251003055527_UserPfp")]
-    partial class UserPfp
+    [Migration("20251005232229_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,16 +360,16 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 908, DateTimeKind.Utc).AddTicks(6500),
+                            CreatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(702),
                             Name = "Librarian",
-                            UpdatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 908, DateTimeKind.Utc).AddTicks(6505)
+                            UpdatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(711)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 908, DateTimeKind.Utc).AddTicks(7797),
+                            CreatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(1914),
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 908, DateTimeKind.Utc).AddTicks(7798)
+                            UpdatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(1916)
                         });
                 });
 
@@ -455,23 +455,23 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 919, DateTimeKind.Utc).AddTicks(1970),
+                            CreatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 424, DateTimeKind.Utc).AddTicks(7617),
                             FullName = "Juan Pérez",
                             IdentityCardNumber = "00112345678",
                             Password = "020255afeda8c28778f9a3c46197d25f0521b40aae838b9e23a96a5bed3773c2",
                             RoleId = 1,
-                            UpdatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 919, DateTimeKind.Utc).AddTicks(1973),
+                            UpdatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 424, DateTimeKind.Utc).AddTicks(7625),
                             Username = "juan.perez"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 955, DateTimeKind.Utc).AddTicks(129),
+                            CreatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 468, DateTimeKind.Utc).AddTicks(4374),
                             FullName = "Jose Pérez",
                             IdentityCardNumber = "00212345678",
                             Password = "b60037fbbcfdd8f052dc80c8002c92686300ab72932a341954db68d7851ec2f8",
                             RoleId = 2,
-                            UpdatedAt = new DateTime(2025, 10, 3, 5, 55, 25, 955, DateTimeKind.Utc).AddTicks(134),
+                            UpdatedAt = new DateTime(2025, 10, 5, 23, 22, 27, 468, DateTimeKind.Utc).AddTicks(4380),
                             Username = "jose.perez"
                         });
                 });
