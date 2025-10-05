@@ -1,11 +1,11 @@
 using BibliotecaUteco;
 using BibliotecaUteco.Client.Pages;
+using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Components;
 using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.Dependencies;
 using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Settings;
-using BibliotecaUteco.Utilities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +67,8 @@ app.UseExceptionHandler(appError =>
             logger.LogCritical($"Server Error: {contextFeature.Error.Message}");
 
             await context.Response.WriteAsJsonAsync(
-                new InternalServerErroApiResult("Un error ha ocurrido en el servidor")
+                ApiResult<object>.BuildFailure(HttpStatus.Unauthorized,"Ocurrió un error en el servidor")
+
             );
         }
     });

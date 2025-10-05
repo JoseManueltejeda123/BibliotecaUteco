@@ -5,7 +5,6 @@ using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Identity;
 using BibliotecaUteco.Settings;
-using BibliotecaUteco.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -92,7 +91,8 @@ public static class JwtDependencies
                             context.Response.StatusCode = 403;
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(
-                                new ForbiddenApiResult()
+                             ApiResult<object>.BuildFailure(HttpStatus.Forbidden,"No tienes permisos para acceder a este recurso")
+
 
                             );
                         });
@@ -116,8 +116,11 @@ public static class JwtDependencies
                             {
                                 c.Response.StatusCode = 401;
                                 c.Response.ContentType = "application/json";
+                                
                                 await c.Response.WriteAsJsonAsync(
-                                   new UnauthorizedApiResult( "El token de autorización no ha podido ser detectado")
+                                    ApiResult<object>.BuildFailure(HttpStatus.Unauthorized,"El token de autorización no ha podido ser detectado")
+
+                                
                                 );
                             });
                         }
@@ -130,7 +133,9 @@ public static class JwtDependencies
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(
-                                new UnauthorizedApiResult(  "Su identidad no ha podido ser comprobada.")
+                                ApiResult<object>.BuildFailure(HttpStatus.Unauthorized,"Su identidad no ha podido ser comprobada.")
+
+                            
 
                             );
                         });

@@ -1,18 +1,23 @@
-﻿@page "/counter"
+﻿@page "/home"
+@using Microsoft.IdentityModel.JsonWebTokens
+@layout MainLayout
 
-<PageTitle>Counter</PageTitle>
+<AuthorizeView>
+    <Authorized>
 
-<h1>Counter</h1>
+        
+        <h1>Si ves esto, estas autorizado como @context.User.FindFirst( JwtRegisteredClaimNames.Nickname) y el login funciona!</h1>
 
-<p role="status">Current count: @currentCount</p>
+    </Authorized>
+</AuthorizeView>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<LumexButton OnClick="@CloseSession">Cerrar sesion</LumexButton>
 
-@code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+@functions{
+
+    public async Task CloseSession()
     {
-        currentCount++;
+        await AuthStateProvider.UpdateAuthenticationStateAsync(null);
     }
 }

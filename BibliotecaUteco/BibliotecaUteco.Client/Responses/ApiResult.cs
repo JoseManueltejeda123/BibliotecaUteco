@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace BibliotecaUteco.Client.Responses;
 
@@ -7,9 +8,7 @@ namespace BibliotecaUteco.Client.Responses;
 
 public interface IApiResult
 {
-    public int StatusCode => (int)Status;
     public bool IsSuccess { get; set; } 
-    public string StatusCodeName => nameof(StatusCode);
     
     public List<string> Messages { get; set; }
     
@@ -19,23 +18,41 @@ public interface IApiResult
 }
 
 
-public class ApiResult<T>(
-    T? data,
-    HttpStatus status = HttpStatus.OK,
-    string message = "Ok",
-    List<string>? messages = null)
-    : IApiResult
+public class ApiResult<T> : IApiResult
 {
-    public T? Data { get; set; } = data;
+  
+    public T? Data { get; set; } = default;
+    public bool IsSuccess { get; set; } = false;
+    public List<string> Messages { get; set; } = new();
+    public HttpStatus Status { get; set; } = HttpStatus.BadRequest;
+
+    [JsonIgnore]
+    public int StatusCode => (int)Status;
 
     [MemberNotNullWhen(true, nameof(Data))]
     public bool IsSuccessful() => Data is not null && IsSuccess;
-    public bool IsSuccess { get; set; }
-    public List<string> Messages { get; set; } = messages ?? [message];
-    public HttpStatus Status { get; set; } = status;
+
+
+   
+    
+    public static ApiResult<T> BuildSuccess(T? data, HttpStatus status = HttpStatus.OK, string message = "Success",
+        List<string> messages = null) => new()
+    {
+        Status = status,
+        Messages = messages ?? [message],
+        IsSuccess = true,
+        Data = data
+    };
+    
+    public static ApiResult<T> BuildFailure(HttpStatus status = HttpStatus.BadRequest, string message = "Success",
+        List<string> messages = null) => new()
+    {
+        Status = status,
+        Messages = messages ?? [message],
+        IsSuccess = false,
+        Data = default
+    };
 }
-
-
 
 
 

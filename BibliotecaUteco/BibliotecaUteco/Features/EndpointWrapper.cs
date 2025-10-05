@@ -1,5 +1,4 @@
 using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.Utilities;
 
 namespace BibliotecaUteco.Features;
 
@@ -18,16 +17,15 @@ public class EndpointWrapper<TEndpoint>(ILogger<TEndpoint> logger) : IEndpointWr
         {
 
             logger.LogInformation($"La llamada al endpoint: {typeof(TEndpoint).Name} falló por que la request tiene campos inválidos");
-            return BuildResult(new ValidationApiResult("Hubo un problema de validacion",
-                ex.Errors));
+            return BuildResult(ApiResult<object>.BuildFailure(HttpStatus.UnprocessableEntity,"Peticion invalida", ex.Errors));
 
         }
         catch (Exception ex)
         {
             
             logger.LogInformation($"La llamada al endpoint: {typeof(TEndpoint).Name} falló: ${ex.InnerException?.Message ?? ex.Message}");
-            return BuildResult(new InternalServerErroApiResult(
-                $"Hubo un problema en el servidor: {ex.InnerException?.Message ?? ex.Message}"));
+            return BuildResult(ApiResult<object>.BuildFailure(HttpStatus.InternalServerError,"Error en el servidor"));
+
 
 
         }

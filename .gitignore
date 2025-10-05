@@ -1,0 +1,42 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.VC.opendb
+
+# Logs
+*.log
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Rider / JetBrains
+.idea/
+
+# macOS
+.DS_Store
+
+# Node (si usas React o JS en tu proyecto)
+node_modules/
+dist/
+
+# Others
+wwwroot/lib/
+.env

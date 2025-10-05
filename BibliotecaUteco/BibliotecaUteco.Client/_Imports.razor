@@ -7,4 +7,16 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using BibliotecaUteco.Client
+@using BibliotecaUteco.Client.Identity.Provider
 @using LumexUI
+@using Microsoft.AspNetCore.Components.Authorization
+@using BibliotecaUteco.Client.Layout
+@using BibliotecaUteco.Client.ServicesInterfaces
+@using LumexUI.Shared.Icons
+@using Blazor.Sonner
+@using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces
+
+@inject IUsersApiServices UsersApiServices
+@inject CustomAuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorageService

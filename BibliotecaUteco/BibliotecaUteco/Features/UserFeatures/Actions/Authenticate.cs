@@ -7,7 +7,6 @@ using BibliotecaUteco.DataAccess.Models;
 using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Identity;
 using BibliotecaUteco.Settings;
-using BibliotecaUteco.Utilities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OneOf;
@@ -65,9 +64,9 @@ internal class AuthenticateUserEndpoint : IEndpoint
             .DisableAntiforgery()
             .Accepts<AuthenticateUserCommand>(false, ApplicationContentTypes.ApplicationJson)
             .Produces<ApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-            .Produces<InternalServerErroApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(AuthenticateUserEndpoint))
             .WithDescription($"Revisa las credenciales de un usuario y emite un {nameof(IApiResult)} con un JWT");
@@ -85,18 +84,18 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context, J
         if (await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == hashedPassword)
                 is var user && user is null)
         {
-            return new NotFoundApiResult("Credenciales incorrectas");
+            return ApiResult<JwtResponse>.BuildFailure(HttpStatus.NotFound,"Credenciales incorrectas");
         }
 
         var token = jwtBuilder.GenerateToken(user.ToResponse());
 
         if (token is null)
         {
-            return new BadRequestApiResult("No pudimos crear el token. Intnta denuevo otra vez");
+            return ApiResult<JwtResponse>.BuildFailure(HttpStatus.BadRequest,"Credenciales incorrectas");
             
         }
 
-        return new ApiResult<JwtResponse>(token);
+        return  ApiResult<JwtResponse>.BuildSuccess(token);
 
     }
 }
