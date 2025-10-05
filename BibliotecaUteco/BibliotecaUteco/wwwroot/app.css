@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
-@import "../bin/lumexui/theme.css";
-@source "../bin/lumexui/*.cs"; /* styles */
+@import "../";
+@source "../bin/lumexui/*cs"; /* styles */
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+
 html, body {
     font-family: 'Geist', Helvetica, Arial, sans-serif;
     

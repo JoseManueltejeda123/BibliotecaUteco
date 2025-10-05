@@ -1,0 +1,23 @@
+@inherits LayoutComponentBase
+<Toaster />
+
+
+<main class="h-screen w-screen relative">
+        @Body
+</main>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = state.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo("/home");
+            return;
+        }
+    }
+
+}
