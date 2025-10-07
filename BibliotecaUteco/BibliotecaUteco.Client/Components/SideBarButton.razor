@@ -1,5 +1,46 @@
-<h3>SideBarButton</h3>
 
-@code {
+
+@if (IsExpanded)
+{
+    <button @onclick="TriggerOnClick" class="border-neutral-300 border sidebar-button w-full cursor-pointer rounded-lg  flex items-center justify-between px-3 py-2 hover:text-green-700 transition-all text-neutral-600  bg-neutral-300/40  hover:bg-green-300/70 hover:border-green-300">
+        <span class="text-[13px] font-semibold">@Name</span>
+
+        @Icon
+    </button>
+}
+else
+{
+    <IconButton TooltipText="@Name" OnClick="@HandleOnCLick">
+        @Icon
+    </IconButton>
+}
+
+
+@code{
+
+    [Parameter]    
+    public RenderFragment Icon {get; set;}
     
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public bool IsExpanded {get; set;} = true;
+    
+    [Parameter]
+    public EventCallback OnClick {get; set;}
+
+}
+
+@functions{
+
+    public async Task HandleOnCLick()
+    {
+        await TriggerOnClick();
+    }
+
+    public async Task TriggerOnClick()
+    {
+        await OnClick.InvokeAsync();
+    }
 }

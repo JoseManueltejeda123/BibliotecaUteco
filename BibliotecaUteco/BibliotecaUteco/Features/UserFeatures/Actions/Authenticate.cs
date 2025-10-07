@@ -81,10 +81,11 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context, J
     public async Task<IApiResult> HandleAsync(AuthenticateUserCommand request, CancellationToken cancellationToken = default)
     {
         var hashedPassword = request.Password.Hash();
+        
         if (await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == hashedPassword)
                 is var user && user is null)
         {
-            return ApiResult<JwtResponse>.BuildFailure(HttpStatus.NotFound,"Credenciales incorrectas");
+            return ApiResult<JwtResponse>.BuildFailure(HttpStatus.NotFound, "Credenciales incorrectas");
         }
 
         var token = jwtBuilder.GenerateToken(user.ToResponse());

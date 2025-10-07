@@ -58,6 +58,7 @@ public static class JwtDependencies
             );
            
         });
+        
         services
             .AddAuthentication(options =>
             {

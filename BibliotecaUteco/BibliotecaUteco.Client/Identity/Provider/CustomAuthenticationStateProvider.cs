@@ -31,7 +31,7 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
             return new AuthenticationState(_anonymous);
         }
 
-        var identity = new ClaimsIdentity(deserializedToken.Claims, "Bearer");
+        var identity = new ClaimsIdentity(deserializedToken.Claims, "Bearer", "nickname", "role");
         var user = new ClaimsPrincipal(identity);
 
         return new AuthenticationState(user);

@@ -12,7 +12,6 @@ public class UserResponse : BaseResponse
 
     public string ProfilePictureUrl { get; set; } = "";
 
-
     public int RoleId { get; set; } = 0;
     
 }

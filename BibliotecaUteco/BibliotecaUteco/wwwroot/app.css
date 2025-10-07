@@ -11,10 +11,24 @@ html, body {
     
 }
 
+.icon-button{
+    
+    svg{
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
+
+.sidebar-button{
+    svg{
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
 
 :root, .light {
     
-    --lumex-primary: var(--color-zinc-900);
+    --lumex-primary: var(--color-green-700);
     
 }
 #blazor-error-ui {

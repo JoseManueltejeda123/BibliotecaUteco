@@ -1,0 +1,55 @@
+﻿@page "/home"
+
+<div class="flex flex-col w-full mt-[20px] gap-4 px-4">
+
+    <h2 class="text-3xl font-semibold">Libros</h2>
+
+    <div class="flex w-full gap-2 items-center">
+        <LumexTextbox Type="@InputType.Search"
+                        Label="Buscar libro"
+                        Placeholder="Ej. Canción de hielo y fuego"
+                        LabelPlacement="@LabelPlacement.Outside"
+                        Description="Usa los filtros de abajo para filtrar por libro o autor"/>
+        <IconButton TooltipText="Buscar libro">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </IconButton>
+    </div>
+
+    <div class="mb-3">
+        <LumexChip @onclick='()=>{SetFilterBy("name");}' Variant="@(FilterBy == "name" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
+        <LumexChip @onclick='()=>{SetFilterBy("author");}' Variant="@(FilterBy == "author" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Autor</LumexChip>
+        <LumexChip @onclick='()=>{SetFilterBy("genre");}' Variant="@(FilterBy == "genre" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Género</LumexChip>
+
+    </div>
+      
+    <div class="grid grid-cols-2 sm:grid-cols-6 gap-7">
+        <button class="border-dotted border-2 border-green-600 aspect-[2/3] w-full rounded-xl hover:bg-green-100/30 transition-all flex flex-col justify-center items-center gap-2 cursor-pointer ">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide text-green-700 lucide-book-plus-icon lucide-book-plus"><path d="M12 7v6"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M9 10h6"/></svg>
+             <p class="text-xs text-green-700">Agregar Libro</p>
+        </button>
+        <BookCard/>
+        
+    </div>
+
+   
+</div>
+
+@code{
+    public string FilterBy {get; set;} = "name";
+
+}
+
+@functions{
+
+    public async Task CloseSession()
+    {
+        await AuthStateProvider.UpdateAuthenticationStateAsync(null);
+    }
+
+    public void SetFilterBy(string filter){
+        FilterBy = filter;
+    }
+
+
+}
+

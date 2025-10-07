@@ -1,5 +1,16 @@
-<h3>SidebarSectionDivider</h3>
+<div class="flex w-full gap-2 items-center py-2 ">
+    
+    @if (IsExpanded)
+    {
+        <span class="text-xs text-nowrap opacity-60">@Name</span>
+
+    }
+    <hr class="w-full border border-neutral-300 rounded-full"/>
+
+</div>
 
 @code {
-    <
+    [Parameter] public string Name { get; set; } = "";
+
+    [Parameter] public bool IsExpanded { get; set; } = true;
 }

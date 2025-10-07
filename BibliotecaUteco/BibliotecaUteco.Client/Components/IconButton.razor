@@ -1,5 +1,33 @@
-<h3>IconButton</h3>
+<LumexTooltip id="@TooltipText"   ShowArrow="true" Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
+    <button @onclick="@TriggerOnClick" class=@($"icon-button border border-neutral-300 backdrop-blur-md hover:text-green-600 transition-all text-neutral-600 bg-neutral-300/50 p-2 rounded-full cursor-pointer {@Class}") >
+        @ChildContent
+    </button>
+    
+</LumexTooltip>
+
+
 
 @code {
     
+    [Parameter]
+    public RenderFragment ChildContent {get; set;}
+
+    [Parameter] public string TooltipText { get; set; } 
+    
+    [Parameter]
+    public EventCallback OnClick { get; set; } 
+    
+    [Parameter]
+    public string Class {get; set;}
+}
+
+@functions{
+
+    public async Task TriggerOnClick()
+    {
+        await OnClick.InvokeAsync();
+    }
+
+   
+
 }
