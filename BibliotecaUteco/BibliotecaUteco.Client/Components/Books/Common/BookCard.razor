@@ -1,17 +1,41 @@
 <LumexCard Class="w-fit h-full group hover:scale-105 transition-all cursor-pointer">
    
-    <img src="https://tse2.mm.bing.net/th/id/OIP.Ky7O3RyEsghZYUDSEH-biQHaLT?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3"
+    <img src="@Cover"
          class="object-cover brightness-75 aspect-[2/3]"
          width="300"
          alt="Card background" />
     <LumexCardFooter Blurred="@true"
                      Class="absolute z-10 bottom-0 bg-orange-100/30">
         <div class="flex flex-col flex-grow gap-1 text-small text-zinc-50">
-            <p class="font-semibold line-clamp-1">Cancion de Hielo y Fuego</p>
-            <p class="font-medium line-clamp-1 text-xs">George R. R. Martin</p>
+            <p class="font-semibold line-clamp-1">@Name</p>
+            <p class="font-medium line-clamp-1 text-xs">@Author</p>
 
-            <p class="text-green-500 ">+10 en stock</p> <span class="hidden group-hover:block underline">Ver detalles</span>
+            @if(HasStock)
+            {
+                <p class="text-green-500 ">+10 en stock</p>
+            }else{
+
+                <p class="text-red-500 ">No hay stock</p>
+
+            } 
+            <span class=" text-xs hidden group-hover:block underline">Ver detalles</span>
         </div>
       
     </LumexCardFooter>
 </LumexCard>
+
+@code{
+
+    [Parameter]
+    public string Cover {get; set;} = "";
+
+
+    [Parameter]
+    public string Author {get; set;} = "";
+
+    [Parameter]
+    public string Name {get; set;} = "";
+
+    [Parameter]
+    public bool HasStock {get; set;} = true;
+}

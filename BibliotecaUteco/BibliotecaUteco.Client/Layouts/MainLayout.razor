@@ -6,7 +6,7 @@
 </AuthorizeView>
 
 
-<div class="relative flex w-screen h-screen">
+<div class="relative flex w-full h-screen">
     <SideBar OnSideBarExpandedChanged="(e)=> SideBarExpanded = e" SideBarExpanded="SideBarExpanded"/>
     <main class=@($"flex-1 ml-[250px] max-md:ml-[75px]  {(!SideBarExpanded ? " !ml-[75px] " : "" )}")>
        
