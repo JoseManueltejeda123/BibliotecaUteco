@@ -19,6 +19,14 @@ html, body {
     }
 }
 
+.icon-button-sm{
+    
+    svg{
+        width: 14px !important;
+        height: 14px !important;
+    }
+}
+
 .sidebar-button{
     svg{
         width: 20px !important;

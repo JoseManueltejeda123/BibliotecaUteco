@@ -1,0 +1,95 @@
+@using BibliotecaUteco.Client.Responses
+<div class="flex flex-col py-2 gap-4 w-[250px] max-h-[500px] overflow-y-auto ">
+    <h3 class="text-lg font-semibold">Autores</h3>
+    <div class="flex w-full gap-2 items-end">
+
+        <EditForm class="w-full flex items-end gap-2" Model="@GetAuthorsByName" OnValidSubmit="FetchGetAuthorsByNameAsync">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <LumexTextbox Type="@InputType.Search"
+                            Label="Buscar autor"
+                            @bind-Value="@GetAuthorsByName.AuthorsName"
+                            Placeholder="Ej. George R. R. Martin"
+                            LabelPlacement="@LabelPlacement.Outside"
+                            Disabled="@_fetchingAuthors"
+                            Clearable="@true"
+                            Behavior="InputBehavior.OnInput"
+                            OnCleared="async()=>{await FetchGetAuthorsByNameAsync();}"
+            />
+            <IconButton TooltipText="Buscar Autor" Disabled="@_fetchingAuthors" Type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-search-icon lucide-user-round-search"><circle cx="10" cy="8" r="5"/><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="18" cy="18" r="3"/><path d="m22 22-1.9-1.9"/></svg>        
+            </IconButton>
+        </EditForm>
+        
+    </div>
+    <hr class="w-full border border-neutral-300 rounded-full"/>
+
+    <button disabled="@_fetchingAuthors" class="w-full  hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-2 items-center justify-center gap-3">
+        <p class="text-sm text-green-600">Crear Autor</p>
+
+    </button>
+
+
+    @if(_fetchingAuthors){
+
+        <AuthorCardSkeleton Count="3"/>
+    }
+    else
+    {
+        if(Authors.Any())
+        {
+            foreach(var author in Authors)
+            {
+                <hr class="w-full border border-neutral-300 rounded-full"/>
+                <AuthorCard/>
+            }
+        }
+        else
+        {
+            <p class="text-center">No encontramos autores</p>
+        }
+
+       
+    }
+
+</div>
+
+
+@code{
+
+    //flags
+
+    public bool _fetchingAuthors {get; set;} = true;
+
+    //props
+    public List<AuthorResponse> Authors {get; set;} = new();
+    public GetAuthorsByNameRequest GetAuthorsByName {get; set;} = new();
+}
+
+@functions{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await FetchGetAuthorsByNameAsync();
+
+        }
+
+    }
+   
+    public async Task FetchGetAuthorsByNameAsync(){
+
+        _fetchingAuthors = true;
+        StateHasChanged();
+
+        var result = await AuthorsApiServices.GetByNameAsync(GetAuthorsByName);
+
+        if(result.IsSuccessful())
+        {
+            Authors = result.Data;
+        }
+
+        _fetchingAuthors = false;
+        StateHasChanged();
+    }
+}

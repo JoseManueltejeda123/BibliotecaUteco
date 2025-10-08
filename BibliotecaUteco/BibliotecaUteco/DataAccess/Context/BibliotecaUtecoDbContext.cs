@@ -81,7 +81,8 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
         {
             x.HasMany(u => u.Books).WithOne(r => r.Author).HasForeignKey(u => u.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
-           
+
+            x.HasIndex(a => a.NormalizedFullName).IsUnique(true);
         });
         
       

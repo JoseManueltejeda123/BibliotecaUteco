@@ -29,14 +29,15 @@ public class BibliotecaHttpClient (
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
     }
-
+    
+   
     private async Task<ApiResult<TResult>> ProcessResult<TResult>(HttpResponseMessage response)
     {
         try
         {
             var apiResult = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
-          
-        
+
+
             if (apiResult == null)
             {
                 toast.Show("Oops", new ToastModel()
@@ -44,58 +45,58 @@ public class BibliotecaHttpClient (
                     Description = "Hubo un problema. Intenta mas luego",
                     Title = "Oops!",
                     Type = ToastType.Error
-                    
+
                 });
-                return ApiResult<TResult>.BuildFailure(   
+                return ApiResult<TResult>.BuildFailure(
                     HttpStatus.BadRequest,
                     "Hubo un problema al deserializar la respuesta"
-                   
+
                 );
             }
 
-            if (apiResult.Status != HttpStatus.OK)
+            if (!response.IsSuccessStatusCode)
             {
-                foreach(var message in apiResult.Messages)
+                foreach (var message in apiResult.Messages)
                 {
                     toast.Show("Error", new ToastModel()
                     {
                         Description = message,
                         Title = "Error",
                         Type = ToastType.Error
-                    
+
                     });
                 }
-              
+
             }
 
             if (apiResult.Status == HttpStatus.Unauthorized)
             {
-               
-                await authState.UpdateAuthenticationStateAsync(null); 
+
+                await authState.UpdateAuthenticationStateAsync(null);
             }
 
             return apiResult;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             toast.Show("Oops", new ToastModel()
             {
                 Description = ex.InnerException?.Message ?? ex.Message,
                 Title = "Oops!",
                 Type = ToastType.Error,
-                
-                    
+
+
             });
-            return  ApiResult<TResult>.BuildFailure(HttpStatus.BadRequest, "Tuvimos un problema. Intentalo mas tarde");
+            return ApiResult<TResult>.BuildFailure(HttpStatus.BadRequest, "Tuvimos un problema. Intentalo mas tarde");
         }
-      
+
     }
 
     public async Task<ApiResult<TResult>> FetchGetAsync<TResult>(string route)
     {
-        await AttachTokenAsync();
 
-        var response = await client.GetAsync(Prefix + route);
+        await AttachTokenAsync();
+        var response =  await client.GetAsync(Prefix + route);
         return await ProcessResult<TResult>(response);
 
     }
@@ -121,7 +122,7 @@ public class BibliotecaHttpClient (
     public async Task<ApiResult<TResult>> FetchDeleteAsync<TResult>(string route)
     {
         await AttachTokenAsync();
-        var response = await client.DeleteAsync(Prefix + route);
+        var response = await client.DeleteAsync(Prefix + route );
        
         return await ProcessResult<TResult>(response);
     }

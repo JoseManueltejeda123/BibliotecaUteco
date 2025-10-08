@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using BibliotecaUteco.Client.Requests.Authors.Queries;
+using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.ServicesInterfaces.ApiServices;
+using BibliotecaUteco.Client.Utilities;
+
+namespace BibliotecaUteco.Client.Services.ApiServices
+{
+
+    public class AuthorsApiServices(BibliotecaHttpClient client) : IAuthorsApiServices
+    {
+
+        private const string AuthorsEndpoint = "/authors";
+
+        public async Task<ApiResult<List<AuthorResponse>>> GetByNameAsync(GetAuthorsByNameRequest request)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["authorsName"] = request.AuthorsName;
+            string queryString = query.ToString();
+            return await client.FetchGetAsync<List<AuthorResponse>>(AuthorsEndpoint + $"/get-by-name?{queryString}");
+
+
+        }
+
+    }
+}

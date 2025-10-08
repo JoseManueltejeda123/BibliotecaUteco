@@ -1,5 +1,5 @@
-<LumexTooltip id="@TooltipText"   ShowArrow="true" Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
-    <button @onclick="@TriggerOnClick" class=@($"icon-button border border-neutral-300 backdrop-blur-md hover:text-green-600 transition-all text-neutral-600 bg-neutral-300/50 p-2 rounded-full cursor-pointer {@Class}") >
+<LumexTooltip  ShowArrow="true" Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
+    <button diabled="@Disabled" type="@Type" id="@TooltipText"  @onclick="@TriggerOnClick" class=@($"{(Small ? "icon-button-sm" : "icon-button")} border border-neutral-300 backdrop-blur-md {HoverColor} transition-all text-neutral-600 bg-neutral-300/50 {(Small ? "p-1" : "p-2") } rounded-full cursor-pointer {@Class}") >
         @ChildContent
     </button>
     
@@ -12,13 +12,25 @@
     [Parameter]
     public RenderFragment ChildContent {get; set;}
 
-    [Parameter] public string TooltipText { get; set; } 
+    [Parameter]
+    public string Type {get; set;} = "button";
+
+    [Parameter]
+    public bool Disabled {get; set;} = false;
+
+    [Parameter] public string TooltipText { get; set; } = "button";
     
     [Parameter]
     public EventCallback OnClick { get; set; } 
     
     [Parameter]
-    public string Class {get; set;}
+    public string Class {get; set;} = "";
+
+    [Parameter]
+    public string HoverColor {get; set;} = "hover:text-green-600";
+
+    [Parameter]
+    public bool Small {get; set;} = false;
 }
 
 @functions{

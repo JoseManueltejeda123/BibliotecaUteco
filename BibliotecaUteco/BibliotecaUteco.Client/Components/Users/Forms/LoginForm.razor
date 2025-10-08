@@ -11,6 +11,7 @@
                         @bind-Value="@AuthenticateUserRequest.Username"
                         Label="Tu nombre de usuario"
                         Placeholder="Ej. juan.123"
+                        
                         LabelPlacement="@LabelPlacement.Outside"
                         EndContent="@_userIcon"
                         Required="true"
@@ -84,7 +85,7 @@
         if (result.IsSuccess && result.Data is not null)
         {
             await AuthStateProvider.UpdateAuthenticationStateAsync(result.Data.Token, RemindMe);
-            NavManager.NavigateTo("/home");
+            NavManager.NavigateTo("/books");
             
         }
         _logingIn = false;

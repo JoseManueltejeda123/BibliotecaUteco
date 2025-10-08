@@ -1,5 +1,4 @@
 using BibliotecaUteco;
-using BibliotecaUteco.Client.Pages;
 using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Components;
 using BibliotecaUteco.DataAccess.Context;
@@ -31,6 +30,7 @@ builder.Services.AddCors(options =>
             policy
                 .WithOrigins(CorsAllowedDomains.DefaultDomain)
                 .AllowAnyMethod()
+                .AllowAnyHeader()
                 .AllowCredentials();
         }
     );
