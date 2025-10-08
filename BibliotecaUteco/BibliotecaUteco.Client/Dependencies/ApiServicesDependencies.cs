@@ -1,6 +1,5 @@
 using BibliotecaUteco.Client.Services.ApiServices;
 using BibliotecaUteco.Client.ServicesInterfaces;
-using BibliotecaUteco.Client.ServicesInterfaces.ApiServices;
 using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 namespace BibliotecaUteco.Client.Dependencies;

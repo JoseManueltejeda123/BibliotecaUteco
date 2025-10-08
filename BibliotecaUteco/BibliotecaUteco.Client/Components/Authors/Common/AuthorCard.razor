@@ -1,12 +1,20 @@
 <div class="w-full border border-neutral-300 rounded-lg flex px-3 py-2 items-center justify-between gap-3">
     <div class="flex flex-col">
-        <p class="text-sm font-semibold">George R. R. Martin</p>
-        <label class="opacity-80 text-xs">+10 libros registrados</label>
+        <p class="text-sm font-semibold line-clamp-1 text-ellipsis overflow-hidden">@Author.FullName</p>
+        
+        
+        <label class="opacity-80 text-xs line-clamp-1 text-ellipsis overflow-hidden">@Author.BooksCount libros registrados</label>
     </div>
    
-   <IconButton TooltipText="Opciones de autor"  Small="@true">
+    <IconButton TooltipText="Opciones de autor"  Small="@true">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-ellipsis-icon lucide-circle-ellipsis"><circle cx="12" cy="12" r="10"/><path d="M17 12h.01"/><path d="M12 12h.01"/><path d="M7 12h.01"/></svg>   
     </IconButton>
 
 
 </div>
+
+@code{
+
+    [Parameter] public AuthorResponse Author { get; set; } = new();
+
+}

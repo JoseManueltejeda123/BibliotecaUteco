@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Features.AuthorFeatures.Actions;
 
 namespace BibliotecaUteco.DataAccess.Models;
 
@@ -23,6 +24,13 @@ public class Author : BaseEntity
         Id = Id,
         UpdatedAt = UpdatedAt,
         CreatedAt = CreatedAt,
-        BooksCount = BooksCount
+        BooksCount = BooksCount,
+        FullName = FullName
+    };
+
+    public static Author Create(CreateAuthorCommand command) => new()
+    {
+        FullName = command.FullName.Trim(),
+        NormalizedFullName = command.FullName.ToLower().Normalize().Trim()
     };
 }

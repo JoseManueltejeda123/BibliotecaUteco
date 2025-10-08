@@ -1,7 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using BibliotecaUteco.Client.Services.ApiServices
-@using BibliotecaUteco.Client.ServicesInterfaces.ApiServices
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -27,9 +26,15 @@
 
 @using BibliotecaUteco.Client.Components.Authors.Views
 @using BibliotecaUteco.Client.Requests.Authors.Queries
+@using BibliotecaUteco.Client.Components.Authors.Forms
 
+@using BibliotecaUteco.Client.Requests.Authors.Actions
 @using Microsoft.AspNetCore.Authorization
+@using BibliotecaUteco.Client.Responses
+
 @using Microsoft.IdentityModel.JsonWebTokens
+
+
 @inject IUsersApiServices UsersApiServices
 @inject CustomAuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager
