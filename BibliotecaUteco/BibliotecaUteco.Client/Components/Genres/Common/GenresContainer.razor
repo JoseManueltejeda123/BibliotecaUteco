@@ -1,0 +1,129 @@
+
+<div class="flex flex-col p-2 gap-2 w-[300px] max-h-[400px] overflow-y-auto ">
+    
+    @if (ShowCreateGenreModal)
+    {
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="w-full flex items-center justify-between mb-4">
+                    <label class="text-lg font-semibold">Crear Género</label>
+                    <IconButton Small="true" OnClick="() => { ShowCreateGenreModal = false; }" TooltipText="Cancelar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </IconButton>
+                </div>
+                <CreateGenreForm OnGenreCreated="HandleOnGenreCreated"/>
+            </Authorized>
+        </AuthorizeView>
+        
+        
+        
+    }
+    else
+    {
+        <div class="flex w-full gap-2 items-end">
+
+        <EditForm class="w-full flex items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <LumexTextbox Type="@InputType.Search"
+                            Label="Buscar género"
+                            @bind-Value="@GetGenresByName.GenreName"
+                            Placeholder="Ej. Fantasia"
+                            LabelPlacement="@LabelPlacement.Outside"
+                            Disabled="@_fetchingGenres"
+                            Clearable="@true"
+                            Behavior="InputBehavior.OnInput"
+                            OnCleared="async()=>{await FetchGetGenresByNameAsync();}"
+            />
+            <IconButton TooltipText="Buscar Género" Disabled="@_fetchingGenres" Type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-search-icon lucide-user-round-search"><circle cx="10" cy="8" r="5"/><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="18" cy="18" r="3"/><path d="m22 22-1.9-1.9"/></svg>        
+            </IconButton>
+        </EditForm>
+        
+    </div>
+    <SidebarSectionDivider Name="Géneros"/>
+
+     <AuthorizeView Roles="Admin">
+        <Authorized>
+             <button @onclick="() => {ShowCreateGenreModal = true; }" disabled="@_fetchingGenres" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-2 items-center justify-center gap-3 cursor-pointer">
+                <p class="text-sm text-green-600">Crear Género</p>
+            </button>
+        </Authorized>
+     </AuthorizeView>
+   
+
+
+    @if(_fetchingGenres){
+
+        <GenreSkeleton Count="3"/>
+    }
+    else
+    {
+        if(Genres.Any())
+        {
+            foreach(var genre in Genres)
+            {
+                <GenreCard Genre="genre"/>
+            }
+        }
+        else
+        {   
+            <NoResultsFound></NoResultsFound>
+        }
+
+       
+    }
+    }
+    
+    
+
+</div>
+
+
+@code{
+
+    //flags
+
+    public bool _fetchingGenres {get; set;} = true;
+
+    //props
+    public List<GenreResponse> Genres {get; set;} = new();
+    public GetGenresByNameRequest GetGenresByName {get; set;} = new();
+
+    public bool ShowCreateGenreModal { get; set; } = false;
+}
+
+@functions{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await FetchGetGenresByNameAsync();
+
+        }
+
+    }
+
+    public void HandleOnGenreCreated(GenreResponse author)
+    {
+        ShowCreateGenreModal = false;
+        Genres.Insert(0, author);
+    }
+
+    public async Task FetchGetGenresByNameAsync(){
+
+        _fetchingGenres = true;
+        StateHasChanged();
+
+        var result = await GenresApiServices.GetByNameAsync(GetGenresByName);
+
+        if(result.IsSuccessful())
+        {
+            Genres = result.Data;
+        }
+
+        _fetchingGenres = false;
+        StateHasChanged();
+    }
+}

@@ -1,4 +1,5 @@
 using BibliotecaUteco.Client.Services.ApiServices;
+using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
 using BibliotecaUteco.Client.ServicesInterfaces;
 using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
@@ -10,6 +11,8 @@ public static class ApiServicesDependencies
     {
         services.AddScoped<IUsersApiServices, UsersApiServices>();
         services.AddScoped<IAuthorsApiServices, AuthorsApiServices>();
+        services.AddScoped<IGenresApiSevices, GenresApiSevices>();
+
         return services;
     }
 }

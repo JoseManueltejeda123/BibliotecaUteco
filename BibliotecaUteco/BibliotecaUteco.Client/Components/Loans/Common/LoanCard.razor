@@ -1,0 +1,61 @@
+<div class="border text-neutral-900 flex-wrap border-neutral-200 bg-neutral-50 hover:bg-neutral-100 w-full rounded-lg flex justify-between p-3 items-start gap-3">
+            <div class="  rounded-lg gap-2 flex flex-col ">
+              <label class="text-[16px] text-black font-semibold">Préstamo para Adriana Mendez</label>
+
+                <div class="flex w-full items-center gap-2">
+                 <label class="text-xs font-normal">Matrícula: 2020-1010</label>
+                    <div class="border rounded-full border-neutral-300 h-[10px] " />
+                    <label class="text-xs font-normal">Cédula: ---</label>
+                    <div class="border rounded-full border-neutral-300 h-[10px] " />
+                    <label class="text-xs font-normal">Libros: 7</label>
+
+                </div>
+               
+
+                <span class="font-semibold text-sm mt-2 inconsolata">Desde <span class="bg-neutral-950 text-white ">7 Oct 2025</span> al <span class="bg-black text-white inconsolata">14 Oct 2025</span> </span>
+                @if(!IsPending){
+                    <span class="font-semibold text-sm mt-2 inconsolata">Entregado el <span class="bg-black text-white ">11 Oct 2025</span> </span>
+
+                }
+
+               
+
+                
+
+                
+
+            </div>
+            <div class="max-md:w-full flex items-center gap-2">
+            
+                    @if(!IsPending)
+                    {
+                        <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Primary" StartContent="@_checkIcon">Entregado</LumexChip>
+                        
+                    }
+                    else
+                    {
+                        @if(IsExceeded)
+                        {
+                            <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Danger" StartContent="@_warningIcon">Execedido por 10 dias</LumexChip>
+
+                        }
+                        <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Info" StartContent="@_clockIcon">Pendiente</LumexChip>
+                        <IconButton TooltipText="Marcar como entregado"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-line-icon lucide-check-line"><path d="M20 4L9 15"/><path d="M21 19L3 19"/><path d="M9 15L4 10"/></svg></IconButton>
+                    }
+                </div>
+
+          
+</div>
+
+
+@code{
+    public RenderFragment _checkIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-check-icon lucide-check-check"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>;
+    public RenderFragment _clockIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>;
+    public RenderFragment _warningIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>;
+    [Parameter]
+    public bool IsPending {get; set;} = false;
+
+    [Parameter]
+    public bool IsExceeded {get; set;} = false;
+
+}

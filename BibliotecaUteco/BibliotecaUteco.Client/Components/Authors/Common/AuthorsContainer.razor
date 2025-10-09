@@ -1,15 +1,20 @@
 @using BibliotecaUteco.Client.Responses
-<div class="flex flex-col p-2 gap-4 w-[300px] max-h-[500px] overflow-y-auto ">
+<div class="flex flex-col p-2 gap-2 w-[300px] max-h-[500px] overflow-y-auto ">
     
     @if (ShowCreateAuthorModal)
     {
-        <div class="w-full flex items-center justify-between mb-4">
-            <label class="text-lg font-semibold">Crear Autor</label>
-            <IconButton Small="true" OnClick="() => { ShowCreateAuthorModal = false; }" TooltipText="Cancelar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </IconButton>
-        </div>
-        <CreateAuthorForm OnAuthorCreated="HandleOnAuthorCreated"/>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+             <div class="w-full flex items-center justify-between mb-4">
+                    <label class="text-lg font-semibold">Crear Autor</label>
+                    <IconButton Small="true" OnClick="() => { ShowCreateAuthorModal = false; }" TooltipText="Cancelar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </IconButton>
+                </div>
+                <CreateAuthorForm OnAuthorCreated="HandleOnAuthorCreated"/>
+            </Authorized>
+        </AuthorizeView>
+       
         
     }
     else
@@ -35,10 +40,16 @@
         
     </div>
     <SidebarSectionDivider Name="Autores"/>
-    <button @onclick="() => {ShowCreateAuthorModal = true; }" disabled="@_fetchingAuthors" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-2 items-center justify-center gap-3 cursor-pointer">
-        <p class="text-sm text-green-600">Crear Autor</p>
 
-    </button>
+     <AuthorizeView Roles="Admin">
+        <Authorized>
+            <button @onclick="() => {ShowCreateAuthorModal = true; }" disabled="@_fetchingAuthors" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-2 items-center justify-center gap-3 cursor-pointer">
+                <p class="text-sm text-green-600">Crear Autor</p>
+
+            </button>
+        </Authorized>
+    </AuthorizeView>
+   
 
 
     @if(_fetchingAuthors){

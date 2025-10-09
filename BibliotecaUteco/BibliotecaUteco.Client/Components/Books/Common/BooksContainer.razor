@@ -1,9 +1,4 @@
-<div class="mb-3">
-    <LumexChip  @onclick='()=>{SetFilterBy("name");}' Variant="@(FilterBy == "name" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
-    <LumexChip @onclick='()=>{SetFilterBy("author");}' Variant="@(FilterBy == "author" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Autor</LumexChip>
-    <LumexChip @onclick='()=>{SetFilterBy("genre");}' Variant="@(FilterBy == "genre" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Género</LumexChip>
 
-</div>
     
 <div class="grid max-sm:grid-cols-2 max-md:grid-cols-3 grid-cols-6 gap-7">
     <button class="border-dotted border-[4px] border-green-600 aspect-[2/3] w-full rounded-xl hover:bg-green-100/30 transition-all flex flex-col justify-center items-center gap-2 cursor-pointer ">
@@ -14,15 +9,3 @@
     <BookCard Name="Fuego & Sangre" Author="George R. R. Martin" Cover="https://edicioneshispanicas.com/wp-content/uploads/31270904229.jpg" HasStock="@false"/>
 
 </div>
-
-@code{
-    public string FilterBy {get; set;} = "name";
-
-}
-
-@functions{
-    public void SetFilterBy(string filter){
-        FilterBy = filter;
-    }
-
-}

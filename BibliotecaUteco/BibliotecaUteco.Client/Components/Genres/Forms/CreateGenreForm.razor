@@ -1,0 +1,68 @@
+@using BibliotecaUteco.Client.Responses
+<EditForm Model="CreateGenreModel" class="w-full flex-col flex gap-2" OnValidSubmit="FetchCreatGenreAsync">
+    <DataAnnotationsValidator/>
+
+    <div class="flex flex-col gap-3">
+        <LumexTextbox Type="@InputType.Text"
+                      @bind-Value="@CreateGenreModel.Name"
+                      Label="Nombre del género literario"
+                      Placeholder="Ej. Misterio"
+                      
+                      LabelPlacement="@LabelPlacement.Outside"
+                      Required="true"
+                      Disabled="_creatingGenre"/>
+        <span class=" text-red-700"><ValidationMessage For="@(() => CreateGenreModel.Name)"/></span>
+        
+    </div>
+    
+
+    @if (_creatingGenre)
+    {
+        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"></LumexSpinner>
+    }
+    else
+    {
+        <LumexButton Class="w-full"  Disabled="_creatingGenre" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear género</LumexButton>
+
+    }
+</EditForm>
+
+@code{
+
+    //flags
+
+    public bool _creatingGenre { get; set; } = false;
+    
+    public CreateGenreRequest CreateGenreModel { get; set; } = new();
+    
+    [Parameter]
+    public EventCallback<GenreResponse> OnGenreCreated { get; set; }
+
+}
+
+
+@functions{
+
+
+    public async Task FetchCreatGenreAsync()
+    {
+        _creatingGenre = true;
+        StateHasChanged();
+
+        var result = await GenresApiServices.CreateAsync(CreateGenreModel);
+        _creatingGenre = false;
+        StateHasChanged();
+        if (result.IsSuccessful())
+        {
+            
+            await TriggerOnGenreCreated(result.Data);
+        }
+        
+    }
+
+    public async Task TriggerOnGenreCreated(GenreResponse author)
+    {
+        await OnGenreCreated.InvokeAsync(author);
+    }
+
+}

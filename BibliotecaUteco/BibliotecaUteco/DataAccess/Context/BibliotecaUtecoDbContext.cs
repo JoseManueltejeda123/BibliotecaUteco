@@ -110,7 +110,77 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
         modelBuilder.Entity<Genre>(x =>
         {
             x.HasMany(g => g.Books).WithOne(gb => gb.Genre).HasForeignKey(ba => ba.GenreId).OnDelete(DeleteBehavior.Cascade);
+            x.HasData(new[]
+            {
+                new Genre()
+                {
+                    Id = 1,
+                    Name = "Fantasía",
+                    NormalizedName = "fantasia"
+                },
+                new Genre()
+                {
+                    Id = 2,
+                    Name = "Terror",
+                    NormalizedName = "terror"
+                },
+                new Genre()
+                {
+                    Id = 3,
+                    Name = "Ciencia Ficción",
+                    NormalizedName = "ciencia ficcion"
 
+                },
+                new Genre()
+                {
+                    Id = 4,
+                    Name = "Romance",
+                    NormalizedName = "romance"
+
+                },
+                new Genre()
+                {
+                    Id = 5,
+                    Name = "Misterio",
+                    NormalizedName = "misterio"
+
+                },
+                new Genre()
+                {
+                    Id = 6,
+                    Name = "Aventura",
+                    NormalizedName = "aventura"
+
+                },
+                new Genre()
+                {
+                    Id = 7,
+                    Name = "Histórico",
+                    NormalizedName = "historico"
+
+                },
+                new Genre()
+                {
+                    Id = 8,
+                    Name = "Biografía",
+                    NormalizedName = "biografia"
+
+                },
+                new Genre()
+                {
+                    Id = 9,
+                    Name = "Poesía",
+                    NormalizedName = "poesia"
+
+                },
+                new Genre()
+                {
+                    Id = 10,
+                    Name = "Drama",
+                    NormalizedName = "drama"
+
+                }
+            });
         });
         
         modelBuilder.Entity<GenreBook>(x =>
