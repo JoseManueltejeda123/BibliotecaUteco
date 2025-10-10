@@ -62,7 +62,7 @@
         {
             foreach(var author in Authors)
             {
-                <AuthorCard Author="author"/>
+                <AuthorCard OnRemove="HandleRemoveClicked" OnClicked="HandleAuthorClicked" Author="author"/>
             }
         }
         else
@@ -90,6 +90,13 @@
     public GetAuthorsByNameRequest GetAuthorsByName {get; set;} = new();
 
     public bool ShowCreateAuthorModal { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<AuthorResponse> OnAuthorClicked {get; set;}
+    [Parameter]
+    public EventCallback<AuthorResponse> OnAuthorRemoved {get; set;}
+
+    
 }
 
 @functions{
@@ -124,5 +131,15 @@
 
         _fetchingAuthors = false;
         StateHasChanged();
+    }
+
+    public async Task HandleAuthorClicked(AuthorResponse author){
+
+        await OnAuthorClicked.InvokeAsync(author);
+    }
+
+    public async Task HandleRemoveClicked(AuthorResponse author){
+
+        await OnAuthorRemoved.InvokeAsync(author);
     }
 }

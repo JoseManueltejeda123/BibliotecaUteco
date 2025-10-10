@@ -35,14 +35,25 @@
 @using BibliotecaUteco.Client.Requests.Genres.Actions
 @using BibliotecaUteco.Client.Components.Genres.Forms
 @using BibliotecaUteco.Client.Components.Genres.Common
+@using BibliotecaUteco.Client.Components.Books.Forms
+
 @using BibliotecaUteco.Client.Components.Genres.Skeletons
 @using BibliotecaUteco.Client.Components.Genres.Views
 @using BibliotecaUteco.Client.Requests.Genres.Queries
-@using BibliotecaUteco.Client.Responses
+@using BibliotecaUteco.Client.Requests.Books.Actions
+@using System.ComponentModel.DataAnnotations
+
 
 @using Microsoft.IdentityModel.JsonWebTokens
 @using BibliotecaUteco.Client.Components.Loans.Common
+@using BibliotecaUteco.Client.Stores
+@using Blazor.Sonner.Services
+@using Blazor.Sonner.Common
 
+
+@inject RightBarStore RightBarContext
+@inject  IJSRuntime JsRuntime
+@inject ToastService Toast
 @inject IUsersApiServices UsersApiServices
 @inject CustomAuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager

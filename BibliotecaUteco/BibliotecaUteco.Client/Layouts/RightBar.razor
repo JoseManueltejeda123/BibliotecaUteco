@@ -1,0 +1,32 @@
+@implements  IDisposable
+
+<aside class=@($"fixed max-md:z-50 border right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[300px] bg-white   flex flex-col items-center py-5 px-3 rounded-l-lg border-l border-neutral-300 gap-3")>
+    <div class="w-full flex justify-between font-semibold text-sm mb-[20px] items-center">
+        @(RightBarContext.View switch
+        {
+            
+            RightBarView.CreatingBook => "Registrar Libro",
+            _ => ""
+        })
+        <IconButton Small="@true" Class="" TooltipText="Cerrar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+
+        </IconButton>
+    </div>
+    
+    @if (RightBarContext.View == RightBarView.CreatingBook)
+    {
+        <CreateBookForm/>
+    }
+</aside>
+@code {
+    protected override void OnInitialized()
+    {
+        RightBarContext.OnViewChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        RightBarContext.OnViewChanged -= StateHasChanged;
+    }
+}

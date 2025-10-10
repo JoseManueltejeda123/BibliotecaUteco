@@ -21,7 +21,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         {
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["authorsName"] = request.AuthorsName;
-            string queryString = query.ToString();
+            string queryString = query?.ToString() ?? "";
             return await client.FetchGetAsync<List<AuthorResponse>>(AuthorsEndpoint + $"/get-by-name?{queryString}");
 
 

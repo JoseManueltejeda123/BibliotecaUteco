@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BibliotecaUteco.Client.Identity.Provider;
 
-public class CustomAuthenticationStateProvider(ILocalStorageService localStorageService, NavigationManager navManager) : AuthenticationStateProvider
+public class CustomAuthenticationStateProvider(ILocalStorageService localStorageService) : AuthenticationStateProvider
 {
   
     private readonly ClaimsPrincipal _anonymous = new(new ClaimsIdentity());

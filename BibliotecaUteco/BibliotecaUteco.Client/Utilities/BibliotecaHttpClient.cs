@@ -29,13 +29,27 @@ public class BibliotecaHttpClient (
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
     }
-    
-   
-    private async Task<ApiResult<TResult>> ProcessResult<TResult>(HttpResponseMessage response)
+
+
+    private async Task<ApiResult<TResult>> ProcessResult<TResult>(HttpResponseMessage response, bool isFormData = false)
     {
         try
         {
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
+            ApiResult<TResult>? apiResult = null;
+
+            if (isFormData)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+
+                if (stream is not null)
+                    apiResult = await JsonSerializer.DeserializeAsync<ApiResult<TResult>>(stream);
+            }
+            else
+            {
+                 apiResult = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
+
+            }
+            
 
 
             if (apiResult == null)

@@ -19,8 +19,14 @@
 <Routes @rendermode="@(new InteractiveWebAssemblyRenderMode(false))" />
 <script src="_content/LumexUI/js/LumexUI.js" type="module"></script>
 
-    <script src="_framework/blazor.web.js"></script>
+<script src="_framework/blazor.web.js"></script>
+
+<script>
     
+    window.triggerClick = (element) => {
+     if (element) element.click();
+    };
+</script>
 </body>
 
 </html>

@@ -63,7 +63,7 @@
         {
             foreach(var genre in Genres)
             {
-                <GenreCard Genre="genre"/>
+                <GenreCard OnClicked="HandleGenreClicked" Genre="genre"/>
             }
         }
         else
@@ -90,6 +90,7 @@
     public List<GenreResponse> Genres {get; set;} = new();
     public GetGenresByNameRequest GetGenresByName {get; set;} = new();
 
+    [Parameter] public EventCallback<GenreResponse> OnGenreClicked {get; set;}
     public bool ShowCreateGenreModal { get; set; } = false;
 }
 
@@ -103,6 +104,10 @@
 
         }
 
+    }
+
+    public async Task HandleGenreClicked(GenreResponse genre){
+         await OnGenreClicked.InvokeAsync(genre);
     }
 
     public void HandleOnGenreCreated(GenreResponse author)

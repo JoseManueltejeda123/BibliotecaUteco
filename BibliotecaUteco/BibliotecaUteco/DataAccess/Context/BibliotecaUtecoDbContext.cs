@@ -83,6 +83,8 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                 .OnDelete(DeleteBehavior.Cascade);
 
             x.HasIndex(a => a.NormalizedFullName).IsUnique(true);
+
+            
         });
         
       
@@ -94,6 +96,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
             x.HasMany(b => b.Loans).WithOne(l => l.Book).HasForeignKey(l => l.BookId).OnDelete(DeleteBehavior.Cascade);
             x.Navigation(b => b.Authors).AutoInclude(true);
             x.Navigation(b => b.Genres).AutoInclude(true);
+            x.HasIndex(b => b.NormalizedName).IsUnique(true);
 
         });
         
@@ -181,6 +184,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
 
                 }
             });
+            x.HasIndex(g => g.NormalizedName).IsUnique(true);
         });
         
         modelBuilder.Entity<GenreBook>(x =>

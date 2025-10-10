@@ -1,7 +1,10 @@
 <LumexTooltip  ShowArrow="true"  Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
-    <button diabled="@Disabled" type="@Type" id="@TooltipText"  @onclick="@TriggerOnClick" class=@($"{(Small ? "icon-button-sm" : "icon-button")} border border-neutral-300 backdrop-blur-md {HoverColor} transition-all text-neutral-600 bg-neutral-300/50 {(Small ? "p-1" : "p-2") } rounded-full cursor-pointer {@Class}") >
-        @ChildContent
-    </button>
+    <button diabled="@Disabled" type="@Type" id="@TooltipText"  @onclick="@TriggerOnClick" class=@($"{(Small ? "icon-button-sm" : "icon-button")} border border-neutral-300 backdrop-blur-md {HoverColor} transition-all text-neutral-600 bg-neutral-300/50 {(Small ? "p-1" : "p-2") } rounded-lg cursor-pointer {@Class}") >
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }    
+        </button>
     
 </LumexTooltip>
 
@@ -10,7 +13,7 @@
 @code {
     
     [Parameter]
-    public RenderFragment ChildContent {get; set;}
+    public RenderFragment? ChildContent {get; set;}
 
     [Parameter]
     public string Type {get; set;} = "button";

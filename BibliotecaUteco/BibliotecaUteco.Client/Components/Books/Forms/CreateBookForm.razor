@@ -1,0 +1,235 @@
+@using BibliotecaUteco.Client.Utilities
+@implements IDisposable
+
+<EditForm Model="CreateBookModel" class="w-full flex flex-col items-center gap-2">
+    <DataAnnotationsValidator/>
+    
+    
+    @if (string.IsNullOrEmpty(BookCoverPrview) || CreateBookModel.CoverFile is null)
+    {
+        <button type="button" @onclick="TriggerFileInput" class="hover:bg-green-50 cursor-pointer w-[60%] aspect-[2/3] rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+            <label class="text-sm text-green-700">Agregar portada</label>
+        </button>
+    }
+    else
+    {
+        <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@BookCoverPrview"/>
+
+    }
+        
+        @if(CreateBookModel.CoverFile is not null)
+        {
+            <LumexButton OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+        }
+    <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
+    <div class="flex flex-col gap-3 w-full mt-2" >
+        <LumexTextbox Type="@InputType.Text"
+                      Behavior="InputBehavior.OnInput"
+                      @bind-Value="@CreateBookModel.Name"
+                      Label="Nombre del libro"
+                      Placeholder="Ej. 100 años de soledad"
+                      EndContent="@_titleIcon"
+                      LabelPlacement="@LabelPlacement.Outside"
+                      Required="true"
+        />
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Name)"/></span>
+
+    </div>
+    <div class="flex flex-col gap-3 w-full">
+        <label for="book synopsis" class="text-sm">Sinopsis o descripción</label>
+        <textarea 
+                        class="bg-neutral-200/50 max-w-full rounded-lg p-2 text-sm outline-none resize-none  min-h-[6rem]"
+                        name="book synopsis"
+                        @bind="@CreateBookModel.Sinopsis"
+                        placeholder="Una breve descripcion de la historia o de que trata el libro"
+                        required="@true"
+                        maxlength="500"
+                        minlength="10"></textarea>
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Sinopsis)"/></span>
+
+    </div>
+    <div class="flex flex-col gap-3 w-full">
+        <LumexNumbox TValue="@int"
+                     Label="Copias"
+                     @bind-Value="CreateBookModel.Stock"
+                     Placeholder="Cantidad de copias"
+                     Class="max-w-xs"
+                     min="1"
+                     max="@int.MaxValue"
+                     step="1" />
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Stock)"/></span>
+
+    </div>
+    <SidebarSectionDivider Name="Generos literarios"/>
+    <div class="flex flex-col gap-3 w-full">
+        <p class="text-xs">Máximo 5 generos y literarios minimo 1.</p>
+
+
+        <div class="w-full gap-2 items-center flex flex-wrap">
+                    
+            @foreach (var genre in Genres)
+            {
+
+                <LumexChip  OnClose="() => { RemoveGenre(genre);}">@genre.Name</LumexChip>
+            }
+                    
+            @if (Genres.Count < 5)
+            {
+                <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
+                    <LumexChip Variant="ChipVariant.Outlined">Agregar Genero</LumexChip>
+                </GenresDropdown>
+            }
+                  
+        </div>
+        
+            
+       
+    </div>
+    <SidebarSectionDivider Name="Autores"/>
+
+    <div class="flex flex-col gap-3 w-full">
+        <p class="text-xs">Máximo 10 autores.</p>
+
+        <div class="w-full gap-2 items-center flex flex-wrap">
+                    
+            @foreach (var author in Authors)
+            {
+                
+                <AuthorCard OnRemove="RemoveAuthor" Author="@author" />
+            }
+                    
+            @if (Authors.Count < 10)
+            {
+                <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
+                    <button type="button"  class="hover:bg-green-50 cursor-pointer w-full rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2 p-2">
+                        <label class="text-sm text-green-700">Agregar Autor</label>
+                    </button>
+                </AuthorsDropdown>
+            }
+                  
+        </div>
+        
+            
+       
+    </div>
+    <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Submit" Color="ThemeColor.Primary" Disabled="!context.Validate()">Registrar Libro</LumexButton>
+
+
+</EditForm>
+
+    
+        
+       
+          
+                    
+            
+        
+        
+
+
+
+
+
+@code{
+
+
+    public bool _bookExist {get; set;} = true;
+    public RenderFragment _titleIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-300 lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>;
+    public CreateBookRequest CreateBookModel {get; set;} = new();
+
+    public List<AuthorResponse> Authors {get; set;} = new();
+
+    public List<GenreResponse> Genres {get; set;} = new();
+
+    public string CurrentFormSection {get; set;} = "name";
+
+    public bool IsOpen {get; set;} = false;
+    public string? BookCoverPrview { get; set; } = null;
+
+   
+    private InputFile fileInput;
+    
+
+}
+
+@functions{
+
+    public async Task HandleOnGenreSelected(GenreResponse genre){
+
+        if(Genres.Any(g => g.Id == genre.Id)){
+            return;
+        }
+        Genres.Insert(0, genre);
+    }
+
+    public void RemoveGenre(GenreResponse genre){
+        var remove = Genres.FirstOrDefault(g => g.Id == genre.Id);
+
+        if(remove is not null)
+        {
+            Genres.Remove(remove);
+        }
+    }
+
+     public async Task HandleOnAuthorSelected(AuthorResponse author){
+
+        if(Authors.Any(a => a.Id == author.Id)){
+            return;
+        }
+        Authors.Insert(0, author);
+    }
+
+    public void RemoveAuthor(AuthorResponse author){
+        var remove = Authors.FirstOrDefault(g => g.Id == author.Id);
+
+        if(remove is not null)
+        {
+            Authors.Remove(remove);
+        }
+    }
+
+
+    public async Task FetchGetBookByName(){
+        
+        _bookExist = false;
+        CurrentFormSection = "info";
+    }
+
+    public async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var result = await FileHandler.HandleImageFromInputAsync(e);
+        if (result.Item1 is null)
+        {
+            Toast.Error("Error al subir la imagen", new ToastModel()
+            {
+                Description = result.Item2
+            });
+
+            return;
+        }
+
+        CreateBookModel.CoverFile = result.Item1;
+        BookCoverPrview = result.Item2;
+
+    }
+
+    public void Dispose()
+    {
+        CreateBookModel = new();
+        BookCoverPrview = null;
+    }
+
+    public void RemoveCover()
+    {
+        CreateBookModel.CoverFile = null;
+        BookCoverPrview = null;
+    }
+    
+    private async Task TriggerFileInput()
+    {
+        await JsRuntime.InvokeVoidAsync("triggerClick", fileInput.Element);
+    }
+
+}
+
