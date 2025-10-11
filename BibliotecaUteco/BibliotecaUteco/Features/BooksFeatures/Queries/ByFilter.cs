@@ -18,14 +18,14 @@ namespace BibliotecaUteco.Features.BooksFeatures.Queries
 {
     public class GetBooksByFilterCommand : ICommand<IApiResult>
     {
-        [JsonPropertyName("bookName"), FromQuery(Name = "bookName"), Description("El nombre del libro a buscar")]
+        [JsonPropertyName("bookName"), MaxLength(100), FromQuery(Name = "bookName"), Description("El nombre del libro a buscar")]
         public string? BookName { get; set; } = null;
 
-        [JsonPropertyName("genreName"), FromQuery(Name = "genreName"), Description("El nombre del genero del libro a buscar")]
+        [JsonPropertyName("genreName"), MaxLength(50), FromQuery(Name = "genreName"), Description("El nombre del genero del libro a buscar")]
 
         public string? GenreName { get; set; } = null;
 
-        [JsonPropertyName("authorName"), FromQuery(Name = "authorName"), Description("El nombre del autor del libro a buscar")]
+        [JsonPropertyName("authorName"), MaxLength(100), FromQuery(Name = "authorName"), Description("El nombre del autor del libro a buscar")]
 
         public string? AuthorName { get; set; } = null;
 

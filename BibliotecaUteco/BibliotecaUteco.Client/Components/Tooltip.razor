@@ -1,0 +1,79 @@
+@* Tooltip.razor *@
+<div class="relative inline-block z-[999999] group">
+    @ChildContent
+    
+    <div class="@($"absolute {GetPositionClasses()} opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none z-50")">
+        <div class="@($"bg-neutral-100 text-xs text-black text-sm rounded-lg p-1 whitespace-nowrap shadow-lg {(MaxWidth != null ? MaxWidth : "")}")">
+            @if (TooltipContent != null)
+            {
+                @TooltipContent
+            }
+            else
+            {
+                @Text
+            }
+        </div>
+        <div class="@GetArrowClasses()"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? TooltipContent { get; set; }
+
+    [Parameter]
+    public TooltipPosition Position { get; set; } = TooltipPosition.Top;
+
+    [Parameter]
+    public string? MaxWidth { get; set; }
+
+    [Parameter]
+    public string BackgroundClass { get; set; } = "bg-neutral-300";
+
+    [Parameter]
+    public string TextClass { get; set; } = "text-black";
+
+    private string GetPositionClasses() => Position switch
+    {
+        TooltipPosition.Top => "bottom-full left-1/2 -translate-x-1/2 mb-2",
+        TooltipPosition.Bottom => "top-full left-1/2 -translate-x-1/2 mt-2",
+        TooltipPosition.Left => "right-full top-1/2 -translate-y-1/2 mr-2",
+        TooltipPosition.Right => "left-full top-1/2 -translate-y-1/2 ml-2",
+        TooltipPosition.TopLeft => "bottom-full left-0 mb-2",
+        TooltipPosition.TopRight => "bottom-full right-0 mb-2",
+        TooltipPosition.BottomLeft => "top-full left-0 mt-2",
+        TooltipPosition.BottomRight => "top-full right-0 mt-2",
+        _ => "bottom-full left-1/2 -translate-x-1/2 mb-2"
+    };
+
+    private string GetArrowClasses() => Position switch
+    {
+        TooltipPosition.Top => "absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.Bottom => "absolute bottom-full left-1/2 -translate-x-1/2 -mb-1 border-4 border-transparent border-neutral-2000",
+        TooltipPosition.Left => "absolute left-full top-1/2 -translate-y-1/2 -ml-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.Right => "absolute right-full top-1/2 -translate-y-1/2 -mr-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.TopLeft => "absolute top-full left-4 -mt-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.TopRight => "absolute top-full right-4 -mt-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.BottomLeft => "absolute bottom-full left-4 -mb-1 border-4 border-transparent border-neutral-200",
+        TooltipPosition.BottomRight => "absolute bottom-full right-4 -mb-1 border-4 border-transparent border-neutral-200",
+        _ => "absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-neutral-200"
+    };
+
+    public enum TooltipPosition
+    {
+        Top,
+        Bottom,
+        Left,
+        Right,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    }
+}

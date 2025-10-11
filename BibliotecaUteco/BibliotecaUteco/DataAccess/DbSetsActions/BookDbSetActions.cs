@@ -36,19 +36,19 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             if (!string.IsNullOrWhiteSpace(genreName)) // ← Cambiado
             {
                 var normalizedGenre = genreName.ToLower().Trim().Normalize();
-                query = query.Where(b => b.Genres.Any(g => g.Genre.NormalizedName == normalizedGenre));
+                query = query.Where(b => b.Genres.Any(g => g.Genre.NormalizedName.Contains(normalizedGenre)));
             }
 
             if (!string.IsNullOrWhiteSpace(name)) // ← Cambiado
             {
                 var normalizedName = name.ToLower().Trim().Normalize();
-                query = query.Where(b => b.NormalizedName == normalizedName);
+                query = query.Where(b => b.NormalizedName.Contains(normalizedName));
             }
             
             if (!string.IsNullOrWhiteSpace(authorName)) // ← Cambiado
             {
                 var normalizedAuthorName = authorName.ToLower().Trim().Normalize();
-                query = query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName == normalizedAuthorName));
+                query = query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName.Contains(normalizedAuthorName) ));
             }
                         
             return await query.OrderBy(b => b.Id).Skip(skip).Take(take).Select(b => new Book()

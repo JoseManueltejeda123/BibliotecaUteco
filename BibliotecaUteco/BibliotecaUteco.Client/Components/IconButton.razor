@@ -1,12 +1,12 @@
-<LumexTooltip  ShowArrow="true"  Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
-    <LumexButton Variant="Variant.Flat" Size="@Size" IconOnly="@true" Disabled="@Disabled" Type="ButtonType.Button" id="@TooltipText"  OnClick="@TriggerOnClick" Class=@($"text-neutral-900 icon-button transition-all bg-transparent text-[20px] rounded-lg cursor-pointer {@Class}") >
+<Tooltip Text="@TooltipText" >
+    <LumexButton OnClick="TriggerOnClick" Variant="Variant.Flat" Size="@Size" IconOnly="@true" Disabled="@Disabled" Type="ButtonType.Button"   Class=@($"text-neutral-900 icon-button transition-all bg-transparent text-[20px] rounded-lg cursor-pointer {@Class}") >
         @if (ChildContent is not null)
         {
             @ChildContent
         }    
     </LumexButton>
     
-</LumexTooltip>
+</Tooltip>
 
 
 

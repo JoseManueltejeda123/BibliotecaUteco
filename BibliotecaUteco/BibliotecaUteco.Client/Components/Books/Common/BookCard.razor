@@ -1,46 +1,60 @@
-<LumexCard Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer">
-   
-    <img src="@Book.CoverUrl"
-         class="object-contain w-full h-full brightness-75 "
-         
-         alt="Card background" />
-    <LumexCardFooter Blurred="@true" Class="absolute z-10 bottom-0 bg-orange-100/30">
-        <div class="flex flex-col flex-grow gap-1 text-small text-zinc-50">
-            <p class="font-semibold line-clamp-1">@Book.Name</p>
-            <p class="font-medium line-clamp-1 text-xs">
+<Animate Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(Index * 300)" >
+    <LumexCard Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer">
+        @if (string.IsNullOrEmpty(Book.CoverUrl))
+        {
+            <div 
+                 class="object-contain w-full h-full bg-neutral-950 "
+                >
+                
+            </div>
+        }
+        else
+        {
+            <img src="@Book.CoverUrl"
+                 class="object-contain w-full h-full brightness-75 "
+
+                 alt="Card background" />
+        }
+       
+        <LumexCardFooter Blurred="@true" Class="absolute z-10 bottom-0 bg-orange-100/30">
+            <div class="flex flex-col flex-grow gap-1 text-small text-zinc-50">
+                <p class="font-semibold line-clamp-1">@Book.Name</p>
+                <p class="font-medium line-clamp-1 text-xs">
 
 
-                @if(Book.Authors.Any())
-                {
+                    @if(Book.Authors.Any())
+                    {
                     @(Book.Authors.First().Author.FullName)
-                }
-               
-               
-            </p>
-            @if(Book.Authors.Count() >= 2)
-            {
+                    }
+
+
+                </p>
+                @if(Book.Authors.Count() >= 2)
+                {
 
                 <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
-            }
+                }
 
-            @if(Book.AvailableAmount >= 1)
-            {
+                @if(Book.AvailableAmount >= 1)
+                {
                 <p class="text-green-500 ">@Book.AvailableAmount disponibles</p>
-            }else{
+                }else{
 
                 <p class="text-red-500 ">No disponibles</p>
 
-            } 
+                }
 
-            @if(!HideShowDetails)
-            {
+                @if(!HideShowDetails)
+                {
                 <span class=" text-xs hidden group-hover:block underline">Ver detalles</span>
 
-            }
-        </div>
-      
-    </LumexCardFooter>
-</LumexCard>
+                }
+            </div>
+
+        </LumexCardFooter>
+    </LumexCard>
+</Animate>
+
 
 @code{
 
@@ -48,5 +62,7 @@
     [Parameter] public BookResponse Book {get; set;} = new();
 
     [Parameter] public bool HideShowDetails {get; set;}
+    
+    [Parameter] public int Index {get; set;} = 1;
     
 }

@@ -40,3 +40,5 @@ dist/
 # Others
 wwwroot/lib/
 .env
+wwwroot/BookCovers/*
+!wwwroot/BookCovers/.gitkeep

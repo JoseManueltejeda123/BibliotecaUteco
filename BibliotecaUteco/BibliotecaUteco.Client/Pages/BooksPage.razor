@@ -1,0 +1,223 @@
+﻿@page "/books"
+@implements IDisposable
+<PageTitle>Libros</PageTitle>
+
+<div class="flex flex-col   w-full mt-[20px] gap-4 px-4">
+
+   
+
+            <div class="flex w-full items-center gap-2 justify-between">
+                <h2 class="text-3xl font-semibold">Libros</h2>
+
+                <div class="flex items-center gap-2 ">
+                    <GenresDropdown>
+                    <IconButton TooltipText="Ver géneros">
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag-icon lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>       
+                        </IconButton>
+                    </GenresDropdown>
+                    <AuthorsDropdown>
+                        <IconButton TooltipText="Ver Autores">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>           
+                        </IconButton>
+                    </AuthorsDropdown>
+                    <LumexTooltip Content="@("hola")" >
+                        <LumexButton Class="hidden" >
+                            click
+                        </LumexButton>
+                    </LumexTooltip>
+                   
+                </div>
+            </div>
+
+            <EditForm Model="Filter" OnValidSubmit="FetchGetBooksOnSearchAsync"  class="flex w-full gap-2 items-center text-black">
+                <DataAnnotationsValidator/>
+                <div class="w-full flex flex-col gap-1">
+                    <LumexTextbox Type="@InputType.Search"
+                                  Label="Buscar libro"
+                                  Behavior="InputBehavior.OnInput"
+                                  Clearable="true"
+                                  OnCleared="FetchGetBooksOnSearchAsync"
+                                  Required="false"
+                                  Disabled="@(FilterBy == BookFilterType.All)"
+                                  @bind-Value="@Filter.Filter"
+                                  Placeholder="Ej. Canción de hielo y fuego"
+                                  maxLenght="50"
+                                  LabelPlacement="@LabelPlacement.Outside"/>
+                    
+                   
+                    <p class="text-[13px]">Seleciona un filtro de abajo para activar la búsqueda.</p>
+                </div>
+                <LumexTooltip Content=@($"Buscar libros por {FilterBy.ToString()} ")>
+                    <LumexButton Type="ButtonType.Submit" Disabled="(!context.Validate() || FilterBy == BookFilterType.All)" Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
+
+                </LumexTooltip>
+            </EditForm>
+            <div class="mb-3">
+                <LumexChip Class="cursor-pointer"  @onclick='()=>{SetFilterBy(BookFilterType.All);}' Variant="@(FilterBy == BookFilterType.All ? ChipVariant.Solid : ChipVariant.Outlined )"  Color="@ThemeColor.Primary">Todo</LumexChip>
+
+                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Name); }' Variant="@(FilterBy == BookFilterType.Name ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
+                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Author); }' Variant="@(FilterBy == BookFilterType.Author ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Autor</LumexChip>
+                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>
+
+            </div>
+            <SidebarSectionDivider Name="Libros"/>
+            <div class="grid max-sm:grid-cols-2 max-md:grid-cols-3 grid-cols-6 gap-7">
+                <button  @onclick="ShowCreateBookForm" class="border-dotted border-[3px] border-green-600 aspect-[2/3] w-full rounded-xl hover:bg-green-100/30 transition-all flex flex-col justify-center items-center gap-2 cursor-pointer ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide text-green-700 lucide-book-plus-icon lucide-book-plus"><path d="M12 7v6"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M9 10h6"/></svg>
+                    <p class="text-xs text-green-700">Agregar Libro</p>
+                </button>
+                @foreach(var book in Books)
+                {
+                    <BookCard Book="@book" Index="Books.IndexOf(book)"/>
+                }
+                @if (_searchingBooks)
+                {
+                    <BookSkeleton Count="10"/>
+                }
+                
+            </div>
+            @if (_hasMore)
+            {
+                <LumexButton Color="ThemeColor.Primary" >
+                    Obtener Más
+                </LumexButton>
+            }
+            else
+            {
+                <NoResultsFound/>
+            }
+
+    
+    
+   
+</div>
+
+
+
+
+
+@functions{
+
+    protected override async Task OnInitializedAsync(){
+
+        await FetchGetMoreBooks();
+    }
+    protected override void OnInitialized()
+    {
+        RightBarContext.OnCreatedBookChanged += HandleBookCreated;
+    }
+
+    public void HandleBookCreated()
+    {
+        if (RightBarContext.CreatedBook is not null)
+        {
+            Books.Insert(0, RightBarContext.CreatedBook);
+            StateHasChanged();
+            RightBarContext.SetCreatedBook();
+          
+        }
+    }
+
+    public void Dispose()
+    {
+        RightBarContext.OnCreatedBookChanged -= HandleBookCreated;
+
+    }
+
+ 
+
+    public void ShowCreateBookForm()
+    {
+        RightBarContext.SetView(RightBarView.CreatingBook);
+    }
+    
+    public void SetFilterBy(BookFilterType filter){
+        FilterBy = filter;
+    }
+
+    public async Task FetchGetMoreBooks()
+    {
+        if (!_hasMore) return;
+
+        _searchingBooks = true;
+        StateHasChanged();
+        var result = await BooksApiServices.GetByFilterAsync(BuildQuery(true));
+        
+        if (result.IsSuccessful())
+        {
+            Books.AddRange(result.Data);
+        }
+
+        if (!result.IsSuccessful() || result.Data.Count < 10)
+        {
+            _hasMore = false;
+        }
+
+        _searchingBooks = false;
+        StateHasChanged();
+    }
+
+    public async Task FetchGetBooksOnSearchAsync()
+    {
+        Books.Clear();
+        _hasMore = true;
+        _prevFilter = Filter.Filter;
+        _searchingBooks = true;
+        StateHasChanged();
+        var request = BuildQuery(false);
+
+        await JsRuntime.InvokeVoidAsync("console.log", request);
+        
+        var result = await BooksApiServices.GetByFilterAsync(request);
+
+        if (result.IsSuccessful())
+        {
+            Books = result.Data;
+        }
+
+        if (!result.IsSuccessful() || result.Data.Count < 10)
+        {
+            _hasMore = false;
+        }
+
+        _searchingBooks = false;
+        StateHasChanged();
+
+    }
+
+    public GetBooksByFilterRequest BuildQuery(bool withSkip = true) => new()
+    {
+        BookName = FilterBy == BookFilterType.Name ? _prevFilter : null,
+        GenreName = FilterBy == BookFilterType.Genre ? _prevFilter : null,
+        AuthorName = FilterBy == BookFilterType.Author ? _prevFilter : null,
+        Take = 10,
+        Skip = withSkip  ? Books.Count : 0
+
+
+    };
+}
+
+@code{
+    public bool _hasMore { get; set; } = true;
+    public bool _searchingBooks { get; set; } = false;
+    public FormFilter Filter { get; set; } = new();
+    public string _prevFilter { get; set; } = "";
+    public BookFilterType FilterBy {get; set;} = BookFilterType.All;
+    public GetBooksByFilterRequest GetBooksByFilterModel {get; set;} = new();
+    public List<BookResponse> Books { get; set; } = new();
+    public enum BookFilterType
+    {
+        Author, 
+        Name,
+        Genre,
+        All
+    }
+
+    public class FormFilter
+    {
+        [MaxLength(50, ErrorMessage ="El filtro debe de tener un maxio de 50 caracteres") ]
+        public string Filter { get; set; } = "";
+    }
+}
+

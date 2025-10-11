@@ -35,9 +35,10 @@
                             Behavior="InputBehavior.OnInput"
                             OnCleared="async()=>{await FetchGetGenresByNameAsync();}"
             />
-            <IconButton TooltipText="Buscar Género" Disabled="@_fetchingGenres" Type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-search-icon lucide-user-round-search"><circle cx="10" cy="8" r="5"/><path d="M2 21a8 8 0 0 1 10.434-7.62"/><circle cx="18" cy="18" r="3"/><path d="m22 22-1.9-1.9"/></svg>        
-            </IconButton>
+            <LumexButton Type="ButtonType.Submit" Disabled="@_fetchingGenres" Color="ThemeColor.Primary" >
+                Buscar
+            </LumexButton>
+            
         </EditForm>
         
     </div>
@@ -52,27 +53,29 @@
      </AuthorizeView>
    
 
+     <div class="w-full gap-3 flex flex-wrap mt-3">
+         @if(_fetchingGenres){
 
-    @if(_fetchingGenres){
-
-        <GenreSkeleton Count="3"/>
-    }
-    else
-    {
-        if(Genres.Any())
-        {
-            foreach(var genre in Genres)
-            {
-                <GenreCard OnClicked="HandleGenreClicked" Genre="genre"/>
-            }
-        }
-        else
-        {   
-            <NoResultsFound></NoResultsFound>
-        }
+             <GenreSkeleton Count="3"/>
+         }
+         else
+         {
+             if(Genres.Any())
+             {
+                 foreach(var genre in Genres)
+                 {
+                     <GenreCard OnClicked="HandleGenreClicked" Genre="genre"/>
+                 }
+             }
+             else
+             {   
+                 <NoResultsFound></NoResultsFound>
+             }
 
        
-    }
+         }
+     </div>
+   
     }
     
     

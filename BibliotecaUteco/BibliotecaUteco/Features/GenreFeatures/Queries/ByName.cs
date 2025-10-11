@@ -68,7 +68,7 @@ public class GetGenresByNameHandler(IBibliotecaUtecoDbContext context) : IComman
     public async Task<IApiResult> HandleAsync(GetGenresByName request, CancellationToken cancellationToken = default)
     {
         var normalizedName = request.GenreName?.ToLower().Normalize().Trim() ?? "";
-        var genres = await context.Genres.Where(g => g.NormalizedName.Contains(normalizedName)).OrderBy(g => g.Id).Take(5).ToListAsync(cancellationToken);
+        var genres = await context.Genres.Where(g => g.NormalizedName.Contains(normalizedName)).OrderBy(g => g.Id).Take(10).ToListAsync(cancellationToken);
 
         return ApiResult<List<GenreResponse>>.BuildSuccess(genres.Select(g => g.ToResponse()).ToList());
     }

@@ -135,7 +135,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 
             if (request.CoverFile is not null)
             {
-                if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers, request.Name) is var result && result.Item1)
+                if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers, request.Name.ToLower().Trim().Normalize()) is var result && result.Item1)
                 {
                     request.CoverUrl = result.Item2;
                 }

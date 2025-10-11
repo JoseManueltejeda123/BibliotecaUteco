@@ -1,23 +1,35 @@
 
 
 
-<aside class=@($"fixed max-md:z-50 h-screen max-h-[100vh]  overflow-y-auto  h-full {(SideBarExpanded ? "w-[250px] " : "w-[75px]")} bg-green-700 backdrop-blur-lg backdrop-opacity-90  flex flex-col items-center py-5 px-3 !text-white gap-3")>
+<aside class=@($"fixed max-md:z-50 h-screen max-h-[100vh]  overflow-y-auto  h-full {(SideBarExpanded ? "w-[250px] " : "w-[75px]")} bg-green-700/90 backdrop-blur-md  backdrop-blur-lg backdrop-opacity-90  flex flex-col items-center py-5 px-3 !text-white gap-3")>
    
-    
-    <div class="flex gap-3 w-full items-center  justify-center">
+    @if (SideBarExpanded)
+    {
+        <div class="flex w-full justify-between items-center gap-3">
+            <h2 class="text-lg text-white select-none font-semibold">BiblioUteco</h2>
+            <img class="size-[40px] aspect-square" src="https://akanuxt.uteco.edu.do/_nuxt/img/logo.f9c953e.svg" alt="uteco logo"/>
+
+        </div>
+    }
+    else
+    {
+        <img class="size-[40px] aspect-square" src="https://akanuxt.uteco.edu.do/_nuxt/img/logo.f9c953e.svg" alt="uteco logo"/>
+
+    }
+    <div class=@($"flex gap-3 w-full items-center  {(SideBarExpanded ? "justify-between" : "justify-center")}")>
         
         @if (SideBarExpanded)
-        {
+        {   
             <AuthorizeView>
                 <Authorized >
                     <LumexAvatar Radius="@Radius.Full"
-                                 Color="ThemeColor.Primary"
+                                 Color="ThemeColor.Default"
                                  Size="Size.Small"
                                  Bordered="@true"
                                  Name="@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? string.Empty)"
                                  Src="@(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? string.Empty)"/>
 
-                    <div class="flex flex-col">
+                    <div class="flex flex-col ">
                         <label class="text-sm font-semibold">@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? "Invitado")</label>
                         <label class="text-xs">@("@" + context.User?.FindFirst(JwtRegisteredClaimNames.Nickname)?.Value ?? "Invitado")</label>
                     </div>
