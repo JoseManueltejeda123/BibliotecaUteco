@@ -1,3 +1,4 @@
+using BibliotecaUteco.Client.Settings;
 using BibliotecaUteco.Settings;
 
 namespace BibliotecaUteco.DataAccess.Models;

@@ -7,6 +7,7 @@ using BibliotecaUteco.Client.ServicesInterfaces;
 using Blazor.Sonner.Common;
 using Blazor.Sonner.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BibliotecaUteco.Client.Utilities;
 
@@ -14,8 +15,7 @@ public class BibliotecaHttpClient (
     HttpClient client,
     ILocalStorageService localStorageService,
     CustomAuthenticationStateProvider authState,
-    ToastService toast
-)
+    ToastService toast)
 {
    
     public string Prefix { get; set; } = "api/v1";
@@ -35,20 +35,28 @@ public class BibliotecaHttpClient (
     {
         try
         {
-            ApiResult<TResult>? apiResult = null;
-
-            if (isFormData)
+            var jsonContent = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonContent))
             {
-                using var stream = await response.Content.ReadAsStreamAsync();
-
-                if (stream is not null)
-                    apiResult = await JsonSerializer.DeserializeAsync<ApiResult<TResult>>(stream);
+                toast.Show("Oops", new ToastModel()
+                {
+                    Description = "El servidor retornó una respuesta vacía",
+                    Title = "Oops!",
+                    Type = ToastType.Error,
+                    Position = ToastPosition.BottomCenter
+                });
+                return ApiResult<TResult>.BuildFailure(
+                    HttpStatus.BadRequest,
+                    "Respuesta vacía del servidor"
+                );
             }
-            else
+
+           var apiResult = JsonSerializer.Deserialize<ApiResult<TResult>>(jsonContent, new JsonSerializerOptions
             {
-                 apiResult = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
+                PropertyNameCaseInsensitive = true
+            });
 
-            }
+            
             
 
 
@@ -58,7 +66,9 @@ public class BibliotecaHttpClient (
                 {
                     Description = "Hubo un problema. Intenta mas luego",
                     Title = "Oops!",
-                    Type = ToastType.Error
+                    Type = ToastType.Error,
+                    Position = ToastPosition.BottomCenter
+
 
                 });
                 return ApiResult<TResult>.BuildFailure(
@@ -76,7 +86,9 @@ public class BibliotecaHttpClient (
                     {
                         Description = message,
                         Title = "Error",
-                        Type = ToastType.Error
+                        Type = ToastType.Error,
+                        Position = ToastPosition.BottomCenter
+
 
                     });
                 }
@@ -98,6 +110,8 @@ public class BibliotecaHttpClient (
                 Description = ex.InnerException?.Message ?? ex.Message,
                 Title = "Oops!",
                 Type = ToastType.Error,
+                Position = ToastPosition.BottomCenter
+
 
 
             });
@@ -117,9 +131,17 @@ public class BibliotecaHttpClient (
 
     public async Task<ApiResult<TResult>> FetchPostAsync<TResult>(string route, object data)
     {
-        await AttachTokenAsync();
 
-        var response = await client.PostAsJsonAsync(Prefix + route, data);
+        await AttachTokenAsync();
+        HttpResponseMessage response;
+
+        if (data is MultipartFormDataContent multipart)
+        {
+            response = await client.PostAsync(Prefix + route, multipart);
+            return await ProcessResult<TResult>(response, true);
+        }
+       
+        response = await client.PostAsJsonAsync(Prefix + route, data);
         return await ProcessResult<TResult>(response);
 
     }
@@ -127,8 +149,14 @@ public class BibliotecaHttpClient (
     public async Task<ApiResult<TResult>> FetchPutAsync<TResult>(string route, object data)
     {
         await AttachTokenAsync();
-
-        var response = await client.PutAsJsonAsync(Prefix + route, data);
+        HttpResponseMessage response;
+        
+        if (data is MultipartFormDataContent multipart)
+        {
+            response = await client.PutAsync(Prefix + route, multipart);
+            return await ProcessResult<TResult>(response, true);
+        }
+        response = await client.PutAsJsonAsync(Prefix + route, data);
         return await ProcessResult<TResult>(response);
 
     }

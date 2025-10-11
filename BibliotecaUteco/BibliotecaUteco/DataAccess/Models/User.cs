@@ -8,6 +8,7 @@ public class User : BaseEntity
     [MaxLength(50), MinLength(5), Required]
     public string FullName { get; set; } = null!;
     
+    
     [MinLength(8), Required] 
     //No max lenght por que esto va hasheado
     public string Password { get; set; } = null!;

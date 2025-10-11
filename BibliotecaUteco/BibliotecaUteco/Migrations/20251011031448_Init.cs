@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BibliotecaUteco.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,6 +20,7 @@ namespace BibliotecaUteco.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NormalizedFullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -34,9 +35,10 @@ namespace BibliotecaUteco.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CoverUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Sinopsis = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -53,6 +55,7 @@ namespace BibliotecaUteco.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -286,12 +289,29 @@ namespace BibliotecaUteco.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "CreatedAt", "Name", "NormalizedName", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 10, 11, 3, 14, 46, 488, DateTimeKind.Utc).AddTicks(8380), "Fantasía", "fantasia", new DateTime(2025, 10, 11, 3, 14, 46, 488, DateTimeKind.Utc).AddTicks(8384) },
+                    { 2, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(52), "Terror", "terror", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(53) },
+                    { 3, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(57), "Ciencia Ficción", "ciencia ficcion", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(57) },
+                    { 4, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(60), "Romance", "romance", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(61) },
+                    { 5, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(63), "Misterio", "misterio", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(64) },
+                    { 6, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(66), "Aventura", "aventura", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(67) },
+                    { 7, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(69), "Histórico", "historico", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(70) },
+                    { 8, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(73), "Biografía", "biografia", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(73) },
+                    { 9, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(77), "Poesía", "poesia", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(78) },
+                    { 10, new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(80), "Drama", "drama", new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(81) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(702), "Librarian", new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(711) },
-                    { 2, new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(1914), "Admin", new DateTime(2025, 10, 5, 23, 22, 27, 415, DateTimeKind.Utc).AddTicks(1916) }
+                    { 1, new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(1504), "Librarian", new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(1508) },
+                    { 2, new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(2472), "Admin", new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(2472) }
                 });
 
             migrationBuilder.InsertData(
@@ -299,9 +319,15 @@ namespace BibliotecaUteco.Migrations
                 columns: new[] { "Id", "CreatedAt", "FullName", "IdentityCardNumber", "Password", "ProfilePictureUrl", "RoleId", "UpdatedAt", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 10, 5, 23, 22, 27, 424, DateTimeKind.Utc).AddTicks(7617), "Juan Pérez", "00112345678", "020255afeda8c28778f9a3c46197d25f0521b40aae838b9e23a96a5bed3773c2", null, 1, new DateTime(2025, 10, 5, 23, 22, 27, 424, DateTimeKind.Utc).AddTicks(7625), "juan.perez" },
-                    { 2, new DateTime(2025, 10, 5, 23, 22, 27, 468, DateTimeKind.Utc).AddTicks(4374), "Jose Pérez", "00212345678", "b60037fbbcfdd8f052dc80c8002c92686300ab72932a341954db68d7851ec2f8", null, 2, new DateTime(2025, 10, 5, 23, 22, 27, 468, DateTimeKind.Utc).AddTicks(4380), "jose.perez" }
+                    { 1, new DateTime(2025, 10, 11, 3, 14, 46, 415, DateTimeKind.Utc).AddTicks(9860), "José Apolinar", "00112345678", "973279fd3528bf897629f68765425a6b3e88e35b010c3c3c10a169283a817289", null, 1, new DateTime(2025, 10, 11, 3, 14, 46, 415, DateTimeKind.Utc).AddTicks(9865), "jose.apolinar" },
+                    { 2, new DateTime(2025, 10, 11, 3, 14, 46, 466, DateTimeKind.Utc).AddTicks(2544), "Manuel López", "00212345678", "2540fc2a209dd5946b09734722f16821b435db8e376655ab334379a4a0de1133", null, 2, new DateTime(2025, 10, 11, 3, 14, 46, 466, DateTimeKind.Utc).AddTicks(2549), "manuel.lopez" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Authors_NormalizedFullName",
+                table: "Authors",
+                column: "NormalizedFullName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookAuthors_AuthorId_BookId",
@@ -326,6 +352,12 @@ namespace BibliotecaUteco.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Books_NormalizedName",
+                table: "Books",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GenreBooks_BookId",
                 table: "GenreBooks",
                 column: "BookId");
@@ -334,6 +366,12 @@ namespace BibliotecaUteco.Migrations
                 name: "IX_GenreBooks_GenreId_BookId",
                 table: "GenreBooks",
                 columns: new[] { "GenreId", "BookId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Genres_NormalizedName",
+                table: "Genres",
+                column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(

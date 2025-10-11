@@ -25,8 +25,7 @@ namespace BibliotecaUteco.Client.Requests.Books.Actions
 
         public List<int> AuthorIds { get; set; } = new();
 
-        [Required(ErrorMessage = "Debe seleccionar al menos un género literario.")]
-        [MinLength(1, ErrorMessage = "Debe seleccionar al menos un género literario.")]
+       
         public List<int> GenreIds { get; set; } = new();
 
         [Required(ErrorMessage = "Debe especificar la cantidad en stock.")]

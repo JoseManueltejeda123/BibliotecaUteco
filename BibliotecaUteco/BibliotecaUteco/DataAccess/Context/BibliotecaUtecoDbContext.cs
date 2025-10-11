@@ -58,18 +58,18 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                 new User()
                 {
                     Id = 1,
-                    FullName = "Juan Pérez",
-                    Username = "juan.perez",
-                    Password = new string("Juan.Perez1").Hash(),
+                    FullName = "José Apolinar",
+                    Username = "jose.apolinar",
+                    Password = new string("Jose.Apolinar1").Hash(),
                     IdentityCardNumber = "00112345678",
                     RoleId = 1
                 },
                 new User()
                 {
                     Id = 2,
-                    FullName = "Jose Pérez",
-                    Username = "jose.perez",
-                    Password = new string("Jose.Perez1").Hash(),
+                    FullName = "Manuel López",
+                    Username = "manuel.lopez",
+                    Password = new string("Manuel.Lopez1").Hash(),
                     IdentityCardNumber = "00212345678",
                     RoleId = 2
                 }

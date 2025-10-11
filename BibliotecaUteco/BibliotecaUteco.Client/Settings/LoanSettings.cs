@@ -1,4 +1,4 @@
-namespace BibliotecaUteco.Settings;
+namespace BibliotecaUteco.Client.Settings;
 
 public abstract class LoanSettings
 {

@@ -38,7 +38,7 @@ public class Book : BaseEntity
         Sinopsis = command.Sinopsis,
         Stock = command.Stock,
         Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
-         Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
+        Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
          
     };
 

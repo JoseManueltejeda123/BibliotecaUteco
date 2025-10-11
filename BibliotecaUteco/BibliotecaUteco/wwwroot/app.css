@@ -57,6 +57,14 @@ input[type="search"]::-webkit-search-cancel-button {
     font-family: "Inconsolata";
 }
 
+input{
+    @apply bg-neutral-100
+}
+
+div[data-slot="input-wrapper"]{
+    @apply bg-neutral-100 border border-neutral-300
+
+}
 .icon-button-sm{
     
     svg{

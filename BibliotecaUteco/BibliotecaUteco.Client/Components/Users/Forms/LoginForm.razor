@@ -1,23 +1,23 @@
-<img class="size-[60px] aspect-square" src="https://akanuxt.uteco.edu.do/_nuxt/img/logo.f9c953e.svg" alt="uteco logo"/>
-<h2 class="font-semibold text-[50px] text-black">Biblio<span class="underline decoration-green-700">Uteco</span></h2>
+<img class="size-[120px] aspect-square" src="https://akanuxt.uteco.edu.do/_nuxt/img/logo.f9c953e.svg" alt="uteco logo"/>
+<h2 class="font-semibold text-[30px] text-black">Biblio<span class="underline decoration-green-700">Uteco</span></h2>
         
-<p class="text-xs mb-[25px]">Inicia sesión con tus credenciales</p>
+<p class="text-sm mb-[25px]">Inicia sesión con tus credenciales</p>
 
-<EditForm  Model=@AuthenticateUserRequest class="w-[75%] flex flex-col gap-5" OnValidSubmit="@FetchLoginAsync">
+<EditForm  Model=@AuthenticateUserRequest class="w-[75%] flex flex-col gap-3" OnValidSubmit="@FetchLoginAsync">
     <DataAnnotationsValidator/>
 
     <div class="flex flex-col gap-3">
         <LumexTextbox Type="@InputType.Text"
                         @bind-Value="@AuthenticateUserRequest.Username"
                         Label="Tu nombre de usuario"
-                        Placeholder="Ej. juan.123"
-                        
+                        Placeholder="Ej. gendy.123"
+                        Size="Size.Large"
                         LabelPlacement="@LabelPlacement.Outside"
                         EndContent="@_userIcon"
                         Required="true"
                         Disabled="_logingIn"
-                        Description="Mayor que 5 caracteres y menor de 15."/>
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => AuthenticateUserRequest.Username)"/></span>
+                        />
+        <span class="text-sm text-red-700"><ValidationMessage For="@(() => AuthenticateUserRequest.Username)"/></span>
 
     </div>
     
@@ -26,17 +26,18 @@
                         Behavior="InputBehavior.OnInput"
                         @bind-Value="@AuthenticateUserRequest.Password"
                         Label="Tu contraseña"
+                        Size="Size.Large"
                         Required="true"
                         Placeholder="********"
                         Disabled="_logingIn"
                         LabelPlacement="@LabelPlacement.Outside"
                         EndContent="@(ShowPassword ? _eyeOpenIcon : _eyeClosedIcon)"
-                        Description="Min. 8 caracteres max. 30"/>
+                        />
         <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar visibilidad</a>
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => AuthenticateUserRequest.Password)"/></span>
+        <span class="text-sm text-red-700"><ValidationMessage For="@(() => AuthenticateUserRequest.Password)"/></span>
     </div>
     
-    <LumexCheckbox  Disabled="_logingIn" Size="Size.Small" Color="ThemeColor.Primary" @bind-Value="@RemindMe">Recuerda mis credenciales</LumexCheckbox>
+    <LumexCheckbox  Disabled="_logingIn" Size="Size.Medium" Color="ThemeColor.Primary" @bind-Value="@RemindMe">Recuerda mis credenciales</LumexCheckbox>
 
     
     @if (_logingIn)
@@ -45,7 +46,7 @@
     }
     else
     {
-        <LumexButton  Variant="Variant.Solid" Type="ButtonType.Submit" Class="mt-3" Disabled="@(!context.Validate() || _logingIn)" Color="ThemeColor.Primary">Iniciar Sesión</LumexButton>
+        <LumexButton  Variant="Variant.Solid" Type="ButtonType.Submit" Class="mt-3 text-[17px]" Disabled="@(!context.Validate() || _logingIn)" Color="ThemeColor.Primary">Iniciar Sesión</LumexButton>
 
     }
 </EditForm>

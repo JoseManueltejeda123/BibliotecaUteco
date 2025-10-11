@@ -1,10 +1,10 @@
 <LumexTooltip  ShowArrow="true"  Content="@TooltipText" Size="Size.Small" Placement="TooltipPlacement.Right">
-    <button diabled="@Disabled" type="@Type" id="@TooltipText"  @onclick="@TriggerOnClick" class=@($"{(Small ? "icon-button-sm" : "icon-button")} border border-neutral-300 backdrop-blur-md {HoverColor} transition-all text-neutral-600 bg-neutral-300/50 {(Small ? "p-1" : "p-2") } rounded-lg cursor-pointer {@Class}") >
+    <LumexButton Variant="Variant.Flat" Size="@Size" IconOnly="@true" Disabled="@Disabled" Type="ButtonType.Button" id="@TooltipText"  OnClick="@TriggerOnClick" Class=@($"text-neutral-900 icon-button transition-all bg-transparent text-[20px] rounded-lg cursor-pointer {@Class}") >
         @if (ChildContent is not null)
         {
             @ChildContent
         }    
-        </button>
+    </LumexButton>
     
 </LumexTooltip>
 
@@ -24,16 +24,20 @@
     [Parameter] public string TooltipText { get; set; } = "button";
     
     [Parameter]
-    public EventCallback OnClick { get; set; } 
+    public EventCallback OnClick { get; set; }
+
+    [Parameter] public Size Size { get; set; } = Size.Small;
     
     [Parameter]
     public string Class {get; set;} = "";
 
     [Parameter]
-    public string HoverColor {get; set;} = "hover:text-green-600";
+    public ThemeColor Color {get; set;} = ThemeColor.None;
 
     [Parameter]
     public bool Small {get; set;} = false;
+    
+    
 }
 
 @functions{

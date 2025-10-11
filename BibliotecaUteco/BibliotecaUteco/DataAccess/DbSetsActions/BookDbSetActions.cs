@@ -33,27 +33,24 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
             var query = dbSet.AsSplitQuery().AsNoTracking().AsQueryable();
 
-            if (genreName is not null)
+            if (!string.IsNullOrWhiteSpace(genreName)) // ← Cambiado
             {
                 var normalizedGenre = genreName.ToLower().Trim().Normalize();
-
-                query.Where(b => b.Genres.Any(g => g.Genre.NormalizedName == normalizedGenre));
+                query = query.Where(b => b.Genres.Any(g => g.Genre.NormalizedName == normalizedGenre));
             }
 
-            if (name is not null)
+            if (!string.IsNullOrWhiteSpace(name)) // ← Cambiado
             {
                 var normalizedName = name.ToLower().Trim().Normalize();
-                query.Where(b => b.NormalizedName == normalizedName);
-
+                query = query.Where(b => b.NormalizedName == normalizedName);
             }
             
-            if(authorName is not null)
+            if (!string.IsNullOrWhiteSpace(authorName)) // ← Cambiado
             {
                 var normalizedAuthorName = authorName.ToLower().Trim().Normalize();
-                query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName == normalizedAuthorName));
-
+                query = query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName == normalizedAuthorName));
             }
-                
+                        
             return await query.OrderBy(b => b.Id).Skip(skip).Take(take).Select(b => new Book()
             {
                 Id = b.Id,
@@ -62,6 +59,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 UpdatedAt = b.UpdatedAt,
                 Sinopsis = b.Sinopsis,
                 Authors = b.Authors,
+                CoverUrl = b.CoverUrl,
                 Genres = b.Genres,
                 Stock = b.Stock,
                 AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null)

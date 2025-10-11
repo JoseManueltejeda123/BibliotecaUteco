@@ -36,6 +36,7 @@
 @using BibliotecaUteco.Client.Components.Genres.Forms
 @using BibliotecaUteco.Client.Components.Genres.Common
 @using BibliotecaUteco.Client.Components.Books.Forms
+@using BibliotecaUteco.Client.Requests.Books.Queries
 
 @using BibliotecaUteco.Client.Components.Genres.Skeletons
 @using BibliotecaUteco.Client.Components.Genres.Views
@@ -60,3 +61,4 @@
 @inject ILocalStorageService LocalStorageService
 @inject IGenresApiSevices GenresApiServices
 @inject IAuthorsApiServices AuthorsApiServices;
+@inject IBooksApiServices BooksApiServices

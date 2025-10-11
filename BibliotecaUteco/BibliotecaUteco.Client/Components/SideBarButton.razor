@@ -2,18 +2,19 @@
 
 @if (IsExpanded)
 {
-    <button @onclick="TriggerOnClick" class="border-neutral-300 border sidebar-button w-full cursor-pointer rounded-lg  flex items-center justify-between px-3 py-2 hover:text-green-700 transition-all text-neutral-600  bg-neutral-300/40  hover:bg-green-300/70 hover:border-green-300">
-        <span class="text-[13px] font-semibold">@Name</span>
-
+    <div @onclick="TriggerOnClick" class=@($"gap-3 sidebar-button w-full cursor-pointer rounded-lg  flex items-center px-3 py-2 transition-all text-white text-[16px] {Class}")>
         @if (Icon is not null)
         {
             @Icon
         }
-    </button>
+        <span class="text-[13px] font-semibold">@Name</span>
+
+        
+    </div>
 }
 else
 {
-    <IconButton TooltipText="@Name" OnClick="@HandleOnCLick">
+    <IconButton Class='@(Class + " !text-white !hover:bg-transparent")' Size="Size.Medium" TooltipText="@Name" OnClick="@HandleOnCLick">
         @if (Icon is not null)
         {
             @Icon
@@ -26,6 +27,9 @@ else
 
     [Parameter]    
     public RenderFragment? Icon {get; set;}
+    
+    [Parameter]
+    public string Class {get; set;}
 
     [Parameter] public string Name { get; set; } = "";
     
