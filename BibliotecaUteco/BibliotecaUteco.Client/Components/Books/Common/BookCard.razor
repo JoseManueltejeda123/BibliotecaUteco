@@ -1,11 +1,50 @@
 <Animate Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(Index * 300)" >
-    <LumexCard Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer">
+    <LumexCard Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer group">
+       
+        <LumexDropdown ShowArrow="true"  >
+            <LumexDropdownTrigger>
+                <LumexButton Size="Size.Small" IconOnly="true" Radius="Radius.Full" Class="absolute right-[10px] top-[10px] bg-green-700/70 backdrop-blur-xl invisible group-hover:visible text-white !p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[16px] lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                </LumexButton>
+            </LumexDropdownTrigger>
+            <LumexDropdownMenu  >
+
+               
+
+               <LumexDropdownItem Id="EditarLibro" >
+                    <StartContent>
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-book-image-icon lucide-book-image"><path d="m20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="10" cy="8" r="2"/></svg>
+                    </StartContent>
+                    <ChildContent>Editar Libro</ChildContent>
+                </LumexDropdownItem>
+                <LumexDropdownItem Id="divider-1" Disabled="true">
+                    <SidebarSectionDivider Name="Para admins"/>
+
+                </LumexDropdownItem>
+                
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <LumexDropdownItem Id="Divider2" Disabled="true">
+                            <SidebarSectionDivider Name="Zona de peligro"/>
+
+                        </LumexDropdownItem>
+                        <LumexDropdownItem Id="EliminarLibro" Color="@ThemeColor.Danger" Class="text-danger">
+                            <StartContent>
+                                <Trash2Icon Size="18" class="shrink-0" />
+                            </StartContent>
+                            <ChildContent>Eliminar libro</ChildContent>
+                        </LumexDropdownItem>
+                    </Authorized>
+                </AuthorizeView>
+               
+            </LumexDropdownMenu>
+        </LumexDropdown>
+      
         @if (string.IsNullOrEmpty(Book.CoverUrl))
         {
-            <div 
-                 class="object-contain w-full h-full bg-neutral-950 "
-                >
-                
+            <div
+                class="object-contain w-full h-full bg-neutral-950 ">
+
             </div>
         }
         else
@@ -13,40 +52,42 @@
             <img src="@Book.CoverUrl"
                  class="object-contain w-full h-full brightness-75 "
 
-                 alt="Card background" />
+                 alt="Card background"/>
         }
-       
+
         <LumexCardFooter Blurred="@true" Class="absolute z-10 bottom-0 bg-orange-100/30">
             <div class="flex flex-col flex-grow gap-1 text-small text-zinc-50">
                 <p class="font-semibold line-clamp-1">@Book.Name</p>
                 <p class="font-medium line-clamp-1 text-xs">
 
 
-                    @if(Book.Authors.Any())
+                    @if (Book.Authors.Any())
                     {
-                    @(Book.Authors.First().Author.FullName)
+                        @(Book.Authors.First().Author.FullName)
                     }
 
 
                 </p>
-                @if(Book.Authors.Count() >= 2)
+                @if (Book.Authors.Count() >= 2)
                 {
 
-                <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
+                    <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
                 }
 
-                @if(Book.AvailableAmount >= 1)
+                @if (Book.AvailableAmount >= 1)
                 {
-                <p class="text-green-500 ">@Book.AvailableAmount disponibles</p>
-                }else{
+                    <p class="text-green-500 ">@Book.AvailableAmount disponibles</p>
+                }
+                else
+                {
 
-                <p class="text-red-500 ">No disponibles</p>
+                    <p class="text-red-500 ">No disponibles</p>
 
                 }
 
-                @if(!HideShowDetails)
+                @if (!HideShowDetails)
                 {
-                <span class=" text-xs hidden group-hover:block underline">Ver detalles</span>
+                    <span class=" text-xs hidden group-hover:block underline">Ver detalles</span>
 
                 }
             </div>

@@ -131,7 +131,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                 {
                     Id = 3,
                     Name = "Ciencia Ficción",
-                    NormalizedName = "ciencia ficcion"
+                    NormalizedName = "cienciaficcion"
 
                 },
                 new Genre()

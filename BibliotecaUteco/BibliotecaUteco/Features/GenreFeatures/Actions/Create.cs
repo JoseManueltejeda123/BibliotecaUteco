@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.DataAccess.Models;
 using BibliotecaUteco.Helpers;
@@ -76,7 +77,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
     {
         public async Task<IApiResult> HandleAsync(CreateGenreCommand request, CancellationToken cancellationToken = default)
         {
-            var normalizedName = request.Name.ToLower().Trim().Normalize();
+            var normalizedName = request.Name.NormalizeField();
             if (await context.Genres.AnyAsync(g => g.NormalizedName == normalizedName, cancellationToken))
             {
                 return ApiResult<GenreResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un género con ese nombre.");

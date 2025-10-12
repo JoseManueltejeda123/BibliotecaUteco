@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Settings;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.DataAccess.DbSetsActions;
 using BibliotecaUteco.DataAccess.Models;
@@ -63,14 +65,30 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
             RuleFor(x => x.Stock)
                 .GreaterThan(0).WithMessage("El stock debe ser mayor que cero.");
 
-            RuleFor(x => x.AuthorIds)
-                .Must(ids => ids.All(id => id > 0))
-                .WithMessage("Los IDs de autores deben ser válidos.");
-
             RuleFor(x => x.GenreIds)
-                .NotEmpty().WithMessage("Debe especificar al menos un género literario.")
-                .Must(ids => ids.All(id => id > 0))
-                .WithMessage("Los IDs de géneros deben ser válidos.");
+                .NotEmpty().WithMessage("Debe seleccionar al menos un género")
+                .Must(list => list.Count >= 1 && list.Count <= 5)
+                .WithMessage("Debe seleccionar entre 1 y 5 géneros")
+                .Must(list => list.Distinct().Count() == list.Count)
+                .WithMessage("No puede haber géneros duplicados");
+
+            RuleFor(x => x.AuthorIds)
+                .NotEmpty().WithMessage("Debe seleccionar al menos un autor")
+                .Must(list => list.Count <= 10)
+                .WithMessage("No puede seleccionar más de 10 autores")
+                .Must(list => list.Distinct().Count() == list.Count)
+                .WithMessage("No puede haber autores duplicados");
+            
+            When(x => x.CoverFile != null, () =>
+            {
+                RuleFor(x => x.CoverFile!.Length)
+                    .Must(x => x <= FilesSettings.MaxFileSize)
+                    .WithMessage("La portada no puede superar los 2MB");
+
+                RuleFor(x => x.CoverFile!.ContentType)
+                    .Must(x => FilesSettings.AllowedImageExtensionsForUpload.Contains(x))
+                    .WithMessage("La portada debe ser una imagen (JPG, JPEG, PNG o WEBP)");
+            });
         }
     }
 
@@ -90,7 +108,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                         return await sender.SendAndValidateAsync(command, cancellationToken);
                     });
                 })
-                .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
+                .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
@@ -109,7 +127,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
     {
         public async Task<IApiResult> HandleAsync(CreateBookCommand request, CancellationToken cancellationToken = default)
         {
-            var normalizedName = request.Name.ToLower().Trim().Normalize();
+            var normalizedName = request.Name.NormalizeField();
 
             if (await context.Books.AnyAsync(b => b.NormalizedName == normalizedName, cancellationToken))
             {
@@ -133,22 +151,29 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
             }
 
 
-            if (request.CoverFile is not null)
+           
+
+
+
+            var insertion = await context.Books.AddAsync(Book.Create(request), cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
+            
+            if (insertion.Entity.Id != 0)
             {
-                if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers, request.Name.ToLower().Trim().Normalize()) is var result && result.Item1)
+                if (request.CoverFile is not null)
                 {
-                    request.CoverUrl = result.Item2;
-                }
-                else
-                {
-                    return ApiResult<BookResponse>.BuildFailure(HttpStatus.UnprocessableEntity, result.Item2);
+                    if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers, insertion.Entity.Id.ToString()) is var result && result.Item1)
+                    {
+                        insertion.Entity.CoverUrl = result.Item2;
+                        await context.SaveChangesAsync(cancellationToken);
+                    }
+                    else
+                    {
+                        return ApiResult<BookResponse>.BuildFailure(HttpStatus.UnprocessableEntity, result.Item2);
+                    }
                 }
             }
-
-
-
-            await context.Books.AddAsync(Book.Create(request), cancellationToken);
-            await context.SaveChangesAsync(cancellationToken);
+            
             context.ChangeTracker.Clear();
 
             var books = await context.Books.GetByFilterAsync(name: normalizedName, take: 1);

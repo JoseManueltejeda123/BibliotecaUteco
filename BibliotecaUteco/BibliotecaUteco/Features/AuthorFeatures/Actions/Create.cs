@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.DataAccess.DbSetsActions;
 using BibliotecaUteco.DataAccess.Models;
@@ -74,7 +75,7 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context) :
     public async Task<IApiResult> HandleAsync(CreateAuthorCommand request, CancellationToken cancellationToken = default)
     {
 
-        var normalizedName = request.FullName.Normalize().ToLower().Trim();
+        var normalizedName = request.FullName.NormalizeField();
         if (await context.Authors.AnyAsync(a => a.NormalizedFullName == normalizedName, cancellationToken))
         {
             return ApiResult<AuthorResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe este autor/a con este mismo nombre");

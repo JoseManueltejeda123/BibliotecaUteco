@@ -118,6 +118,7 @@
     --animate-spin: spin 1s linear infinite;
     --blur-md: 12px;
     --blur-lg: 16px;
+    --blur-xl: 24px;
     --default-transition-duration: 250ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -472,6 +473,9 @@
   .top-\[10\%\] {
     top: 10%;
   }
+  .top-\[10px\] {
+    top: 10px;
+  }
   .top-\[46\%\] {
     top: 46%;
   }
@@ -489,6 +493,9 @@
   }
   .right-\[10\%\] {
     right: 10%;
+  }
+  .right-\[10px\] {
+    right: 10px;
   }
   .right-full {
     right: 100%;
@@ -685,6 +692,14 @@
   }
   .aspect-square {
     aspect-ratio: 1 / 1;
+  }
+  .\!size-\[16px\] {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .\!size-\[18px\] {
+    width: 18px !important;
+    height: 18px !important;
   }
   .size-1 {
     width: calc(var(--spacing) * 1);
@@ -1592,6 +1607,12 @@
       background-color: color-mix(in oklab, var(--color-green-700) 50%, transparent);
     }
   }
+  .bg-green-700\/70 {
+    background-color: color-mix(in srgb, oklch(52.7% 0.154 150.069) 70%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-green-700) 70%, transparent);
+    }
+  }
   .bg-green-700\/80 {
     background-color: color-mix(in srgb, oklch(52.7% 0.154 150.069) 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1628,8 +1649,32 @@
   .bg-neutral-50 {
     background-color: var(--color-neutral-50);
   }
+  .bg-neutral-50\/90 {
+    background-color: color-mix(in srgb, oklch(98.5% 0 0) 90%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-50) 90%, transparent);
+    }
+  }
   .bg-neutral-100 {
     background-color: var(--color-neutral-100);
+  }
+  .bg-neutral-100\/60 {
+    background-color: color-mix(in srgb, oklch(97% 0 0) 60%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-100) 60%, transparent);
+    }
+  }
+  .bg-neutral-100\/80 {
+    background-color: color-mix(in srgb, oklch(97% 0 0) 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-100) 80%, transparent);
+    }
+  }
+  .bg-neutral-100\/90 {
+    background-color: color-mix(in srgb, oklch(97% 0 0) 90%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-100) 90%, transparent);
+    }
   }
   .bg-neutral-200 {
     background-color: var(--color-neutral-200);
@@ -1803,6 +1848,9 @@
   }
   .object-cover {
     object-fit: cover;
+  }
+  .\!p-1 {
+    padding: calc(var(--spacing) * 1) !important;
   }
   .p-0 {
     padding: calc(var(--spacing) * 0);
@@ -2288,6 +2336,11 @@
   }
   .backdrop-blur-md {
     --tw-backdrop-blur: blur(var(--blur-md));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .backdrop-blur-xl {
+    --tw-backdrop-blur: blur(var(--blur-xl));
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }

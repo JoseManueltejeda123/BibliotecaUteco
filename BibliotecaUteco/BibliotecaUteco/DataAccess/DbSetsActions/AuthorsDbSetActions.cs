@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
     {
         public static async Task<List<Author>> GetAuthorsByName(this DbSet<Author> authorsDbSet, string authorName, int take = 5)
         {
-            var normalized = authorName.Normalize().ToLower().Trim();
+            var normalized = authorName.NormalizeField();
             return await authorsDbSet.AsNoTracking().AsSplitQuery().Where(a => a.NormalizedFullName.ToLower().Contains(normalized)).OrderBy(a => a.Id).Take(take).Select(a => new Author()
             {
 

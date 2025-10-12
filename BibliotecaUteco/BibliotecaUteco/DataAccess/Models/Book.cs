@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.Features.BooksFeatures.Actions;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -33,7 +34,7 @@ public class Book : BaseEntity
     public static Book Create(CreateBookCommand command) => new()
     {
         Name = command.Name,
-        NormalizedName = command.Name.ToLower().Trim().Normalize(),
+        NormalizedName = command.Name.NormalizeField(),
         CoverUrl = command.CoverUrl,
         Sinopsis = command.Sinopsis,
         Stock = command.Stock,
@@ -41,6 +42,38 @@ public class Book : BaseEntity
         Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
          
     };
+
+
+    public bool Update(UpdateBookCommand command)
+    {
+        bool hasBeenUpdated = false;
+
+        if (Name != command.BookName)
+        {
+            Name = command.BookName;
+            NormalizedName = command.BookName.NormalizeField();
+            hasBeenUpdated = true;
+        }
+        
+        if(Sinopsis != command.Synopsis)
+        {
+            Sinopsis = command.Synopsis;
+            hasBeenUpdated = true;
+        }
+
+        if (Stock != command.Stock)
+        {
+            Stock = command.Stock;
+            hasBeenUpdated = true;
+        }
+        
+        if(hasBeenUpdated)
+        {
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        return hasBeenUpdated;
+    }
 
     public BookResponse ToResponse() => new()
     {

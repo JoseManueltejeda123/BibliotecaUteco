@@ -72,7 +72,7 @@ internal class GetAuthorsByNameEndpoint : IEndpoint
         public async Task<IApiResult> HandleAsync(GetAuthorsByNameCommand request, CancellationToken cancellationToken = default)
         {
 
-            var authors = await context.Authors.GetAuthorsByName(request.AuthorsName);
+            var authors = await context.Authors.GetAuthorsByName(request?.AuthorsName ?? "");
 
             return ApiResult<List<AuthorResponse>>.BuildSuccess(authors.Select(a => a.ToResponse()).ToList());
 

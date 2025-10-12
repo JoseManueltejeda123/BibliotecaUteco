@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.Features.GenreFeatures.Actions;
 
 namespace BibliotecaUteco.DataAccess.Models;
@@ -17,7 +18,7 @@ public class Genre : BaseEntity
     public static Genre Create(CreateGenreCommand command) => new()
     {
         Name = command.Name,
-        NormalizedName = command.Name.Trim().ToLower().Normalize()
+        NormalizedName = command.Name.NormalizeField()
     };
 
     public GenreResponse ToResponse() => new()

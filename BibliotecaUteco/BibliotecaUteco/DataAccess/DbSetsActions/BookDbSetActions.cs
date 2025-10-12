@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,8 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             }).FirstOrDefaultAsync();
         }
 
+        
+
         public static async Task<List<Book>> GetByFilterAsync(this DbSet<Book> dbSet, string? genreName = null, string? name = null, string? authorName = null, int skip = 0, int take = 10 )
         {
 
@@ -35,19 +38,19 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
             if (!string.IsNullOrWhiteSpace(genreName)) // ← Cambiado
             {
-                var normalizedGenre = genreName.ToLower().Trim().Normalize();
+                var normalizedGenre = genreName.NormalizeField();
                 query = query.Where(b => b.Genres.Any(g => g.Genre.NormalizedName.Contains(normalizedGenre)));
             }
 
             if (!string.IsNullOrWhiteSpace(name)) // ← Cambiado
             {
-                var normalizedName = name.ToLower().Trim().Normalize();
+                var normalizedName = name.NormalizeField();
                 query = query.Where(b => b.NormalizedName.Contains(normalizedName));
             }
             
             if (!string.IsNullOrWhiteSpace(authorName)) // ← Cambiado
             {
-                var normalizedAuthorName = authorName.ToLower().Trim().Normalize();
+                var normalizedAuthorName = authorName.NormalizeField();
                 query = query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName.Contains(normalizedAuthorName) ));
             }
                         

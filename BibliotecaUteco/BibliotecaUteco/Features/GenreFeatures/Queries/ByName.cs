@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.DataAccess.Models;
 using BibliotecaUteco.Helpers;
@@ -67,7 +68,7 @@ public class GetGenresByNameHandler(IBibliotecaUtecoDbContext context) : IComman
 {
     public async Task<IApiResult> HandleAsync(GetGenresByName request, CancellationToken cancellationToken = default)
     {
-        var normalizedName = request.GenreName?.ToLower().Normalize().Trim() ?? "";
+        var normalizedName = request.GenreName?.NormalizeField() ?? "";
         var genres = await context.Genres.Where(g => g.NormalizedName.Contains(normalizedName)).OrderBy(g => g.Id).Take(10).ToListAsync(cancellationToken);
 
         return ApiResult<List<GenreResponse>>.BuildSuccess(genres.Select(g => g.ToResponse()).ToList());
