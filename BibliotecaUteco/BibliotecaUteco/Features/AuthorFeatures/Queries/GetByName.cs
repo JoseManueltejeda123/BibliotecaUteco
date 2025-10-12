@@ -28,7 +28,9 @@ namespace BibliotecaUteco.Features.AuthorFeatures.Queries
         public GetAuthorsByNameCommandValidator()
         {
             RuleFor(x => x.AuthorsName)
-                .MaximumLength(30).WithMessage("El nombre del autor no puede superar los 30 caracteres");
+                .MaximumLength(30)
+                .When(x => !string.IsNullOrEmpty(x.AuthorsName))
+                .WithMessage("El nombre del autor no puede superar los 30 caracteres");
         }
     }
 
@@ -72,7 +74,7 @@ internal class GetAuthorsByNameEndpoint : IEndpoint
         public async Task<IApiResult> HandleAsync(GetAuthorsByNameCommand request, CancellationToken cancellationToken = default)
         {
 
-            var authors = await context.Authors.GetAuthorsByName(request?.AuthorsName ?? "");
+            var authors = await context.Authors.GetAuthorsByName(request.AuthorsName ?? "");
 
             return ApiResult<List<AuthorResponse>>.BuildSuccess(authors.Select(a => a.ToResponse()).ToList());
 

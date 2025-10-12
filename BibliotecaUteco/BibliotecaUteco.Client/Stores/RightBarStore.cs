@@ -18,6 +18,7 @@ public class RightBarStore
             SetUpdatedBook();
             SetBookToUpdate();
             SetCreatedBook();
+            SetBookDetails();
         }
     }
 
@@ -43,9 +44,11 @@ public class RightBarStore
         OnBookToUpdateChanged?.Invoke();
     }
     
+    
+    
      public BookResponse? UpdatedBook { get; set; } = null;
         
-        public event Action? OnUpdatedBookChanged ;
+     public event Action? OnUpdatedBookChanged ;
     
         public void SetUpdatedBook(BookResponse? book = null)
         {
@@ -54,6 +57,17 @@ public class RightBarStore
             if (book is null) return;
             OnUpdatedBookChanged?.Invoke();
         }
+        
+    public BookResponse? BookDetails { get; set; } = null;
+
+    public event Action? OnBookDetailsChanged ;
+
+    public void SetBookDetails(BookResponse? book = null)
+    {
+        BookDetails = book;
+        if (book is null) return;
+        OnBookDetailsChanged?.Invoke();
+    }
 }
 
 public enum RightBarView
@@ -61,4 +75,5 @@ public enum RightBarView
     Default,
     CreatingBook,
     UpdateBook,
+    BookDetails
 }

@@ -41,7 +41,7 @@ public class UpdateBookCommand : ICommand<IApiResult>
     
     [FromForm(Name = "authorIds"), JsonPropertyName("authorIds"), Description("Nuevos autores"),
      MaxLength(10), Required]
-    public List<int> AuthorIds { get; set; } = new();
+    public List<int>? AuthorIds { get; set; } 
     
     [FromForm(Name = "coverFile"), JsonPropertyName("coverFil"), Description("Nueva portada")]
      public IFormFile? CoverFile { get; set; } = null;
@@ -76,10 +76,9 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 .WithMessage("No puede haber géneros duplicados");
 
             RuleFor(x => x.AuthorIds)
-                .NotEmpty().WithMessage("Debe seleccionar al menos un autor")
-                .Must(list => list.Count <= 10)
+                .Must(list => list == null || list.Count <= 10)
                 .WithMessage("No puede seleccionar más de 10 autores")
-                .Must(list => list.Distinct().Count() == list.Count)
+                .Must(list => list == null || list.Distinct().Count() == list.Count)
                 .WithMessage("No puede haber autores duplicados");
 
             When(x => x.CoverFile != null, () =>
@@ -128,6 +127,10 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
          public async Task<IApiResult> HandleAsync(UpdateBookCommand request,
              CancellationToken cancellationToken = default)
          {
+             if(request.AuthorIds is null)
+             {
+                 request.AuthorIds = new();
+             }
              var normalizedName = request.BookName.NormalizeField();
              if (await context.Books.AnyAsync(b => b.NormalizedName == normalizedName && b.Id != request.BookId,
                      cancellationToken))

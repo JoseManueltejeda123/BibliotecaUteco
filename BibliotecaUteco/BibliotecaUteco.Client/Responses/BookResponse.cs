@@ -24,6 +24,8 @@ namespace BibliotecaUteco.Client.Responses
         public int Stock { get; set; }
 
         public int AvailableAmount { get; set; }
+        
+        public int ActiveLoansCount {get; set;}
 
     }
 }

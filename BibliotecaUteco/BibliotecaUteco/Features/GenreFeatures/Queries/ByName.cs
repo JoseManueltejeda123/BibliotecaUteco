@@ -31,7 +31,8 @@ public class GetGenresByNameValidator : AbstractValidator<GetGenresByName>
     public GetGenresByNameValidator()
     {
         RuleFor(x => x.GenreName)
-            .MaximumLength(25).WithMessage("El nombre del género no puede tener más de 25 caracteres.");
+            .MaximumLength(25).WithMessage("El nombre del género no puede tener más de 25 caracteres.")
+            .When(x => !string.IsNullOrEmpty(x.GenreName));
     }
 }
 

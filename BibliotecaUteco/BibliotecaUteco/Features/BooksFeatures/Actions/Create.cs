@@ -37,7 +37,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
         public string Synopsis { get; set; } = null!;
 
         [FromForm(Name = "authorIds"), JsonPropertyName("authorsIds"), Description("Id de los autores de este libro")]
-        public List<int> AuthorIds { get; set; } = new();
+        public List<int>? AuthorIds { get; set; } 
 
         [FromForm(Name = "genreIds"), JsonPropertyName("genreIds"), MinLength(1), MaxLength(5), Description("Id de los generos literarios de este libro")]
         public List<int> GenreIds { get; set; } = new();
@@ -73,11 +73,11 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .WithMessage("No puede haber géneros duplicados");
 
             RuleFor(x => x.AuthorIds)
-                .NotEmpty().WithMessage("Debe seleccionar al menos un autor")
-                .Must(list => list.Count <= 10)
+                .Must(list => list == null || list.Count <= 10)
                 .WithMessage("No puede seleccionar más de 10 autores")
-                .Must(list => list.Distinct().Count() == list.Count)
+                .Must(list => list == null || list.Distinct().Count() == list.Count)
                 .WithMessage("No puede haber autores duplicados");
+               
             
             When(x => x.CoverFile != null, () =>
             {
@@ -127,6 +127,10 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
     {
         public async Task<IApiResult> HandleAsync(CreateBookCommand request, CancellationToken cancellationToken = default)
         {
+            if(request.AuthorIds is null)
+            {
+                request.AuthorIds = new();
+            }
             var normalizedName = request.Name.NormalizeField();
 
             if (await context.Books.AnyAsync(b => b.NormalizedName == normalizedName, cancellationToken))

@@ -478,6 +478,9 @@
   .top-\[46\%\] {
     top: 46%;
   }
+  .top-\[100px\] {
+    top: 100px;
+  }
   .top-\[var\(--navbar-height\)\] {
     top: var(--navbar-height);
   }
@@ -553,6 +556,9 @@
   .z-\[-1\] {
     z-index: -1;
   }
+  .z-\[100\] {
+    z-index: 100;
+  }
   .z-\[999999\] {
     z-index: 999999;
   }
@@ -561,6 +567,9 @@
   }
   .m-0 {
     margin: calc(var(--spacing) * 0);
+  }
+  .mx-3 {
+    margin-inline: calc(var(--spacing) * 3);
   }
   .mx-auto {
     margin-inline: auto;
@@ -624,9 +633,6 @@
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
-  }
-  .mb-\[20px\] {
-    margin-bottom: 20px;
   }
   .mb-\[25px\] {
     margin-bottom: 25px;
@@ -800,6 +806,12 @@
   .h-\[10px\] {
     height: 10px;
   }
+  .h-\[40px\] {
+    height: 40px;
+  }
+  .h-\[200px\] {
+    height: 200px;
+  }
   .h-\[var\(--navbar-height\)\] {
     height: var(--navbar-height);
   }
@@ -907,9 +919,6 @@
   }
   .w-\[40\%\] {
     width: 40%;
-  }
-  .w-\[50\%\] {
-    width: 50%;
   }
   .w-\[60\%\] {
     width: 60%;
@@ -1223,6 +1232,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-x-hidden {
+    overflow-x: hidden;
   }
   .overflow-x-scroll {
     overflow-x: scroll;
@@ -1562,12 +1574,6 @@
       background-color: color-mix(in oklab, var(--color-green-700) 50%, transparent);
     }
   }
-  .bg-green-700\/70 {
-    background-color: color-mix(in srgb, oklch(52.7% 0.154 150.069) 70%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-green-700) 70%, transparent);
-    }
-  }
   .bg-green-700\/90 {
     background-color: color-mix(in srgb, oklch(52.7% 0.154 150.069) 90%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1734,6 +1740,14 @@
     --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-via-stops);
   }
+  .via-white\/70 {
+    --tw-gradient-via: color-mix(in srgb, #fff 70%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-gradient-via: color-mix(in oklab, var(--color-white) 70%, transparent);
+    }
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
   .to-danger {
     --tw-gradient-to: var(--lumex-danger);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
@@ -1760,6 +1774,10 @@
   }
   .to-warning {
     --tw-gradient-to: var(--lumex-warning);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .to-white {
+    --tw-gradient-to: var(--color-white);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .stroke-neutral-300 {
@@ -2071,9 +2089,6 @@
   .text-white {
     color: var(--color-white);
   }
-  .text-zinc-50 {
-    color: var(--color-zinc-50);
-  }
   .no-underline {
     text-decoration-line: none;
   }
@@ -2116,6 +2131,9 @@
   }
   .opacity-disabled {
     opacity: var(--lumex-opacity-disabled);
+  }
+  .mix-blend-difference {
+    mix-blend-mode: difference;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -2514,13 +2532,6 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         visibility: visible;
-      }
-    }
-  }
-  .group-hover\:block {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        display: block;
       }
     }
   }

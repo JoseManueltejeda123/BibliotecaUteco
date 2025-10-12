@@ -22,9 +22,9 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
     
     public class CreateGenreCommand : ICommand<IApiResult>
     {
-        [MaxLength(25, ErrorMessage = "El nombre del genero literario no puede tener más de 25 caracteres.")]
-        [MinLength(1, ErrorMessage = "El nombre del genero literario debe tener al menos 1 carácter.")]
-        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [MaxLength(25)]
+        [MinLength(1)]
+        [Required]
         [FromBody]
         [Description("El nombre del genero a crear")]
         [JsonPropertyName("name")]

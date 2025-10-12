@@ -33,6 +33,8 @@ public class Book : BaseEntity
 
     [NotMapped]
     public int AvailableAmount { get; set; }
+    [NotMapped]
+    public int ActiveLoansCount { get; set; }
 
     public static Book Create(CreateBookCommand command) => new()
     {
@@ -43,6 +45,7 @@ public class Book : BaseEntity
         Stock = command.Stock,
         Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
         Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
+        
          
     };
 
@@ -86,10 +89,11 @@ public class Book : BaseEntity
         Name = Name,
         CoverUrl = CoverUrl ?? "",
         Synopsis = Synopsis,
-        Authors = Authors.Select(a => a.ToResponse()).ToList(),
-        Genres = Genres.Select(g => g.ToResponse()).ToList(),
+        Authors = Authors.Select(a => a.ToResponse()).ToList() ?? new(),
+        Genres = Genres.Select(g => g.ToResponse()).ToList() ?? new(),
         Stock = Stock,
-        AvailableAmount = AvailableAmount
+        AvailableAmount = AvailableAmount,
+        ActiveLoansCount = ActiveLoansCount
 
 
     };

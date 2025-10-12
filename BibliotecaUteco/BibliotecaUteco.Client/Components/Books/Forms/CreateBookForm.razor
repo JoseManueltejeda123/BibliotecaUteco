@@ -1,29 +1,42 @@
 @using BibliotecaUteco.Client.Utilities
 @implements IDisposable
 
-<EditForm Model="CreateBookModel" OnValidSubmit="FetchCreateBookAsync"  class="w-full flex flex-col items-center gap-2">
+<EditForm Model="CreateBookModel"   class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     
+    <div class="relative w-full h-fit overflow-hidden">
+        @if (string.IsNullOrEmpty(BookCoverPrview) || CreateBookModel.CoverFile is null)
+        {
+            <div class="bg-neutral-300 w-full h-[200px] object-cover "></div>
+        }
+        else
+        {
+            <img src="@BookCoverPrview" class=" w-full h-[200px] object-cover  "/>
+
+        }
+        <div class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
+
+    </div>
     
-    @if (string.IsNullOrEmpty(BookCoverPrview) || CreateBookModel.CoverFile is null)
+   
+   
+        
+    @if(CreateBookModel.CoverFile is not null && !string.IsNullOrEmpty(BookCoverPrview))
     {
-        <button type="button" @onclick="TriggerFileInput" class="hover:bg-green-50 cursor-pointer w-[50%] aspect-[2/3] rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
-            <label class="text-sm text-green-700">Agregar portada</label>
-        </button>
+        <LumexButton Class="mx-3" Variant="Variant.Light" Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
     }
     else
     {
-        <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@BookCoverPrview"/>
-
-    }
         
-        @if(CreateBookModel.CoverFile is not null)
-        {
-            <LumexButton Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
-        }
+        <LumexButton Class="absolute  top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2" IconOnly="true" Color="ThemeColor.Primary" Variant="Variant.Light" Type="ButtonType.Button" OnClick="TriggerFileInput" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus-icon lucide-image-plus"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
+        </LumexButton>
+            
+    }
     <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
-    <div class="flex flex-col gap-3 w-full mt-2" >
+    
+    <div class="flex flex-col gap-2 px-3 py-3">
+         <div class="flex flex-col gap-3 w-full mt-2" >
         <LumexTextbox Type="@InputType.Text"
                       Behavior="InputBehavior.OnInput"
                       @bind-Value="@CreateBookModel.Name"
@@ -124,10 +137,12 @@
     }
     else
     {
-            <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Submit" Color="ThemeColor.Primary" Disabled="!context.Validate()">Registrar Libro</LumexButton>
+            <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Button" OnClick="FetchCreateBookAsync" Color="ThemeColor.Primary" Disabled="!context.Validate()">Registrar Libro</LumexButton>
 
     }
 
+    </div>
+   
 
 </EditForm>
 

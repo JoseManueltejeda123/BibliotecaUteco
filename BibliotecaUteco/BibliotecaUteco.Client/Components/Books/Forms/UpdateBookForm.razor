@@ -1,147 +1,162 @@
 @using BibliotecaUteco.Client.Utilities
-<EditForm Model="UpdateBookModel" Enhance="true" OnValidSubmit="FetchCreateBookAsync"  class="w-full flex flex-col items-center gap-2">
+<EditForm Model="UpdateBookModel" Enhance="true"   class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     
     
-    @if (!string.IsNullOrEmpty(_prevBookCover))
-    {
-        <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@_prevBookCover"/>
-
-    }
-    else
-    {
-        @if (string.IsNullOrEmpty(BookCoverPrview) || UpdateBookModel.CoverFile is null)
+    <div class="relative w-full h-fit overflow-hidden">
+        @if (!string.IsNullOrEmpty(_prevBookCover))
         {
-            <button type="button" @onclick="TriggerFileInput" class="hover:bg-green-50 cursor-pointer w-[50%] aspect-[2/3] rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
-                <label class="text-sm text-green-700">Agregar portada</label>
-            </button>
+            <img src="@_prevBookCover" class=" w-full h-[200px] object-cover  "/>
+
         }
         else
         {
-            <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@BookCoverPrview"/>
+            if (string.IsNullOrEmpty(BookCoverPrview) || UpdateBookModel.CoverFile is null)
+            {
+                <div class="bg-neutral-300 w-full h-[200px] object-cover "></div>
+            }
+            else
+            {
+                <img src="@BookCoverPrview" class=" w-full h-[200px] object-cover  "/>
 
+            }
         }
-    }
+        
+        <div class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
+
+    </div>
+   
     
     
     @if (!string.IsNullOrEmpty(_prevBookCover))
     {
-        <LumexButton Type="ButtonType.Button" OnClick="RemovePrevCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+        <LumexButton Class="mx-3" Variant="Variant.Light" Type="ButtonType.Button" OnClick="RemovePrevCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
 
     }
     else{
             @if(UpdateBookModel.CoverFile is not null)
             {
-                <LumexButton Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+                <LumexButton Class="mx-3" Variant="Variant.Light"  Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+            }
+            else
+            {
+        
+                <LumexButton Class="absolute top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2" IconOnly="true" Color="ThemeColor.Primary" Variant="Variant.Light" Type="ButtonType.Button" OnClick="TriggerFileInput" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus-icon lucide-image-plus"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
+                </LumexButton>
+            
             }
     }
        
     <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
-    <div class="flex flex-col gap-3 w-full mt-2" >
-        <LumexTextbox Type="@InputType.Text"
-                      Behavior="InputBehavior.OnInput"
-                      @bind-Value="@UpdateBookModel.BookName"
-                      Label="Nombre del libro"
-                      Placeholder="Ej. 100 años de soledad"
-                      EndContent="@_titleIcon"
-                      LabelPlacement="@LabelPlacement.Outside"
-                      Required="true"
-        />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.BookName)"/></span>
+    
+    <div class="flex flex-col gap-2 px-3">
+        <div class="flex flex-col gap-3 w-full mt-2" >
+            <LumexTextbox Type="@InputType.Text"
+                          Behavior="InputBehavior.OnInput"
+                          @bind-Value="@UpdateBookModel.BookName"
+                          Label="Nombre del libro"
+                          Placeholder="Ej. 100 años de soledad"
+                          EndContent="@_titleIcon"
+                          LabelPlacement="@LabelPlacement.Outside"
+                          Required="true"
+            />
+            <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.BookName)"/></span>
 
-    </div>
-    <div class="flex flex-col gap-3 w-full">
-        <label for="book synopsis" class="text-sm">Synopsis o descripción</label>
-        <textarea 
-                        class="bg-neutral-200/50 max-w-full rounded-lg p-2 text-sm outline-none resize-none  min-h-[6rem]"
-                        name="book synopsis"
-                        @bind="@UpdateBookModel.Synopsis"
-                        placeholder="Una breve descripcion de la historia o de que trata el libro"
-                        required="@true"
-                        maxlength="500"
+        </div>
+        <div class="flex flex-col gap-3 w-full">
+            <label for="book synopsis" class="text-sm">Synopsis o descripción</label>
+            <textarea
+                class="bg-neutral-200/50 max-w-full rounded-lg p-2 text-sm outline-none resize-none  min-h-[6rem]"
+                name="book synopsis"
+                @bind="@UpdateBookModel.Synopsis"
+                placeholder="Una breve descripcion de la historia o de que trata el libro"
+                required="@true"
+                maxlength="500"
 
-                        minlength="10"></textarea>
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Synopsis)"/></span>
+                minlength="10"></textarea>
+            <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Synopsis)"/></span>
 
-    </div>
-    <div class="flex flex-col gap-3 w-full">
-        <LumexNumbox TValue="@int"
-                     Label="Copias"
-                     @bind-Value="UpdateBookModel.Stock"
-                    Behavior="InputBehavior.OnInput"
-                     LabelPlacement="LabelPlacement.Outside"
-                     Placeholder="Cantidad de copias"
-                     Class="max-w-xs"
-                     min="1"
-                     max="@int.MaxValue"
-                     step="1" />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Stock)"/></span>
+        </div>
+        <div class="flex flex-col gap-3 w-full">
+            <LumexNumbox TValue="@int"
+                         Label="Copias"
+                         @bind-Value="UpdateBookModel.Stock"
+                         Behavior="InputBehavior.OnInput"
+                         LabelPlacement="LabelPlacement.Outside"
+                         Placeholder="Cantidad de copias"
+                         Class="max-w-xs"
+                         min="1"
+                         max="@int.MaxValue"
+                         step="1" />
+            <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Stock)"/></span>
 
-    </div>
-    <SidebarSectionDivider Name="Generos literarios"/>
-    <div class="flex flex-col gap-3 w-full">
-        <p class="text-xs">Máximo 5 generos y literarios minimo 1.</p>
+        </div>
+        <SidebarSectionDivider Name="Generos literarios"/>
+        <div class="flex flex-col gap-3 w-full">
+            <p class="text-xs">Máximo 5 generos y literarios minimo 1.</p>
 
 
-        <div class="w-full gap-2 items-center flex flex-wrap">
-               
-            @if (UpdateBookModel.Genres.Count < 5)
-            {
+            <div class="w-full gap-2 items-center flex flex-wrap">
+
+                @if (UpdateBookModel.Genres.Count < 5)
+                {
                 <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
                     <LumexChip Variant="ChipVariant.Outlined">Agregar Genero</LumexChip>
                 </GenresDropdown>
-            }
-            @foreach (var genre in UpdateBookModel.Genres)
-            {
+                }
+                @foreach (var genre in UpdateBookModel.Genres)
+                {
 
                 <LumexChip  OnClose="() => { RemoveGenre(genre);}">@genre.Name</LumexChip>
-            }
-                    
-            
-                  
+                }
+
+
+
+            </div>
+
+
+
         </div>
+        <SidebarSectionDivider Name="Autores"/>
 
-            
-       
-    </div>
-    <SidebarSectionDivider Name="Autores"/>
+        <div class="flex flex-col gap-3 w-full">
+            <p class="text-xs">Máximo 10 autores.</p>
 
-    <div class="flex flex-col gap-3 w-full">
-        <p class="text-xs">Máximo 10 autores.</p>
-
-        <div class="w-full gap-2 items-center flex flex-wrap">
-            @if (UpdateBookModel.Authors.Count < 10)
-            {
+            <div class="w-full gap-2 items-center flex flex-wrap">
+                @if (UpdateBookModel.Authors.Count < 10)
+                {
                 <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
                     <button type="button"  class="hover:bg-green-50 cursor-pointer w-full rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2 p-2">
                         <label class="text-sm text-green-700">Agregar Autor</label>
                     </button>
                 </AuthorsDropdown>
-            }
-            @foreach (var author in UpdateBookModel.Authors)
-            {
-                
+                }
+                @foreach (var author in UpdateBookModel.Authors)
+                {
+
                 <AuthorCard ShowRemoveButton="@true" OnRemove="RemoveAuthor" Author="@author" />
-            }
-                    
-            
-                  
+                }
+
+
+
+            </div>
+
+
+
         </div>
-        
-            
-       
-    </div>
 
-    @if(_updatingBook)
-    {
+        @if(_updatingBook)
+        {
         <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
-    }
-    else
-    {
-            <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Submit" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
+        }
+        else
+        {
+            <LumexButton Class="w-full mt-[20px]" Onclick="FetchCreateBookAsync" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
 
-    }
+        }
+    </div>
+   
 
 
 </EditForm>

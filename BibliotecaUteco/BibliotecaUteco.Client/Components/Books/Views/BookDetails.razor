@@ -1,0 +1,60 @@
+@using BibliotecaUteco.Client.Utilities
+<div class="flex w-full absolute flex-col">
+    <div class="relative w-full h-fit overflow-hidden">
+        @if (string.IsNullOrEmpty(Book.CoverUrl))
+        {
+            <div class="bg-black w-full h-[200px] object-cover "></div>
+        }
+        else
+        {
+            <img src="@Book.CoverUrl" class=" w-full h-[200px] object-cover  "/>
+
+        }
+        <div class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
+
+    </div>
+  
+    <div class="flex flex-col px-3 py-3 gap-2">
+        <div class="flex flex-col gap-2 ">
+            <p class="text-md font-semibold">@Book.Name</p>
+            <p class="text-[13px] font-normal"><strong>Sinopsis: </strong>@Book.Synopsis</p>
+        </div>
+        <SidebarSectionDivider Name="Autores"/>
+        <div class="flex flex-col gap-1">
+            @foreach(var author in Book.Authors.Select(x => x.Author))
+            {
+                <AuthorCard ShowBooksCount="false" ShowRemoveButton="false" Author="author"/>
+            }
+        </div>
+        <SidebarSectionDivider Name="Géneros literarios"/>
+        <div class="flex flex-wrap gap-3 items-center">
+            @foreach (var genre in Book.Genres.Select(g => g.Genre))
+            {
+                <LumexChip Color="RandomColorHelper.GetRandomColor()">@genre.Name</LumexChip>
+
+            }
+        </div>
+        <SidebarSectionDivider Name="Mas detalles"/>
+        <div class="flex flex-col gap-2 text-[13px] ">
+            
+            <p><strong>Disponibles: </strong>@Book.AvailableAmount Copias</p>
+            <p><strong>Activo en: </strong>@Book.ActiveLoansCount Prestamos</p>
+        </div>
+    </div>
+    </div>
+    
+      
+    
+
+@code {
+    public BookResponse Book { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        if (RightBarContext.BookDetails is not null)
+        {
+            Book = RightBarContext.BookDetails;
+        }
+    }
+
+}

@@ -1,16 +1,18 @@
 @implements  IDisposable
 
-<aside class=@($"fixed max-md:z-50 border right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[300px] bg-white   flex flex-col items-center py-5 px-3  border-l border-neutral-300 gap-3")>
-    <div class="w-full flex justify-between font-semibold text-sm mb-[20px] items-center">
+<aside class=@($"fixed overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[300px] bg-white   flex flex-col items-center  border-l border-neutral-300")>
+    <div class="w-full flex sticky top-0  mix-blend-difference px-3 backdrop-blur-md justify-between font-semibold text-white text-sm z-[100] items-center">
         @(RightBarContext.View switch
         {
             
-            RightBarView.CreatingBook => "Registrar Libro",
-                RightBarView.UpdateBook => "Actualizar Libro",
+            RightBarView.CreatingBook => "Registrar Libro",     
+            RightBarView.UpdateBook => "Actualizar Libro",
+            RightBarView.BookDetails => "Acerca del libro",
+
             _ => ""
         })
         <IconButton OnClick="Close" Small="@true" Class="" TooltipText="Cerrar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 
         </IconButton>
     </div>
@@ -22,6 +24,10 @@
     else if (RightBarContext.View == RightBarView.UpdateBook)
     {
         <UpdateBookForm/>
+    }
+    else if(RightBarContext.View == RightBarView.BookDetails)
+    {
+        <BookDetails/>
     }
 </aside>
 @code {

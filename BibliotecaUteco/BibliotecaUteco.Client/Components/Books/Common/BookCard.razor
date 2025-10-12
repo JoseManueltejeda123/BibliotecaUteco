@@ -14,15 +14,16 @@
 
                
 
-                <LumexDropdownItem OnClick="SetBookToUpdate" Id="EditarLibro" >
+                    <LumexDropdownItem OnClick="SetBookToUpdate" Id="EditarLibro" >
+                        <StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-book-image-icon lucide-book-image"><path d="m20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="10" cy="8" r="2"/></svg>
+                        </StartContent>
+                        <ChildContent>Editar Libro</ChildContent>
+                    </LumexDropdownItem>
+                    
+                <LumexDropdownItem OnClick="SetBookDetails"  Id="VerDetalles">
                     <StartContent>
-                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-book-image-icon lucide-book-image"><path d="m20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="10" cy="8" r="2"/></svg>
-                    </StartContent>
-                    <ChildContent>Editar Libro</ChildContent>
-                </LumexDropdownItem>
-                <LumexDropdownItem  Id="VerDetalles" >
-                    <StartContent>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-badge-info-icon lucide-badge-info"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>                    </StartContent>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-badge-info-icon lucide-badge-info"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg> </StartContent>
                     <ChildContent>Ver detalles</ChildContent>
                 </LumexDropdownItem>
                 
@@ -66,8 +67,8 @@
         }
 
         <LumexCardFooter Blurred="@true" Class="absolute z-10 bottom-0 bg-orange-100/30">
-            <div class="flex flex-col flex-grow gap-1 text-small text-zinc-50">
-                <p class="font-semibold line-clamp-1">@Book.Name</p>
+            <div class="flex flex-col flex-grow gap-1 text-small   text-white">
+                <p class="font-semibold line-clamp-1 ">@Book.Name</p>
                 <p class="font-medium line-clamp-1 text-xs">
 
 
@@ -118,6 +119,12 @@
     {
         RightBarContext.SetBookToUpdate(Book);
         RightBarContext.SetView(RightBarView.UpdateBook);
+    }
+    
+    public void SetBookDetails()
+    {
+        RightBarContext.SetBookDetails(Book);
+        RightBarContext.SetView(RightBarView.BookDetails);
     }
 
 }

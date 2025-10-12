@@ -24,7 +24,8 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 Genres = b.Genres,
                 Stock = b.Stock,
                 CoverUrl = b.CoverUrl,
-                AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null)
+                AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null),
+                ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null)
 
 
             }).FirstOrDefaultAsync(token);
@@ -66,7 +67,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 CoverUrl = b.CoverUrl,
                 Genres = b.Genres,
                 Stock = b.Stock,
-                AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null)
+                AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null),
+                ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null)
+
 
 
             }).ToListAsync(token);

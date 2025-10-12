@@ -5,8 +5,11 @@
         <div class="flex flex-col">
             <p class="text-sm font-semibold line-clamp-1 text-ellipsis overflow-hidden">@Author.FullName</p>
         
-        
-            <label class="opacity-80 text-xs line-clamp-1 text-ellipsis overflow-hidden">@Author.BooksCount libros registrados</label>
+            @if(ShowBooksCount)
+            {
+                <label class="opacity-80 text-xs line-clamp-1 text-ellipsis overflow-hidden">@Author.BooksCount libros registrados</label>
+
+            }
         </div>
     </div>
    
@@ -41,6 +44,7 @@
     [Parameter] public AuthorResponse Author { get; set; } = new();
     [Parameter] public EventCallback<AuthorResponse> OnClicked {get; set;}
     [Parameter] public EventCallback<AuthorResponse> OnRemove {get; set;}
+    [Parameter] public bool ShowBooksCount {get; set;} = true;
 
     [Parameter] public bool ShowRemoveButton {get; set;} = false;
 
