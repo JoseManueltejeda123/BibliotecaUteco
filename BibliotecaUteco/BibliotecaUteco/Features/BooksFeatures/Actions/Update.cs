@@ -28,8 +28,12 @@ public class UpdateBookCommand : ICommand<IApiResult>
     [FromForm(Name="synopsis"), JsonPropertyName("synopsis"), Description("Nueva sinopsis"), Required, MinLength(10), MaxLength(500)]
     public string Synopsis { get; set; } = null!;
     
-    [FromForm(Name = "stock"), JsonPropertyName("stock"), Description("Nuevo stocl"), Required, MinLength(10)]
+    [FromForm(Name = "stock"), JsonPropertyName("stock"), Description("Nuevo stocl"), Required, Range(1, int.MaxValue)]
     public int Stock { get; set; }
+
+    [FromForm(Name = "removeCover"), JsonPropertyName("removeCover"),
+     Description("Indica si la portada debe de ser actualizada o eliminada"), Required, MinLength(10)]
+    public bool RemoveCover { get; set; } = false;
 
     [FromForm(Name = "genreIds"), JsonPropertyName("genreIds"), Description("Nuevos generos"), MinLength(1),
      MaxLength(5), Required]
@@ -62,7 +66,7 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 .MaximumLength(500).WithMessage("La sinopsis no puede superar los 500 caracteres");
 
             RuleFor(x => x.Stock)
-                .GreaterThanOrEqualTo(0).WithMessage("El stock debe ser mayor o igual a 0");
+                .GreaterThanOrEqualTo(1).WithMessage("El stock debe ser mayor o igual a 1");
 
             RuleFor(x => x.GenreIds)
                 .NotEmpty().WithMessage("Debe seleccionar al menos un género")
@@ -139,9 +143,41 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                      "No pudimos encotrar el libro a actualizar");
              }
 
+
+             if (request.CoverFile is not null)
+             {
+                 if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers,
+                         bookToUpdate.Id.ToString()) is var result && !result.Item1)
+                 {
+                     return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+
+                 }
+                 
+                 bookToUpdate.CoverUrl = result.Item2;
+                 
+                 
+             }
+             else if(request.RemoveCover)
+             {
+                
+                 if (!string.IsNullOrEmpty(bookToUpdate.CoverUrl))
+                 {
+                     if ( fileUploadService.DeleteFile(bookToUpdate.CoverUrl,
+                             EnvFolders.BookCovers) is var result && !result.Item1)
+                     {
+
+                         return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+                     }
+                     
+                     bookToUpdate.CoverUrl = null;
+                     
+
+                 }
+             }
+             
+             bookToUpdate.Update(request);
              await context.GenreBooks.SyncGenreBooksAsync(bookToUpdate.Id, request.GenreIds, cancellationToken);
              await context.BookAuthors.SyncBookAuthorsAsync(bookToUpdate.Id, request.AuthorIds, cancellationToken);
-             bookToUpdate.Update(request);
              await context.SaveChangesAsync(cancellationToken);
              context.ChangeTracker.Clear();
              

@@ -1,39 +1,54 @@
 @using BibliotecaUteco.Client.Utilities
-@implements IDisposable
-
-<EditForm Model="CreateBookModel" OnValidSubmit="FetchCreateBookAsync"  class="w-full flex flex-col items-center gap-2">
+<EditForm Model="UpdateBookModel" Enhance="true" OnValidSubmit="FetchCreateBookAsync"  class="w-full flex flex-col items-center gap-2">
     <DataAnnotationsValidator/>
     
     
-    @if (string.IsNullOrEmpty(BookCoverPrview) || CreateBookModel.CoverFile is null)
+    @if (!string.IsNullOrEmpty(_prevBookCover))
     {
-        <button type="button" @onclick="TriggerFileInput" class="hover:bg-green-50 cursor-pointer w-[50%] aspect-[2/3] rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
-            <label class="text-sm text-green-700">Agregar portada</label>
-        </button>
+        <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@_prevBookCover"/>
+
     }
     else
     {
-        <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@BookCoverPrview"/>
+        @if (string.IsNullOrEmpty(BookCoverPrview) || UpdateBookModel.CoverFile is null)
+        {
+            <button type="button" @onclick="TriggerFileInput" class="hover:bg-green-50 cursor-pointer w-[50%] aspect-[2/3] rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+                <label class="text-sm text-green-700">Agregar portada</label>
+            </button>
+        }
+        else
+        {
+            <img class="object-cover  w-[50%] aspect-[2/3] rounded-lg" src="@BookCoverPrview"/>
+
+        }
+    }
+    
+    
+    @if (!string.IsNullOrEmpty(_prevBookCover))
+    {
+        <LumexButton Type="ButtonType.Button" OnClick="RemovePrevCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
 
     }
-        
-        @if(CreateBookModel.CoverFile is not null)
-        {
-            <LumexButton Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
-        }
+    else{
+            @if(UpdateBookModel.CoverFile is not null)
+            {
+                <LumexButton Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+            }
+    }
+       
     <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
     <div class="flex flex-col gap-3 w-full mt-2" >
         <LumexTextbox Type="@InputType.Text"
                       Behavior="InputBehavior.OnInput"
-                      @bind-Value="@CreateBookModel.Name"
+                      @bind-Value="@UpdateBookModel.BookName"
                       Label="Nombre del libro"
                       Placeholder="Ej. 100 años de soledad"
                       EndContent="@_titleIcon"
                       LabelPlacement="@LabelPlacement.Outside"
                       Required="true"
         />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Name)"/></span>
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.BookName)"/></span>
 
     </div>
     <div class="flex flex-col gap-3 w-full">
@@ -41,19 +56,19 @@
         <textarea 
                         class="bg-neutral-200/50 max-w-full rounded-lg p-2 text-sm outline-none resize-none  min-h-[6rem]"
                         name="book synopsis"
-                        @bind="@CreateBookModel.Synopsis"
+                        @bind="@UpdateBookModel.Synopsis"
                         placeholder="Una breve descripcion de la historia o de que trata el libro"
                         required="@true"
                         maxlength="500"
 
                         minlength="10"></textarea>
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Synopsis)"/></span>
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Synopsis)"/></span>
 
     </div>
     <div class="flex flex-col gap-3 w-full">
         <LumexNumbox TValue="@int"
                      Label="Copias"
-                     @bind-Value="CreateBookModel.Stock"
+                     @bind-Value="UpdateBookModel.Stock"
                     Behavior="InputBehavior.OnInput"
                      LabelPlacement="LabelPlacement.Outside"
                      Placeholder="Cantidad de copias"
@@ -61,7 +76,7 @@
                      min="1"
                      max="@int.MaxValue"
                      step="1" />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Stock)"/></span>
+        <span class="text-xs text-red-700"><ValidationMessage For="@(() => UpdateBookModel.Stock)"/></span>
 
     </div>
     <SidebarSectionDivider Name="Generos literarios"/>
@@ -71,13 +86,13 @@
 
         <div class="w-full gap-2 items-center flex flex-wrap">
                
-            @if (CreateBookModel.Genres.Count < 5)
+            @if (UpdateBookModel.Genres.Count < 5)
             {
                 <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
                     <LumexChip Variant="ChipVariant.Outlined">Agregar Genero</LumexChip>
                 </GenresDropdown>
             }
-            @foreach (var genre in CreateBookModel.Genres)
+            @foreach (var genre in UpdateBookModel.Genres)
             {
 
                 <LumexChip  OnClose="() => { RemoveGenre(genre);}">@genre.Name</LumexChip>
@@ -96,7 +111,7 @@
         <p class="text-xs">Máximo 10 autores.</p>
 
         <div class="w-full gap-2 items-center flex flex-wrap">
-            @if (CreateBookModel.Authors.Count < 10)
+            @if (UpdateBookModel.Authors.Count < 10)
             {
                 <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
                     <button type="button"  class="hover:bg-green-50 cursor-pointer w-full rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2 p-2">
@@ -104,7 +119,7 @@
                     </button>
                 </AuthorsDropdown>
             }
-            @foreach (var author in CreateBookModel.Authors)
+            @foreach (var author in UpdateBookModel.Authors)
             {
                 
                 <AuthorCard ShowRemoveButton="@true" OnRemove="RemoveAuthor" Author="@author" />
@@ -118,13 +133,13 @@
        
     </div>
 
-    @if(_creatingBook)
+    @if(_updatingBook)
     {
         <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
     }
     else
     {
-            <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Submit" Color="ThemeColor.Primary" Disabled="!context.Validate()">Registrar Libro</LumexButton>
+            <LumexButton Class="w-full mt-[20px]" Type="ButtonType.Submit" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
 
     }
 
@@ -147,9 +162,10 @@
 @code{
 
 
-    public bool _creatingBook {get; set;} = false;
+    public string _prevBookCover { get; set; } = "";
+    public bool _updatingBook {get; set;} = false;
     public RenderFragment _titleIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-300 lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>;
-    public CreateBookRequest CreateBookModel {get; set;} = new();
+    public UpdateBookRequest UpdateBookModel {get; set;} = new();
 
 
     [Required(ErrorMessage = "Debe seleccionar al menos un género literario.")]
@@ -167,38 +183,55 @@
 }
 
 @functions{
+    
+    protected override void OnInitialized()
+    {
+        if (RightBarContext.BookToUpdate is var book && book is not null)
+        {
+            UpdateBookModel.BookId = book.Id;
+            UpdateBookModel.BookName = book.Name;
+            UpdateBookModel.Authors = book.Authors.Select(x => x.Author).ToList();
+            UpdateBookModel.Genres = book.Genres.Select(x => x.Genre).ToList();
+            UpdateBookModel.Stock = book.Stock;
+            UpdateBookModel.Synopsis = book.Synopsis;
+            _prevBookCover = book.CoverUrl ?? "";
+            
+            StateHasChanged();
+
+        }
+    }
 
     public void HandleOnGenreSelected(GenreResponse genre){
 
-        if(CreateBookModel.Genres.Any(g => g.Id == genre.Id)){
+        if(UpdateBookModel.Genres.Any(g => g.Id == genre.Id)){
             return;
         }
-        CreateBookModel.Genres.Insert(0, genre);
+        UpdateBookModel.Genres.Insert(0, genre);
     }
 
     public void RemoveGenre(GenreResponse genre){
-        var remove = CreateBookModel.Genres.FirstOrDefault(g => g.Id == genre.Id);
+        var remove = UpdateBookModel.Genres.FirstOrDefault(g => g.Id == genre.Id);
 
         if(remove is not null)
         {
-        CreateBookModel.Genres.Remove(remove);
+        UpdateBookModel.Genres.Remove(remove);
         }
     }
 
      public void HandleOnAuthorSelected(AuthorResponse author){
 
-        if(CreateBookModel.Authors.Any(a => a.Id == author.Id)){
+        if(UpdateBookModel.Authors.Any(a => a.Id == author.Id)){
             return;
         }
-     CreateBookModel.Authors.Insert(0, author);
+     UpdateBookModel.Authors.Insert(0, author);
     }
 
     public void RemoveAuthor(AuthorResponse author){
-        var remove = CreateBookModel.Authors.FirstOrDefault(g => g.Id == author.Id);
+        var remove = UpdateBookModel.Authors.FirstOrDefault(g => g.Id == author.Id);
 
         if(remove is not null)
         {
-            CreateBookModel.Authors.Remove(remove);
+            UpdateBookModel.Authors.Remove(remove);
         }
     }
 
@@ -206,20 +239,21 @@
     public async Task FetchCreateBookAsync()
     {
 
-        _creatingBook = true;
+        _updatingBook = true;
         StateHasChanged();
        
-
-        var result = await BooksApiServices.CreateBookAsync(CreateBookModel);
+        UpdateBookModel.RemoveCover = string.IsNullOrEmpty(_prevBookCover) && UpdateBookModel.CoverFile is null;
+        var result = await BooksApiServices.UpdateBookAsync(UpdateBookModel);
 
         if (result.IsSuccessful())
         {   
-            Toast.Success("Libro registrado con exito");
-            
-            RightBarContext.SetCreatedBook(result.Data);
+            Toast.Success("Libro actualizado con exito");
+
+            RightBarContext.SetUpdatedBook(result.Data);
+            RightBarContext.SetView();
             Clear();
         }
-        _creatingBook = false;
+        _updatingBook = false;
     
         StateHasChanged();
 
@@ -227,7 +261,7 @@
 
     public void Clear()
     {
-        CreateBookModel = new();
+        UpdateBookModel = new();
        
         BookCoverPrview = null;
     }
@@ -245,20 +279,25 @@
             return;
         }
 
-        CreateBookModel.CoverFile = result.Item1;
+        UpdateBookModel.CoverFile = result.Item1;
         BookCoverPrview = result.Item2;
 
     }
 
     public void Dispose()
     {
-        CreateBookModel = new();
+        UpdateBookModel = new();
         BookCoverPrview = null;
+    }
+
+    public void RemovePrevCover()
+    {
+        _prevBookCover = "";
     }
 
     public void RemoveCover()
     {
-        CreateBookModel.CoverFile = null;
+        UpdateBookModel.CoverFile = null;
         BookCoverPrview = null;
     }
     

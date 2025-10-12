@@ -20,7 +20,7 @@ public class Book : BaseEntity
     [Url,  Column("UrlPortada")]
     public string? CoverUrl { get; set; }
 
-    [MaxLength(500), MinLength(10), Required,  Column("Sinopsis")]
+    [MaxLength(500), MinLength(10), Required,  Column("Synopsis")]
     public string Synopsis { get; set; } = null!;
     
     public List<BookAuthor> Authors { get; set; } = new();
@@ -39,7 +39,7 @@ public class Book : BaseEntity
         Name = command.Name,
         NormalizedName = command.Name.NormalizeField(),
         CoverUrl = command.CoverUrl,
-        Synopsis = command.Sinopsis,
+        Synopsis = command.Synopsis,
         Stock = command.Stock,
         Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
         Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
@@ -85,7 +85,7 @@ public class Book : BaseEntity
         UpdatedAt = UpdatedAt,
         Name = Name,
         CoverUrl = CoverUrl ?? "",
-        Sinopsis = Synopsis,
+        Synopsis = Synopsis,
         Authors = Authors.Select(a => a.ToResponse()).ToList(),
         Genres = Genres.Select(g => g.ToResponse()).ToList(),
         Stock = Stock,

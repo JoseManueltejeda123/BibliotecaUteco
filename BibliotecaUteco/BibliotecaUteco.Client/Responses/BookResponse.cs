@@ -15,7 +15,7 @@ namespace BibliotecaUteco.Client.Responses
         public string? CoverUrl { get; set; }
         
         [MaxLength(500), MinLength(10), Required]
-        public string Sinopsis { get; set; } = null!;
+        public string Synopsis { get; set; } = null!;
         
         public List<BookAuthorResponse> Authors { get; set; } = new();
         

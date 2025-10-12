@@ -29,5 +29,12 @@
       <Folder Include="Utilities\" />
       <Folder Include="wwwroot\lib\" />
     </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_100 Años de Soledad.webp" />
+      <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_Choque de Reyes_9788401032431.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_Fuego y Sangre.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_Harry Potter y Las Reliquias de la Muerte_deathly-hallows-us-childrens-edition.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_Juego de Tronos_Juego-de-tronos.jpg" />
+    </ItemGroup>
 
 </Project>

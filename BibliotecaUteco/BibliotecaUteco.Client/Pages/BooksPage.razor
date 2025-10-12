@@ -84,13 +84,13 @@
             </div>
             @if (_hasMore)
             {
-                <LumexButton Color="ThemeColor.Primary" >
+                <LumexButton Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary" >
                     Obtener Más
                 </LumexButton>
             }
             else
             {
-                <NoResultsFound/>
+                <NoResultsFound />
             }
 
     
@@ -111,6 +111,7 @@
     protected override void OnInitialized()
     {
         RightBarContext.OnCreatedBookChanged += HandleBookCreated;
+        RightBarContext.OnUpdatedBookChanged += HandleBookUpdated;
     }
 
     public void HandleBookCreated()
@@ -123,10 +124,30 @@
           
         }
     }
+    
+    public void HandleBookUpdated()
+    {
+        if (RightBarContext.UpdatedBook is var book && book is not null)
+        {
+            var toReplace = Books.Find(b => b.Id == book.Id);
+            
+            if(toReplace is null) return;
+            var index = Books.IndexOf(toReplace);
+            
+            if(index < 0) return;
+
+            Books[index] = book;
+            StateHasChanged();
+            RightBarContext.SetBookToUpdate();
+            RightBarContext.SetUpdatedBook();
+          
+        }
+    }
 
     public void Dispose()
     {
         RightBarContext.OnCreatedBookChanged -= HandleBookCreated;
+        RightBarContext.OnUpdatedBookChanged -= HandleBookUpdated;
 
     }
 

@@ -23,6 +23,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 Authors = b.Authors,
                 Genres = b.Genres,
                 Stock = b.Stock,
+                CoverUrl = b.CoverUrl,
                 AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null)
 
 

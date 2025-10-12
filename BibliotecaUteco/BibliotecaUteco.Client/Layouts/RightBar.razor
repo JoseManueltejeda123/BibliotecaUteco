@@ -6,6 +6,7 @@
         {
             
             RightBarView.CreatingBook => "Registrar Libro",
+                RightBarView.UpdateBook => "Actualizar Libro",
             _ => ""
         })
         <IconButton OnClick="Close" Small="@true" Class="" TooltipText="Cerrar">
@@ -17,6 +18,10 @@
     @if (RightBarContext.View == RightBarView.CreatingBook)
     {
         <CreateBookForm/>
+    }
+    else if (RightBarContext.View == RightBarView.UpdateBook)
+    {
+        <UpdateBookForm/>
     }
 </aside>
 @code {

@@ -12,6 +12,13 @@ public class RightBarStore
     {
         View = view;
         OnViewChanged?.Invoke();
+
+        if (view == RightBarView.Default)
+        {
+            SetUpdatedBook();
+            SetBookToUpdate();
+            SetCreatedBook();
+        }
     }
 
     public BookResponse? CreatedBook { get; set; } = null;
@@ -21,12 +28,37 @@ public class RightBarStore
     public void SetCreatedBook(BookResponse? book = null)
     {
         CreatedBook = book;
+        if (book is null) return;
         OnCreatedBookChanged?.Invoke();
     }
+    
+    public BookResponse? BookToUpdate { get; set; } = null;
+    
+    public event Action? OnBookToUpdateChanged ;
+
+    public void SetBookToUpdate(BookResponse? book = null)
+    {
+        BookToUpdate = book;
+        if (book is null) return;
+        OnBookToUpdateChanged?.Invoke();
+    }
+    
+     public BookResponse? UpdatedBook { get; set; } = null;
+        
+        public event Action? OnUpdatedBookChanged ;
+    
+        public void SetUpdatedBook(BookResponse? book = null)
+        {
+            
+            UpdatedBook = book;
+            if (book is null) return;
+            OnUpdatedBookChanged?.Invoke();
+        }
 }
 
 public enum RightBarView
 {
     Default,
-    CreatingBook
+    CreatingBook,
+    UpdateBook,
 }

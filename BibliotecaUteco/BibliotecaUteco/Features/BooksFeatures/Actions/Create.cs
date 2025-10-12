@@ -33,13 +33,13 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
         [JsonPropertyName("coverFile"), FromForm(Name = "coverFile"), Description("El archivo de la porada del libro")]
         public IFormFile? CoverFile { get; set; }
 
-        [MaxLength(500), MinLength(10), FromForm(Name = "sinopsis"), Required, Description("Breve sinopsis del libro"), JsonPropertyName("sinopsis")]
-        public string Sinopsis { get; set; } = null!;
+        [MaxLength(500), MinLength(10), FromForm(Name = "synopsis"), Required, Description("Breve sinopsis del libro"), JsonPropertyName("synopsis")]
+        public string Synopsis { get; set; } = null!;
 
         [FromForm(Name = "authorIds"), JsonPropertyName("authorsIds"), Description("Id de los autores de este libro")]
         public List<int> AuthorIds { get; set; } = new();
 
-        [FromForm(Name = "genreIds"), JsonPropertyName("genreIds"), Description("Id de los generos literarios de este libro")]
+        [FromForm(Name = "genreIds"), JsonPropertyName("genreIds"), MinLength(1), MaxLength(5), Description("Id de los generos literarios de este libro")]
         public List<int> GenreIds { get; set; } = new();
 
         [JsonPropertyName("stock"), FromForm(Name = "stock"), MinLength(1), Required, Description("Cantidad de libros a disponer")]
@@ -56,7 +56,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .MinimumLength(1).WithMessage("El nombre del libro debe tener al menos 1 carácter.")
                 .MaximumLength(50).WithMessage("El nombre del libro no puede tener más de 50 caracteres.");
 
-            RuleFor(x => x.Sinopsis)
+            RuleFor(x => x.Synopsis)
                 .NotEmpty().WithMessage("La sinopsis es obligatoria.")
                 .MinimumLength(10).WithMessage("La sinopsis debe tener al menos 10 caracteres.")
                 .MaximumLength(500).WithMessage("La sinopsis no puede tener más de 500 caracteres.");
