@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaUteco.Migrations
 {
     [DbContext(typeof(BibliotecaUtecoDbContext))]
-    [Migration("20251011031448_Init")]
+    [Migration("20251012011303_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -34,27 +34,31 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NombreCompleto");
 
                     b.Property<string>("NormalizedFullName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NombreCompletoNormalizado");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedFullName")
                         .IsUnique();
 
-                    b.ToTable("Authors");
+                    b.ToTable("Autores");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Book", b =>
@@ -66,38 +70,45 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CoverUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("UrlPortada");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Nombre");
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Sinopsis")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NombreNormalizado");
 
                     b.Property<int>("Stock")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Copias");
+
+                    b.Property<string>("Synopsis")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("Sinopsis");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique();
 
-                    b.ToTable("Books");
+                    b.ToTable("Libros");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.BookAuthor", b =>
@@ -109,16 +120,20 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdAutor");
 
                     b.Property<int>("BookId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdLibro");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -127,7 +142,7 @@ namespace BibliotecaUteco.Migrations
                     b.HasIndex("AuthorId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("BookAuthors");
+                    b.ToTable("LibroAutor");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.BookLoan", b =>
@@ -139,16 +154,20 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BookId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdLibro");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<int>("LoanId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdPrestamos");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -157,7 +176,7 @@ namespace BibliotecaUteco.Migrations
                     b.HasIndex("LoanId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("BookLoans");
+                    b.ToTable("LibroPrestamo");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Genre", b =>
@@ -169,108 +188,112 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(25)")
+                        .HasColumnName("Nombre");
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
                         .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(25)")
+                        .HasColumnName("NombreNormalizado");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique();
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genero");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 488, DateTimeKind.Utc).AddTicks(8380),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(1174),
                             Name = "Fantasía",
                             NormalizedName = "fantasia",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 488, DateTimeKind.Utc).AddTicks(8384)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(1178)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(52),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3142),
                             Name = "Terror",
                             NormalizedName = "terror",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(53)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3144)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(57),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3149),
                             Name = "Ciencia Ficción",
-                            NormalizedName = "ciencia ficcion",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(57)
+                            NormalizedName = "cienciaficcion",
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3150)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(60),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3154),
                             Name = "Romance",
                             NormalizedName = "romance",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(61)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3154)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(63),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3157),
                             Name = "Misterio",
                             NormalizedName = "misterio",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(64)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3158)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(66),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3161),
                             Name = "Aventura",
                             NormalizedName = "aventura",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(67)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3161)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(69),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3165),
                             Name = "Histórico",
                             NormalizedName = "historico",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(70)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3166)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(73),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3168),
                             Name = "Biografía",
                             NormalizedName = "biografia",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(73)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3169)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(77),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3172),
                             Name = "Poesía",
                             NormalizedName = "poesia",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(78)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3172)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(80),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3176),
                             Name = "Drama",
                             NormalizedName = "drama",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 489, DateTimeKind.Utc).AddTicks(81)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 766, DateTimeKind.Utc).AddTicks(3176)
                         });
                 });
 
@@ -283,16 +306,20 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BookId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdLibro");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdGenero");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -301,7 +328,7 @@ namespace BibliotecaUteco.Migrations
                     b.HasIndex("GenreId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("GenreBooks");
+                    b.ToTable("GeneroLibro");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Loan", b =>
@@ -313,28 +340,34 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DiaDeEntrega");
 
                     b.Property<int>("MaxLoanDays")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("MaxDiasDePrestamo");
 
                     b.Property<int>("ReaderId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdLector");
 
                     b.Property<DateTime?>("ReturnedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DiaDevuelto");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ReaderId");
 
-                    b.ToTable("Loans");
+                    b.ToTable("Prestamos");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Penalty", b =>
@@ -346,34 +379,44 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<double>("DailyFineRate")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("TazaDeMultaPorDia");
 
                     b.Property<double>("GivenAmount")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("MontoDado");
 
                     b.Property<bool>("IsDue")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("EsDebida");
 
                     b.Property<int>("LoanId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdPrestamo");
 
                     b.Property<int>("OverdueDays")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DiasExcedidos");
 
                     b.Property<double>("ReturnedAmount")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("MontoDevuelto");
 
                     b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("TotalAPagar");
 
                     b.Property<int>("TransactionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdTransaccion");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -383,7 +426,7 @@ namespace BibliotecaUteco.Migrations
                     b.HasIndex("TransactionId")
                         .IsUnique();
 
-                    b.ToTable("Penalties");
+                    b.ToTable("Penalizaciones");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Reader", b =>
@@ -397,32 +440,39 @@ namespace BibliotecaUteco.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Direccion");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NombreCompleto");
 
                     b.Property<string>("IdentityCardNumber")
                         .IsRequired()
                         .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(11)")
+                        .HasColumnName("Cedula");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("NumeroDeTelefono");
 
                     b.Property<string>("StudentLicence")
                         .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
+                        .HasColumnType("nvarchar(9)")
+                        .HasColumnName("Matricula");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -431,9 +481,9 @@ namespace BibliotecaUteco.Migrations
 
                     b.HasIndex("StudentLicence")
                         .IsUnique()
-                        .HasFilter("[StudentLicence] IS NOT NULL");
+                        .HasFilter("[Matricula] IS NOT NULL");
 
-                    b.ToTable("Readers");
+                    b.ToTable("Lectores");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.Role", b =>
@@ -445,15 +495,18 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(25)")
+                        .HasColumnName("Nombre");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.HasKey("Id");
 
@@ -466,16 +519,16 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(1504),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 679, DateTimeKind.Utc).AddTicks(9500),
                             Name = "Librarian",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(1508)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 679, DateTimeKind.Utc).AddTicks(9505)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(2472),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 680, DateTimeKind.Utc).AddTicks(1017),
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 398, DateTimeKind.Utc).AddTicks(2472)
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 680, DateTimeKind.Utc).AddTicks(1020)
                         });
                 });
 
@@ -488,22 +541,26 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<double>("Amount")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasColumnName("Monto");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdUsuario");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("TransaccionesCaja");
                 });
 
             modelBuilder.Entity("BibliotecaUteco.DataAccess.Models.User", b =>
@@ -515,35 +572,43 @@ namespace BibliotecaUteco.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreadoEn");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NombreCompleto");
 
                     b.Property<string>("IdentityCardNumber")
                         .IsRequired()
                         .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(11)")
+                        .HasColumnName("Cedula");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Clave");
 
                     b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("UrlFotoDePerfil");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IdRole");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActualizadoEn");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("NombreDeUsuario");
 
                     b.HasKey("Id");
 
@@ -555,29 +620,29 @@ namespace BibliotecaUteco.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Usuarios");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 415, DateTimeKind.Utc).AddTicks(9860),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 695, DateTimeKind.Utc).AddTicks(1814),
                             FullName = "José Apolinar",
                             IdentityCardNumber = "00112345678",
                             Password = "973279fd3528bf897629f68765425a6b3e88e35b010c3c3c10a169283a817289",
                             RoleId = 1,
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 415, DateTimeKind.Utc).AddTicks(9865),
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 695, DateTimeKind.Utc).AddTicks(1821),
                             Username = "jose.apolinar"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 466, DateTimeKind.Utc).AddTicks(2544),
+                            CreatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 743, DateTimeKind.Utc).AddTicks(2369),
                             FullName = "Manuel López",
                             IdentityCardNumber = "00212345678",
                             Password = "2540fc2a209dd5946b09734722f16821b435db8e376655ab334379a4a0de1133",
                             RoleId = 2,
-                            UpdatedAt = new DateTime(2025, 10, 11, 3, 14, 46, 466, DateTimeKind.Utc).AddTicks(2549),
+                            UpdatedAt = new DateTime(2025, 10, 12, 1, 12, 59, 743, DateTimeKind.Utc).AddTicks(2374),
                             Username = "manuel.lopez"
                         });
                 });

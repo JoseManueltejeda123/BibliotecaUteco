@@ -7,25 +7,28 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BibliotecaUteco.DataAccess.Models;
 
+[Table("Libros")]
 public class Book : BaseEntity
 {
-    [MaxLength(50), MinLength(1), Required]
+    
+    [MaxLength(50), MinLength(1), Required,  Column("Nombre")]
     public string Name { get; set; } = null!;
 
-    [MaxLength(50), MinLength(1), Required]
+    [MaxLength(50), MinLength(1), Required,  Column("NombreNormalizado")]
     public string NormalizedName { get; set; } = null!;
     
-    [Url]
+    [Url,  Column("UrlPortada")]
     public string? CoverUrl { get; set; }
 
-    [MaxLength(500), MinLength(10), Required]
-    public string Sinopsis { get; set; } = null!;
+    [MaxLength(500), MinLength(10), Required,  Column("Sinopsis")]
+    public string Synopsis { get; set; } = null!;
     
     public List<BookAuthor> Authors { get; set; } = new();
     public List<GenreBook> Genres { get; set; } = new();
     
     public List<BookLoan> Loans { get; set; } = new();
 
+    [Range(1, int.MaxValue),  Column("Copias")]
     public int Stock { get; set; }
 
     [NotMapped]
@@ -36,7 +39,7 @@ public class Book : BaseEntity
         Name = command.Name,
         NormalizedName = command.Name.NormalizeField(),
         CoverUrl = command.CoverUrl,
-        Sinopsis = command.Sinopsis,
+        Synopsis = command.Sinopsis,
         Stock = command.Stock,
         Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
         Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
@@ -55,9 +58,9 @@ public class Book : BaseEntity
             hasBeenUpdated = true;
         }
         
-        if(Sinopsis != command.Synopsis)
+        if(Synopsis != command.Synopsis)
         {
-            Sinopsis = command.Synopsis;
+            Synopsis = command.Synopsis;
             hasBeenUpdated = true;
         }
 
@@ -82,7 +85,7 @@ public class Book : BaseEntity
         UpdatedAt = UpdatedAt,
         Name = Name,
         CoverUrl = CoverUrl ?? "",
-        Sinopsis = Sinopsis,
+        Sinopsis = Synopsis,
         Authors = Authors.Select(a => a.ToResponse()).ToList(),
         Genres = Genres.Select(g => g.ToResponse()).ToList(),
         Stock = Stock,

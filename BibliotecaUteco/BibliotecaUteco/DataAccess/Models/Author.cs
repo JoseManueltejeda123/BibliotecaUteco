@@ -6,13 +6,15 @@ using BibliotecaUteco.Features.AuthorFeatures.Actions;
 
 namespace BibliotecaUteco.DataAccess.Models;
 
+[Table("Autores")]
 public class Author : BaseEntity
 {
     
-    [MaxLength(50), MinLength(1), Required]
+    
+    [MaxLength(50), MinLength(1), Required, Column("NombreCompleto")]
     public string FullName { get; set; } = null!;
 
-    [MaxLength(50), MinLength(1), Required]
+    [MaxLength(50), MinLength(1), Required,  Column("NombreCompletoNormalizado")]
     public string NormalizedFullName { get; set; } = null!;
 
     public List<BookAuthor> Books { get; set; } = new();
