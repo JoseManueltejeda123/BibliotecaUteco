@@ -14,6 +14,11 @@ public interface IBibliotecaUtecoDbContext
     public DbSet<Author> Authors { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<GenreBook> GenreBooks { get; set; }
+    public DbSet<BookLoan> BookLoans { get; set; }
+    public DbSet<Reader>  Readers { get; set; }
+    public DbSet<Penalty> Penalties { get; set; }
+    public DbSet<Loan> Loans { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
     ChangeTracker ChangeTracker { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     DatabaseFacade Database { get; }

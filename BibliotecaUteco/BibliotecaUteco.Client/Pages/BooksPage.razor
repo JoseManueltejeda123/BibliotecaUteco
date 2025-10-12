@@ -74,7 +74,7 @@
                
                 @foreach (var book in Books)
                 {
-                    <BookCard Book="@book" Index="Books.IndexOf(book)"/>
+                    <BookCard OnBookDeleted="()=>{HandleOnBookDeleted(book);}" Book="@book" Index="Books.IndexOf(book)"/>
                 }
                 @if (_searchingBooks)
                 {
@@ -104,6 +104,15 @@
 
 @functions{
 
+    public void HandleOnBookDeleted(BookResponse book)
+    {
+        var bookToDelete = Books.FirstOrDefault(b => b.Id == book.Id);
+
+        if(bookToDelete is null) return;
+
+        Books.Remove(bookToDelete);
+        StateHasChanged();
+    }
     protected override async Task OnInitializedAsync(){
 
         await FetchGetMoreBooks();

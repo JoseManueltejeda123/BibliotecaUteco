@@ -16,6 +16,14 @@ namespace BibliotecaUteco.Client.Services.ApiServices
     {
         private const string BooksEndpoint = "/books";
 
+
+        public async Task<ApiResult<bool>> DeleteBookAsync(DeleteBookRequest request)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["bookId"] = request.BookId.ToString();
+            string queryString = query?.ToString() ?? "";
+            return await client.FetchDeleteAsync<bool>(BooksEndpoint + $"/delete?{queryString}");
+        }
         public async Task<ApiResult<BookResponse>> CreateBookAsync(CreateBookRequest request)
         {
 
@@ -77,7 +85,6 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         
         
                 }
-
 
         public async Task<ApiResult<List<BookResponse>>> GetByFilterAsync(GetBooksByFilterRequest request)
         {

@@ -9,5 +9,6 @@ public interface IBooksApiServices
     Task<ApiResult<BookResponse>> CreateBookAsync(CreateBookRequest request);
     Task<ApiResult<List<BookResponse>>> GetByFilterAsync(GetBooksByFilterRequest request);
 
+    Task<ApiResult<bool>> DeleteBookAsync(DeleteBookRequest request);
     Task<ApiResult<BookResponse>> UpdateBookAsync(UpdateBookRequest request);
 }
