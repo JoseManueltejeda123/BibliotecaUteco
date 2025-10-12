@@ -3,11 +3,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.Settings;
+using BibliotecaUteco.Client.Utilities;
+using BibliotecaUteco.DataAccess.Context;
+using BibliotecaUteco.DataAccess.DbSetsActions;
 using BibliotecaUteco.DataAccess.Models;
 using BibliotecaUteco.Helpers;
+using BibliotecaUteco.Services;
 using BibliotecaUteco.Settings;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaUteco.Features.BooksFeatures.Actions;
 
@@ -111,3 +116,42 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 .WithDescription("Actualiza un libro existente incluyendo su portada, géneros y autores");
         }
     }
+
+
+     public class UpdateBookCommandHandler(IBibliotecaUtecoDbContext context, IFileUploadService fileUploadService)
+         : ICommandHandler<UpdateBookCommand, IApiResult>
+     {
+         public async Task<IApiResult> HandleAsync(UpdateBookCommand request,
+             CancellationToken cancellationToken = default)
+         {
+             var normalizedName = request.BookName.NormalizeField();
+             if (await context.Books.AnyAsync(b => b.NormalizedName == normalizedName && b.Id != request.BookId,
+                     cancellationToken))
+             {
+                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un libro diferente con este mismo nombre");
+             }
+
+             var bookToUpdate = await context.Books.IgnoreAutoIncludes().FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+             
+             if(bookToUpdate is null)
+             {
+                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.NotFound,
+                     "No pudimos encotrar el libro a actualizar");
+             }
+
+             await context.GenreBooks.SyncGenreBooksAsync(bookToUpdate.Id, request.GenreIds, cancellationToken);
+             await context.BookAuthors.SyncBookAuthorsAsync(bookToUpdate.Id, request.AuthorIds, cancellationToken);
+             bookToUpdate.Update(request);
+             await context.SaveChangesAsync(cancellationToken);
+             context.ChangeTracker.Clear();
+             
+             if(await context.Books.GetBookByIdAsync(request.BookId, cancellationToken) is var response && response is null)
+             {
+                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.NotFound,
+                     "No pudimos encotrar el libro despues de haberlo actualizado");
+             }
+
+             return ApiResult<BookResponse>.BuildSuccess(response.ToResponse());
+
+         }
+     }
