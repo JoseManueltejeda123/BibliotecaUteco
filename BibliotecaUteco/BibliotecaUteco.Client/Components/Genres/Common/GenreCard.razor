@@ -1,33 +1,87 @@
 @using BibliotecaUteco.Client.Utilities
    
-        
-        
-    <AuthorizeView Roles="Admin">
-        <Authorized>
-            <LumexChip Class="cursor-pointer" @onclick="TriggerOnClicked"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
-                <ChildContent>
+<div  @onclick="TriggerOnClicked"   class="w-full group flex flex-row rounded-lg px-3 py-1 hover:bg-neutral-100 transition-all items-center justify-between">
+     
+    <LumexChip Class="cursor-pointer"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
+            <ChildContent>
                     <p class="text-sm font-semibold line-clamp-1 text-ellipsis overflow-hidden">@Genre.Name</p>
-                </ChildContent>
-              
-            </LumexChip>
 
-        </Authorized>
-        <NotAuthorized>
-            <LumexChip  @onclick="TriggerOnClicked"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
-                <p class="text-sm font-semibold line-clamp-1 text-ellipsis overflow-hidden">@Genre.Name</p>
+        </ChildContent>
+    
+    </LumexChip>
 
-            </LumexChip>
-        </NotAuthorized>
-     </AuthorizeView>
+
+    @if(ShowActions)
+    {
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="flex items-center gap-2 invisible group-hover:visible">
+                    <IconButton OnClick="TriggerOnUpdateGenreClicked" TooltipText="Editar género">
+                        <SquarePenIcon Size="18" class="shrink-0 text-neutral-700"/>
+
+                    </IconButton>
+                    <IconButton OnClick="SetDeleteGenreConfirmationModal"  TooltipText="Eliminar género">
+                        <Trash2Icon Size="18"  class="shrink-0 text-red-600"/>
+
+                    </IconButton>
+                    
+
+                </div>
+
+            </Authorized>
+        </AuthorizeView>
+    }
    
     
 
 
+</div>
+        
+
+@if(ShowDeleteGenreConfirmationDialog)
+{
+    <div @onclick="SetDeleteGenreConfirmationModal" class="absolute inset-0 w-full h-full z-[9999999] bg-white/60 flex justify-center items-center">
+        <div class="p-4 border-neutral-200 border flex w-[300px] flex-col gap-3 bg-white items-center rounded-lg">
+            <label class="text-md font-semibold text-center">Desea eliminar el género @Genre.Name?</label>
+            <p class="text-[13px] font-normal">Una vez eliminado el género no se podrá deshacer.</p>
+            <div class="w-full flex items-center justify-between gap-2">
+                <LumexButton @onclick="SetDeleteGenreConfirmationModal">Cancelar</LumexButton>
+                <LumexButton  Disabled="@_deletingGenre" Color="ThemeColor.Danger" Onclick="FetchDeleteGenreAsync">
+                    @if(_deletingGenre)
+                    {
+                        <LumexSpinner Size="Size.Small"/>
+                    }
+                    else
+                    {
+                        @("Si, eliminar género")
+                    } 
+                </LumexButton>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+
 @code{
 
+    public void SetDeleteGenreConfirmationModal()
+    {
+        if(_deletingGenre) return;
+        ShowDeleteGenreConfirmationDialog = !ShowDeleteGenreConfirmationDialog;
+    }
+    public bool ShowDeleteGenreConfirmationDialog {get; set;} = false;
+    public bool _deletingGenre {get; set;} = false;
     [Parameter] public GenreResponse Genre { get; set; } = new();
     [Parameter] public EventCallback<GenreResponse> OnClicked {get; set;}
     public ThemeColor Color { get; set; } = ThemeColor.Default;
+
+    [Parameter] public EventCallback<GenreResponse> OnUpdateGenreClicked {get; set;}
+
+    [Parameter] public EventCallback<GenreResponse> OnGenreDeleted {get; set;}
+
+    [Parameter] public bool ShowActions {get; set;} = true;
 
 }
 
@@ -42,8 +96,32 @@
         }
     }
 
+     public async Task FetchDeleteGenreAsync()
+    {
+        if(Genre.Id <= 0) return;
+
+        _deletingGenre = true;
+        StateHasChanged();
+        var result = await GenresApiServices.DeleteAsync(new(){GenreId = Genre.Id});
+
+        if(result.IsSuccessful())
+        {
+            Toast.Show("Génerp eliminado exitosamente.");
+            await OnGenreDeleted.InvokeAsync(Genre);
+        }
+        
+        _deletingGenre = false;
+        ShowDeleteGenreConfirmationDialog = false;
+        StateHasChanged();
+    }
+
     public async Task TriggerOnClicked(){
 
         await OnClicked.InvokeAsync(Genre);
+    }
+
+     public async Task TriggerOnUpdateGenreClicked(){
+
+        await OnUpdateGenreClicked.InvokeAsync(Genre);
     }
 }

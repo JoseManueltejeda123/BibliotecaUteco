@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using BibliotecaUteco.Client.Requests.Books.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Queries;
 using BibliotecaUteco.Client.Responses;
@@ -30,6 +31,21 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         {
 
             return await client.FetchPostAsync<GenreResponse>(GenresEndpoint, request);
+        }
+
+        public async Task<ApiResult<GenreResponse>> UpdateAsync(UpdateGenreRequest request)
+        {
+
+            return await client.FetchPutAsync<GenreResponse>(GenresEndpoint, request);
+        }
+
+         public async Task<ApiResult<bool>> DeleteAsync(DeleteGenreRequest request)
+        {
+
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["genreId"] = request.GenreId.ToString();
+            string queryString = query.ToString() ?? "";
+            return await client.FetchDeleteAsync<bool>(GenresEndpoint + $"/delete?{queryString}");
         }
 
     }

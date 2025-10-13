@@ -1,0 +1,84 @@
+<EditForm Model="UpdateGenreModel" class="w-full flex-col flex gap-2" OnValidSubmit="FetchCreatGenreAsync">
+    <DataAnnotationsValidator/>
+
+    <div class="flex flex-col gap-3">
+        <LumexTextbox Type="@InputType.Text"
+                      @bind-Value="@UpdateGenreModel.GenreName"
+                      Label="Nombre del género literario"
+                      Placeholder="Ej. Misterio"
+                    Behavior="InputBehavior.OnInput"
+                      LabelPlacement="@LabelPlacement.Outside"
+                      Required="true"
+                      Disabled="_updatingGenre"
+                        Description="Los generos literarios no pueden estar repetidos. Deben de tener maximo 25 caracteres."
+
+                      />
+        <span class=" text-red-700"><ValidationMessage For="@(() => UpdateGenreModel.GenreName)"/></span>
+        
+    </div>
+    
+
+    @if (_updatingGenre)
+    {
+        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"></LumexSpinner>
+    }
+    else
+    {
+        <LumexButton Class="w-full"  Disabled="@(_updatingGenre || !context.Validate() || Genre.Name == UpdateGenreModel.GenreName)" Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios</LumexButton>
+
+    }
+</EditForm>
+
+@code{
+
+    //flags
+
+    public bool _updatingGenre { get; set; } = false;
+
+
+    [Parameter]
+    public GenreResponse Genre {get; set;} = new();
+
+    
+    public UpdateGenreRequest UpdateGenreModel { get; set; } = new();
+    
+
+    [Parameter]
+    public EventCallback<GenreResponse> OnGenreUpdated { get; set; }
+
+}
+
+
+@functions{
+
+    protected override void OnParametersSet()
+    {
+       if(Genre is not null)
+       {
+         UpdateGenreModel.GenreName = Genre.Name;
+         UpdateGenreModel.GenreId = Genre.Id;
+       }
+    }
+
+    public async Task FetchCreatGenreAsync()
+    {
+        _updatingGenre = true;
+        StateHasChanged();
+
+        var result = await GenresApiServices.UpdateAsync(UpdateGenreModel);
+        _updatingGenre = false;
+        StateHasChanged();
+        if (result.IsSuccessful())
+        {
+            Toast.Show("Género actualizado con éxito");
+            await TriggerOnGenreCreated(result.Data);
+        }
+        
+    }
+
+    public async Task TriggerOnGenreCreated(GenreResponse genre)
+    {
+        await OnGenreUpdated.InvokeAsync(genre);
+    }
+
+}

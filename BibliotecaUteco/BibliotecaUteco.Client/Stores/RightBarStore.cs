@@ -75,5 +75,7 @@ public enum RightBarView
     Default,
     CreatingBook,
     UpdateBook,
-    BookDetails
+    BookDetails,
+    Genres,
+    Authors
 }

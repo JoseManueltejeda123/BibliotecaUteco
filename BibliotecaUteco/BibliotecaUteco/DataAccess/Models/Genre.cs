@@ -23,6 +23,26 @@ public class Genre : BaseEntity
         NormalizedName = command.Name.NormalizeField()
     };
 
+    public bool Update(UpdateGenreCommand command)
+    {
+        bool hasBeenUpdated = false;
+
+        if(Name != command.GenreName)
+        {
+            Name = command.GenreName;
+            NormalizedName = command.GenreName.NormalizeField();
+
+            hasBeenUpdated = true;
+        }
+
+        if (hasBeenUpdated)
+        {
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        return hasBeenUpdated;
+    }
+
     public GenreResponse ToResponse() => new()
     {
         Id = Id,

@@ -160,6 +160,7 @@
             await OnBookDeleted.InvokeAsync();
         }
         _deletingBook = false;
+        ShowDeleteBookConfirmationDialog = false;
         StateHasChanged();
     }
 

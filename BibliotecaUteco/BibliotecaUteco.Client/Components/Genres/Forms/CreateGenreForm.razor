@@ -7,10 +7,12 @@
                       @bind-Value="@CreateGenreModel.Name"
                       Label="Nombre del género literario"
                       Placeholder="Ej. Misterio"
-                      
+                      Behavior="InputBehavior.OnInput"
                       LabelPlacement="@LabelPlacement.Outside"
                       Required="true"
-                      Disabled="_creatingGenre"/>
+                      Disabled="_creatingGenre"
+                      Description="Los generos literarios no pueden estar repetidos. Deben de tener maximo 25 caracteres."
+                      />
         <span class=" text-red-700"><ValidationMessage For="@(() => CreateGenreModel.Name)"/></span>
         
     </div>
@@ -22,7 +24,7 @@
     }
     else
     {
-        <LumexButton Class="w-full"  Disabled="_creatingGenre" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear género</LumexButton>
+        <LumexButton Class="w-full"  Disabled="@(_creatingGenre || !context.Validate())" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear género</LumexButton>
 
     }
 </EditForm>
@@ -54,7 +56,8 @@
         StateHasChanged();
         if (result.IsSuccessful())
         {
-            
+            Toast.Show("Género creado con éxito");
+
             await TriggerOnGenreCreated(result.Data);
         }
         

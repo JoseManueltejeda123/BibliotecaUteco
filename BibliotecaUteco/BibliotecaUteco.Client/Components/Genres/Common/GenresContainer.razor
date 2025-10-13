@@ -19,6 +19,20 @@
         
         
     }
+    else if(ShowUpdateGenreModal && GenreToUpdate is not null)
+    {
+         <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="w-full flex items-center justify-between mb-4">
+                    <label class="text-lg font-semibold">Actualizar Género</label>
+                    <IconButton Small="true" OnClick="()=>{ShowUpdateGenreModal = false; GenreToUpdate = null;}" TooltipText="Cancelar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </IconButton>
+                </div>
+                <UpdateGenreForm Genre="GenreToUpdate" OnGenreUpdated="HandleOnGenreUpdated"/>
+            </Authorized>
+        </AuthorizeView>
+    }
     else
     {
         <div class="flex w-full gap-2 items-end">
@@ -53,7 +67,8 @@
      </AuthorizeView>
    
 
-     <div class="w-full gap-3 flex flex-wrap mt-3">
+     <div class="w-full  flex flex-wrap gap-2 mt-3">
+        
          @if(_fetchingGenres){
 
              <GenreSkeleton Count="3"/>
@@ -63,8 +78,9 @@
              if(Genres.Any())
              {
                  foreach(var genre in Genres)
-                 {
-                     <GenreCard OnClicked="HandleGenreClicked" Genre="genre"/>
+                 {   
+                    <GenreCard OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
+    
                  }
              }
              else
@@ -95,6 +111,10 @@
 
     [Parameter] public EventCallback<GenreResponse> OnGenreClicked {get; set;}
     public bool ShowCreateGenreModal { get; set; } = false;
+    public bool ShowUpdateGenreModal { get; set; } = false;
+
+    public GenreResponse? GenreToUpdate {get; set;} = null;
+
 }
 
 @functions{
@@ -109,16 +129,47 @@
 
     }
 
+    public void HandleOnUpdateGenreClicked(GenreResponse genre)
+    {
+        ShowUpdateGenreModal = true;
+        GenreToUpdate = genre;
+    }
+
     public async Task HandleGenreClicked(GenreResponse genre){
          await OnGenreClicked.InvokeAsync(genre);
     }
 
-    public void HandleOnGenreCreated(GenreResponse author)
+    public void HandleOnGenreCreated(GenreResponse genre)
     {
         ShowCreateGenreModal = false;
-        Genres.Insert(0, author);
+        Genres.Insert(0, genre);
     }
 
+     public void HandleOnGenreUpdated(GenreResponse genre)
+    {
+        ShowUpdateGenreModal = false;
+        GenreToUpdate = null;
+
+        var genreToUpdate = Genres.FirstOrDefault(g => g.Id == genre.Id);
+
+        if(genreToUpdate is null) return;
+
+        var index = Genres.IndexOf(genreToUpdate);
+
+        if(index < 0) return;
+
+        Genres[index] = genre;
+    }
+
+    public void HandleGenreDeleted(GenreResponse genre)
+    {
+        var genreToDelete = Genres.FirstOrDefault(g => g.Id == genre.Id);
+
+        if(genreToDelete is null) return;
+
+        Genres.Remove(genreToDelete);
+        StateHasChanged();
+    }
     public async Task FetchGetGenresByNameAsync(){
 
         _fetchingGenres = true;
