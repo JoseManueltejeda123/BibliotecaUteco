@@ -1,0 +1,47 @@
+@page "/transactions"
+
+<PageTitle>Transacciones</PageTitle>
+<div class="flex flex-col w-full mt-[20px] gap-4 px-4">
+
+    <div class="flex w-full items-center gap-2 justify-between">
+        <h2 class="text-3xl font-semibold">Transacciones de caja</h2>
+       
+    </div>
+
+    <div class="flex w-full gap-2 items-center">
+        <LumexTextbox Type="@InputType.Search"
+                        Label="Buscar transacciones"
+                        Placeholder="Buscar por usuario"
+                        LabelPlacement="@LabelPlacement.Outside"/>
+             <LumexTooltip Content=@($"Buscar transacciones ")>
+                    <LumexButton Type="ButtonType.Submit"  Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
+            </LumexTooltip>
+    </div>
+    
+       
+    <SidebarSectionDivider Name="Transacciones de caja"/>
+    <div class="w-full flex flex-col gap-3">
+        <button class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
+            <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
+        </button>
+        <TransactionCard Mount="100"/>
+        <TransactionCard Mount="-100"/>
+
+
+    </div>
+   
+</div>
+
+@code{
+    
+
+   
+
+}
+
+@functions{
+  
+
+    
+
+}

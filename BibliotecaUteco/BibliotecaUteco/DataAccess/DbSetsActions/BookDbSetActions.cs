@@ -56,7 +56,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 query = query.Where(b => b.Authors.Any(a => a.Author.NormalizedFullName.Contains(normalizedAuthorName) ));
             }
                         
-            return await query.OrderBy(b => b.Id).Skip(skip).Take(take).Select(b => new Book()
+            return await query.OrderByDescending(b => b.Id).Skip(skip).Take(take).Select(b => new Book()
             {
                 Id = b.Id,
                 Name = b.Name,

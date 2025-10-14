@@ -1,13 +1,20 @@
 <div class="border text-neutral-900 flex-wrap border-neutral-200 bg-neutral-50 hover:bg-neutral-100 w-full rounded-lg flex justify-between p-3 items-start gap-3">
-            <div class="  rounded-lg gap-2 flex flex-col ">
-              <label class="text-[16px] text-black font-semibold">Préstamo para Adriana Mendez</label>
+            <div class="  rounded-lg gap-2 flex flex-col w-full">
+                <div class="flex w-full items-center justify-between">
+                    <label class="text-[16px] text-black font-semibold">Préstamo para Adriana Mendez</label>
+                    <LumexTooltip ShowArrow="true" Content=@("Copiar Id") Size="Size.Small">
+                        <CopyIcon Size="18px"/>
+                    </LumexTooltip>
+                </div>
 
                 <div class="flex w-full items-center gap-2">
-                 <label class="text-xs font-normal">Matrícula: 2020-1010</label>
-                    <div class="border rounded-full border-neutral-300 h-[10px] " />
+                    <label class="text-xs font-normal">Id: 0097</label>
+
+                    <div class="border rounded-full border-neutral-300 h-[10px] "/>
+                    <label class="text-xs font-normal">Matrícula: 2020-1010</label>
+                    <div class="border rounded-full border-neutral-300 h-[10px] "/>
                     <label class="text-xs font-normal">Cédula: ---</label>
-                    <div class="border rounded-full border-neutral-300 h-[10px] " />
-                    <label class="text-xs font-normal">Libros: 7</label>
+
 
                 </div>
                
@@ -18,14 +25,9 @@
 
                 }
 
-               
+               <SideBarDivider Name="Detalles"/>
 
-                
-
-                
-
-            </div>
-            <div class="max-md:w-full flex items-center gap-2">
+                <div class="w-full flex items-center gap-2">
             
                     @if(!IsPending)
                     {
@@ -39,10 +41,19 @@
                             <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Danger" StartContent="@_warningIcon">Execedido por 10 dias</LumexChip>
 
                         }
-                        <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Info" StartContent="@_clockIcon">Pendiente</LumexChip>
-                        <IconButton TooltipText="Marcar como entregado"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-line-icon lucide-check-line"><path d="M20 4L9 15"/><path d="M21 19L3 19"/><path d="M9 15L4 10"/></svg></IconButton>
+                        else
+                        {
+                            <LumexChip Size="Size.Small" Variant="ChipVariant.Flat" Color="ThemeColor.Info" StartContent="@_clockIcon">Pendiente</LumexChip>
+
+                        }
+                        <LumexButton Class="ml-auto" Size="Size.Small" Color="ThemeColor.Primary" Variant="Variant.Ghost">Marcar como entregado</LumexButton>
                     }
                 </div>
+
+                
+
+            </div>
+            
 
           
 </div>

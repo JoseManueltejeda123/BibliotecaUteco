@@ -8,6 +8,7 @@ using BibliotecaUteco.Settings;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,20 @@ app.UseExceptionHandler(appError =>
             );
         }
     });
+});
+
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.WebRootPath, "BookCovers")),
+    RequestPath = "/BookCovers",
+    OnPrepareResponse = ctx =>
+    {
+        // Cache por 7 días
+        ctx.Context.Response.Headers.Append(
+            "Cache-Control", "public,max-age=604800");
+    }
 });
 app.UseAuthentication();
 app.UseRouting();

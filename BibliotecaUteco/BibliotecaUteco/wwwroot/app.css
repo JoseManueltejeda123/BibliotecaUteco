@@ -3,9 +3,11 @@
 @import "../bin/lumexui/theme.css";
 @source "../bin/lumexui/*cs";
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inconsolata:wght@200..900&display=swap');
+@import url("https://use.typekit.net/wjv8wts.css");
 
 html, body {
-    font-family: 'Geist', Helvetica, Arial, sans-serif;
+    font-family: "inter-variable", sans-serif;
+    background-color: var(--lumex-neutral-50);
     
     
 }
