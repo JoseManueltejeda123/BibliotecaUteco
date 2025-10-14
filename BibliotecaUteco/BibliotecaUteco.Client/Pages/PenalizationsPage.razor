@@ -1,0 +1,61 @@
+@page "/penalizations"
+<PageTitle>Préstamos</PageTitle>
+<div class="flex flex-col w-full mt-[20px] gap-4 px-4">
+
+    <div class="flex w-full items-center gap-2 justify-between">
+        <h2 class="text-3xl font-semibold">Penalizaciones</h2>
+    </div>
+
+    <div class="flex w-full gap-2 items-start">
+        <div class="w-full flex flex-col gap-1">
+            <LumexTextbox Type="@InputType.Search"
+                Placeholder="Buscar penalizacion"
+                LabelPlacement="@LabelPlacement.Outside"
+            />
+            <p class="text-[13px]">Busca las penalizaciones por el Id del prestamo. Usa los filtros de abajo para filtrar por pagos o no pagos</p>
+        </div>
+       
+                    <LumexTooltip Content=@($"Buscar libros Prestamos ")>
+                    <LumexButton Type="ButtonType.Submit"  Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
+
+                </LumexTooltip>
+    </div>
+    
+    <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
+        <LumexChip  @onclick='()=>{SetFilterBy("all");}' Variant="@(FilterBy == "all" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Todo</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterBy("payed");}' Variant="@(FilterBy == "payed" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Solo pagas</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterBy("unpayed");}' Variant="@(FilterBy == "unpayed" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Sin pagar</LumexChip>
+
+     
+    </div>
+    <SidebarSectionDivider Name="Prestamos"/>
+    <p class="text-[13px] text-center">Las penalizaciones se crean automaticamente cuando se paga un préstamo vencido.</p>
+
+    <div class="w-full grid max-sm:grid-cols-1 grid-cols-2 gap-3">
+
+        <PenalizationCard Payed="@true"/>
+        <PenalizationCard Payed="@false"/>
+
+
+    </div>
+   
+</div>
+
+@code{
+    public string FilterBy {get; set;} = "all";
+
+   
+
+   
+
+}
+
+@functions{
+    public void SetFilterBy(string filter){
+        FilterBy = filter;
+    }
+
+   
+    
+
+}

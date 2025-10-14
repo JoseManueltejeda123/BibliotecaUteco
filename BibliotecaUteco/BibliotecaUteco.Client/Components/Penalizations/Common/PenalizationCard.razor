@@ -1,0 +1,63 @@
+
+<div class=@($"w-full outlined bg-neutral-100 border-neutral-200 border rounded-xl p-3 flex gap-3")>
+    <div class=@($"rounded-full {(!Payed ? "bg-red-300 text-red-700" : "bg-green-300 text-green-700")}  flex items-center justify-center shrink-0 w-[30px] h-[30px]")>
+        @if(Payed){
+            <CircleCheckFilledIcon Size="22px"/>
+        }
+        else
+        {
+            <OctagonAlertFilledIcon Size="22px"/>
+        }
+    </div>
+    <div class="w-full  flex flex-col">
+        <div class="flex w-full  justify-between">
+            <div>
+                <p class="text-[15px]">Multa para <strong>Manuel Lopez</strong></p>
+                <label class="text-[13px] opacity-80 font-normal">Id Prestamo: 12333</label>
+            </div>
+
+
+            @if(!Payed)
+            {
+                <LumexButton Size="@Size.Small"
+                        Color="@ThemeColor.Primary"
+                        Variant="@Variant.Ghost">
+                    Pagar Penalización
+                </LumexButton>
+            }
+            
+        </div>
+        <div class="flex w-full items-start max-md:flex-col gap-8 max-md:gap-1">
+
+            <div class="flex flex-col">
+              <SidebarSectionDivider Name="Detalles de cobro"/>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Taza de préstamo (diario): <span class="bg-black text-white inconsolata">RD$ 75.00</span></span>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Dias excedidos: <span class="bg-black text-white inconsolata">2 dias</span></span>
+
+                <span class="font-semibold text-sm mt-2 inconsolata">Monto a pagar: <span class="bg-neutral-950 text-white "> RD$ 150.00   </span></span>
+
+
+            </div>
+          
+
+            @if(Payed)
+            {
+                <div class="flex flex-col">
+                  <SidebarSectionDivider Name="Detalles de pago"/>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto dado: <span class="bg-black text-white inconsolata">RD$ 200.00</span></span>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto develto: <span class="bg-black text-white inconsolata">RD$ 50.00 </span></span>
+
+
+                </div>
+              
+            }
+            
+        </div>
+        
+    </div>
+    
+</div>
+@code{
+
+    [Parameter] public bool Payed {get; set;} = false;
+}

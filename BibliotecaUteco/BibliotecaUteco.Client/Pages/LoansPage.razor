@@ -1,9 +1,10 @@
 ﻿@page "/loans"
-<PageTitle>Préstamos</PageTitle>
+<PageTitle>Penalizaciones</PageTitle>
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
 
     <div class="flex w-full items-center gap-2 justify-between">
         <h2 class="text-3xl font-semibold">Préstamos</h2>
+       
     </div>
 
     <div class="flex w-full gap-2 items-center">
@@ -12,21 +13,22 @@
                         Placeholder="@PlaceholderText"
                         LabelPlacement="@LabelPlacement.Outside"
                         Description="Usa los filtros de abajo para filtrar por Id o por la matricula/cédula del lector"/>
-        <IconButton TooltipText="Filtrar prestamos">
-             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
-        </IconButton>
+         <LumexTooltip Content=@($"Buscar libros Prestamos ")>
+                    <LumexButton Type="ButtonType.Submit"  Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
+
+                </LumexTooltip>
     </div>
-    <div class="mb-3 max-w-full flex items-center gap-1 flex-wrap">
-        <LumexChip Size="Size.Small"  @onclick='()=>{SetFilterBy("reader");}' Variant="@(FilterBy == "reader" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Lector</LumexChip>
-        <LumexChip Size="Size.Small" @onclick='()=>{SetFilterBy("userIdentifier");}' Variant="@(FilterBy == "userIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Cédula</LumexChip>
-        <LumexChip Size="Size.Small" @onclick='()=>{SetFilterBy("studentIdentifier");}' Variant="@(FilterBy == "studentIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Matrícula</LumexChip>
+    <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
+        <LumexChip  @onclick='()=>{SetFilterBy("reader");}' Variant="@(FilterBy == "reader" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Lector</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterBy("userIdentifier");}' Variant="@(FilterBy == "userIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Cédula</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterBy("studentIdentifier");}' Variant="@(FilterBy == "studentIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Matrícula</LumexChip>
 
         <div class="border rounded-full border-neutral-300 h-[10px] " />
 
-        <LumexChip Size="Size.Small" @onclick='()=>{SetFilterByState("all");}' Variant="@(FilterByState == "all" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Todos</LumexChip>
-        <LumexChip Size="Size.Small"  @onclick='()=>{SetFilterByState("pending");}' Variant="@(FilterByState == "pending" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Pendientes</LumexChip>
-        <LumexChip Size="Size.Small" @onclick='()=>{SetFilterByState("returned");}' Variant="@(FilterByState == "returned" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Entregados</LumexChip>
-        <LumexChip Size="Size.Small" @onclick='()=>{SetFilterByState("exceeded");}' Variant="@(FilterByState == "exceeded" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Excedidos</LumexChip>
+        <LumexChip @onclick='()=>{SetFilterByState("all");}' Variant="@(FilterByState == "all" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Todos</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterByState("pending");}' Variant="@(FilterByState == "pending" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Pendientes</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterByState("returned");}' Variant="@(FilterByState == "returned" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Entregados</LumexChip>
+        <LumexChip  @onclick='()=>{SetFilterByState("exceeded");}' Variant="@(FilterByState == "exceeded" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Excedidos</LumexChip>
 
     </div>
     <SidebarSectionDivider Name="Prestamos"/>
