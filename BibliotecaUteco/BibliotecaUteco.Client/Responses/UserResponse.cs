@@ -12,6 +12,12 @@ public class UserResponse : BaseResponse
 
     public string ProfilePictureUrl { get; set; } = "";
 
+    public string _roleName => RoleId switch
+    {
+        1 => "Admin",
+        _ => "Bibliotecario"
+    };
+
     public int RoleId { get; set; } = 0;
     
 }

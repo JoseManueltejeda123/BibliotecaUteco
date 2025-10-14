@@ -22,6 +22,9 @@
         {   
             <AuthorizeView>
                 <Authorized >
+                    
+                    @if (string.IsNullOrEmpty(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value))
+                    {
                     <LumexAvatar Radius="@Radius.Full"
                                  Color="ThemeColor.Default"
                                  Size="Size.Small"
@@ -29,11 +32,18 @@
                                  Name="@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? string.Empty)"
                                  Src="@(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? string.Empty)"/>
 
+                    }
+                    else
+                    {
+                        <img class="w-[30px] h-[30px] rounded-full object-cover" src="@(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? string.Empty)"/>
+
+                    }
+                  
                     <div class="flex flex-col ">
                         <label class="text-sm font-semibold">@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? "Invitado")</label>
                         <label class="text-xs">@("@" + context.User?.FindFirst(JwtRegisteredClaimNames.Nickname)?.Value ?? "Invitado")</label>
                     </div>
-                
+
                 </Authorized>
    
             </AuthorizeView>

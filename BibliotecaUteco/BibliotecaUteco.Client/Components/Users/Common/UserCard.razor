@@ -1,8 +1,17 @@
-<div class="flex items-center gap-3 text-neutral-800 p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
-    <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
+<div class="flex items-center gap-3 text-neutral-800  p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
+    
+    @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
+    {
+        <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
+
+    }
+    else
+    {
+        <img class="w-[30px] h-[30px] rounded-full object-cover" src="@User.ProfilePictureUrl"/>
+    }
     <div class="flex flex-col">
         <p class="text-sm line-clamp-1">@User.FullName</p>
-        <p class="text-xs">@(User.UserName)(@User.RoleName)</p>
+        <p class="text-xs">@(User.UserName + " ")(@User._roleName)</p>
 
     </div>
     

@@ -39,9 +39,9 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
         [Description("ID del rol")]
         public int RoleId { get; set; }
 
-        [FromForm(Name = "profilePicture"), JsonPropertyName("profilePicture")]
+        [FromForm(Name = "profilePictureFile"), JsonPropertyName("profilePictureFile")]
         [Description("Foto de perfil (opcional)")]
-        public IFormFile? ProfilePicture { get; set; }
+        public IFormFile? ProfilePictureFile { get; set; }
     }
 
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
@@ -75,13 +75,13 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
             RuleFor(x => x.RoleId)
                 .GreaterThan(0).WithMessage("Debe seleccionar un rol válido");
 
-            When(x => x.ProfilePicture != null, () =>
+            When(x => x.ProfilePictureFile != null, () =>
             {
-                RuleFor(x => x.ProfilePicture!.Length)
+                RuleFor(x => x.ProfilePictureFile!.Length)
                     .Must(x => x <= FilesSettings.MaxFileSize)
                     .WithMessage("La portada no puede superar los 2MB");
 
-                RuleFor(x => x.ProfilePicture!.ContentType)
+                RuleFor(x => x.ProfilePictureFile!.ContentType)
                     .Must(x => FilesSettings.AllowedImageExtensionsForUpload.Contains(x))
                     .WithMessage("La foto de perfil debe ser una imagen válida (JPG, PNG, WEBP)");
             });
@@ -139,18 +139,19 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
             {
                 return ApiResult<UserResponse>.BuildFailure(HttpStatus.BadRequest, "El rol especificado no existe");
             }
-            
 
+            var hashed = request.Password.Hash();
+            request.Password = hashed;
             var insertion = await context.Users.AddAsync(User.Create(request), cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
             // 6. Subir foto de perfil si existe
-            if (request.ProfilePicture != null && insertion.Entity.Id != 0)
+            if (request.ProfilePictureFile != null && insertion.Entity.Id != 0)
             {
                 if (await fileUploadService.UploadImageAsync(
-                        request.ProfilePicture,
+                        request.ProfilePictureFile,
                         EnvFolders.UserPictures,
-                        insertion.Entity.Id.ToString()) is var result && result.Item1)
+                        insertion.Entity.Id.ToString()) is var result && !result.Item1)
                 {
                     return ApiResult<UserResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
                 }

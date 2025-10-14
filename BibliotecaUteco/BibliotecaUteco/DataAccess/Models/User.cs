@@ -45,7 +45,7 @@ public class User : BaseEntity
 
         FullName = request.FullName,
         Username = request.Username,
-        Password = request.Password.Hash(),
+        Password = request.Password,
         IdentityCardNumber = request.IdentityCardNumber,
         RoleId = request.RoleId,
 
