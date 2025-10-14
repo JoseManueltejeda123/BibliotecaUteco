@@ -77,6 +77,6 @@ public enum RightBarView
     UpdateBook,
     BookDetails,
     Users,
-    Genres,
+    CreateUser,
     Authors
 }

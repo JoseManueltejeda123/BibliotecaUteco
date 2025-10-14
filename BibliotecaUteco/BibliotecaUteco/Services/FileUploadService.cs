@@ -93,7 +93,8 @@ namespace BibliotecaUteco.Services
 
     public enum EnvFolders
     {
-        BookCovers
+        BookCovers,
+        UserPictures
     }
 
 }

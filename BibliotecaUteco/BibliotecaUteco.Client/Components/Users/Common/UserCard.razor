@@ -1,10 +1,17 @@
 <div class="flex items-center gap-3 text-neutral-800 p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
-    <LumexAvatar Size="Size.Small" Color="ThemeColor.Primary" Name="Manuel Lopez"/>
+    <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
     <div class="flex flex-col">
-        <p class="text-sm">Manuel López</p>
-        <p class="text-xs">@("@manuel.lopez")@("(Admin)")</p>
+        <p class="text-sm line-clamp-1">@User.FullName</p>
+        <p class="text-xs">@(User.UserName)(@User.RoleName)</p>
 
     </div>
     
     <EllipsisVerticalIcon Size="18px" class="ml-auto cursor-pointer text-neutral-800"/>
 </div>
+
+@code{
+
+
+    [Parameter] public UserResponse User { get; set; } = new();
+
+}

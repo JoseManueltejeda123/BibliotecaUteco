@@ -2,17 +2,59 @@
     <img class="w-full object-cover h-[100px]" src="https://uteco.edu.do/wp-content/uploads/Biblioteca.jpg"/>
     <div class="w-full flex flex-col gap-3 p-3">
         <label class="text-[13px] mb-3 font-semibold opacity-80 ">Administra los usuarios que pueden utilizar esta plataforma</label>
-        <button class="hover:bg-green-50  cursor-pointer transition-all rounded-lg border-dashed border w-full flex items-center justify-center p-2 border-green-600 gap-2">
+        <button @onclick="SetCreateUserView" class="hover:bg-green-50  cursor-pointer transition-all rounded-lg border-dashed border w-full flex items-center justify-center p-2 border-green-600 gap-2">
             <span class="text-green-600 font-semibold text-sm">Crear Usuario</span>
         </button>
-        <UserCard/>
-        <div class="ml-auto w-[80%]">
-            <LumexDivider/>
-        </div>
-        <UserCard/>
+        @foreach (var user in Users)
+        {
+            <UserCard User="user"/>
+            <div class="ml-auto w-[80%]">
+                <LumexDivider/>
+            </div>
+
+        }
+        
+        @if (_fetchingUsers)
+        {
+            <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+        }
     </div>
     
 </div>
-@code {
-    
+
+@code{
+
+    public bool _fetchingUsers { get; set; } = false;
+    public List<UserResponse> Users { get; set; } = new();
+
+}
+@functions {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await FetchGetUsersByFilter();
+        }
+    }
+
+    public void SetCreateUserView()
+    {
+        RightBarContext.SetView(RightBarView.CreateUser);
+    }
+
+    public async Task FetchGetUsersByFilter()
+    {
+        _fetchingUsers = true;
+        StateHasChanged();
+        var result = await UsersApiServices.GetByFilterAsync(new(){Username = null});
+
+        if (result.IsSuccessful())
+        {
+            Users.AddRange(result.Data);
+        }
+
+        _fetchingUsers = false;
+        StateHasChanged();
+    }
 }

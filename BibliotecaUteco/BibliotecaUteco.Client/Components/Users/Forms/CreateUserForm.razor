@@ -1,0 +1,145 @@
+@using BibliotecaUteco.Client.Utilities
+<EditForm Model="CreateUserModel"  class="flex w-full absolute flex-col justify-center">
+    <DataAnnotationsValidator/>
+    <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
+        <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
+        
+        @if (!string.IsNullOrEmpty(ProfilePicturePreview) && CreateUserModel.ProfilePictureFile is not null)
+        {
+            <div class="w-full flex flex-col items-center">
+                <img  class="w-[50%] aspect-[2/3] object-cover rounded-sm" src="@ProfilePicturePreview" />
+
+            </div>
+        }
+        else
+        {
+            <div class="w-full flex flex-col items-center">
+                <LumexAvatar Size="Size.Large" Radius="Radius.Small" Class="w-[75px] h-[75px] "  Color="ThemeColor.Primary" Name="@CreateUserModel.FullName"></LumexAvatar>
+
+            </div>
+          
+        }
+     
+
+        @if (!string.IsNullOrEmpty(ProfilePicturePreview) || CreateUserModel.ProfilePictureFile is not null)
+        {
+
+            <LumexButton Size="Size.Small" Variant="Variant.Light" Color="ThemeColor.Danger" OnClick="RemovePicture">Eliminar Foto</LumexButton>
+        }
+        else
+        {
+            <LumexButton Size="Size.Small" Variant="Variant.Light" Color="ThemeColor.Primary" OnClick="TriggerFileInput">Subir Foto</LumexButton>
+
+        }
+        
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.FullName)"/></span>
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.Username)"/></span>
+
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="@(ShowPassword ? InputType.Text : InputType.Password)" @bind-Value="CreateUserModel.Password" Label="Contraseña" Description="Máximo 30 caracteres. Mínimo 8." PlaceHolder="********"></LumexTextbox>
+            <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar visibilidad</a>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.Password)"/></span>
+        </div>
+        
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="@CreateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.IdentityCardNumber)"/></span>
+
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexCheckbox Size="Size.Small" Color="ThemeColor.Primary" Disabled="_creatingUser"  @bind-Value="CreateUserModel.IsAdmin">Hacer administrador</LumexCheckbox>
+        </div>
+        <SidebarSectionDivider/>
+        @if (_creatingUser)
+        {
+            <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+        }
+        else
+        {
+            <LumexButton Color="ThemeColor.Primary" OnClick="FetchCreateUserAsync" Disabled="@(!context.Validate() || _creatingUser)">Crear Usuario</LumexButton>
+
+        }
+        
+       
+
+
+    </div>
+</EditForm>
+
+@code{
+
+    public bool _creatingUser { get; set; } = false;
+    public CreateUserRequest CreateUserModel { get; set; } = new();
+    public string? ProfilePicturePreview { get; set; } = null;
+    private InputFile? fileInput;
+    public bool ShowPassword { get; set; } = false;
+
+
+
+}
+
+@functions{
+
+    public async Task FetchCreateUserAsync()
+    {
+        _creatingUser = true;
+        StateHasChanged();
+
+        var result = await UsersApiServices.CreateAsync(CreateUserModel);
+
+        if (result.IsSuccessful())
+        {
+            Toast.Show("Usuario creado exitosamente");
+            RightBarContext.SetView(RightBarView.Users);
+            CreateUserModel = new();
+        }
+        
+        
+        _creatingUser = false;
+        StateHasChanged();
+    }
+    public void RemovePicture()
+    {
+        ProfilePicturePreview = null;
+        CreateUserModel.ProfilePictureFile = null;
+    }
+    
+    public async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var result = await FileHandler.HandleImageFromInputAsync(e);
+        if (result.Item1 is null)
+        {
+            Toast.Error("Error al subir la imagen", new ToastModel()
+            {
+                Description = result.Item2
+            });
+
+            return;
+        }
+
+        CreateUserModel.ProfilePictureFile = result.Item1;
+        ProfilePicturePreview = result.Item2;
+        StateHasChanged();
+
+    }
+    
+    private async Task TriggerFileInput()
+    {
+        await JsRuntime.InvokeVoidAsync("triggerClick", fileInput?.Element);
+    }
+    
+    public void SwitchPasswordVisibility()
+    {
+        ShowPassword = !ShowPassword;
+    }
+    
+}
