@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
-using BibliotecaUteco.Client.Requests.Books.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Queries;
 using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
 using BibliotecaUteco.Client.Utilities;
-using Refit;
 
 namespace BibliotecaUteco.Client.Services.ApiServices
 {

@@ -1,7 +1,4 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.Client.Utilities;
 using BibliotecaUteco.Features.AuthorFeatures.Actions;
 
 namespace BibliotecaUteco.DataAccess.Models;
@@ -22,6 +19,25 @@ public class Author : BaseEntity
     [NotMapped]
     public int BooksCount { get; set; } = 0;
 
+    public bool Update(UpdateAuthorCommand command)
+    {
+
+        var hasBeenUpdated = false;
+        
+        if(FullName != command.FullName)
+        {
+            FullName = command.FullName;
+            NormalizedFullName = command.FullName.NormalizeField();
+            hasBeenUpdated = true;
+        }
+
+        if (hasBeenUpdated)
+        {
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        return hasBeenUpdated;
+    }
 
     public AuthorResponse ToResponse() => new()
     {

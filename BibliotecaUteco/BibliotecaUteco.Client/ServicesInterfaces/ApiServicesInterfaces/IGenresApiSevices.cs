@@ -1,4 +1,3 @@
-using BibliotecaUteco.Client.Requests.Books.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Actions;
 using BibliotecaUteco.Client.Requests.Genres.Queries;
 using BibliotecaUteco.Client.Responses;

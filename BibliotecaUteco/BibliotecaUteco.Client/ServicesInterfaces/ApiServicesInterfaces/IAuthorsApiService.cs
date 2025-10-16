@@ -8,5 +8,8 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces
     {
         Task<ApiResult<List<AuthorResponse>>> GetByNameAsync(GetAuthorsByNameRequest request);
         Task<ApiResult<AuthorResponse>> CreateAuthorAsync(CreateAuthorRequest request);
+
+        Task<ApiResult<AuthorResponse>> UpdateAsync(UpdateAuthorRequest request);
+        Task<ApiResult<bool>> DeleteAsync(UpdateAuthorRequest request);
     }
 }

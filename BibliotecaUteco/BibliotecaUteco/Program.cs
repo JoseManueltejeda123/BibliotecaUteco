@@ -1,13 +1,8 @@
 using BibliotecaUteco;
-using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Components;
-using BibliotecaUteco.DataAccess.Context;
 using BibliotecaUteco.Dependencies;
-using BibliotecaUteco.Helpers;
-using BibliotecaUteco.Settings;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);

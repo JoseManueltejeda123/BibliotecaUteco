@@ -1,9 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BibliotecaUteco.Client.Requests.Users.Actions;
-using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Features.UserFeatures.Actions;
-using BibliotecaUteco.Helpers;
 
 namespace BibliotecaUteco.DataAccess.Models;
 

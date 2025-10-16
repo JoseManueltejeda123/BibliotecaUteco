@@ -1,5 +1,3 @@
-using BibliotecaUteco.Client.Responses;
-
 namespace BibliotecaUteco.Features;
 
 public interface IEndpointWrapper<TEndpoint> where TEndpoint : IEndpoint

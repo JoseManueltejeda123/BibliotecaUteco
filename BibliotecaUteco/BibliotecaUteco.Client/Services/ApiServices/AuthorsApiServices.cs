@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using BibliotecaUteco.Client.Requests.Authors.Actions;
 using BibliotecaUteco.Client.Requests.Authors.Queries;
@@ -31,6 +27,24 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         {
             
             return await client.FetchPostAsync<AuthorResponse>(AuthorsEndpoint, request);
+
+
+        }
+        
+        public async Task<ApiResult<AuthorResponse>> UpdateAsync(UpdateAuthorRequest request)
+        {
+            
+            return await client.FetchPutAsync<AuthorResponse>(AuthorsEndpoint, request);
+
+
+        }
+        public async Task<ApiResult<bool>> DeleteAsync(UpdateAuthorRequest request)
+        {
+            
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["authorId"] = request.AuthorId.ToString();
+            string queryString = query?.ToString() ?? "";
+            return await client.FetchDeleteAsync<bool>(AuthorsEndpoint + $"/delete?{queryString}");
 
 
         }

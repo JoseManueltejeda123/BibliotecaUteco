@@ -1,0 +1,76 @@
+<EditForm Model="UpdateAuthorModel" class="w-full flex-col flex gap-2" OnValidSubmit="UpdateAuthorAsync">
+    <DataAnnotationsValidator/>
+
+    <div class="flex flex-col gap-3">
+        <LumexTextbox Type="@InputType.Text"
+                      @bind-Value="@UpdateAuthorModel.FullName"
+                      Label="Nombre del autor (completo)"
+                      Placeholder="Ej. R. R. Tolkien"
+                      
+                      LabelPlacement="@LabelPlacement.Inside"
+                      Required="true"
+                      Disabled="_updatingAuthor"
+                      Description="Los nombres que sean muy largos es recomendable reducirlos a iniciales"/>
+        <span class="text-red-700 text-red-700"><ValidationMessage For="@(() => UpdateAuthorModel.FullName)"/></span>
+        
+    </div>
+    
+
+    @if (_updatingAuthor)
+    {
+        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"></LumexSpinner>
+    }
+    else
+    {
+        <LumexButton Class="w-full"  Disabled="@(_updatingAuthor || Author.FullName == UpdateAuthorModel.FullName)" Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios</LumexButton>
+
+    }
+</EditForm>
+
+@code{
+
+    //flags
+
+    public bool _updatingAuthor { get; set; } = false;
+    
+    public UpdateAuthorRequest UpdateAuthorModel { get; set; } = new();
+    
+    [Parameter]
+    public EventCallback<AuthorResponse> OnAuthorUpdated { get; set; }
+
+    [Parameter] public AuthorResponse Author { get; set; } = new();
+
+}
+
+
+@functions{
+
+
+    protected override void OnParametersSet()
+    {
+        UpdateAuthorModel.FullName = Author.FullName;
+        UpdateAuthorModel.AuthorId = Author.Id;
+    }
+
+    public async Task UpdateAuthorAsync()
+    {
+        _updatingAuthor = true;
+        StateHasChanged();
+
+        var result = await AuthorsApiServices.UpdateAsync(UpdateAuthorModel);
+        _updatingAuthor = false;
+        StateHasChanged();
+        if (result.IsSuccessful())
+        {
+            Toast.Show("Autor actualizado exitosamente");
+            await TriggerOnAuthorUpdated(result.Data);
+        }
+        
+    }
+
+    public async Task TriggerOnAuthorUpdated(AuthorResponse author)
+    {
+        await OnAuthorUpdated.InvokeAsync(author);
+    }
+
+}

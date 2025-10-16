@@ -1,5 +1,3 @@
-using BibliotecaUteco.DataAccess.Context;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace BibliotecaUteco.Dependencies;

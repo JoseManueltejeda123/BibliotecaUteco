@@ -1,7 +1,3 @@
-using BibliotecaUteco.Client.Utilities;
-using BibliotecaUteco.DataAccess.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace BibliotecaUteco.DataAccess.DbSetsActions;
 
 public static class UserDbSetActions

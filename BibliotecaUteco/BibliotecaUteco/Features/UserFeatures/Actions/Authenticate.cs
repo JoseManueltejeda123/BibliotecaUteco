@@ -1,17 +1,4 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.DataAccess.Context;
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Identity;
-using BibliotecaUteco.Settings;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using OneOf;
-using FluentValidation.Validators;
-using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaUteco.Features.UserFeatures.Actions;
 

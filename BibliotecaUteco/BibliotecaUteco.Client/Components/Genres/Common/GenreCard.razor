@@ -1,6 +1,6 @@
 @using BibliotecaUteco.Client.Utilities
 
-<Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 300)" >
+<Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 100)" >
     <AuthorizeView>
     <Authorized>
         <LumexDropdown ShowArrow="true" Id=@($"GenreActions-{Genre.Name}")>

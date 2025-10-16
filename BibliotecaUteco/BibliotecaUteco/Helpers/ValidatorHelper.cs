@@ -1,5 +1,6 @@
 
 using FluentValidation.Results;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace BibliotecaUteco.Helpers;
 

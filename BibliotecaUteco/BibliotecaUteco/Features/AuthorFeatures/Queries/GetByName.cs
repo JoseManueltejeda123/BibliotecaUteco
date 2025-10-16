@@ -1,19 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.DataAccess.Context;
-using BibliotecaUteco.DataAccess.DbSetsActions;
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Helpers;
-using BibliotecaUteco.Settings;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-
 namespace BibliotecaUteco.Features.AuthorFeatures.Queries
 {
     public class GetAuthorsByNameCommand : ICommand<IApiResult>
@@ -56,7 +40,7 @@ internal class GetAuthorsByNameEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .DisableAntiforgery()
             .RequireCors()
-            .Produces<ApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<ApiResult<List<AuthorResponse>>>(200, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)

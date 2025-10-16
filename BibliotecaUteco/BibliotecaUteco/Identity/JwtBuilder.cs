@@ -1,8 +1,6 @@
 using System.Globalization;
 using System.Security.Claims;
 using System.Text;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;

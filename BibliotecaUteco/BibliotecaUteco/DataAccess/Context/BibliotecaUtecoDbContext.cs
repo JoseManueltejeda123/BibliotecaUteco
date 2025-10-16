@@ -1,7 +1,3 @@
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Helpers;
-using Microsoft.EntityFrameworkCore;
-
 namespace BibliotecaUteco.DataAccess.Context;
 
 public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext> options) : DbContext(options), IBibliotecaUtecoDbContext

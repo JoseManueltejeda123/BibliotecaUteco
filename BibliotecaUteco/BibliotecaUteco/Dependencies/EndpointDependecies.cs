@@ -1,6 +1,5 @@
 using System.Reflection;
 using BibliotecaUteco.Features;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BibliotecaUteco.Dependencies;

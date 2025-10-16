@@ -1,24 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.Settings;
-using BibliotecaUteco.Client.Utilities;
-using BibliotecaUteco.DataAccess.Context;
-using BibliotecaUteco.DataAccess.DbSetsActions;
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Features.BooksFeatures.Queries;
-using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Services;
-using BibliotecaUteco.Settings;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaUteco.Features.BooksFeatures.Actions
 {

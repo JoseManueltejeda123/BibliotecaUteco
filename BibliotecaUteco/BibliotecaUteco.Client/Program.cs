@@ -1,5 +1,4 @@
 using BibliotecaUteco.Client;
-using BibliotecaUteco.Client.Dependencies;
 using BibliotecaUteco.Client.Identity.Provider;
 using BibliotecaUteco.Client.Services;
 using BibliotecaUteco.Client.Services.ApiServices;

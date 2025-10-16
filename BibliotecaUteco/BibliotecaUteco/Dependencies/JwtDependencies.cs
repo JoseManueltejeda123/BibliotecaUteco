@@ -1,10 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.Helpers;
 using BibliotecaUteco.Identity;
-using BibliotecaUteco.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

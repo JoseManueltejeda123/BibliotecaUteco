@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using BibliotecaUteco.Client.Responses;
 
 namespace BibliotecaUteco.DataAccess.Models;
 

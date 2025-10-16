@@ -1,8 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Helpers;
-using FluentValidation;
-
 namespace BibliotecaUteco.Features;
 
 public class Sender(IServiceProvider serviceProvider) : ISender

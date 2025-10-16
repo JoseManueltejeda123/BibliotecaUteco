@@ -1,0 +1,13 @@
+global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
+global using System.Text.Json.Serialization;
+global using BibliotecaUteco.Client.Responses;
+global using BibliotecaUteco.Client.Utilities;
+global using BibliotecaUteco.DataAccess.Context;
+global using BibliotecaUteco.DataAccess.DbSetsActions;
+global using BibliotecaUteco.DataAccess.Models;
+global using BibliotecaUteco.Helpers;
+global using BibliotecaUteco.Settings;
+global using FluentValidation;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;

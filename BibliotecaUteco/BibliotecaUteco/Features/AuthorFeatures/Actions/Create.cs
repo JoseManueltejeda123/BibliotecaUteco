@@ -1,17 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using BibliotecaUteco.Client.Responses;
-using BibliotecaUteco.Client.Utilities;
-using BibliotecaUteco.DataAccess.Context;
-using BibliotecaUteco.DataAccess.DbSetsActions;
-using BibliotecaUteco.DataAccess.Models;
-using BibliotecaUteco.Helpers;
-using BibliotecaUteco.Settings;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace BibliotecaUteco.Features.AuthorFeatures.Actions;
 
 public class CreateAuthorCommand : ICommand<IApiResult>
@@ -57,7 +43,7 @@ internal class CreateAuthorEndpoint : IEndpoint
             .DisableAntiforgery()
             .RequireCors()
             .Accepts<CreateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<ApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
@@ -85,7 +71,7 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context) :
         await context.SaveChangesAsync(cancellationToken);
         context.ChangeTracker.Clear();
 
-        var authors = await context.Authors.GetAuthorsByName(request.FullName, 1);
+        var authors = await context.Authors.GetAuthorsByName(request.FullName, 1, cancellationToken);
 
         if (authors.FirstOrDefault() is null)
             return ApiResult<AuthorResponse>.BuildFailure(HttpStatus.BadRequest,

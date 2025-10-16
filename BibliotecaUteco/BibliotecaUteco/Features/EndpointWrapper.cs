@@ -1,5 +1,3 @@
-using BibliotecaUteco.Client.Responses;
-
 namespace BibliotecaUteco.Features;
 
 public class EndpointWrapper<TEndpoint>(ILogger<TEndpoint> logger) : IEndpointWrapper<TEndpoint> where TEndpoint : IEndpoint

@@ -6,8 +6,6 @@ using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.ServicesInterfaces;
 using Blazor.Sonner.Common;
 using Blazor.Sonner.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace BibliotecaUteco.Client.Utilities;
 

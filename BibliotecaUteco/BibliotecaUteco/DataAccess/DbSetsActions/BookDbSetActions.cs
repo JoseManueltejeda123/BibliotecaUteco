@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BibliotecaUteco.Client.Utilities;
-using BibliotecaUteco.DataAccess.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace BibliotecaUteco.DataAccess.DbSetsActions
 {
     public static class BookDbSetActions
