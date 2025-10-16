@@ -1,0 +1,44 @@
+
+@if (DialogService.IsOpen)
+{
+    <Animate Animation="Animations.FadeIn">
+        <div class="absolute inset-0 z-[99999] bg-white/70 border border-neutral-200 flex justify-center items-center">
+            <div class="bg-white p-6 rounded-xl shadow-xl w-[350px] flex flex-col gap-4">
+                <h2 class="text-lg font-semibold text-center">@DialogService.Title</h2>
+                <p class="text-sm text-center text-gray-600">@DialogService.Body</p>
+
+                @if (DialogService.ChildContent is not null)
+                {
+                    <div class="mt-2">
+                        @DialogService.ChildContent
+                    </div>
+                }
+
+                <div class="flex justify-between items-center gap-2 mt-4">
+                    <LumexButton Color="DialogService.CancelColor"
+                                 @onclick="DialogService.Cancel">
+                        @DialogService.CancelText
+                    </LumexButton>
+
+                    <LumexButton Color="DialogService.AcceptColor"
+                                 @onclick="DialogService.Accept">
+                        @DialogService.AcceptText
+                    </LumexButton>
+                </div>
+            </div>
+        </div>
+
+    </Animate>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        DialogService.OnDialogChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DialogService.OnDialogChanged -= StateHasChanged;
+    }
+}

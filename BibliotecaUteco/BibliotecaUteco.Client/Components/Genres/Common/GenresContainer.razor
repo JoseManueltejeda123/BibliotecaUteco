@@ -62,11 +62,11 @@
            
    
 
-     <div class="w-full  flex flex-wrap gap-3 mt-3">
+     <div class="w-full  flex flex-wrap gap-2 mt-3 items-center">
         
          @if(_fetchingGenres){
 
-             <GenreSkeleton Count="3"/>
+             <GenreSkeleton Count="10"/>
          }
          else
          {
@@ -85,7 +85,7 @@
              {
                  foreach(var genre in Genres)
                  {   
-                    <GenreCard OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
+                    <GenreCard Index="@(Genres.IndexOf(genre))" OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
     
                  }
              }

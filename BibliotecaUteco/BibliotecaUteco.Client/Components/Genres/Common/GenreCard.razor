@@ -1,6 +1,7 @@
 @using BibliotecaUteco.Client.Utilities
-   
-<AuthorizeView>
+
+<Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 300)" >
+    <AuthorizeView>
     <Authorized>
         <LumexDropdown ShowArrow="true" Id=@($"GenreActions-{Genre.Name}")>
             <LumexDropdownTrigger>
@@ -45,43 +46,26 @@
     </Authorized>
 </AuthorizeView>
 
+</Animate>
+
    
     
-
-
-
-        
-
-@if(ShowDeleteGenreConfirmationDialog)
+@if (_deletingGenre)
 {
-    <div @onclick="SetDeleteGenreConfirmationModal" class="absolute inset-0 w-full h-full z-[9999999] bg-white/60 flex justify-center items-center">
-        <div class="p-4 border-neutral-200 border flex w-[300px] flex-col gap-3 bg-white items-center rounded-lg">
-            <label class="text-md font-semibold text-center">Desea eliminar el género @Genre.Name?</label>
-            <p class="text-[13px] font-normal">Una vez eliminado el género no se podrá deshacer.</p>
-            <div class="w-full flex items-center justify-between gap-2">
-                <LumexButton @onclick="SetDeleteGenreConfirmationModal">Cancelar</LumexButton>
-                <LumexButton  Disabled="@_deletingGenre" Color="ThemeColor.Danger" Onclick="FetchDeleteGenreAsync">
-                    @if(_deletingGenre)
-                    {
-                        <LumexSpinner Size="Size.Small"/>
-                    }
-                    else
-                    {
-                        @("Si, eliminar género")
-                    } 
-                </LumexButton>
-
-            </div>
-        </div>
+    <div class="absolute z-[999] w-full h-full bg-white/10  flex flex-col gap-1 inset-0 items-center justify-center">
+        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+        <p>Eliminando género</p>
     </div>
 }
+
+
+
 
 
 
 @code{
 
    
-    public bool ShowDeleteGenreConfirmationDialog {get; set;} = false;
     public bool _deletingGenre {get; set;} = false;
     [Parameter] public GenreResponse Genre { get; set; } = new();
     [Parameter] public EventCallback<GenreResponse> OnClicked {get; set;}
@@ -92,6 +76,8 @@
     [Parameter] public EventCallback<GenreResponse> OnGenreDeleted {get; set;}
 
     [Parameter] public bool ShowActions {get; set;} = true;
+    
+    [Parameter] public int Index {get; set;} = 0;
 
 }
 
@@ -100,8 +86,20 @@
     {
         if(_deletingGenre) return;
 
-        ShowDeleteGenreConfirmationDialog = !ShowDeleteGenreConfirmationDialog;
         await HideDropdown();
+        
+        var confirmed = await DialogService.ShowAsync(
+            title: "Eliminar Género",
+            body: $"¿Desea eliminar el género {Genre.Name}? Una vez eliminado no se podrá recuperar.",
+            acceptText: "Sí, eliminar género",
+            cancelText: "Cancelar"
+            
+        );
+
+        if (confirmed)
+        {
+            await FetchDeleteGenreAsync();
+        }
     }
     protected override void OnAfterRender(bool firstRender)
     {
@@ -134,7 +132,6 @@
         }
         
         _deletingGenre = false;
-        ShowDeleteGenreConfirmationDialog = false;
         StateHasChanged();
     }
 

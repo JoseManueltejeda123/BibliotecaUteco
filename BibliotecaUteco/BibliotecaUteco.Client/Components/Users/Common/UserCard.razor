@@ -39,21 +39,23 @@
 
     public bool IsOpen {get; set;}
     
-    public void SetIsOpen(bool value)
-    {
-       
-        IsOpen = value;
-    }
+    
     [Parameter] public UserResponse User { get; set; } = new();
     
+    
+
+}
+
+@functions{
     public async Task SetUpdateUserView()
     {
-        await Task.Yield(); 
-        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay");
-
-      RightBarContext.SetUserToUpdate(User);
+        RightBarContext.SetUserToUpdate(User);
         RightBarContext.SetView(RightBarView.UpdateUser);
     }
-    
+    public void SetIsOpen(bool value)
+    {
+           
+        IsOpen = value;
+    }
 
 }
