@@ -16,7 +16,6 @@ builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
     provider.GetRequiredService<CustomAuthenticationStateProvider>());
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSonner();
-
 builder.Services.AddLumexServices();
 builder.Services.AddClientServices(builder);
 await builder.Build().RunAsync();

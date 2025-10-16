@@ -27,6 +27,31 @@
     window.triggerClick = (element) => {
      if (element) element.click();
     };
+
+    window.dropdownManager = {
+        open(selector) { /* ... */ },
+        closeAll() {
+            document.querySelectorAll('[data-popover]').forEach(p => p.remove());
+        }
+    };
+
+    window.removeDropdownOverlay = function (id) {
+        try {
+            // Overlay
+            const overlay = document.querySelector(`[data-popover-overlay="${id}"]`);
+            if (overlay && overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+            }
+
+            // Popover principal
+            const popover = document.querySelector(`[data-popover="${id}"]`);
+            if (popover && popover.parentNode) {
+                popover.parentNode.removeChild(popover);
+            }
+        } catch (err) {
+            console.warn("Error removing dropdown overlay:", err);
+        }
+    };
 </script>
 </body>
 

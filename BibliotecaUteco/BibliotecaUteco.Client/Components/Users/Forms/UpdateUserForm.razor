@@ -1,0 +1,175 @@
+@using BibliotecaUteco.Client.Utilities
+<EditForm Model="UpdateUserModel"  class="flex w-full absolute flex-col justify-center">
+    <DataAnnotationsValidator/>
+    <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
+        <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
+        
+        @if (!string.IsNullOrEmpty(_prevProfilePicture))
+        {
+            <div class="w-full flex flex-col items-center">
+                <img  class="w-[50%] aspect-[2/3] object-cover rounded-sm" src="@_prevProfilePicture" />
+
+            </div>
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(ProfilePicturePreview) && UpdateUserModel.ProfilePictureFile is not null)
+            {
+                <div class="w-full flex flex-col items-center">
+                    <img  class="w-[50%] aspect-[2/3] object-cover rounded-sm" src="@_prevProfilePicture ?? ProfilePicturePreview " />
+
+                </div>
+            }
+            else
+            {
+                <div class="w-full flex flex-col items-center">
+                    <LumexAvatar Size="Size.Large" Radius="Radius.Small" Class="w-[75px] h-[75px] "  Color="ThemeColor.Primary" Name="@UpdateUserModel.FullName"></LumexAvatar>
+
+                </div>
+          
+            }
+        }
+        
+       
+        @if (!string.IsNullOrEmpty(_prevProfilePicture))
+        {
+
+            <LumexButton Size="Size.Small" Variant="Variant.Light" Color="ThemeColor.Danger" OnClick="()=>{_prevProfilePicture = null;}">Eliminar Foto</LumexButton>
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(ProfilePicturePreview) || UpdateUserModel.ProfilePictureFile is not null)
+            {
+
+                <LumexButton Size="Size.Small" Variant="Variant.Light" Color="ThemeColor.Danger" OnClick="RemovePicture">Eliminar Foto</LumexButton>
+            }
+            else
+            {
+                <LumexButton Size="Size.Small" Variant="Variant.Light" Color="ThemeColor.Primary" OnClick="TriggerFileInput">Subir Foto</LumexButton>
+
+            }
+        }
+
+        
+        
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.FullName)"/></span>
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.Username)"/></span>
+
+
+        </div>
+      
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="@UpdateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.IdentityCardNumber)"/></span>
+
+
+        </div>
+       
+        <SidebarSectionDivider/>
+        @if (_updatingUser)
+        {
+            <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+        }
+        else
+        {
+            <LumexButton Color="ThemeColor.Primary" OnClick="FetchUpdateUserAsync" Disabled="@(!context.Validate() || _updatingUser)">Crear Usuario</LumexButton>
+
+        }
+        
+       
+
+
+    </div>
+</EditForm>
+
+@code{
+
+    public bool _updatingUser { get; set; } = false;
+    public UpdateUserRequest UpdateUserModel { get; set; } = new();
+    public string? ProfilePicturePreview { get; set; } = null;
+    private InputFile? fileInput;
+    public bool ShowPassword { get; set; } = false;
+    public string _prevProfilePicture {get; set;}
+
+
+
+}
+
+@functions{
+
+    protected override void OnInitialized()
+    {
+        if (RightBarContext.UserToUpdate is not null)
+        {
+            var user = RightBarContext.UserToUpdate;
+            
+            UpdateUserModel.UserId = user.Id;
+            UpdateUserModel.Username = user.Username;
+            UpdateUserModel.FullName = user.FullName;
+            UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
+            _prevProfilePicture = user.ProfilePictureUrl;
+        }
+    }
+
+    public async Task FetchUpdateUserAsync()
+    {
+        _updatingUser = true;
+        StateHasChanged();
+
+        UpdateUserModel.RemoveProfilePicture = UpdateUserModel.ProfilePictureFile is null && string.IsNullOrEmpty((_prevProfilePicture));
+        var result = await UsersApiServices.UpdateAsync(UpdateUserModel);
+
+        if (result.IsSuccessful())
+        {
+            Toast.Show("Usuario actualizado exitosamente");
+         
+            UpdateUserModel = new();
+            RightBarContext.SetView(RightBarView.Default);
+        }
+        
+        
+        _updatingUser = false;
+        StateHasChanged();
+    }
+    public void RemovePicture()
+    {
+        ProfilePicturePreview = null;
+        UpdateUserModel.ProfilePictureFile = null;
+    }
+    
+    public async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var result = await FileHandler.HandleImageFromInputAsync(e);
+        if (result.Item1 is null)
+        {
+            Toast.Error("Error al subir la imagen", new ToastModel()
+            {
+                Description = result.Item2
+            });
+
+            return;
+        }
+
+        UpdateUserModel.ProfilePictureFile = result.Item1;
+        ProfilePicturePreview = result.Item2;
+        StateHasChanged();
+
+    }
+    
+    private async Task TriggerFileInput()
+    {
+        await JsRuntime.InvokeVoidAsync("triggerClick", fileInput?.Element);
+    }
+    
+    public void SwitchPasswordVisibility()
+    {
+        ShowPassword = !ShowPassword;
+    }
+    
+}

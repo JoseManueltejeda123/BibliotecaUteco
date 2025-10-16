@@ -68,6 +68,16 @@ public class RightBarStore
         if (book is null) return;
         OnBookDetailsChanged?.Invoke();
     }
+     public UserResponse? UserToUpdate { get; set; } = null;
+    
+        public event Action? OnUserToUpdateChanged ;
+    
+        public void SetUserToUpdate(UserResponse? user = null)
+        {
+            UserToUpdate = user;
+            if (user is null) return;
+            OnUserToUpdateChanged?.Invoke();
+        }
 }
 
 public enum RightBarView
@@ -78,5 +88,6 @@ public enum RightBarView
     BookDetails,
     Users,
     CreateUser,
+    UpdateUser,
     Authors
 }

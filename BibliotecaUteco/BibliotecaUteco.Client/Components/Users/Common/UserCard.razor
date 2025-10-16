@@ -1,26 +1,59 @@
-<div class="flex items-center gap-3 text-neutral-800  p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
-    
-    @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
-    {
-        <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
+<div class="flex items-center gap-3 justify-between text-neutral-800 w-full  p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
+    <div class="flex w-full items-center gap-2">
+        @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
+        {
+            <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
 
-    }
-    else
-    {
-        <img class="w-[30px] h-[30px] rounded-full object-cover" src="@User.ProfilePictureUrl"/>
-    }
-    <div class="flex flex-col">
-        <p class="text-sm line-clamp-1">@User.FullName</p>
-        <p class="text-xs">@(User.UserName + " ")(@User._roleName)</p>
+        }
+        else
+        {
+            <img class="w-[30px] h-[30px] rounded-full object-cover" src="@User.ProfilePictureUrl"/>
+        }
+        <div class="flex flex-col">
+            <p class="text-sm line-clamp-1">@User.FullName</p>
+            <p class="text-xs">@(User.Username + " ")(@User._roleName)</p>
 
+        </div>
     </div>
-    
-    <EllipsisVerticalIcon Size="18px" class="ml-auto cursor-pointer text-neutral-800"/>
+   
+    <LumexDropdown ShowArrow="true"   Open="@IsOpen" OpenChanged="SetIsOpen">
+        <LumexDropdownTrigger >
+            <button>
+                <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
+            </button>
+            
+        </LumexDropdownTrigger>
+        <LumexDropdownMenu>
+            <LumexDropdownItem OnClick="SetUpdateUserView"  Id="ActualizarUsuario">
+                <StartContent>
+                    <SquarePenIcon Size="18px"/>
+                </StartContent>
+                <ChildContent>Actualizar usuario</ChildContent>
+            </LumexDropdownItem>
+
+        </LumexDropdownMenu>
+    </LumexDropdown>
 </div>
 
 @code{
 
-
+    public bool IsOpen {get; set;}
+    
+    public void SetIsOpen(bool value)
+    {
+       
+        IsOpen = value;
+    }
     [Parameter] public UserResponse User { get; set; } = new();
+    
+    public async Task SetUpdateUserView()
+    {
+        await Task.Yield(); 
+        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay");
+
+      RightBarContext.SetUserToUpdate(User);
+        RightBarContext.SetView(RightBarView.UpdateUser);
+    }
+    
 
 }

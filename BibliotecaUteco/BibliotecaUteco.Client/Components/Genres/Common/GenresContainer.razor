@@ -35,39 +35,34 @@
     }
     else
     {
-        <div class="flex w-full gap-2 items-end">
+        <div class="w-full gap-3 flex flex-col ">
+            <label class="text-[15px] font-semibold ">Administrar géneros</label>
+            <EditForm class="w-full flex items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <LumexTextbox Type="@InputType.Search"
+                              Label="Buscar género"
+                              @bind-Value="@GetGenresByName.GenreName"
+                              Placeholder="Ej. Fantasia"
+                              LabelPlacement="@LabelPlacement.Outside"
+                              Disabled="@_fetchingGenres"
+                              Clearable="@true"
+                              Size="Size.Small"
+                              Behavior="InputBehavior.OnInput"
+                              OnCleared="async () => { await FetchGetGenresByNameAsync(); }"/>
+                <LumexButton Type="ButtonType.Submit" Size="Size.Small" Disabled="@_fetchingGenres" Color="ThemeColor.Primary">
+                    Buscar
+                </LumexButton>
 
-        <EditForm class="w-full flex items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
-            <DataAnnotationsValidator></DataAnnotationsValidator>
-            <LumexTextbox Type="@InputType.Search"
-                            Label="Buscar género"
-                            @bind-Value="@GetGenresByName.GenreName"
-                            Placeholder="Ej. Fantasia"
-                            LabelPlacement="@LabelPlacement.Outside"
-                            Disabled="@_fetchingGenres"
-                            Clearable="@true"
-                            Behavior="InputBehavior.OnInput"
-                            OnCleared="async()=>{await FetchGetGenresByNameAsync();}"
-            />
-            <LumexButton Type="ButtonType.Submit" Disabled="@_fetchingGenres" Color="ThemeColor.Primary" >
-                Buscar
-            </LumexButton>
-            
-        </EditForm>
-        
-    </div>
+            </EditForm>
+
+        </div>
     <SidebarSectionDivider Name="Géneros"/>
 
-     <AuthorizeView Roles="Admin">
-        <Authorized>
-             <button @onclick="() => {ShowCreateGenreModal = true; }" disabled="@_fetchingGenres" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-2 items-center justify-center gap-3 cursor-pointer">
-                <p class="text-sm text-green-600">Crear Género</p>
-            </button>
-        </Authorized>
-     </AuthorizeView>
+    
+           
    
 
-     <div class="w-full  flex flex-wrap gap-2 mt-3">
+     <div class="w-full  flex flex-wrap gap-3 mt-3">
         
          @if(_fetchingGenres){
 
@@ -75,6 +70,17 @@
          }
          else
          {
+             <AuthorizeView Roles="Admin">
+                 <Authorized>
+                     <div @onclick="() => {ShowCreateGenreModal = true; }">
+                         <LumexChip Class="border-dashed cursor-pointer !py-1 transition-all hover:bg-green-50 " Variant="ChipVariant.Outlined" Color="ThemeColor.Primary">
+                             Crear Género
+                         </LumexChip>
+                     </div>
+                 </Authorized>
+            </AuthorizeView>
+          
+         
              if(Genres.Any())
              {
                  foreach(var genre in Genres)

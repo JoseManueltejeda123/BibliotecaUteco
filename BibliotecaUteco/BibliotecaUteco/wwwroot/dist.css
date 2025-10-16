@@ -8,7 +8,6 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
-    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
@@ -822,9 +821,6 @@
   .h-\[10px\] {
     height: 10px;
   }
-  .h-\[28px\] {
-    height: 28px;
-  }
   .h-\[30px\] {
     height: 30px;
   }
@@ -944,12 +940,6 @@
   }
   .w-\[25\%\] {
     width: 25%;
-  }
-  .w-\[28px\] {
-    width: 28px;
-  }
-  .w-\[30\%\] {
-    width: 30%;
   }
   .w-\[30px\] {
     width: 30px;
@@ -1199,9 +1189,6 @@
   .flex-col {
     flex-direction: column;
   }
-  .flex-row {
-    flex-direction: row;
-  }
   .flex-nowrap {
     flex-wrap: nowrap;
   }
@@ -1437,9 +1424,6 @@
       border-color: color-mix(in oklab, var(--lumex-divider) var(--lumex-opacity-divider), transparent);
     }
   }
-  .border-green-100 {
-    border-color: var(--color-green-100);
-  }
   .border-green-600 {
     border-color: var(--color-green-600);
   }
@@ -1469,9 +1453,6 @@
   }
   .border-primary-200 {
     border-color: var(--lumex-primary-200);
-  }
-  .border-red-100 {
-    border-color: var(--color-red-100);
   }
   .border-secondary {
     border-color: var(--lumex-secondary);
@@ -1623,9 +1604,6 @@
   .bg-foreground {
     background-color: var(--lumex-foreground);
   }
-  .bg-green-50 {
-    background-color: var(--color-green-50);
-  }
   .bg-green-300 {
     background-color: var(--color-green-300);
   }
@@ -1674,15 +1652,6 @@
       background-color: color-mix(in oklab, var(--color-neutral-100) 70%, transparent);
     }
   }
-  .bg-neutral-100\/80 {
-    background-color: color-mix(in srgb, oklch(97% 0 0) 80%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-neutral-100) 80%, transparent);
-    }
-  }
-  .bg-neutral-200 {
-    background-color: var(--color-neutral-200);
-  }
   .bg-neutral-200\/50 {
     background-color: color-mix(in srgb, oklch(92.2% 0 0) 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1696,12 +1665,6 @@
     background-color: color-mix(in srgb, oklch(20.5% 0 0) 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-neutral-900) 50%, transparent);
-    }
-  }
-  .bg-neutral-900\/70 {
-    background-color: color-mix(in srgb, oklch(20.5% 0 0) 70%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-neutral-900) 70%, transparent);
     }
   }
   .bg-neutral-950 {
@@ -1733,9 +1696,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--lumex-primary) 20%, transparent);
     }
-  }
-  .bg-red-50 {
-    background-color: var(--color-red-50);
   }
   .bg-red-300 {
     background-color: var(--color-red-300);
@@ -1936,6 +1896,9 @@
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
+  }
+  .\!py-1 {
+    padding-block: calc(var(--spacing) * 1) !important;
   }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
@@ -2165,9 +2128,6 @@
   .text-red-500 {
     color: var(--color-red-500);
   }
-  .text-red-600 {
-    color: var(--color-red-600);
-  }
   .text-red-700 {
     color: var(--color-red-700);
   }
@@ -2249,9 +2209,6 @@
   }
   .opacity-disabled {
     opacity: var(--lumex-opacity-disabled);
-  }
-  .mix-blend-difference {
-    mix-blend-mode: difference;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -4075,12 +4032,6 @@
       border-end-end-radius: var(--radius-lg);
     }
   }
-  .last\:border-b {
-    &:last-child {
-      border-bottom-style: var(--tw-border-style);
-      border-bottom-width: 1px;
-    }
-  }
   .group-first\:last\:rounded-tr-lg {
     &:is(:where(.group):first-child *) {
       &:last-child {
@@ -4131,22 +4082,6 @@
         --tw-scale-y: 105%;
         --tw-scale-z: 105%;
         scale: var(--tw-scale-x) var(--tw-scale-y);
-      }
-    }
-  }
-  .hover\:border {
-    &:hover {
-      @media (hover: hover) {
-        border-style: var(--tw-border-style);
-        border-width: 1px;
-      }
-    }
-  }
-  .hover\:border-solid {
-    &:hover {
-      @media (hover: hover) {
-        --tw-border-style: solid;
-        border-style: solid;
       }
     }
   }

@@ -9,7 +9,7 @@
             RightBarView.UpdateBook => "Actualizar Libro",
             RightBarView.BookDetails => "Acerca del libro",
             RightBarView.Users => "Administrar Usuarios",
-            RightBarView.CreateUser => "Crear Usuario",
+            RightBarView.UpdateUser => "Actualizar Usuario",
 
 
 
@@ -40,6 +40,10 @@
     else if (RightBarContext.View == RightBarView.CreateUser)
     {
         <CreateUserForm/>
+    }
+    else if(RightBarContext.View == RightBarView.UpdateUser)
+    {
+    <UpdateUserForm/>
     }
     
 </aside>

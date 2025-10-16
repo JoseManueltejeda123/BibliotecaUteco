@@ -10,4 +10,6 @@ public interface IUsersApiServices
     Task<ApiResult<UserResponse>> CreateAsync(CreateUserRequest request);
 
     Task<ApiResult<List<UserResponse>>> GetByFilterAsync(GetUsersByFilterRequest request);
+   Task<ApiResult<UserResponse>> UpdateAsync(UpdateUserRequest request);
+
 }

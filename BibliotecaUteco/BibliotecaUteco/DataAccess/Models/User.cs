@@ -51,12 +51,48 @@ public class User : BaseEntity
 
 
     };
+
+    public bool Update(UpdateUserCommand command)
+    {
+
+        bool hasBeenUpdated = false;
+        
+        if(Username != command.Username)
+        {
+            Username = command.Username;
+            hasBeenUpdated = true;
+        }
+        
+        if(FullName != command.FullName)
+        {
+            FullName = command.FullName;
+            hasBeenUpdated = true;
+        }
+        
+      
+        
+        if(IdentityCardNumber != command.IdentityCardNumber )
+        {
+            IdentityCardNumber = command.IdentityCardNumber;
+            hasBeenUpdated = true;
+        }
+        
+      
+        
+        if(hasBeenUpdated)
+        {
+            UpdatedAt = DateTime.UtcNow;
+            
+        }
+
+        return hasBeenUpdated;
+    }
     public UserResponse ToResponse() => new()
     {
         Id = Id,
         CreatedAt = CreatedAt,
         UpdatedAt = UpdatedAt,
-        UserName = Username,
+        Username = Username,
         FullName = FullName,
         IdentityCardNumber = IdentityCardNumber,
         ProfilePictureUrl = ProfilePictureUrl ?? "",

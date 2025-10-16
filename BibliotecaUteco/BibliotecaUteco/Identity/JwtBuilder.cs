@@ -28,7 +28,7 @@ public class JwtBuilder(IOptions<JwtSettings> jwtSettings)
         {
             Subject = new(
                 [
-                    new Claim(JwtRegisteredClaimNames.Nickname, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Nickname, user.Username),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Picture, user.ProfilePictureUrl),
                     new Claim(JwtRegisteredClaimNames.Name, user.FullName),

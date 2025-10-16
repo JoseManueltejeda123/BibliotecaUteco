@@ -70,7 +70,7 @@ public class GetGenresByNameHandler(IBibliotecaUtecoDbContext context) : IComman
     public async Task<IApiResult> HandleAsync(GetGenresByName request, CancellationToken cancellationToken = default)
     {
         var normalizedName = request.GenreName?.NormalizeField() ?? "";
-        var genres = await context.Genres.Where(g => g.NormalizedName.Contains(normalizedName) || g.NormalizedName == normalizedName).OrderBy(g => g.Id).Take(4).ToListAsync(cancellationToken);
+        var genres = await context.Genres.Where(g => g.NormalizedName.Contains(normalizedName) || g.NormalizedName == normalizedName).OrderBy(g => g.Id).Take(10).ToListAsync(cancellationToken);
 
         return ApiResult<List<GenreResponse>>.BuildSuccess(genres.Select(g => g.ToResponse()).ToList());
     }
