@@ -43,7 +43,7 @@
                       Label="Nombre del libro"
                       Placeholder="Ej. 100 años de soledad"
                       EndContent="@_titleIcon"
-                      LabelPlacement="@LabelPlacement.Outside"
+                      LabelPlacement="@LabelPlacement.Inside"
                       Required="true"
         />
         <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Name)"/></span>
@@ -65,10 +65,10 @@
     </div>
     <div class="flex flex-col gap-3 w-full">
         <LumexNumbox TValue="@int"
-                     Label="Copias"
+                     Label="Copias a disponibilidad"
                      @bind-Value="CreateBookModel.Stock"
                     Behavior="InputBehavior.OnInput"
-                     LabelPlacement="LabelPlacement.Outside"
+                     LabelPlacement="LabelPlacement.Inside"
                      Placeholder="Cantidad de copias"
                      Class="max-w-xs"
                      min="1"

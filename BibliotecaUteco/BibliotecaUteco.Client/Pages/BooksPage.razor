@@ -40,7 +40,9 @@
                                   @bind-Value="@Filter.Filter"
                                   Placeholder="Ej. Canción de hielo y fuego"
                                   maxLenght="50"
-                                  LabelPlacement="@LabelPlacement.Outside"/>
+                                  LabelPlacement="@LabelPlacement.Outside">
+                       
+                    </LumexTextbox>
                     
                    
                     <p class="text-[13px]">Seleciona un filtro de abajo para activar la búsqueda.</p>
@@ -52,7 +54,6 @@
             </EditForm>
             <div class="mb-3">
                 <LumexChip Class="cursor-pointer"  @onclick='()=>{SetFilterBy(BookFilterType.All);}' Variant="@(FilterBy == BookFilterType.All ? ChipVariant.Solid : ChipVariant.Outlined )"  Color="@ThemeColor.Primary">Todo</LumexChip>
-
                 <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Name); }' Variant="@(FilterBy == BookFilterType.Name ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
                 <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Author); }' Variant="@(FilterBy == BookFilterType.Author ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Autor</LumexChip>
                 <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>

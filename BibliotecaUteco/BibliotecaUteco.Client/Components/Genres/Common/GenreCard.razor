@@ -1,12 +1,14 @@
 @using BibliotecaUteco.Client.Utilities
 
-<Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 100)" >
-    <AuthorizeView>
+<Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 300)" >
+    
+</Animate>
+<AuthorizeView>
     <Authorized>
         <LumexDropdown ShowArrow="true" Id=@($"GenreActions-{Genre.Name}")>
             <LumexDropdownTrigger>
                 <button>
-                    <LumexChip Class="cursor-pointer"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
+                    <LumexChip Disabled="_deletingGenre" Class="cursor-pointer"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
                         <ChildContent>
                             <p class="text-sm font-semibold line-clamp-1 text-ellipsis overflow-hidden">@Genre.Name</p>
 
@@ -46,17 +48,8 @@
     </Authorized>
 </AuthorizeView>
 
-</Animate>
-
    
-    
-@if (_deletingGenre)
-{
-    <div class="absolute z-[999] w-full h-full bg-white/10  flex flex-col gap-1 inset-0 items-center justify-center">
-        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
-        <p>Eliminando género</p>
-    </div>
-}
+
 
 
 
