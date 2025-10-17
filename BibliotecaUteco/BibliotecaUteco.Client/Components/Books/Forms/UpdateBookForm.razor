@@ -192,7 +192,7 @@
     public string? BookCoverPrview { get; set; } = null;
 
    
-    private InputFile? fileInput;
+    private InputFile? fileInput = null;
     
 
 }
@@ -318,6 +318,7 @@
     
     private async Task TriggerFileInput()
     {
+        if (fileInput is null) return;
         await JsRuntime.InvokeVoidAsync("triggerClick", fileInput.Element);
     }
 

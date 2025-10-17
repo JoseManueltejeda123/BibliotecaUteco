@@ -16,7 +16,7 @@
         </div>
     </div>
    
-    <LumexDropdown ShowArrow="true"   Open="@IsOpen" OpenChanged="SetIsOpen">
+    <LumexDropdown ShowArrow="true"  Id=@($"UserActions-{User.Username}")>
         <LumexDropdownTrigger >
             <button>
                 <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
@@ -46,16 +46,20 @@
 
 }
 
+
+
 @functions{
+    public async Task HideDropdown()
+    {
+        await Task.Delay(20);
+        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay", $"UserActions-{User.Username}");
+    }
     public async Task SetUpdateUserView()
     {
         RightBarContext.SetUserToUpdate(User);
         RightBarContext.SetView(RightBarView.UpdateUser);
+        await HideDropdown();                            
     }
-    public void SetIsOpen(bool value)
-    {
-           
-        IsOpen = value;
-    }
+   
 
 }

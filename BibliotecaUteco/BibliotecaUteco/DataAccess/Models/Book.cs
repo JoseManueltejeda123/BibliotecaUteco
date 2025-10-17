@@ -12,9 +12,9 @@ public class Book : BaseEntity
 
     [MaxLength(50), MinLength(1), Required,  Column("NombreNormalizado")]
     public string NormalizedName { get; set; } = null!;
-    
-    [Url,  Column("UrlPortada")]
-    public string? CoverUrl { get; set; }
+
+    [Url, Column("UrlPortada")] 
+    public string? CoverUrl { get; set; } = null;
 
     [MaxLength(500), MinLength(10), Required,  Column("Synopsis")]
     public string Synopsis { get; set; } = null!;
@@ -40,7 +40,7 @@ public class Book : BaseEntity
         Synopsis = command.Synopsis,
         Stock = command.Stock,
         Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
-        Authors = command.AuthorIds.Select(g => new BookAuthor(){AuthorId = g}).ToList(),
+        Authors = command.AuthorIds?.Select(g => new BookAuthor(){AuthorId = g}).ToList() ?? new(),
         
          
     };

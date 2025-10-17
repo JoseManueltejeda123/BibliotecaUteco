@@ -1,8 +1,11 @@
 <LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true" >
     <LumexPopoverTrigger>
         <button class="w-full">
-           @ChildContent
-         </button>
+           @if (ChildContent is not null)
+           {
+               @(ChildContent)
+           }
+        </button>
          
     </LumexPopoverTrigger>
 
@@ -16,7 +19,7 @@
 
     [Parameter] public EventCallback<AuthorResponse> OnAuthorSelected {get; set;}
 
-    [Parameter] public RenderFragment ChildContent {get; set;}
+    [Parameter] public RenderFragment? ChildContent {get; set;} = default;
 }
 
 @functions{

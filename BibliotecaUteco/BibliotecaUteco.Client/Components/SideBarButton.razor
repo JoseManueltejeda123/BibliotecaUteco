@@ -5,7 +5,9 @@
     <div @onclick="TriggerOnClick" class=@($"gap-3 sidebar-button w-full cursor-pointer rounded-lg  flex items-center px-3 py-2 transition-all text-white text-[16px] {Class}")>
         @if (Icon is not null)
         {
-            @Icon
+           
+                @(Icon)
+            
         }
         <span class="text-[13px] font-semibold">@Name</span>
 
@@ -14,22 +16,23 @@
 }
 else
 {
-    <IconButton Class='@(Class + " !text-white !hover:bg-transparent")' Size="Size.Medium" TooltipText="@Name" OnClick="@HandleOnCLick">
-        @if (Icon is not null)
-        {
-            @Icon
-        }
-    </IconButton>
+        <button @onclick="HandleOnClick" class="text-white cursor-pointer py-2 text-[20px] icon-button">
+            @if (Icon is not null)
+            {
+                @Icon
+            }
+        </button>
+    
+  
 }
 
 
 @code{
 
-    [Parameter]    
-    public RenderFragment? Icon {get; set;}
+    [Parameter] public RenderFragment? Icon { get; set; } = default;
     
     [Parameter]
-    public string Class {get; set;}
+    public string Class {get; set;} = string.Empty;
 
     [Parameter] public string Name { get; set; } = "";
     
@@ -43,7 +46,7 @@ else
 
 @functions{
 
-    public async Task HandleOnCLick()
+    public async Task HandleOnClick()
     {
         await TriggerOnClick();
     }

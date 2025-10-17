@@ -93,9 +93,9 @@
     public bool _updatingUser { get; set; } = false;
     public UpdateUserRequest UpdateUserModel { get; set; } = new();
     public string? ProfilePicturePreview { get; set; } = null;
-    private InputFile? fileInput;
+    private InputFile? fileInput = null;
     public bool ShowPassword { get; set; } = false;
-    public string _prevProfilePicture {get; set;}
+    public string? _prevProfilePicture {get; set;} = null;
 
 
 

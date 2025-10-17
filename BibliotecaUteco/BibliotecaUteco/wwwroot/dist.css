@@ -73,7 +73,6 @@
     --color-rose-700: oklch(51.4% 0.222 16.935);
     --color-rose-800: oklch(45.5% 0.188 13.697);
     --color-rose-900: oklch(41% 0.159 10.272);
-    --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-zinc-50: oklch(98.5% 0 0);
     --color-zinc-100: oklch(96.7% 0.001 286.375);
     --color-zinc-200: oklch(92% 0.004 286.32);
@@ -2107,9 +2106,6 @@
   .text-foreground-500 {
     color: var(--lumex-foreground-500);
   }
-  .text-gray-600 {
-    color: var(--color-gray-600);
-  }
   .text-green-500 {
     color: var(--color-green-500);
   }
@@ -2270,10 +2266,6 @@
   }
   .shadow-small {
     --tw-shadow: var(--lumex-shadow-small);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .shadow-xl {
-    --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-xs {
@@ -6079,8 +6071,8 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .icon-button {
   svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 }
 .inconsolata {

@@ -1,7 +1,7 @@
 <LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true" >
     <LumexPopoverTrigger>
         <button>
-          @ChildContent
+          @if(ChildContent is not null){@(ChildContent)}
   
         </button>
     </LumexPopoverTrigger>
@@ -14,8 +14,7 @@
 
 @code{
 
-    [Parameter]
-    public RenderFragment ChildContent {get; set;}
+    [Parameter] public RenderFragment? ChildContent { get; set; } = default;
 
 
     [Parameter]

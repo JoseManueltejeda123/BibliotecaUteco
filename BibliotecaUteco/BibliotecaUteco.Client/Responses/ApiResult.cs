@@ -36,7 +36,7 @@ public class ApiResult<T> : IApiResult
    
     
     public static ApiResult<T> BuildSuccess(T? data, HttpStatus status = HttpStatus.OK, string message = "Success",
-        List<string> messages = null) => new()
+        List<string>? messages = null) => new()
     {
         Status = status,
         Messages = messages ?? [message],
@@ -45,7 +45,7 @@ public class ApiResult<T> : IApiResult
     };
     
     public static ApiResult<T> BuildFailure(HttpStatus status = HttpStatus.BadRequest, string message = "Success",
-        List<string> messages = null) => new()
+        List<string>? messages = null) => new()
     {
         Status = status,
         Messages = messages ?? [message],
