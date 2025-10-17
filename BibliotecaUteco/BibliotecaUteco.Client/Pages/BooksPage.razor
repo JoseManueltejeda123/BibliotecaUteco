@@ -34,10 +34,11 @@
                                   Label="Buscar libro"
                                   Behavior="InputBehavior.OnInput"
                                   Clearable="true"
+                                  ValueChanged="async (e) => {await HandleOnChange(context.Validate(), e); }"
                                   OnCleared="FetchGetBooksOnSearchAsync"
                                   Required="false"
-                                  Disabled="@(FilterBy == BookFilterType.All)"
-                                  @bind-Value="@Filter.Filter"
+                                  Disabled="@(_searchingBooks)"
+                                  Value="@Filter.Filter"
                                   Placeholder="Ej. Canción de hielo y fuego"
                                   maxLenght="50"
                                   LabelPlacement="@LabelPlacement.Outside">
@@ -47,16 +48,12 @@
                    
                     <p class="text-[13px]">Seleciona un filtro de abajo para activar la búsqueda.</p>
                 </div>
-                <LumexTooltip Content=@($"Buscar libros por {FilterBy.ToString()} ")>
-                    <LumexButton Type="ButtonType.Submit" Disabled="(!context.Validate() || FilterBy == BookFilterType.All)" Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
-
-                </LumexTooltip>
+               
             </EditForm>
             <div class="mb-3">
-                <LumexChip Class="cursor-pointer"  @onclick='()=>{SetFilterBy(BookFilterType.All);}' Variant="@(FilterBy == BookFilterType.All ? ChipVariant.Solid : ChipVariant.Outlined )"  Color="@ThemeColor.Primary">Todo</LumexChip>
-                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Name); }' Variant="@(FilterBy == BookFilterType.Name ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
-                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Author); }' Variant="@(FilterBy == BookFilterType.Author ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Autor</LumexChip>
-                <LumexChip Class="cursor-pointer" @onclick='() => { SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>
+                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(BookFilterType.Name); }' Variant="@(FilterBy == BookFilterType.Name ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
+                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => {await SetFilterBy(BookFilterType.Author); }' Variant="@(FilterBy == BookFilterType.Author ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Autor</LumexChip>
+                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => {await SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>
 
             </div>
             <SidebarSectionDivider Name="Libros"/>
@@ -86,7 +83,7 @@
                     Obtener Más
                 </LumexButton>
             }
-            else
+            else if(!_hasMore && !string.IsNullOrEmpty(_prevFilter))
             {
                 <NoResultsFound />
             }
@@ -132,6 +129,29 @@
         }
     }
     
+    public async Task HandleOnChange(bool contextIsValid, string? value)
+    {
+      
+        if(!contextIsValid) return;
+        Filter.Filter = value ?? "";
+        
+        if(cts is not null)
+            await cts.CancelAsync();
+        
+        
+        cts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(500, cts.Token); // Espera 1 segundo
+            await FetchGetBooksOnSearchAsync();
+        }
+        catch
+        {
+            
+        }
+       
+    }
     public void HandleBookUpdated()
     {
         if (RightBarContext.UpdatedBook is var book && book is not null)
@@ -165,8 +185,9 @@
         RightBarContext.SetView(RightBarView.CreatingBook);
     }
     
-    public void SetFilterBy(BookFilterType filter){
+    public async Task SetFilterBy(BookFilterType filter){
         FilterBy = filter;
+        await FetchGetBooksOnSearchAsync();
     }
 
     public async Task FetchGetMoreBooks()
@@ -195,13 +216,9 @@
     {
         Books.Clear();
         _hasMore = true;
-        _prevFilter = Filter.Filter;
         _searchingBooks = true;
         StateHasChanged();
         var request = BuildQuery(false);
-
-        await JsRuntime.InvokeVoidAsync("console.log", request);
-        
         var result = await BooksApiServices.GetByFilterAsync(request);
 
         if (result.IsSuccessful())
@@ -221,9 +238,9 @@
 
     public GetBooksByFilterRequest BuildQuery(bool withSkip = true) => new()
     {
-        BookName = FilterBy == BookFilterType.Name ? _prevFilter : null,
-        GenreName = FilterBy == BookFilterType.Genre ? _prevFilter : null,
-        AuthorName = FilterBy == BookFilterType.Author ? _prevFilter : null,
+        BookName = FilterBy == BookFilterType.Name ? Filter.Filter : null,
+        GenreName = FilterBy == BookFilterType.Genre ? Filter.Filter : null,
+        AuthorName = FilterBy == BookFilterType.Author ? Filter.Filter : null,
         Take = 10,
         Skip = withSkip  ? Books.Count : 0
 
@@ -232,11 +249,13 @@
 }
 
 @code{
+    
     public bool _hasMore { get; set; } = true;
+    private CancellationTokenSource? cts;
     public bool _searchingBooks { get; set; } = false;
     public FormFilter Filter { get; set; } = new();
     public string _prevFilter { get; set; } = "";
-    public BookFilterType FilterBy {get; set;} = BookFilterType.All;
+    public BookFilterType FilterBy {get; set;} = BookFilterType.Name;
     public GetBooksByFilterRequest GetBooksByFilterModel {get; set;} = new();
     public List<BookResponse> Books { get; set; } = new();
     public enum BookFilterType
