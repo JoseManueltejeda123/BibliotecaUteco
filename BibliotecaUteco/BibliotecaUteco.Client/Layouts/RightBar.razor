@@ -11,6 +11,8 @@
             RightBarView.Users => "Administrar Usuarios",
             RightBarView.UpdateUser => "Actualizar Usuario",
             RightBarView.CreateUser => "Crear Usuario",
+            RightBarView.CreateReader => "Crear Lector",
+
 
 
 
@@ -45,7 +47,11 @@
     }
     else if(RightBarContext.View == RightBarView.UpdateUser)
     {
-    <UpdateUserForm/>
+         <UpdateUserForm/>
+    }
+    else if(RightBarContext.View == RightBarView.CreateReader)
+    {
+        <CreateReaderForm/>
     }
     
 </aside>

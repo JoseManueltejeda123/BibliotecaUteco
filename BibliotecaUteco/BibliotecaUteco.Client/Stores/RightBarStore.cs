@@ -78,6 +78,16 @@ public class RightBarStore
             if (user is null) return;
             OnUserToUpdateChanged?.Invoke();
         }
+        public ReaderResponse? CreatedReader { get; set; } = null;
+    
+        public event Action? OnCreatedReaderChanged ;
+    
+        public void SetCreatedReader(ReaderResponse? reader = null)
+        {
+            CreatedReader = reader;
+            if (reader is null) return;
+            OnCreatedReaderChanged?.Invoke();
+        }
 }
 
 public enum RightBarView
@@ -89,5 +99,6 @@ public enum RightBarView
     Users,
     CreateUser,
     UpdateUser,
+    CreateReader,
     Authors
 }

@@ -7,7 +7,9 @@ public static class EndpointSettings
     public static string AuthorsEndpoint => $"api/{ApiV1}/authors";
     public static string GenresEndpoint => $"api/{ApiV1}/genres";
 
-        public static string BooksEndpoint => $"api/{ApiV1}/books";
+    public static string BooksEndpoint => $"api/{ApiV1}/books";
+    public static string ReadersEndpoint => $"api/{ApiV1}/readers";
+
 
 
 

@@ -50,6 +50,9 @@
 @using BibliotecaUteco.Client.Components.Books.Skeletons
 
 @using BibliotecaUteco.Client.Requests.Genres.Queries
+@using BibliotecaUteco.Client.Requests.Readers.Actions
+@using BibliotecaUteco.Client.Components.Readers.Forms
+
 @using BibliotecaUteco.Client.Requests.Books.Actions
 @using System.ComponentModel.DataAnnotations
 @using BlazorAnimate
@@ -72,4 +75,6 @@
 @inject IGenresApiSevices GenresApiServices
 @inject IAuthorsApiServices AuthorsApiServices;
 @inject IBooksApiServices BooksApiServices
+@inject IReadersApiServices ReadersApiServices
+
 @inject IDialogService DialogService

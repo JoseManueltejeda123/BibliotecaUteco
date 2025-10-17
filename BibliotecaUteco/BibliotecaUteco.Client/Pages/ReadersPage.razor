@@ -1,5 +1,5 @@
 @page "/readers"
-
+@implements IDisposable
 <PageTitle>Lectores</PageTitle>
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
 
@@ -31,13 +31,21 @@
     <div class="flex flex-col gap-3">
 
     
-        <button class="border-dotted border-2 border-green-600 p-3 w-full rounded-xl hover:bg-green-100/30 transition-all flex  justify-center items-center gap-2 cursor-pointer ">
+        <button @onclick="SetCreateReaderView" class="border-dotted border-[3px] border-green-600 p-3 w-full rounded-xl hover:bg-green-100/30 transition-all flex  justify-center items-center gap-2 cursor-pointer ">
             <UserIcon Size="18px" class="text-green-700"/>
             <p class="text-[13px] text-green-700">Agregar Usuario</p>
         </button>
+        @if (!Readers.Any())
+        {
+            <p class=" text-center text-[13px] mt-[30px] font-semibold">No hay lectores</p>
+        }
+        @foreach (var reader in Readers)
+        {
+            <ReaderCard Reader="reader"/>
+
+        }
         
         
-        <ReaderCard/>
                    
      
 
@@ -47,10 +55,12 @@
 
 @code{
     public string FilterBy {get; set;} = "all";
+    public List<ReaderResponse> Readers { get; set; } = new();
 
-    
 
-   
+
+
+
 
 }
 
@@ -59,8 +69,31 @@
         FilterBy = filter;
     }
 
-   
+    public void HandleCreatedReaderChanged()
+    {
+        if (RightBarContext.CreatedReader is not null)
+        {
+            Readers.Add(RightBarContext.CreatedReader);
+            RightBarContext.SetCreatedReader();
+            StateHasChanged();
+        }
+    }
 
-    
+    public void SetCreateReaderView()
+    {
+        RightBarContext.SetView(RightBarView.CreateReader);
+    }
+
+    protected override void OnInitialized()
+    {
+        RightBarContext.OnCreatedReaderChanged += HandleCreatedReaderChanged;
+    }
+
+    public void Dispose()
+    {
+        RightBarContext.OnCreatedReaderChanged -= HandleCreatedReaderChanged;
+
+    }
+
 
 }

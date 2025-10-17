@@ -8,4 +8,8 @@ public class BaseResponse
 
     public DateTime CreatedAtLocal => CreatedAt.ToLocalTime();
     public DateTime UpdatedAtLocal => UpdatedAt.ToLocalTime();
+    
+    public string UpdatedAtLocalFormatted =>  UpdatedAtLocal.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
+    public string CreatedAtLocalFormatted =>  CreatedAt.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
+
 }

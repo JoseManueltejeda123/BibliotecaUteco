@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using BibliotecaUteco.Features.ReadersFeatures.Actions;
+using BibliotecaUteco.Features.UserFeatures.Actions;
 
 namespace BibliotecaUteco.DataAccess.Models;
 
@@ -17,7 +19,7 @@ public class Reader : BaseEntity
     
     [ Column("Direccion")]
 
-    [MaxLength(100), MinLength(30), Required]
+    [MaxLength(100), MinLength(10), Required]
     public string Address { get; set; } = null!;
     
     [ Column("Cedula")]
@@ -32,4 +34,39 @@ public class Reader : BaseEntity
     
     public List<Loan> Loans { get; set; } = new();
     
+    [NotMapped]
+    public int LoansCount { get; set; } = 0;
+    
+    [NotMapped]
+    public DateTime? LastLoanDate {get; set;}
+    
+    [NotMapped]
+    public bool LastLoanIsActive { get; set; }
+
+    public static Reader Create(CreateReaderCommand request) => new()
+    {
+        FullName = request.FullName,
+        PhoneNumber = request.PhoneNumber,
+        Address = request.Address,
+        IdentityCardNumber = request.IdentityCardNumber,
+        StudentLicence = !string.IsNullOrWhiteSpace(request.StudentLicence) 
+            ? request.StudentLicence.ToUpper().Trim() 
+            : null,
+    };
+
+    public ReaderResponse ToResponse() => new()
+    {
+        Id = Id,
+        CreatedAt = CreatedAt,
+        UpdatedAt = UpdatedAt,
+        FullName = FullName,
+        PhoneNumber = PhoneNumber,
+        Address = Address,
+        StudentLicence = StudentLicence,
+        LoansCount = LoansCount,
+        LastLoanDate = LastLoanDate,
+        LastLoanIsActive = LastLoanIsActive,
+
+    };
+
 }

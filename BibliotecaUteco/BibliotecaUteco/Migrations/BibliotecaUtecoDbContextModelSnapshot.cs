@@ -215,82 +215,82 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(5162),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 997, DateTimeKind.Utc).AddTicks(9015),
                             Name = "Fantasía",
                             NormalizedName = "fantasia",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(5170)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 997, DateTimeKind.Utc).AddTicks(9020)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7002),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(689),
                             Name = "Terror",
                             NormalizedName = "terror",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7004)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(691)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7008),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(697),
                             Name = "Ciencia Ficción",
                             NormalizedName = "cienciaficcion",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7008)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(697)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7011),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(700),
                             Name = "Romance",
                             NormalizedName = "romance",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7011)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(700)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7014),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(702),
                             Name = "Misterio",
                             NormalizedName = "misterio",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7014)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(703)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7016),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(705),
                             Name = "Aventura",
                             NormalizedName = "aventura",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7017)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(706)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7019),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(708),
                             Name = "Histórico",
                             NormalizedName = "historico",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7020)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(708)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7022),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(710),
                             Name = "Biografía",
                             NormalizedName = "biografia",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7023)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(711)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7025),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(713),
                             Name = "Poesía",
                             NormalizedName = "poesia",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7025)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(714)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7028),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(716),
                             Name = "Drama",
                             NormalizedName = "drama",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 189, DateTimeKind.Utc).AddTicks(7028)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 998, DateTimeKind.Utc).AddTicks(717)
                         });
                 });
 
@@ -516,16 +516,16 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(7244),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 916, DateTimeKind.Utc).AddTicks(1194),
                             Name = "Librarian",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(7251)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 916, DateTimeKind.Utc).AddTicks(1199)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(9205),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 916, DateTimeKind.Utc).AddTicks(2836),
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(9217)
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 916, DateTimeKind.Utc).AddTicks(2837)
                         });
                 });
 
@@ -623,23 +623,23 @@ namespace BibliotecaUteco.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 79, DateTimeKind.Utc).AddTicks(8624),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 925, DateTimeKind.Utc).AddTicks(9196),
                             FullName = "José Apolinar",
                             IdentityCardNumber = "00112345678",
                             Password = "973279fd3528bf897629f68765425a6b3e88e35b010c3c3c10a169283a817289",
                             RoleId = 1,
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 79, DateTimeKind.Utc).AddTicks(8630),
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 925, DateTimeKind.Utc).AddTicks(9200),
                             Username = "jose.apolinar"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 144, DateTimeKind.Utc).AddTicks(8516),
+                            CreatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 978, DateTimeKind.Utc).AddTicks(4849),
                             FullName = "Manuel López",
                             IdentityCardNumber = "00212345678",
                             Password = "2540fc2a209dd5946b09734722f16821b435db8e376655ab334379a4a0de1133",
                             RoleId = 2,
-                            UpdatedAt = new DateTime(2025, 10, 12, 4, 35, 42, 144, DateTimeKind.Utc).AddTicks(8521),
+                            UpdatedAt = new DateTime(2025, 10, 17, 4, 31, 3, 978, DateTimeKind.Utc).AddTicks(4854),
                             Username = "manuel.lopez"
                         });
                 });
