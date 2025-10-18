@@ -1,6 +1,5 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
-<DialogHost/>
 <Toaster />
 <AuthorizeView>
     <NotAuthorized>
@@ -10,8 +9,10 @@
 
 
 <div class="relative flex w-full h-screen">
+    <DialogHost/>
     <SideBar OnSideBarExpandedChanged="(e)=> SideBarExpanded = e" SideBarExpanded="SideBarExpanded"/>
-    <main class=@($"flex-1 ml-[250px] max-md:ml-[75px] {(RightBarContext.View != RightBarView.Default ? "mr-[300px] max-md:mr-[0px]" : "")}  {(!SideBarExpanded ? " !ml-[75px] " : "" )}")>
+    
+    <main class=@($"flex-1 ml-[250px] max-md:ml-[75px] {(RightBarContext.State.View != RightBarView.Default ? "mr-[300px] max-md:mr-[0px]" : "")}  {(!SideBarExpanded ? " !ml-[75px] " : "" )}")>
        
         
         <article class="content px-4 mt-[50px] max-w-full">
@@ -19,7 +20,7 @@
         </article>
     </main>
     
-    @if (RightBarContext.View != RightBarView.Default)
+    @if (RightBarContext.State.View != RightBarView.Default)
     {
         <RightBar/>
     }
@@ -35,14 +36,20 @@
 
     public bool SideBarExpanded {get; set;} = true;
 
+    public async void HandelStateChanged(RightBarState state)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+    
+
     protected override void OnInitialized()
     {
-        RightBarContext.OnViewChanged += StateHasChanged;
+        RightBarContext.OnStateChanged += HandelStateChanged;
     }
 
     public void Dispose()
     {
-        RightBarContext.OnViewChanged -= StateHasChanged;
+        RightBarContext.OnStateChanged -= HandelStateChanged;
     }
 
 

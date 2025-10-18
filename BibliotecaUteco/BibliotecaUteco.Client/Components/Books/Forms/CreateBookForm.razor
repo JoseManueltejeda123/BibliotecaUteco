@@ -231,7 +231,8 @@
         {   
             Toast.Success("Libro registrado con exito");
             
-            RightBarContext.SetCreatedBook(result.Data);
+            await RightBarContext.SetCreatedBookAsync(result.Data);
+            await RightBarContext.CloseAsync();
             Clear();
         }
         _creatingBook = false;

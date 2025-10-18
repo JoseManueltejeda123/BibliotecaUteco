@@ -5,8 +5,8 @@ namespace BibliotecaUteco.Client.Requests.Readers.Actions;
 public class UpdateReaderRequest
 {
     [Range(1, int.MaxValue)]
-    public int ReaderId {get; set;}
-    
+    public int ReaderId { get; set; }
+
     [Required(ErrorMessage = "El nombre completo es obligatorio.")]
     [MaxLength(50, ErrorMessage = "El nombre completo no puede tener más de 50 caracteres.")]
     [MinLength(5, ErrorMessage = "El nombre completo debe tener al menos 5 caracteres.")]
@@ -26,8 +26,8 @@ public class UpdateReaderRequest
     [MaxLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     public string IdentityCardNumber { get; set; } = null!;
-    
-    [Range(1,2)]
+
+    [Range(1, 2)]
     public int SexId { get; set; } = 1;
 
     [MaxLength(9, ErrorMessage = "La matrícula estudiantil no puede tener más de 9 caracteres.")]

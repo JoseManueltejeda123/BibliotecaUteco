@@ -13,11 +13,7 @@ public static class FieldNormalizedHelper
         var normalizedString = field.Normalize(NormalizationForm.FormD);
         var regex = new Regex(@"\p{IsCombiningDiacriticalMarks}+");
         var withoutAccents = regex.Replace(normalizedString, string.Empty);
-    
-        return withoutAccents
-            .Normalize(NormalizationForm.FormC)
-            .Replace(" ", "")
-            .ToLower()
-            .Trim();
+
+        return withoutAccents.Normalize(NormalizationForm.FormC).Replace(" ", "").ToLower().Trim();
     }
 }

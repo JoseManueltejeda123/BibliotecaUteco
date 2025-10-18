@@ -5,70 +5,118 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions;
 
 public class UpdateBookCommand : ICommand<IApiResult>
 {
-    [FromForm(Name = "bookId"), JsonPropertyName("bookId"), Description("Id del libro a actualizar"), Required]
-    public int BookId { get; set; } 
-    
-    [FromForm(Name = "bookName"), JsonPropertyName("bookName"), Description("El nuevo nombre del libro"), Required,
-     MaxLength(50), MinLength(1)]
+    [
+        FromForm(Name = "bookId"),
+        JsonPropertyName("bookId"),
+        Description("Id del libro a actualizar"),
+        Required
+    ]
+    public int BookId { get; set; }
+
+    [
+        FromForm(Name = "bookName"),
+        JsonPropertyName("bookName"),
+        Description("El nuevo nombre del libro"),
+        Required,
+        MaxLength(50),
+        MinLength(1)
+    ]
     public string BookName { get; set; } = "";
-    
-    [FromForm(Name="synopsis"), JsonPropertyName("synopsis"), Description("Nueva sinopsis"), Required, MinLength(10), MaxLength(500)]
+
+    [
+        FromForm(Name = "synopsis"),
+        JsonPropertyName("synopsis"),
+        Description("Nueva sinopsis"),
+        Required,
+        MinLength(10),
+        MaxLength(500)
+    ]
     public string Synopsis { get; set; } = null!;
-    
-    [FromForm(Name = "stock"), JsonPropertyName("stock"), Description("Nuevo stocl"), Required, Range(1, int.MaxValue)]
+
+    [
+        FromForm(Name = "stock"),
+        JsonPropertyName("stock"),
+        Description("Nuevo stocl"),
+        Required,
+        Range(1, int.MaxValue)
+    ]
     public int Stock { get; set; }
 
-    [FromForm(Name = "removeCover"), JsonPropertyName("removeCover"),
-     Description("Indica si la portada debe de ser actualizada o eliminada"), Required, MinLength(10)]
+    [
+        FromForm(Name = "removeCover"),
+        JsonPropertyName("removeCover"),
+        Description("Indica si la portada debe de ser actualizada o eliminada"),
+        Required,
+        MinLength(10)
+    ]
     public bool RemoveCover { get; set; } = false;
 
-    [FromForm(Name = "genreIds"), JsonPropertyName("genreIds"), Description("Nuevos generos"), MinLength(1),
-     MaxLength(5), Required]
+    [
+        FromForm(Name = "genreIds"),
+        JsonPropertyName("genreIds"),
+        Description("Nuevos generos"),
+        MinLength(1),
+        MaxLength(5),
+        Required
+    ]
     public List<int> GenreIds { get; set; } = new();
-    
-    [FromForm(Name = "authorIds"), JsonPropertyName("authorIds"), Description("Nuevos autores"),
-     MaxLength(10), Required]
-    public List<int>? AuthorIds { get; set; } 
-    
+
+    [
+        FromForm(Name = "authorIds"),
+        JsonPropertyName("authorIds"),
+        Description("Nuevos autores"),
+        MaxLength(10),
+        Required
+    ]
+    public List<int>? AuthorIds { get; set; }
+
     [FromForm(Name = "coverFile"), JsonPropertyName("coverFil"), Description("Nueva portada")]
-     public IFormFile? CoverFile { get; set; } = null;
+    public IFormFile? CoverFile { get; set; } = null;
 }
 
-
 public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
+{
+    public UpdateBookCommandValidator()
     {
-        public UpdateBookCommandValidator()
-        {
-            RuleFor(x => x.BookId)
-                .GreaterThan(0).WithMessage("El ID del libro debe ser mayor a 0");
+        RuleFor(x => x.BookId).GreaterThan(0).WithMessage("El ID del libro debe ser mayor a 0");
 
-            RuleFor(x => x.BookName)
-                .NotEmpty().WithMessage("El nombre del libro es requerido")
-                .MinimumLength(1).WithMessage("El nombre debe tener al menos 1 carácter")
-                .MaximumLength(50).WithMessage("El nombre no puede superar los 50 caracteres");
+        RuleFor(x => x.BookName)
+            .NotEmpty()
+            .WithMessage("El nombre del libro es requerido")
+            .MinimumLength(1)
+            .WithMessage("El nombre debe tener al menos 1 carácter")
+            .MaximumLength(50)
+            .WithMessage("El nombre no puede superar los 50 caracteres");
 
-            RuleFor(x => x.Synopsis)
-                .NotEmpty().WithMessage("La sinopsis es requerida")
-                .MinimumLength(10).WithMessage("La sinopsis debe tener al menos 10 caracteres")
-                .MaximumLength(500).WithMessage("La sinopsis no puede superar los 500 caracteres");
+        RuleFor(x => x.Synopsis)
+            .NotEmpty()
+            .WithMessage("La sinopsis es requerida")
+            .MinimumLength(10)
+            .WithMessage("La sinopsis debe tener al menos 10 caracteres")
+            .MaximumLength(500)
+            .WithMessage("La sinopsis no puede superar los 500 caracteres");
 
-            RuleFor(x => x.Stock)
-                .GreaterThanOrEqualTo(1).WithMessage("El stock debe ser mayor o igual a 1");
+        RuleFor(x => x.Stock)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("El stock debe ser mayor o igual a 1");
 
-            RuleFor(x => x.GenreIds)
-                .NotEmpty().WithMessage("Debe seleccionar al menos un género")
-                .Must(list => list.Count >= 1 && list.Count <= 5)
-                .WithMessage("Debe seleccionar entre 1 y 5 géneros")
-                .Must(list => list.Distinct().Count() == list.Count)
-                .WithMessage("No puede haber géneros duplicados");
+        RuleFor(x => x.GenreIds)
+            .NotEmpty()
+            .WithMessage("Debe seleccionar al menos un género")
+            .Must(list => list.Count >= 1 && list.Count <= 5)
+            .WithMessage("Debe seleccionar entre 1 y 5 géneros")
+            .Must(list => list.Distinct().Count() == list.Count)
+            .WithMessage("No puede haber géneros duplicados");
 
-            RuleFor(x => x.AuthorIds)
-                .Must(list => list == null || list.Count <= 10)
-                .WithMessage("No puede seleccionar más de 10 autores")
-                .Must(list => list == null || list.Distinct().Count() == list.Count)
-                .WithMessage("No puede haber autores duplicados");
+        RuleFor(x => x.AuthorIds)
+            .Must(list => list == null || list.Count <= 10)
+            .WithMessage("No puede seleccionar más de 10 autores")
+            .Must(list => list == null || list.Distinct().Count() == list.Count)
+            .WithMessage("No puede haber autores duplicados");
 
-            When(x => x.CoverFile != null, () =>
+        When(
+            x => x.CoverFile != null,
+            () =>
             {
                 RuleFor(x => x.CoverFile!.Length)
                     .Must(x => x <= FilesSettings.MaxFileSize)
@@ -77,107 +125,145 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
                 RuleFor(x => x.CoverFile!.ContentType)
                     .Must(x => FilesSettings.AllowedImageExtensionsForUpload.Contains(x))
                     .WithMessage("La portada debe ser una imagen (JPG, JPEG, PNG o WEBP)");
-            });
-        }
-        
+            }
+        );
     }
-    
-     internal class UpdateBookEndpoint : IEndpoint
+}
+
+internal class UpdateBookEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapPut(EndpointSettings.BooksEndpoint, async (
-                   [FromForm] UpdateBookCommand command,
+        app.MapPut(
+                EndpointSettings.BooksEndpoint,
+                async (
+                    [FromForm] UpdateBookCommand command,
                     ISender sender,
                     IEndpointWrapper<UpdateBookEndpoint> wrapper,
                     CancellationToken cancellationToken = default
                 ) =>
                 {
-                    return await wrapper.ExecuteAsync<IApiResult>(async () => await sender.SendAndValidateAsync(command, cancellationToken));
-                })
-                .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
-                .DisableAntiforgery()
-                .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .WithTags(nameof(Book))
-                .WithName(nameof(UpdateBookEndpoint))
-                .WithDescription("Actualiza un libro existente incluyendo su portada, géneros y autores");
-        }
+                    return await wrapper.ExecuteAsync<IApiResult>(async () =>
+                        await sender.SendAndValidateAsync(command, cancellationToken)
+                    );
+                }
+            )
+            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .DisableAntiforgery()
+            .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .WithTags(nameof(Book))
+            .WithName(nameof(UpdateBookEndpoint))
+            .WithDescription(
+                "Actualiza un libro existente incluyendo su portada, géneros y autores"
+            );
     }
+}
 
+public class UpdateBookCommandHandler(
+    IBibliotecaUtecoDbContext context,
+    IFileUploadService fileUploadService
+) : ICommandHandler<UpdateBookCommand, IApiResult>
+{
+    public async Task<IApiResult> HandleAsync(
+        UpdateBookCommand request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (request.AuthorIds is null)
+        {
+            request.AuthorIds = new();
+        }
+        var normalizedName = request.BookName.NormalizeField();
+        if (
+            await context.Books.AnyAsync(
+                b => b.NormalizedName == normalizedName && b.Id != request.BookId,
+                cancellationToken
+            )
+        )
+        {
+            return ApiResult<BookResponse>.BuildFailure(
+                HttpStatus.Conflict,
+                "Ya existe un libro diferente con este mismo nombre"
+            );
+        }
 
-     public class UpdateBookCommandHandler(IBibliotecaUtecoDbContext context, IFileUploadService fileUploadService)
-         : ICommandHandler<UpdateBookCommand, IApiResult>
-     {
-         public async Task<IApiResult> HandleAsync(UpdateBookCommand request,
-             CancellationToken cancellationToken = default)
-         {
-             if(request.AuthorIds is null)
-             {
-                 request.AuthorIds = new();
-             }
-             var normalizedName = request.BookName.NormalizeField();
-             if (await context.Books.AnyAsync(b => b.NormalizedName == normalizedName && b.Id != request.BookId,
-                     cancellationToken))
-             {
-                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un libro diferente con este mismo nombre");
-             }
+        var bookToUpdate = await context
+            .Books.IgnoreAutoIncludes()
+            .FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
 
-             var bookToUpdate = await context.Books.IgnoreAutoIncludes().FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
-             
-             if(bookToUpdate is null)
-             {
-                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.NotFound,
-                     "No pudimos encotrar el libro a actualizar");
-             }
+        if (bookToUpdate is null)
+        {
+            return ApiResult<BookResponse>.BuildFailure(
+                HttpStatus.NotFound,
+                "No pudimos encotrar el libro a actualizar"
+            );
+        }
 
+        if (request.CoverFile is not null)
+        {
+            if (
+                await fileUploadService.UploadImageAsync(
+                    request.CoverFile,
+                    EnvFolders.BookCovers,
+                    bookToUpdate.Id.ToString()
+                )
+                    is var result
+                && !result.Item1
+            )
+            {
+                return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+            }
 
-             if (request.CoverFile is not null)
-             {
-                 if (await fileUploadService.UploadImageAsync(request.CoverFile, EnvFolders.BookCovers,
-                         bookToUpdate.Id.ToString()) is var result && !result.Item1)
-                 {
-                     return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+            bookToUpdate.CoverUrl = result.Item2;
+        }
+        else if (request.RemoveCover)
+        {
+            if (!string.IsNullOrEmpty(bookToUpdate.CoverUrl))
+            {
+                if (
+                    fileUploadService.DeleteFile(bookToUpdate.CoverUrl, EnvFolders.BookCovers)
+                        is var result
+                    && !result.Item1
+                )
+                {
+                    return ApiResult<BookResponse>.BuildFailure(
+                        HttpStatus.BadRequest,
+                        result.Item2
+                    );
+                }
 
-                 }
-                 
-                 bookToUpdate.CoverUrl = result.Item2;
-                 
-                 
-             }
-             else if(request.RemoveCover)
-             {
-                
-                 if (!string.IsNullOrEmpty(bookToUpdate.CoverUrl))
-                 {
-                     if ( fileUploadService.DeleteFile(bookToUpdate.CoverUrl,
-                             EnvFolders.BookCovers) is var result && !result.Item1)
-                     {
+                bookToUpdate.CoverUrl = null;
+            }
+        }
 
-                         return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
-                     }
-                     
-                     bookToUpdate.CoverUrl = null;
-                     
+        bookToUpdate.Update(request);
+        await context.GenreBooks.SyncGenreBooksAsync(
+            bookToUpdate.Id,
+            request.GenreIds,
+            cancellationToken
+        );
+        await context.BookAuthors.SyncBookAuthorsAsync(
+            bookToUpdate.Id,
+            request.AuthorIds,
+            cancellationToken
+        );
+        await context.SaveChangesAsync(cancellationToken);
+        context.ChangeTracker.Clear();
 
-                 }
-             }
-             
-             bookToUpdate.Update(request);
-             await context.GenreBooks.SyncGenreBooksAsync(bookToUpdate.Id, request.GenreIds, cancellationToken);
-             await context.BookAuthors.SyncBookAuthorsAsync(bookToUpdate.Id, request.AuthorIds, cancellationToken);
-             await context.SaveChangesAsync(cancellationToken);
-             context.ChangeTracker.Clear();
-             
-             if(await context.Books.GetBookByIdAsync(request.BookId, cancellationToken) is var response && response is null)
-             {
-                 return ApiResult<BookResponse>.BuildFailure(HttpStatus.NotFound,
-                     "No pudimos encotrar el libro despues de haberlo actualizado");
-             }
+        if (
+            await context.Books.GetBookByIdAsync(request.BookId, cancellationToken) is var response
+            && response is null
+        )
+        {
+            return ApiResult<BookResponse>.BuildFailure(
+                HttpStatus.NotFound,
+                "No pudimos encotrar el libro despues de haberlo actualizado"
+            );
+        }
 
-             return ApiResult<BookResponse>.BuildSuccess(response.ToResponse());
-
-         }
-     }
+        return ApiResult<BookResponse>.BuildSuccess(response.ToResponse());
+    }
+}

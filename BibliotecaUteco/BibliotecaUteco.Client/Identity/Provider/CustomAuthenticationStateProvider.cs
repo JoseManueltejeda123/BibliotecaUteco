@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BibliotecaUteco.Client.Identity.Provider;
 
-public class CustomAuthenticationStateProvider(ILocalStorageService localStorageService) : AuthenticationStateProvider
+public class CustomAuthenticationStateProvider(ILocalStorageService localStorageService)
+    : AuthenticationStateProvider
 {
-  
     private readonly ClaimsPrincipal _anonymous = new(new ClaimsIdentity());
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -45,16 +45,12 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
         if (string.IsNullOrWhiteSpace(token))
         {
             await localStorageService.RemoveTokenAsync();
-
         }
         else
         {
-          
             await localStorageService.SaveTokenAsync(token, remindMe);
-
         }
-        
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 }

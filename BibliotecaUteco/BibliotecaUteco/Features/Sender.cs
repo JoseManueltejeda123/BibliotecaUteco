@@ -7,7 +7,6 @@ public class Sender(IServiceProvider serviceProvider) : ISender
         CancellationToken cancellationToken = default
     )
     {
-        
         var commandType = command.GetType();
         var validatorType = typeof(IValidator<>).MakeGenericType(commandType);
         var validator = serviceProvider.GetService(validatorType);

@@ -6,29 +6,29 @@ namespace BibliotecaUteco.DataAccess.Models;
 [Table("Penalizaciones")]
 public class Penalty : BaseEntity
 {
-    [ Column("DiasExcedidos")]
+    [Column("DiasExcedidos")]
     public int OverdueDays { get; set; }
     public Loan Loan { get; set; } = null!;
-    [ Column("IdPrestamo")]
-    public int LoanId { get; set; } 
-    
-    [ Column("EsDebida")]
+
+    [Column("IdPrestamo")]
+    public int LoanId { get; set; }
+
+    [Column("EsDebida")]
     public bool IsDue { get; set; } = true;
-    
-    [ Column("TazaDeMultaPorDia")]
+
+    [Column("TazaDeMultaPorDia")]
     public double DailyFineRate { get; set; } = LoanSettings.DailyFineRate;
-    
-    [ Column("TotalAPagar")]
-    
-    public double TotalAmount {get; set; } 
-    
-    [ Column("MontoDevuelto")]
+
+    [Column("TotalAPagar")]
+    public double TotalAmount { get; set; }
+
+    [Column("MontoDevuelto")]
     public double ReturnedAmount { get; set; }
-    
-    [ Column("MontoDado")]
+
+    [Column("MontoDado")]
     public double GivenAmount { get; set; }
     public Transaction Transaction { get; set; } = null!;
-    
-    [ Column("IdTransaccion")]
+
+    [Column("IdTransaccion")]
     public int TransactionId { get; set; }
 }

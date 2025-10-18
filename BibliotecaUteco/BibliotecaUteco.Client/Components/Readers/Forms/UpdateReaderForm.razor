@@ -41,7 +41,7 @@
         }
         else
         {
-            <LumexButton Color="ThemeColor.Primary" OnClick="FetchCreateReaderAsync" Disabled="@(!context.Validate() || _updatingReader)">Crear Lector</LumexButton>
+            <LumexButton Color="ThemeColor.Primary" OnClick="FetchUpdateReaderAsync" Disabled="@(!context.Validate() || _updatingReader)">Actualizar Lector</LumexButton>
 
         }
         
@@ -62,41 +62,42 @@
 
 @functions{
 
+    public void ParseReaderToUpdate(ReaderResponse reader)
+    {
+        
+        UpdateReaderModel.FullName = reader.FullName;
+        UpdateReaderModel.SexId = reader.SexId;
+        UpdateReaderModel.PhoneNumber = reader.PhoneNumber;
+        UpdateReaderModel.FullName = reader.FullName;
+        UpdateReaderModel.StudentLicence = reader.StudentLicence;
+        UpdateReaderModel.IdentityCardNumber = reader.IdentityCardNumber;
+        UpdateReaderModel.ReaderId = reader.Id;
+        UpdateReaderModel.Address = reader.Address;
+    }
     protected override void OnInitialized()
     {
-        if (RightBarContext.ReaderToUpdate is not null)
-        {
-            var reader = RightBarContext.ReaderToUpdate;
-            UpdateReaderModel.FullName = reader.FullName;
-            UpdateReaderModel.SexId = reader.SexId;
-            UpdateReaderModel.PhoneNumber = reader.PhoneNumber;
-            UpdateReaderModel.FullName = reader.FullName;
-            UpdateReaderModel.StudentLicence = reader.StudentLicence;
-            UpdateReaderModel.IdentityCardNumber = reader.IdentityCardNumber;
-            UpdateReaderModel.ReaderId = reader.Id;
-            UpdateReaderModel.Address = reader.Address;
-
+       
+            if(RightBarContext.State.ReaderToUpdate is not null)
+            {
+                ParseReaderToUpdate(RightBarContext.State.ReaderToUpdate);
+            }
+            StateHasChanged();
             
 
-
-
-
-
-
-        }
+        
     }
-    public async Task FetchCreateReaderAsync()
+    public async Task FetchUpdateReaderAsync()
     {
         _updatingReader = true;
         StateHasChanged();
 
-        var result = await ReadersApiServices.CreateAsync(UpdateReaderModel);
+        var result = await ReadersApiServices.UpdateAsync(UpdateReaderModel);
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Lector creado exitosamente");
-            RightBarContext.SetView();
-            RightBarContext.SetCreatedReader(result.Data);
+            Toast.Show("Lector actualizado exitosamente");
+            await RightBarContext.SetUpdatedReaderAsync(result.Data);
+            await RightBarContext.CloseAsync();
             UpdateReaderModel = new();
         }
         

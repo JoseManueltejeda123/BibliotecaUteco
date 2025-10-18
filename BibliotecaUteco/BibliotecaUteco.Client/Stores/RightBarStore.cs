@@ -2,119 +2,136 @@ using BibliotecaUteco.Client.Responses;
 
 namespace BibliotecaUteco.Client.Stores;
 
-public class RightBarStore
+public record RightBarState
 {
-    public RightBarView View { get; set; } = RightBarView.Default;
+    public RightBarView View { get; init; } = RightBarView.Default;
+    public BookResponse? CreatedBook { get; init; }
+    public BookResponse? BookToUpdate { get; init; }
+    public BookResponse? UpdatedBook { get; init; }
+    public BookResponse? BookDetails { get; init; }
+    public UserResponse? UserToUpdate { get; init; }
+    public ReaderResponse? CreatedReader { get; init; }
+    public ReaderResponse? ReaderToUpdate { get; init; }
+    public ReaderResponse? UpdatedReader { get; init; }
+    public static RightBarState Empty => new();
 
-    public event Action? OnViewChanged ;
-
-    public void SetView(RightBarView view = RightBarView.Default)
-    {
-        View = view;
-        OnViewChanged?.Invoke();
-
-        if (view == RightBarView.Default)
+    public RightBarState ClearData() =>
+        this with
         {
-            SetUpdatedBook();
-            SetBookToUpdate();
-            SetCreatedBook();
-            SetBookDetails();
-            SetUserToUpdate();
-            SetCreatedReader();
-            SetReaderToUpdate();
-            SetUpdatedReader();
+            CreatedBook = null,
+            BookToUpdate = null,
+            UpdatedBook = null,
+            BookDetails = null,
+            UserToUpdate = null,
+            CreatedReader = null,
+            ReaderToUpdate = null,
+            UpdatedReader = null,
+        };
+}
+
+public class RightBarStore : IDisposable
+{
+    private RightBarState _state = RightBarState.Empty;
+    private readonly SemaphoreSlim _stateLock = new(1, 1);
+
+    public RightBarState State => _state;
+
+    // Un solo evento con el estado completo
+    public event Action<RightBarState>? OnStateChanged;
+
+    public async Task UpdateStateAsync(Func<RightBarState, RightBarState> updater)
+    {
+        await _stateLock.WaitAsync();
+        try
+        {
+            var oldState = _state;
+            _state = updater(_state);
+
+            if (!ReferenceEquals(oldState, _state))
+            {
+                OnStateChanged?.Invoke(_state);
+            }
+        }
+        finally
+        {
+            _stateLock.Release();
         }
     }
 
-    public BookResponse? CreatedBook { get; set; } = null;
-    
-    public event Action? OnCreatedBookChanged ;
-
-    public void SetCreatedBook(BookResponse? book = null)
+    // Métodos helper
+    public Task SetViewAsync(RightBarView view)
     {
-        CreatedBook = book;
-        if (book is null) return;
-        OnCreatedBookChanged?.Invoke();
+        return UpdateStateAsync(s =>
+        {
+            var newState = s with { View = view };
+            return view == RightBarView.Default ? newState.ClearData() : newState;
+        });
     }
-    
-    public BookResponse? BookToUpdate { get; set; } = null;
-    
-    public event Action? OnBookToUpdateChanged ;
 
-    public void SetBookToUpdate(BookResponse? book = null)
+    public Task SetCreatedBookAsync(BookResponse? book) =>
+        UpdateStateAsync(s => s with { CreatedBook = book });
+
+    public Task SetUpdatedBookAsync(BookResponse? book) =>
+        UpdateStateAsync(s => s with { UpdatedBook = book });
+
+    public Task SetCreatedReaderAsync(ReaderResponse? reader) =>
+        UpdateStateAsync(s => s with { CreatedReader = reader });
+
+    public Task SetUpdatedReaderAsync(ReaderResponse? reader) =>
+        UpdateStateAsync(s => s with { UpdatedReader = reader });
+
+    public Task OpenCreateBookAsync() =>
+        UpdateStateAsync(s => s.ClearData() with { View = RightBarView.CreatingBook });
+
+    //batched
+    public Task OpenUpdateBookAsync(BookResponse book) =>
+        UpdateStateAsync(s =>
+            s.ClearData() with
+            {
+                View = RightBarView.UpdateBook,
+                BookToUpdate = book,
+            }
+        );
+
+    public Task OpenUpdateUserAsync(UserResponse user) =>
+        UpdateStateAsync(s =>
+            s.ClearData() with
+            {
+                View = RightBarView.UpdateUser,
+                UserToUpdate = user,
+            }
+        );
+
+    public Task OpenUpdateReaderAsync(ReaderResponse reader) =>
+        UpdateStateAsync(s =>
+            s.ClearData() with
+            {
+                View = RightBarView.UpdateReader,
+                ReaderToUpdate = reader,
+            }
+        );
+
+    public Task OpenCreateReaderAsync() =>
+        UpdateStateAsync(s => s.ClearData() with { View = RightBarView.CreateReader });
+
+    public Task OpenCreateUserAsync() =>
+        UpdateStateAsync(s => s.ClearData() with { View = RightBarView.CreateUser });
+
+    public Task OpenBookDetailsAsync(BookResponse book) =>
+        UpdateStateAsync(s =>
+            s.ClearData() with
+            {
+                View = RightBarView.BookDetails,
+                BookDetails = book,
+            }
+        );
+
+    public Task CloseAsync() => UpdateStateAsync(s => RightBarState.Empty);
+
+    public void Dispose()
     {
-        BookToUpdate = book;
-        if (book is null) return;
-        OnBookToUpdateChanged?.Invoke();
+        _stateLock?.Dispose();
     }
-    
-    
-    
-     public BookResponse? UpdatedBook { get; set; } = null;
-        
-     public event Action? OnUpdatedBookChanged ;
-    
-        public void SetUpdatedBook(BookResponse? book = null)
-        {
-            
-            UpdatedBook = book;
-            if (book is null) return;
-            OnUpdatedBookChanged?.Invoke();
-        }
-        
-    public BookResponse? BookDetails { get; set; } = null;
-
-    public event Action? OnBookDetailsChanged ;
-
-    public void SetBookDetails(BookResponse? book = null)
-    {
-        BookDetails = book;
-        if (book is null) return;
-        OnBookDetailsChanged?.Invoke();
-    }
-     public UserResponse? UserToUpdate { get; set; } = null;
-    
-        public event Action? OnUserToUpdateChanged ;
-    
-        public void SetUserToUpdate(UserResponse? user = null)
-        {
-            UserToUpdate = user;
-            if (user is null) return;
-            OnUserToUpdateChanged?.Invoke();
-        }
-        public ReaderResponse? CreatedReader { get; set; } = null;
-    
-        public event Action? OnCreatedReaderChanged ;
-    
-        public void SetCreatedReader(ReaderResponse? reader = null)
-        {
-            CreatedReader = reader;
-            if (reader is null) return;
-            OnCreatedReaderChanged?.Invoke();
-        }
-        
-         public ReaderResponse? ReaderToUpdate { get; set; } = null;
-         
-        public event Action? OnReaderToUpdateChanged ;
-    
-        public void SetReaderToUpdate(ReaderResponse? reader = null)
-        {
-            ReaderToUpdate = reader;
-            if (reader is null) return;
-            OnReaderToUpdateChanged?.Invoke();
-        }
-        
-        
-        public ReaderResponse? UpdatedReader { get; set; } = null;
-         
-        public event Action? OnUpdatedReaderChanged ;
-    
-        public void SetUpdatedReader(ReaderResponse? reader = null)
-        {
-            UpdatedReader = reader;
-            if (reader is null) return;
-            OnUpdatedReaderChanged?.Invoke();
-        }
 }
 
 public enum RightBarView
@@ -127,6 +144,6 @@ public enum RightBarView
     CreateUser,
     UpdateUser,
     CreateReader,
-    EditReader,
-    Authors
+    UpdateReader,
+    Authors,
 }

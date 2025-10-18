@@ -114,17 +114,21 @@
     }
     protected override void OnInitialized()
     {
-        RightBarContext.OnCreatedBookChanged += HandleBookCreated;
-        RightBarContext.OnUpdatedBookChanged += HandleBookUpdated;
+        RightBarContext.OnStateChanged += HandleStateChanged;
     }
 
-    public void HandleBookCreated()
+    public async void HandleStateChanged(RightBarState state)
     {
-        if (RightBarContext.CreatedBook is not null)
+        HandleBookCreated(state.CreatedBook);
+        HandleBookUpdated(state.UpdatedBook);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async void HandleBookCreated(BookResponse? book)
+    {
+        if (book is not null)
         {
-            Books.Insert(0, RightBarContext.CreatedBook);
-            StateHasChanged();
-            RightBarContext.SetCreatedBook();
+            Books.Insert(0, book);
           
         }
     }
@@ -152,9 +156,9 @@
         }
        
     }
-    public void HandleBookUpdated()
+    public  void HandleBookUpdated(BookResponse? book)
     {
-        if (RightBarContext.UpdatedBook is var book && book is not null)
+        if (book is not null)
         {
             var toReplace = Books.Find(b => b.Id == book.Id);
             
@@ -164,25 +168,22 @@
             if(index < 0) return;
 
             Books[index] = book;
-            StateHasChanged();
-            RightBarContext.SetBookToUpdate();
-            RightBarContext.SetUpdatedBook();
+            
           
         }
     }
 
     public void Dispose()
     {
-        RightBarContext.OnCreatedBookChanged -= HandleBookCreated;
-        RightBarContext.OnUpdatedBookChanged -= HandleBookUpdated;
+        RightBarContext.OnStateChanged -= HandleStateChanged;
 
     }
 
  
 
-    public void ShowCreateBookForm()
+    public async Task ShowCreateBookForm()
     {
-        RightBarContext.SetView(RightBarView.CreatingBook);
+        await RightBarContext.OpenCreateBookAsync();
     }
     
     public async Task SetFilterBy(BookFilterType filter){

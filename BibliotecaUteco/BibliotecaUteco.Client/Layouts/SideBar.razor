@@ -171,9 +171,9 @@
         await TriggerOnSideBarExpandedChanged();
     }
 
-    public void SetUsersView()
+    public async Task SetUsersView()
     {
-        RightBarContext.SetView(RightBarView.Users);
+        await RightBarContext.SetViewAsync(RightBarView.Users);
     }
 
     public async Task TriggerOnSideBarExpandedChanged(){

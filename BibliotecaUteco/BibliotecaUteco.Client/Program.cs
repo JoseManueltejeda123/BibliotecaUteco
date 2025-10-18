@@ -14,7 +14,8 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
-    provider.GetRequiredService<CustomAuthenticationStateProvider>());
+    provider.GetRequiredService<CustomAuthenticationStateProvider>()
+);
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSonner();
 builder.Services.AddLumexServices();

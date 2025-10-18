@@ -2,10 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BibliotecaUteco.Client.Requests.Genres.Queries
 {
-    public class GetGenresByNameRequest 
+    public class GetGenresByNameRequest
     {
-        [MaxLength(25, ErrorMessage="El nombre del genero literario no debe de exceder los 25 caracteres")]
+        [MaxLength(
+            25,
+            ErrorMessage = "El nombre del genero literario no debe de exceder los 25 caracteres"
+        )]
         public string? GenreName { get; set; }
-        
     }
 }

@@ -56,8 +56,7 @@
     }
     public async Task SetUpdateUserView()
     {
-        RightBarContext.SetUserToUpdate(User);
-        RightBarContext.SetView(RightBarView.UpdateUser);
+        await RightBarContext.OpenUpdateUserAsync(User);
         await HideDropdown();                            
     }
    

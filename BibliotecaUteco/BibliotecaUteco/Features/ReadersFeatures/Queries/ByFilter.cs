@@ -25,43 +25,58 @@ public class GetReaderByFilterCommandValidator : AbstractValidator<GetReadersByF
 {
     public GetReaderByFilterCommandValidator()
     {
-        
-        When(x => !string.IsNullOrWhiteSpace(x.IdentityCardNumber), () =>
-        {
-            RuleFor(x => x.IdentityCardNumber)
-                .MinimumLength(1).WithMessage("La cédula debe tener mas de 1 dígito")                
-                .MaximumLength(11).WithMessage("La cédula no debe tener mas de 11 dígitos");
+        When(
+            x => !string.IsNullOrWhiteSpace(x.IdentityCardNumber),
+            () =>
+            {
+                RuleFor(x => x.IdentityCardNumber)
+                    .MinimumLength(1)
+                    .WithMessage("La cédula debe tener mas de 1 dígito")
+                    .MaximumLength(11)
+                    .WithMessage("La cédula no debe tener mas de 11 dígitos");
+            }
+        );
 
-        });
+        When(
+            x => !string.IsNullOrWhiteSpace(x.StudentLicence),
+            () =>
+            {
+                RuleFor(x => x.StudentLicence)
+                    .MinimumLength(1)
+                    .WithMessage("La matrícula debe tener al menos 1 caracteres")
+                    .MaximumLength(9)
+                    .WithMessage("La matrícula no puede superar los 9 caracteres");
+            }
+        );
 
-        When(x => !string.IsNullOrWhiteSpace(x.StudentLicence), () =>
-        {
-            RuleFor(x => x.StudentLicence)
-                .MinimumLength(1).WithMessage("La matrícula debe tener al menos 1 caracteres")
-                .MaximumLength(9).WithMessage("La matrícula no puede superar los 9 caracteres");
-        });
-        
-        RuleFor(x => x.Skip).GreaterThanOrEqualTo(0).WithMessage("La cantidad de lectores a omitir debe de ser mayor o igual a 0.");
-        RuleFor(x => x.Take).InclusiveBetween(1, 15).WithMessage("La cantidad de lectores a tomar debe de ser mayor a 0 y menor a 15");
-
+        RuleFor(x => x.Skip)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage("La cantidad de lectores a omitir debe de ser mayor o igual a 0.");
+        RuleFor(x => x.Take)
+            .InclusiveBetween(1, 15)
+            .WithMessage("La cantidad de lectores a tomar debe de ser mayor a 0 y menor a 15");
     }
 }
+
 internal class GetReaderByFilterEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet(EndpointSettings.ReadersEndpoint + "/by-filter", async (
-                [AsParameters] GetReadersByFilterCommand command,
-                ISender sender,
-                IEndpointWrapper<GetReaderByFilterEndpoint> wrapper,
-                CancellationToken cancellationToken = default
-            ) =>
-            {
-                return await wrapper.ExecuteAsync<IApiResult>(async () =>
+        app.MapGet(
+                EndpointSettings.ReadersEndpoint + "/by-filter",
+                async (
+                    [AsParameters] GetReadersByFilterCommand command,
+                    ISender sender,
+                    IEndpointWrapper<GetReaderByFilterEndpoint> wrapper,
+                    CancellationToken cancellationToken = default
+                ) =>
                 {
-                    return await sender.SendAndValidateAsync(command, cancellationToken);
-                });
-            })
+                    return await wrapper.ExecuteAsync<IApiResult>(async () =>
+                    {
+                        return await sender.SendAndValidateAsync(command, cancellationToken);
+                    });
+                }
+            )
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
@@ -75,7 +90,8 @@ internal class GetReaderByFilterEndpoint : IEndpoint
     }
 }
 
-public class GetReaderByFilterCommandHandler : ICommandHandler<GetReadersByFilterCommand, IApiResult>
+public class GetReaderByFilterCommandHandler
+    : ICommandHandler<GetReadersByFilterCommand, IApiResult>
 {
     private readonly IBibliotecaUtecoDbContext _context;
 
@@ -84,10 +100,20 @@ public class GetReaderByFilterCommandHandler : ICommandHandler<GetReadersByFilte
         _context = context;
     }
 
-    public async Task<IApiResult> HandleAsync(GetReadersByFilterCommand request, CancellationToken cancellationToken = default)
+    public async Task<IApiResult> HandleAsync(
+        GetReadersByFilterCommand request,
+        CancellationToken cancellationToken = default
+    )
     {
-        var response = await _context.Readers.GetByFilterAsync(request.IdentityCardNumber, request.StudentLicence,
-            request.Skip, request.Take, cancellationToken);
-        return ApiResult<List<ReaderResponse>>.BuildSuccess(response.Select(reader => reader.ToResponse()).ToList());
+        var response = await _context.Readers.GetByFilterAsync(
+            request.IdentityCardNumber,
+            request.StudentLicence,
+            request.Skip,
+            request.Take,
+            cancellationToken
+        );
+        return ApiResult<List<ReaderResponse>>.BuildSuccess(
+            response.Select(reader => reader.ToResponse()).ToList()
+        );
     }
 }

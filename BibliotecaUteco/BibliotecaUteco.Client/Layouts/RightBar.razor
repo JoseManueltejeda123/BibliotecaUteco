@@ -1,8 +1,8 @@
 @implements  IDisposable
 
 <aside class=@($"fixed overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[300px] bg-white   flex flex-col items-center  border-l border-neutral-300")>
-    <div class="w-full flex sticky top-0  bg-neutral-900/50 px-3 backdrop-blur-md justify-between font-semibold text-white text-sm z-[100] items-center">
-        @(RightBarContext.View switch
+    <div class="w-full flex sticky top-0  bg-neutral-100/50 px-3 backdrop-blur-md justify-between font-semibold text-black text-sm z-[100] items-center">
+        @(RightBarContext.State.View switch
         {
             
             RightBarView.CreatingBook => "Registrar Libro",     
@@ -12,44 +12,44 @@
             RightBarView.UpdateUser => "Actualizar Usuario",
             RightBarView.CreateUser => "Crear Usuario",
             RightBarView.CreateReader => "Crear Lector",            
-            RightBarView.EditReader => "Actualizar Lector",
+            RightBarView.UpdateReader => "Actualizar Lector",
              _ => ""
         })
-        <IconButton OnClick="Close" Small="@true" Class="" TooltipText="Cerrar">
+        <IconButton OnClick="CloseAsync" Small="@true" Class="" TooltipText="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 
         </IconButton>
     </div>
     
-    @if (RightBarContext.View == RightBarView.CreatingBook)
+    @if (RightBarContext.State.View == RightBarView.CreatingBook)
     {
         <CreateBookForm/>
     }
-    else if (RightBarContext.View == RightBarView.UpdateBook)
+    else if (RightBarContext.State.View == RightBarView.UpdateBook)
     {
         <UpdateBookForm/>
     }
-    else if(RightBarContext.View == RightBarView.BookDetails)
+    else if(RightBarContext.State.View == RightBarView.BookDetails)
     {
         <BookDetails/>
     }
-    else if (RightBarContext.View == RightBarView.Users)
+    else if (RightBarContext.State.View == RightBarView.Users)
     {
         <UsersView/>
     }
-    else if (RightBarContext.View == RightBarView.CreateUser)
+    else if (RightBarContext.State.View == RightBarView.CreateUser)
     {
         <CreateUserForm/>
     }
-    else if(RightBarContext.View == RightBarView.UpdateUser)
+    else if(RightBarContext.State.View == RightBarView.UpdateUser)
     {
          <UpdateUserForm/>
     }
-    else if(RightBarContext.View == RightBarView.CreateReader)
+    else if(RightBarContext.State.View == RightBarView.CreateReader)
     {
         <CreateReaderForm/>
     }
-    else if(RightBarContext.View == RightBarView.EditReader)
+    else if(RightBarContext.State.View == RightBarView.UpdateReader)
     {
         <UpdateReaderForm/>
     }
@@ -57,18 +57,23 @@
 </aside>
 @code {
 
-    public void Close()
+    public async Task CloseAsync()
     {
-        RightBarContext.SetView();
+       await RightBarContext.CloseAsync();
     }
 
     protected override void OnInitialized()
     {
-        RightBarContext.OnViewChanged += StateHasChanged;
+        RightBarContext.OnStateChanged += HandleStateChanged;
+    }
+
+    public async void HandleStateChanged(RightBarState state)
+    {
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
     {
-        RightBarContext.OnViewChanged -= StateHasChanged;
+        RightBarContext.OnStateChanged -= HandleStateChanged;;
     }
 }

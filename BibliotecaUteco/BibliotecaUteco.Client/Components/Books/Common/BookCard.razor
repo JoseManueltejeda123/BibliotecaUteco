@@ -169,16 +169,14 @@
         if(_deletingBook) return;
         ShowDeleteBookConfirmationDialog = !ShowDeleteBookConfirmationDialog;
     }
-    public void SetBookToUpdate()
+    public async Task SetBookToUpdate()
     {
-        RightBarContext.SetBookToUpdate(Book);
-        RightBarContext.SetView(RightBarView.UpdateBook);
+        await RightBarContext.OpenUpdateBookAsync(Book);
     }
     
-    public void SetBookDetails()
+    public async Task SetBookDetails()
     {
-        RightBarContext.SetBookDetails(Book);
-        RightBarContext.SetView(RightBarView.BookDetails);
+        await RightBarContext.OpenBookDetailsAsync(Book);
     }
 
 }

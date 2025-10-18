@@ -10,7 +10,7 @@ public static class EndpointDependecies
     {
         services.AddTransient(typeof(IEndpointWrapper<>), typeof(EndpointWrapper<>));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
         //registramos los handers de los comandos
         var handlerInterfaceType = typeof(ICommandHandler<,>);
         var handlerType = Assembly
@@ -24,14 +24,14 @@ public static class EndpointDependecies
                     )
                     .Select(i => new { Interface = i, Implementation = type })
             );
-        
+
         foreach (var handler in handlerType)
         {
             services.AddScoped(handler.Interface, handler.Implementation);
         }
-        
+
         services.AddTransient<ISender, Sender>();
-        
+
         ServiceDescriptor[] endpointServiceDescriptors = Assembly
             .GetExecutingAssembly()
             .DefinedTypes.Where(type =>
@@ -42,12 +42,10 @@ public static class EndpointDependecies
             .ToArray();
 
         services.TryAddEnumerable(endpointServiceDescriptors);
-        
+
         return services;
-
-
     }
-    
+
     public static IApplicationBuilder MapEndpoints(this IApplicationBuilder app)
     {
         app.UseEndpoints(endpoints =>

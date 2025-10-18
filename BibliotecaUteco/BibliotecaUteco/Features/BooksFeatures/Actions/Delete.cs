@@ -4,7 +4,12 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 {
     public class DeleteBookCommand : ICommand<IApiResult>
     {
-        [FromQuery(Name = "bookId"), JsonPropertyName("bookId"), Description("Id del libro a eliminar"), Required]
+        [
+            FromQuery(Name = "bookId"),
+            JsonPropertyName("bookId"),
+            Description("Id del libro a eliminar"),
+            Required
+        ]
         public int BookId { get; set; }
     }
 
@@ -12,8 +17,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
     {
         public DeleteBookCommandValidator()
         {
-            RuleFor(x => x.BookId)
-                .GreaterThan(0).WithMessage("El ID del libro debe ser mayor a 0");
+            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("El ID del libro debe ser mayor a 0");
         }
     }
 
@@ -21,18 +25,21 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete(EndpointSettings.BooksEndpoint + "/delete", async (
-                    [AsParameters] DeleteBookCommand command,
-                    ISender sender,
-                    IEndpointWrapper<DeleteBookEndpoint> wrapper,
-                    CancellationToken cancellationToken = default
-                ) =>
-                {
-                    return await wrapper.ExecuteAsync<IApiResult>(async () =>
+            app.MapDelete(
+                    EndpointSettings.BooksEndpoint + "/delete",
+                    async (
+                        [AsParameters] DeleteBookCommand command,
+                        ISender sender,
+                        IEndpointWrapper<DeleteBookEndpoint> wrapper,
+                        CancellationToken cancellationToken = default
+                    ) =>
                     {
-                        return await sender.SendAndValidateAsync(command, cancellationToken);
-                    });
-                })
+                        return await wrapper.ExecuteAsync<IApiResult>(async () =>
+                        {
+                            return await sender.SendAndValidateAsync(command, cancellationToken);
+                        });
+                    }
+                )
                 .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
@@ -44,20 +51,24 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Book))
                 .WithName(nameof(DeleteBookEndpoint))
-                .WithDescription("Elimina un libro por su ID. No se puede eliminar si tiene préstamos activos.");
+                .WithDescription(
+                    "Elimina un libro por su ID. No se puede eliminar si tiene préstamos activos."
+                );
         }
     }
 
     public class DeleteBookCommandHandler(
         IBibliotecaUtecoDbContext context,
-        IFileUploadService fileUploadService) : ICommandHandler<DeleteBookCommand, IApiResult>
+        IFileUploadService fileUploadService
+    ) : ICommandHandler<DeleteBookCommand, IApiResult>
     {
-        
-
-        public async Task<IApiResult> HandleAsync(DeleteBookCommand request, CancellationToken cancellationToken = default)
+        public async Task<IApiResult> HandleAsync(
+            DeleteBookCommand request,
+            CancellationToken cancellationToken = default
+        )
         {
-            var book = await context.Books
-                .AsNoTracking()
+            var book = await context
+                .Books.AsNoTracking()
                 .AsSplitQuery()
                 .IgnoreAutoIncludes()
                 .FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
@@ -67,18 +78,23 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 return ApiResult<bool>.BuildFailure(HttpStatus.NotFound, "El libro no existe.");
             }
 
-            if (await context.BookLoans.AnyAsync(b => b.BookId == request.BookId && b.Loan.ReturnedDate == null))
+            if (
+                await context.BookLoans.AnyAsync(b =>
+                    b.BookId == request.BookId && b.Loan.ReturnedDate == null
+                )
+            )
             {
                 return ApiResult<bool>.BuildFailure(
-                    HttpStatus.Conflict, 
-                    "No se puede eliminar el libro porque tiene préstamos activos. Espere a que sean devueltos.");
+                    HttpStatus.Conflict,
+                    "No se puede eliminar el libro porque tiene préstamos activos. Espere a que sean devueltos."
+                );
             }
 
-           var deletedRows = await context.Books
-                .Where(b => b.Id == request.BookId)
+            var deletedRows = await context
+                .Books.Where(b => b.Id == request.BookId)
                 .ExecuteDeleteAsync(cancellationToken);
 
-            if(deletedRows >= 1)
+            if (deletedRows >= 1)
             {
                 if (!string.IsNullOrEmpty(book.CoverUrl))
                 {

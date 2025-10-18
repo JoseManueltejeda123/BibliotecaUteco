@@ -6,72 +6,66 @@ namespace BibliotecaUteco.DataAccess.Models;
 [Table("Usuarios")]
 public class User : BaseEntity
 {
-    [ Column("NombreCompleto")]
+    [Column("NombreCompleto")]
     [MaxLength(50), MinLength(5), Required]
     public string FullName { get; set; } = null!;
-    
-    
-    [ Column("Clave")]
-    [MinLength(8), Required] 
+
+    [Column("Clave")]
+    [MinLength(8), Required]
     //No max lenght por que esto va hasheado
     public string Password { get; set; } = null!;
-    
-    [ Column("UrlFotoDePerfil")]
-    public string? ProfilePictureUrl { get; set; } 
-    
-    [ Column("NombreDeUsuario")]
+
+    [Column("UrlFotoDePerfil")]
+    public string? ProfilePictureUrl { get; set; }
+
+    [Column("NombreDeUsuario")]
     [MaxLength(15), MinLength(5), RegularExpression(@"^[a-zA-Z0-9._]+$")]
     public string Username { get; set; } = null!;
 
-    [ Column("Cedula")]
-    [MaxLength(11), MinLength(11)] 
+    [Column("Cedula")]
+    [MaxLength(11), MinLength(11)]
     public string IdentityCardNumber { get; set; } = null!;
-    
+
     public Role Role { get; set; } = null!;
 
-    [ Column("IdRole")]
+    [Column("IdRole")]
     public int RoleId { get; set; } = 0;
-    
-    [ Column("IdSexo")]
-    public int? SexId { get; set; } 
-    
-    public Sex? Sex { get; set; } 
-    
-    
+
+    [Column("IdSexo")]
+    public int? SexId { get; set; }
+
+    public Sex? Sex { get; set; }
+
     public List<Transaction> Transactions { get; set; } = new();
 
-    public static User Create(CreateUserCommand request) => new()
-    {
-
-        FullName = request.FullName,
-        Username = request.Username,
-        Password = request.Password,
-        IdentityCardNumber = request.IdentityCardNumber,
-        RoleId = request.RoleId,
-
-
-    };
+    public static User Create(CreateUserCommand request) =>
+        new()
+        {
+            FullName = request.FullName,
+            Username = request.Username,
+            Password = request.Password,
+            IdentityCardNumber = request.IdentityCardNumber,
+            RoleId = request.RoleId,
+            SexId = request.SexId
+        };
 
     public bool Update(UpdateUserCommand command)
     {
-
         bool hasBeenUpdated = false;
-        
-        if(Username != command.Username)
+
+        if (Username != command.Username)
         {
             Username = command.Username;
             hasBeenUpdated = true;
         }
-        
-        if(FullName != command.FullName)
+
+        if (FullName != command.FullName)
         {
             FullName = command.FullName;
             hasBeenUpdated = true;
         }
-        
-      
-        
-        if(IdentityCardNumber != command.IdentityCardNumber )
+
+        if (IdentityCardNumber != command.IdentityCardNumber)
         {
             IdentityCardNumber = command.IdentityCardNumber;
             hasBeenUpdated = true;
@@ -82,30 +76,27 @@ public class User : BaseEntity
             SexId = command.SexId;
             hasBeenUpdated = true;
         }
-        
-      
-        
-        if(hasBeenUpdated)
+
+        if (hasBeenUpdated)
         {
             UpdatedAt = DateTime.UtcNow;
-            
         }
 
         return hasBeenUpdated;
     }
-    public UserResponse ToResponse() => new()
-    {
-        Id = Id,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt,
-        Username = Username,
-        FullName = FullName,
-        IdentityCardNumber = IdentityCardNumber,
-        ProfilePictureUrl = ProfilePictureUrl ?? "",
-        RoleName = Role?.Name ?? "",
-        RoleId = RoleId,
-        SexId = SexId ?? 1
 
-    };
-
+    public UserResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+            Username = Username,
+            FullName = FullName,
+            IdentityCardNumber = IdentityCardNumber,
+            ProfilePictureUrl = ProfilePictureUrl ?? "",
+            RoleName = Role?.Name ?? "",
+            RoleId = Role?.Id ?? 0, 
+            SexId = SexId ?? 1,
+        };
 }

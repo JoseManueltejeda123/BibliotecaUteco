@@ -15,14 +15,22 @@ public class DialogService : IDialogService
     public string AcceptText { get; private set; } = "Aceptar";
     public string CancelText { get; private set; } = "Cancelar";
     public RenderFragment? ChildContent { get; private set; }
-    
-    public ThemeColor CancelColor { get; set; }  = ThemeColor.Default;
+
+    public ThemeColor CancelColor { get; set; } = ThemeColor.Default;
     public ThemeColor AcceptColor { get; set; } = ThemeColor.Danger;
 
     private TaskCompletionSource<bool>? _tcs;
 
     // Mostrar el diálogo y esperar resultado
-    public Task<bool> ShowAsync(string title, string body, string? acceptText = null, string? cancelText = null, ThemeColor cancelColor = ThemeColor.Default, ThemeColor acceptColor = ThemeColor.Danger, RenderFragment? childContent = null)
+    public Task<bool> ShowAsync(
+        string title,
+        string body,
+        string? acceptText = null,
+        string? cancelText = null,
+        ThemeColor cancelColor = ThemeColor.Default,
+        ThemeColor acceptColor = ThemeColor.Danger,
+        RenderFragment? childContent = null
+    )
     {
         Title = title;
         Body = body;
@@ -49,7 +57,8 @@ public class DialogService : IDialogService
 
     private void Close(bool result)
     {
-        if (!IsOpen) return;
+        if (!IsOpen)
+            return;
 
         IsOpen = false;
         OnDialogChanged?.Invoke();

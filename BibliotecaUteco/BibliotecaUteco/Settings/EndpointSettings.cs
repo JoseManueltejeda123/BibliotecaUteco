@@ -9,8 +9,4 @@ public static class EndpointSettings
 
     public static string BooksEndpoint => $"api/{ApiV1}/books";
     public static string ReadersEndpoint => $"api/{ApiV1}/readers";
-
-
-
-
 }

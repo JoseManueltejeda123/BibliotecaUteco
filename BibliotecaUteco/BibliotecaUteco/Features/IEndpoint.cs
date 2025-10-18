@@ -7,8 +7,6 @@ public interface IEndpoint
 
 public static class ApplicationContentTypes
 {
-
     public static string ApplicationJson => "application/json";
     public static string MultipartForm => "multipart/form-data";
-
 }

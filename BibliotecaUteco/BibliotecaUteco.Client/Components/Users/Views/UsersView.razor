@@ -38,9 +38,9 @@
         }
     }
 
-    public void SetCreateUserView()
+    public async Task SetCreateUserView()
     {
-        RightBarContext.SetView(RightBarView.CreateUser);
+       await RightBarContext.OpenCreateUserAsync();
     }
 
     public async Task FetchGetUsersByFilter()

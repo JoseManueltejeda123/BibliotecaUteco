@@ -7,11 +7,10 @@ namespace BibliotecaUteco.Client.Requests.Genres.Actions
         [MaxLength(25)]
         [MinLength(1)]
         [Required]
-     
         public string GenreName { get; set; } = null!;
 
-        [Range(1,int.MaxValue)]
-        [Required]      
-        public int GenreId { get; set; } 
+        [Range(1, int.MaxValue)]
+        [Required]
+        public int GenreId { get; set; }
     }
 }

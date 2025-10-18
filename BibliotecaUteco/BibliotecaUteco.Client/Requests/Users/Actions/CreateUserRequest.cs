@@ -13,8 +13,10 @@ public class CreateUserRequest
     [Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
     [MaxLength(15, ErrorMessage = "El nombre de usuario no puede tener más de 15 caracteres.")]
     [MinLength(5, ErrorMessage = "El nombre de usuario debe tener al menos 5 caracteres.")]
-    [RegularExpression(@"^[a-zA-Z0-9._]+$", 
-        ErrorMessage = "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos.")]
+    [RegularExpression(
+        @"^[a-zA-Z0-9._]+$",
+        ErrorMessage = "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos."
+    )]
     public string Username { get; set; } = null!;
 
     [Required(ErrorMessage = "La contraseña es obligatoria.")]
@@ -30,10 +32,10 @@ public class CreateUserRequest
     [Required(ErrorMessage = "El rol es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido.")]
     public int RoleId => IsAdmin ? 1 : 2;
-    
-    [Range(1,2)]
+
+    [Range(1, 2)]
     public int SexId { get; set; } = 1;
-    public string SexName => SexId == 1 ? "boy" : "girl"; 
+    public string SexName => SexId == 1 ? "boy" : "girl";
 
     public bool IsAdmin { get; set; } = false;
 

@@ -6,45 +6,44 @@ namespace BibliotecaUteco.DataAccess.Models;
 [Table("Libros")]
 public class Book : BaseEntity
 {
-    
-    [MaxLength(50), MinLength(1), Required,  Column("Nombre")]
+    [MaxLength(50), MinLength(1), Required, Column("Nombre")]
     public string Name { get; set; } = null!;
 
-    [MaxLength(50), MinLength(1), Required,  Column("NombreNormalizado")]
+    [MaxLength(50), MinLength(1), Required, Column("NombreNormalizado")]
     public string NormalizedName { get; set; } = null!;
 
-    [Url, Column("UrlPortada")] 
+    [Url, Column("UrlPortada")]
     public string? CoverUrl { get; set; } = null;
 
-    [MaxLength(500), MinLength(10), Required,  Column("Synopsis")]
+    [MaxLength(500), MinLength(10), Required, Column("Synopsis")]
     public string Synopsis { get; set; } = null!;
-    
+
     public List<BookAuthor> Authors { get; set; } = new();
     public List<GenreBook> Genres { get; set; } = new();
-    
+
     public List<BookLoan> Loans { get; set; } = new();
 
-    [Range(1, int.MaxValue),  Column("Copias")]
+    [Range(1, int.MaxValue), Column("Copias")]
     public int Stock { get; set; }
 
     [NotMapped]
     public int AvailableAmount { get; set; }
+
     [NotMapped]
     public int ActiveLoansCount { get; set; }
 
-    public static Book Create(CreateBookCommand command) => new()
-    {
-        Name = command.Name,
-        NormalizedName = command.Name.NormalizeField(),
-        CoverUrl = command.CoverUrl,
-        Synopsis = command.Synopsis,
-        Stock = command.Stock,
-        Genres = command.GenreIds.Select(g => new GenreBook(){GenreId = g}).ToList(),
-        Authors = command.AuthorIds?.Select(g => new BookAuthor(){AuthorId = g}).ToList() ?? new(),
-        
-         
-    };
-
+    public static Book Create(CreateBookCommand command) =>
+        new()
+        {
+            Name = command.Name,
+            NormalizedName = command.Name.NormalizeField(),
+            CoverUrl = command.CoverUrl,
+            Synopsis = command.Synopsis,
+            Stock = command.Stock,
+            Genres = command.GenreIds.Select(g => new GenreBook() { GenreId = g }).ToList(),
+            Authors =
+                command.AuthorIds?.Select(g => new BookAuthor() { AuthorId = g }).ToList() ?? new(),
+        };
 
     public bool Update(UpdateBookCommand command)
     {
@@ -56,8 +55,8 @@ public class Book : BaseEntity
             NormalizedName = command.BookName.NormalizeField();
             hasBeenUpdated = true;
         }
-        
-        if(Synopsis != command.Synopsis)
+
+        if (Synopsis != command.Synopsis)
         {
             Synopsis = command.Synopsis;
             hasBeenUpdated = true;
@@ -68,8 +67,8 @@ public class Book : BaseEntity
             Stock = command.Stock;
             hasBeenUpdated = true;
         }
-        
-        if(hasBeenUpdated)
+
+        if (hasBeenUpdated)
         {
             UpdatedAt = DateTime.UtcNow;
         }
@@ -77,21 +76,19 @@ public class Book : BaseEntity
         return hasBeenUpdated;
     }
 
-    public BookResponse ToResponse() => new()
-    {
-        Id = Id,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt,
-        Name = Name,
-        CoverUrl = CoverUrl ?? "",
-        Synopsis = Synopsis,
-        Authors = Authors.Select(a => a.ToResponse()).ToList() ?? new(),
-        Genres = Genres.Select(g => g.ToResponse()).ToList() ?? new(),
-        Stock = Stock,
-        AvailableAmount = AvailableAmount,
-        ActiveLoansCount = ActiveLoansCount
-
-
-    };
-    
+    public BookResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+            Name = Name,
+            CoverUrl = CoverUrl ?? "",
+            Synopsis = Synopsis,
+            Authors = Authors.Select(a => a.ToResponse()).ToList() ?? new(),
+            Genres = Genres.Select(g => g.ToResponse()).ToList() ?? new(),
+            Stock = Stock,
+            AvailableAmount = AvailableAmount,
+            ActiveLoansCount = ActiveLoansCount,
+        };
 }

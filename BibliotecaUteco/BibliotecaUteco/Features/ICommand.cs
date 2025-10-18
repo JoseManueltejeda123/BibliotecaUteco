@@ -1,7 +1,3 @@
 namespace BibliotecaUteco.Features;
 
-
-public interface ICommand<TResponse>
-{
-    
-}
+public interface ICommand<TResponse> { }

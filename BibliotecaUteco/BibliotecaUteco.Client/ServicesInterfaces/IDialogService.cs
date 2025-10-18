@@ -12,13 +12,19 @@ public interface IDialogService
     string AcceptText { get; }
     string CancelText { get; }
 
-    ThemeColor CancelColor { get; } 
-    ThemeColor AcceptColor { get; set; } 
+    ThemeColor CancelColor { get; }
+    ThemeColor AcceptColor { get; set; }
     RenderFragment? ChildContent { get; }
 
-    Task<bool> ShowAsync(string title, string body, string? acceptText = null, string? cancelText = null,
-        ThemeColor cancelColor = ThemeColor.Default, ThemeColor acceptColor = ThemeColor.Danger,
-        RenderFragment? childContent = null);
+    Task<bool> ShowAsync(
+        string title,
+        string body,
+        string? acceptText = null,
+        string? cancelText = null,
+        ThemeColor cancelColor = ThemeColor.Default,
+        ThemeColor acceptColor = ThemeColor.Danger,
+        RenderFragment? childContent = null
+    );
     void Accept();
     void Cancel();
 }

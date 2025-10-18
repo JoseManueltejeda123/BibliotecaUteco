@@ -15,7 +15,8 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
         public DeleteGenreCommandValidator()
         {
             RuleFor(x => x.GenreId)
-                .GreaterThan(0).WithMessage("El ID del género debe ser mayor a 0");
+                .GreaterThan(0)
+                .WithMessage("El ID del género debe ser mayor a 0");
         }
     }
 
@@ -23,18 +24,21 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete(EndpointSettings.GenresEndpoint + "/delete", async (
-                    [AsParameters] DeleteGenreCommand command,
-                    ISender sender,
-                    IEndpointWrapper<DeleteGenreEndpoint> wrapper,
-                    CancellationToken cancellationToken = default
-                ) =>
-                {
-                    return await wrapper.ExecuteAsync<IApiResult>(async () =>
+            app.MapDelete(
+                    EndpointSettings.GenresEndpoint + "/delete",
+                    async (
+                        [AsParameters] DeleteGenreCommand command,
+                        ISender sender,
+                        IEndpointWrapper<DeleteGenreEndpoint> wrapper,
+                        CancellationToken cancellationToken = default
+                    ) =>
                     {
-                        return await sender.SendAndValidateAsync(command, cancellationToken);
-                    });
-                })
+                        return await wrapper.ExecuteAsync<IApiResult>(async () =>
+                        {
+                            return await sender.SendAndValidateAsync(command, cancellationToken);
+                        });
+                    }
+                )
                 .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
@@ -47,27 +51,32 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(DeleteGenreEndpoint))
-                .WithDescription("Elimina un género literario. No se puede eliminar si tiene libros asociados.");
+                .WithDescription(
+                    "Elimina un género literario. No se puede eliminar si tiene libros asociados."
+                );
         }
     }
 
-    public class DeleteGenreCommandHandler(IBibliotecaUtecoDbContext _context) : ICommandHandler<DeleteGenreCommand, IApiResult>
+    public class DeleteGenreCommandHandler(IBibliotecaUtecoDbContext _context)
+        : ICommandHandler<DeleteGenreCommand, IApiResult>
     {
-        
-
-        public async Task<IApiResult> HandleAsync(DeleteGenreCommand request, CancellationToken cancellationToken = default)
+        public async Task<IApiResult> HandleAsync(
+            DeleteGenreCommand request,
+            CancellationToken cancellationToken = default
+        )
         {
-            
-           var rows = await _context.Genres
-                .Where(g => g.Id == request.GenreId)
+            var rows = await _context
+                .Genres.Where(g => g.Id == request.GenreId)
                 .ExecuteDeleteAsync(cancellationToken);
 
-            if(rows <= 0)
+            if (rows <= 0)
             {
-                return ApiResult<bool>.BuildFailure(HttpStatus.NotFound, "No se encontró el género");
+                return ApiResult<bool>.BuildFailure(
+                    HttpStatus.NotFound,
+                    "No se encontró el género"
+                );
             }
             return ApiResult<bool>.BuildSuccess(true);
         }
     }
-
 }

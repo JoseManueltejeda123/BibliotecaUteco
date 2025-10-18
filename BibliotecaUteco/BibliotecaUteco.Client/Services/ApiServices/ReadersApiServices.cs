@@ -12,17 +12,52 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
 {
     private const string ReadersEndpoint = "/readers";
 
-    public async Task<ApiResult<ReaderResponse>> CreateAsync(CreateReaderRequest request, CancellationToken cancellationToken = default)
+    public async Task<ApiResult<ReaderResponse>> CreateAsync(
+        CreateReaderRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
-        return await client.FetchPostAsync<ReaderResponse>(ReadersEndpoint, request, cancellationToken);
+        return await client.FetchPostAsync<ReaderResponse>(
+            ReadersEndpoint,
+            request,
+            cancellationToken
+        );
     }
-    
-    public async Task<ApiResult<ReaderResponse>> UpdateAsync(UpdateReaderRequest request, CancellationToken cancellationToken = default)
+
+    public async Task<ApiResult<bool>> DeleteAsync(
+        DeleteReaderRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
-        return await client.FetchPutAsync<ReaderResponse>(ReadersEndpoint, request, cancellationToken);
-    }
+        var query = HttpUtility.ParseQueryString(string.Empty);
+
     
-    public async Task<ApiResult<List<ReaderResponse>>> GetByFilterAsync(GetReadersByFilterRequest request, CancellationToken cancellationToken = default)
+        query["readerId"] = request.ReaderId.ToString();
+        string queryString = query?.ToString() ?? "";
+
+        return await client.FetchDeleteAsync<bool>(
+            ReadersEndpoint + $"/delete?{queryString}",
+            cancellationToken
+          
+        );
+    }
+
+    public async Task<ApiResult<ReaderResponse>> UpdateAsync(
+        UpdateReaderRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await client.FetchPutAsync<ReaderResponse>(
+            ReadersEndpoint,
+            request,
+            cancellationToken
+        );
+    }
+
+    public async Task<ApiResult<List<ReaderResponse>>> GetByFilterAsync(
+        GetReadersByFilterRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
 
@@ -31,12 +66,10 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
         query["skip"] = request.Skip.ToString();
         query["take"] = request.Take.ToString();
 
-
-
         string queryString = query?.ToString() ?? "";
-        return await client.FetchGetAsync<List<ReaderResponse>>(ReadersEndpoint + $"/by-filter?{queryString}", cancellationToken);
-        
-        
+        return await client.FetchGetAsync<List<ReaderResponse>>(
+            ReadersEndpoint + $"/by-filter?{queryString}",
+            cancellationToken
+        );
     }
-
 }

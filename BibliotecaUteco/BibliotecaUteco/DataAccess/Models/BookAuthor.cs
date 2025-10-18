@@ -6,24 +6,23 @@ namespace BibliotecaUteco.DataAccess.Models;
 public class BookAuthor : BaseEntity
 {
     public Author Author { get; set; } = null!;
-    
-    [ Column("IdAutor")]
+
+    [Column("IdAutor")]
     public int AuthorId { get; set; }
-    
+
     public Book Book { get; set; } = null!;
-    
-    [ Column("IdLibro")]
+
+    [Column("IdLibro")]
     public int BookId { get; set; }
 
-
-    public BookAuthorResponse ToResponse() => new()
-    {
-        Id = Id,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt,
-        BookId = BookId,
-        AuthorId = AuthorId,
-        Author = Author.ToResponse()
-
-    };
+    public BookAuthorResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+            BookId = BookId,
+            AuthorId = AuthorId,
+            Author = Author.ToResponse(),
+        };
 }

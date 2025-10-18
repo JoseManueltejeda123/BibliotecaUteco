@@ -13,18 +13,14 @@ public class Genre : BaseEntity
     public string NormalizedName { get; set; } = null!;
     public List<GenreBook> Books { get; set; } = new();
 
-
-    public static Genre Create(CreateGenreCommand command) => new()
-    {
-        Name = command.Name,
-        NormalizedName = command.Name.NormalizeField()
-    };
+    public static Genre Create(CreateGenreCommand command) =>
+        new() { Name = command.Name, NormalizedName = command.Name.NormalizeField() };
 
     public bool Update(UpdateGenreCommand command)
     {
         bool hasBeenUpdated = false;
 
-        if(Name != command.GenreName)
+        if (Name != command.GenreName)
         {
             Name = command.GenreName;
             NormalizedName = command.GenreName.NormalizeField();
@@ -40,12 +36,12 @@ public class Genre : BaseEntity
         return hasBeenUpdated;
     }
 
-    public GenreResponse ToResponse() => new()
-    {
-        Id = Id,
-        Name = Name,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt
-
-    };
+    public GenreResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            Name = Name,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+        };
 }

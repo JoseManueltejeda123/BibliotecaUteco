@@ -14,7 +14,6 @@ public static class ApiServicesDependencies
         services.AddScoped<IBooksApiServices, BooksApiServices>();
         services.AddScoped<IReadersApiServices, ReadersApiServices>();
 
-
         return services;
     }
 }

@@ -3,24 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace BibliotecaUteco.Client.Responses;
 
-
-
-
 public interface IApiResult
 {
-    public bool IsSuccess { get; set; } 
-    
+    public bool IsSuccess { get; set; }
+
     public List<string> Messages { get; set; }
-    
+
     public HttpStatus Status { get; set; }
-
-   
 }
-
 
 public class ApiResult<T> : IApiResult
 {
-  
     public T? Data { get; set; } = default;
     public bool IsSuccess { get; set; } = false;
     public List<string> Messages { get; set; } = new();
@@ -32,47 +25,42 @@ public class ApiResult<T> : IApiResult
     [MemberNotNullWhen(true, nameof(Data))]
     public bool IsSuccessful() => Data is not null && IsSuccess;
 
+    public static ApiResult<T> BuildSuccess(
+        T? data,
+        HttpStatus status = HttpStatus.OK,
+        string message = "Success",
+        List<string>? messages = null
+    ) =>
+        new()
+        {
+            Status = status,
+            Messages = messages ?? [message],
+            IsSuccess = true,
+            Data = data,
+        };
 
-   
-    
-    public static ApiResult<T> BuildSuccess(T? data, HttpStatus status = HttpStatus.OK, string message = "Success",
-        List<string>? messages = null) => new()
-    {
-        Status = status,
-        Messages = messages ?? [message],
-        IsSuccess = true,
-        Data = data
-    };
-    
-    public static ApiResult<T> BuildFailure(HttpStatus status = HttpStatus.BadRequest, string message = "Success",
-        List<string>? messages = null) => new()
-    {
-        Status = status,
-        Messages = messages ?? [message],
-        IsSuccess = false,
-        Data = default
-    };
+    public static ApiResult<T> BuildFailure(
+        HttpStatus status = HttpStatus.BadRequest,
+        string message = "Success",
+        List<string>? messages = null
+    ) =>
+        new()
+        {
+            Status = status,
+            Messages = messages ?? [message],
+            IsSuccess = false,
+            Data = default,
+        };
 }
-
-
-
-
-
-
-
-
-
 
 public enum HttpStatus
 {
-  
-
     // 2xx - Success
     OK = 200,
     Created = 201,
     Accepted = 202,
     NoContent = 204,
- 
+
     Found = 302,
     NotModified = 304,
 
@@ -102,7 +90,3 @@ public enum HttpStatus
     InsufficientStorage = 507,
     LoopDetected = 508,
 }
-
-
-
-

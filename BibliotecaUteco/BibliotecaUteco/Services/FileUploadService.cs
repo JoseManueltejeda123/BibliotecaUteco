@@ -2,10 +2,13 @@ using BibliotecaUteco.Client.Settings;
 
 namespace BibliotecaUteco.Services
 {
-
     public class FileUploadService(IWebHostEnvironment env) : IFileUploadService
     {
-        public async Task<(bool, string)> UploadImageAsync(IFormFile file, EnvFolders folder, string fileName)
+        public async Task<(bool, string)> UploadImageAsync(
+            IFormFile file,
+            EnvFolders folder,
+            string fileName
+        )
         {
             if (!IsValidImage(file))
             {
@@ -14,7 +17,7 @@ namespace BibliotecaUteco.Services
 
             return await SaveFileAsync(file, folder, fileName);
         }
-        
+
         public (bool, string) DeleteFile(string relativePath, EnvFolders folder)
         {
             if (string.IsNullOrWhiteSpace(relativePath))
@@ -22,7 +25,11 @@ namespace BibliotecaUteco.Services
 
             try
             {
-                var fullPath = Path.Combine(env.WebRootPath, folder.ToString(), Path.GetFileName(relativePath));
+                var fullPath = Path.Combine(
+                    env.WebRootPath,
+                    folder.ToString(),
+                    Path.GetFileName(relativePath)
+                );
 
                 if (!File.Exists(fullPath))
                     return (false, "El archivo no existe.");
@@ -34,11 +41,18 @@ namespace BibliotecaUteco.Services
             catch (Exception ex)
             {
                 // Podrías registrar el error aquí con tu logger
-                return (false, $"Error al eliminar el archivo: {ex.InnerException?.Message ?? ex.Message}");
+                return (
+                    false,
+                    $"Error al eliminar el archivo: {ex.InnerException?.Message ?? ex.Message}"
+                );
             }
         }
 
-        private async Task<(bool, string)> SaveFileAsync(IFormFile file, EnvFolders folder, string fileName)
+        private async Task<(bool, string)> SaveFileAsync(
+            IFormFile file,
+            EnvFolders folder,
+            string fileName
+        )
         {
             try
             {
@@ -48,16 +62,12 @@ namespace BibliotecaUteco.Services
                 if (file.Length > FilesSettings.MaxFileSize)
                 {
                     return (false, "El tamaño maximo es 2mb");
-
                 }
-
-
-
 
                 var uploadsPath = Path.Combine(env.WebRootPath, folder.ToString());
                 if (!Directory.Exists(uploadsPath))
                     Directory.CreateDirectory(uploadsPath);
-                var extension = Path.GetExtension(file.FileName); 
+                var extension = Path.GetExtension(file.FileName);
                 var uniqueFileName = $"{fileName}{extension}";
                 var filePath = Path.Combine(uploadsPath, uniqueFileName);
 
@@ -66,14 +76,17 @@ namespace BibliotecaUteco.Services
                     await file.CopyToAsync(stream);
                 }
 
-                var relativePath = Path.Combine("/", folder.ToString(), uniqueFileName).Replace("\\", "/");
+                var relativePath = Path.Combine("/", folder.ToString(), uniqueFileName)
+                    .Replace("\\", "/");
                 return (true, relativePath);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return (false, $"Error al subir el archivo: {ex.InnerException?.Message ?? ex.Message}");
+                return (
+                    false,
+                    $"Error al subir el archivo: {ex.InnerException?.Message ?? ex.Message}"
+                );
             }
-           
         }
 
         private static bool IsValidImage(IFormFile file)
@@ -81,20 +94,15 @@ namespace BibliotecaUteco.Services
             if (file == null || string.IsNullOrWhiteSpace(file.ContentType))
                 return false;
 
-            return FilesSettings.AllowedImageExtensionsForUpload.Contains(file.ContentType.ToLower());
-
-
+            return FilesSettings.AllowedImageExtensionsForUpload.Contains(
+                file.ContentType.ToLower()
+            );
         }
     }
 
     public enum EnvFolders
     {
         BookCovers,
-        UserPictures
+        UserPictures,
     }
-
 }
-    
-   
-
-

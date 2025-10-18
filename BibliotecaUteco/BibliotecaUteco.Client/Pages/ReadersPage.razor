@@ -47,12 +47,12 @@
         }
         @foreach (var reader in Readers)
         {
-            <ReaderCard Reader="reader"/>
+            <ReaderCard OnDelete="HandleOnReaderDeleted" Reader="reader"/>
 
         }
         @if(_fetchingReaders)
         {
-         <ReaderCardSkeleton Count="@(5)"/>
+         <ReaderCardSkeleton  Count="@(5)"/>
 
         }
         
@@ -91,6 +91,16 @@
 }
 
 @functions{
+
+    public void HandleOnReaderDeleted(ReaderResponse reader)
+    {
+        if(Readers.FirstOrDefault(r => r.Id == reader.Id) is var prevReader && prevReader is null)
+        {
+            return;
+        }
+
+        Readers.Remove(prevReader);
+    }
     public async Task SetFilterBy(ReadersFilterType filter){
       
             
@@ -167,11 +177,11 @@
        
     }
     
-    public void HandleReaderUpdated()
+    public void HandleReaderUpdated(ReaderResponse? reader)
     {
-        if (RightBarContext.UpdatedReader is not null)
+        if (reader is not null)
         {
-            var prevReader = Readers.FirstOrDefault(r => r.Id == RightBarContext.UpdatedReader.Id);
+            var prevReader = Readers.FirstOrDefault(r => r.Id == reader.Id);
             
             if(prevReader is null) return;
             
@@ -179,7 +189,7 @@
             
             if(index < 0) return;
             
-            Readers[index] = RightBarContext.UpdatedReader;
+            Readers[index] = reader;
             
         }
     }
@@ -194,31 +204,35 @@
         Skip = Readers.Count,
         Take = 15
     };
-    
 
-    public void HandleCreatedReaderChanged()
+    public async void HandleStateChanged(RightBarState state)
     {
-        if (RightBarContext.CreatedReader is not null)
+        HandleCreatedReaderChanged(state.CreatedReader);
+        HandleReaderUpdated(state.UpdatedReader);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void HandleCreatedReaderChanged(ReaderResponse? reader)
+    {
+        if (reader is not null)
         {
-            Readers.Insert(0, RightBarContext.CreatedReader);
-            RightBarContext.SetCreatedReader();
-            StateHasChanged();
+            Readers.Insert(0, reader);
         }
     }
 
-    public void SetCreateReaderView()
+    public async Task SetCreateReaderView()
     {
-        RightBarContext.SetView(RightBarView.CreateReader);
+        await RightBarContext.OpenCreateReaderAsync();
     }
 
     protected override void OnInitialized()
     {
-        RightBarContext.OnCreatedReaderChanged += HandleCreatedReaderChanged;
+        RightBarContext.OnStateChanged += HandleStateChanged;
     }
 
     public void Dispose()
     {
-        RightBarContext.OnCreatedReaderChanged -= HandleCreatedReaderChanged;
+        RightBarContext.OnStateChanged -= HandleStateChanged;
 
     }
 

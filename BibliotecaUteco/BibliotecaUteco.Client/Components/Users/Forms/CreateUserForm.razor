@@ -103,7 +103,7 @@
         if (result.IsSuccessful())
         {
             Toast.Show("Usuario creado exitosamente");
-            RightBarContext.SetView(RightBarView.Users);
+            await RightBarContext.CloseAsync();
             CreateUserModel = new();
         }
         

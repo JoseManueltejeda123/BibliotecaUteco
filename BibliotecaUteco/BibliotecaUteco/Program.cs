@@ -8,8 +8,7 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents();
+builder.Services.AddRazorComponents().AddInteractiveWebAssemblyComponents();
 builder.Logging.AddSimpleConsole(options =>
 {
     options.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
@@ -63,26 +62,30 @@ app.UseExceptionHandler(appError =>
             logger.LogCritical($"Server Error: {contextFeature.Error.Message}");
 
             await context.Response.WriteAsJsonAsync(
-                ApiResult<object>.BuildFailure(HttpStatus.InternalServerError,"Ocurrió un error en el servidor")
-
+                ApiResult<object>.BuildFailure(
+                    HttpStatus.InternalServerError,
+                    "Ocurrió un error en el servidor"
+                )
             );
         }
     });
 });
 
 app.UseStaticFiles();
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.WebRootPath, "BookCovers")),
-    RequestPath = "/BookCovers",
-    OnPrepareResponse = ctx =>
+app.UseStaticFiles(
+    new StaticFileOptions
     {
-        // Cache por 7 días
-        ctx.Context.Response.Headers.Append(
-            "Cache-Control", "public,max-age=604800");
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(app.Environment.WebRootPath, "BookCovers")
+        ),
+        RequestPath = "/BookCovers",
+        OnPrepareResponse = ctx =>
+        {
+            // Cache por 7 días
+            ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=604800");
+        },
     }
-});
+);
 app.UseAuthentication();
 app.UseRouting();
 app.UseHttpsRedirection();
@@ -99,7 +102,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<IBibliotecaUtecoDbContext>();    
+    var context = services.GetRequiredService<IBibliotecaUtecoDbContext>();
     context.Database.Migrate();
 }
 app.Run();

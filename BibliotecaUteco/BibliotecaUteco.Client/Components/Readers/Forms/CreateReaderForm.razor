@@ -72,8 +72,8 @@
         if (result.IsSuccessful())
         {
             Toast.Show("Lector creado exitosamente");
-            RightBarContext.SetView();
-            RightBarContext.SetCreatedReader(result.Data);
+            await RightBarContext.SetCreatedReaderAsync(result.Data);
+            await RightBarContext.CloseAsync();
             CreateReaderModel = new();
         }
         

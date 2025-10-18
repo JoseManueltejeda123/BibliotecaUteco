@@ -199,21 +199,30 @@
 
 @functions{
     
+    public void ParseBookToUpdate(BookResponse book)
+    {
+        UpdateBookModel.BookId = book.Id;
+        UpdateBookModel.BookName = book.Name;
+        UpdateBookModel.Authors = book.Authors.Select(x => x.Author).ToList();
+        UpdateBookModel.Genres = book.Genres.Select(x => x.Genre).ToList();
+        UpdateBookModel.Stock = book.Stock;
+        UpdateBookModel.Synopsis = book.Synopsis;
+        _prevBookCover = book.CoverUrl ?? "";
+            
+        StateHasChanged();
+        
+    }
     protected override void OnInitialized()
     {
-        if (RightBarContext.BookToUpdate is var book && book is not null)
-        {
-            UpdateBookModel.BookId = book.Id;
-            UpdateBookModel.BookName = book.Name;
-            UpdateBookModel.Authors = book.Authors.Select(x => x.Author).ToList();
-            UpdateBookModel.Genres = book.Genres.Select(x => x.Genre).ToList();
-            UpdateBookModel.Stock = book.Stock;
-            UpdateBookModel.Synopsis = book.Synopsis;
-            _prevBookCover = book.CoverUrl ?? "";
+       
+            if (RightBarContext.State.BookToUpdate is var book && book is not null)
+            {
             
+                ParseBookToUpdate(book);
+            }
+
             StateHasChanged();
 
-        }
     }
 
     public void HandleOnGenreSelected(GenreResponse genre){
@@ -264,8 +273,8 @@
         {   
             Toast.Success("Libro actualizado con exito");
 
-            RightBarContext.SetUpdatedBook(result.Data);
-            RightBarContext.SetView();
+            await RightBarContext.SetUpdatedBookAsync(result.Data);
+            await RightBarContext.CloseAsync();
             Clear();
         }
         _updatingBook = false;

@@ -107,19 +107,26 @@
 
 @functions{
 
+    public void ParseUserToUpdate(UserResponse user)
+    {
+        UpdateUserModel.UserId = user.Id;
+        UpdateUserModel.Username = user.Username;
+        UpdateUserModel.FullName = user.FullName;
+        UpdateUserModel.SexId = user.SexId;
+        UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
+        _prevProfilePicture = user.ProfilePictureUrl;
+    }
     protected override void OnInitialized()
     {
-        if (RightBarContext.UserToUpdate is not null)
+       
+        if (RightBarContext.State.UserToUpdate is not null)
         {
-            var user = RightBarContext.UserToUpdate;
-            
-            UpdateUserModel.UserId = user.Id;
-            UpdateUserModel.Username = user.Username;
-            UpdateUserModel.FullName = user.FullName;
-            UpdateUserModel.SexId = user.SexId;
-            UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
-            _prevProfilePicture = user.ProfilePictureUrl;
+
+            ParseUserToUpdate(RightBarContext.State.UserToUpdate);
+
         }
+        StateHasChanged();
+       
     }
 
     public async Task FetchUpdateUserAsync()
@@ -135,7 +142,7 @@
             Toast.Show("Usuario actualizado exitosamente");
          
             UpdateUserModel = new();
-            RightBarContext.SetView(RightBarView.Default);
+            await RightBarContext.CloseAsync();
         }
         
         

@@ -51,10 +51,16 @@
 
     protected override void OnInitialized()
     {
-        if (RightBarContext.BookDetails is not null)
-        {
-            Book = RightBarContext.BookDetails;
-        }
+      
+            if (RightBarContext.State.BookDetails is not null)
+            {
+                 Book = RightBarContext.State.BookDetails;
+            }
+
+            StateHasChanged();
+
+
+
     }
 
 }

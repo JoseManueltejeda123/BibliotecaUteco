@@ -6,12 +6,14 @@ namespace BibliotecaUteco.Client;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddClientServices(this IServiceCollection services, WebAssemblyHostBuilder builder)
+    public static IServiceCollection AddClientServices(
+        this IServiceCollection services,
+        WebAssemblyHostBuilder builder
+    )
     {
         services.AddSingleton<RightBarStore>();
         services.AddHttpClientService(builder.HostEnvironment.BaseAddress);
         services.AddApiServices();
         return services;
-
     }
 }

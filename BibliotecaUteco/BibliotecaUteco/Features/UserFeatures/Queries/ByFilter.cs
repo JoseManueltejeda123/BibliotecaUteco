@@ -1,27 +1,29 @@
 namespace BibliotecaUteco.Features.UserFeatures.Queries;
 
-    public class GetUserByNameQuery : ICommand<IApiResult>
-    {
-        [FromQuery(Name = "username"), JsonPropertyName("username"), MaxLength(15)]
-        [Description("Nombre de usuario a buscar")]
-        public string? Username { get; set; } 
-    }
+public class GetUserByNameQuery : ICommand<IApiResult>
+{
+    [FromQuery(Name = "username"), JsonPropertyName("username"), MaxLength(15)]
+    [Description("Nombre de usuario a buscar")]
+    public string? Username { get; set; }
+}
 
-    public class GetUserByNameQueryValidator : AbstractValidator<GetUserByNameQuery>
+public class GetUserByNameQueryValidator : AbstractValidator<GetUserByNameQuery>
+{
+    public GetUserByNameQueryValidator()
     {
-        public GetUserByNameQueryValidator()
-        {
-            RuleFor(x => x.Username)
-                .Must(x => string.IsNullOrEmpty(x) || x.Length <= 15)
-               .WithMessage("El nombre de usuario no puede superar los 15 caracteres");
-        }
+        RuleFor(x => x.Username)
+            .Must(x => string.IsNullOrEmpty(x) || x.Length <= 15)
+            .WithMessage("El nombre de usuario no puede superar los 15 caracteres");
     }
+}
 
-    internal class GetUserByNameEndpoint : IEndpoint
+internal class GetUserByNameEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapGet(EndpointSettings.UsersEndpoint + "/by-filter", async (
+        app.MapGet(
+                EndpointSettings.UsersEndpoint + "/by-filter",
+                async (
                     [AsParameters] GetUserByNameQuery query,
                     ISender sender,
                     IEndpointWrapper<GetUserByNameEndpoint> wrapper,
@@ -32,28 +34,34 @@ namespace BibliotecaUteco.Features.UserFeatures.Queries;
                     {
                         return await sender.SendAndValidateAsync(query, cancellationToken);
                     });
-                })
-                .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
-                .RequireCors(CorsPolicies.DefaultPolicy)
-                .DisableAntiforgery()
-                .Produces<ApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .WithTags(nameof(User))
-                .WithName(nameof(GetUserByNameEndpoint))
-                .WithDescription("Busca una lista de usuarios por su nombre de usuario");
-        }
+                }
+            )
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
+            .RequireCors(CorsPolicies.DefaultPolicy)
+            .DisableAntiforgery()
+            .Produces<ApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .WithTags(nameof(User))
+            .WithName(nameof(GetUserByNameEndpoint))
+            .WithDescription("Busca una lista de usuarios por su nombre de usuario");
     }
+}
 
-    public class GetUserByNameQueryHandler(IBibliotecaUtecoDbContext context)
-        : ICommandHandler<GetUserByNameQuery, IApiResult>
+public class GetUserByNameQueryHandler(IBibliotecaUtecoDbContext context)
+    : ICommandHandler<GetUserByNameQuery, IApiResult>
+{
+    public async Task<IApiResult> HandleAsync(
+        GetUserByNameQuery request,
+        CancellationToken cancellationToken = default
+    )
     {
-        public async Task<IApiResult> HandleAsync(GetUserByNameQuery request, CancellationToken cancellationToken = default)
-        {
-            var normalizedUsername = request.Username?.NormalizeField();
+        var normalizedUsername = request.Username?.NormalizeField();
 
-            var users = await context.Users.GetByFilterAsync(request.Username, cancellationToken);
+        var users = await context.Users.GetByFilterAsync(request.Username, cancellationToken);
 
-            return ApiResult<List<UserResponse>>.BuildSuccess(users.Select(u => u.ToResponse()).ToList());
-        }
+        return ApiResult<List<UserResponse>>.BuildSuccess(
+            users.Select(u => u.ToResponse()).ToList()
+        );
     }
+}

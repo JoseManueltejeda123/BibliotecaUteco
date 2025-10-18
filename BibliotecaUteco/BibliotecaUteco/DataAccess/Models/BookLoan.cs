@@ -7,12 +7,10 @@ public class BookLoan : BaseEntity
 {
     public Book Book { get; set; } = null!;
     public Loan Loan { get; set; } = null!;
-    
-    [ Column("IdLibro")]
 
+    [Column("IdLibro")]
     public int BookId { get; set; }
-    
-    [ Column("IdPrestamos")]
 
-    public int LoanId { get; set; } 
+    [Column("IdPrestamos")]
+    public int LoanId { get; set; }
 }

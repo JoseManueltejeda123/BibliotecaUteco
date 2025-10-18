@@ -1,7 +1,6 @@
 
 @if (DialogService.IsOpen)
 {
-    <Animate Animation="Animations.FadeIn">
         <div @onclick="@(DialogService.Cancel)" class="fixed inset-0 z-[99999] bg-white/70  flex justify-center items-center">
             <div class="bg-white p-6 rounded-lg  border border-neutral-200 w-[350px] flex flex-col gap-4">
                 <h2 class="text-md font-semibold text-center">@DialogService.Title</h2>
@@ -29,7 +28,6 @@
             </div>
         </div>
 
-    </Animate>
 }
 
 @code {

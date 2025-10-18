@@ -7,23 +7,21 @@ public class GenreBook : BaseEntity
 {
     public Genre Genre { get; set; } = null!;
     public Book Book { get; set; } = null!;
-    
-    [ Column("IdGenero")]
 
+    [Column("IdGenero")]
     public int GenreId { get; set; }
-    
-    [Column("IdLibro")]
 
+    [Column("IdLibro")]
     public int BookId { get; set; }
 
-    public GenreBookResponse ToResponse() => new()
-    {
-        Id = Id,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt,
-        BookId = BookId,
-        GenreId = GenreId,
-        Genre = Genre.ToResponse()
-
-    };
+    public GenreBookResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+            BookId = BookId,
+            GenreId = GenreId,
+            Genre = Genre.ToResponse(),
+        };
 }
