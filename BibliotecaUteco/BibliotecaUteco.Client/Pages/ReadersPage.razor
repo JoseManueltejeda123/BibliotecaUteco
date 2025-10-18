@@ -163,7 +163,29 @@
     protected override async Task OnInitializedAsync()
     {
        await FetchGetReadersByFilterAsync();
+       
+       
     }
+    
+    public void HandleReaderUpdated()
+    {
+        if (RightBarContext.UpdatedReader is not null)
+        {
+            var prevReader = Readers.FirstOrDefault(r => r.Id == RightBarContext.UpdatedReader.Id);
+            
+            if(prevReader is null) return;
+            
+            var index = Readers.IndexOf(prevReader);
+            
+            if(index < 0) return;
+            
+            Readers[index] = RightBarContext.UpdatedReader;
+            
+        }
+    }
+    
+   
+    
 
     public GetReadersByFilterRequest BuildQuery(bool withSkip = false) => new()
     {

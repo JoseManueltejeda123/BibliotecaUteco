@@ -49,6 +49,13 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions;
              .NotEmpty().WithMessage("La dirección es obligatoria")
              .MinimumLength(10).WithMessage("La dirección debe tener al menos 10 caracteres")
              .MaximumLength(100).WithMessage("La dirección no puede superar los 100 caracteres");
+         
+         RuleFor(x => x.PhoneNumber)
+             .NotEmpty().WithMessage("El numero de teléfono es obligatorio")
+             .Must(x => x.StartsWith("809") || x.StartsWith("829") || x.StartsWith("849")).WithMessage("El numero de telefono debe de empezar con 809, 829 u 849")
+             .Must(x => int.TryParse(x, out _)).WithMessage("El número telefónico solo puede contener números")
+             .MinimumLength(10).WithMessage("El numero de teléfono debe tener al menos 10 caracteres")
+             .MaximumLength(10).WithMessage("El numero de teléfono no puede superar los 10 caracteres");
 
          RuleFor(x => x.IdentityCardNumber)
              .NotEmpty().WithMessage("La cédula es obligatoria")

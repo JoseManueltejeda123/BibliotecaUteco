@@ -1,0 +1,110 @@
+<EditForm Model="UpdateReaderModel"  class="flex w-full absolute flex-col justify-center">
+    <DataAnnotationsValidator/>
+    <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
+       
+        <label class="font-normal text-[13px]">Actualiza los datos de un lector en nuestro sistema. Los campos con el asterisco rojo (<span class="text-red-600">*</span>) son obligatorios.</label>
+
+       
+        
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateReaderModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.FullName)"/></span>
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8091234456"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.PhoneNumber)"/></span>
+
+
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. Pueblo Nuevo, Cotuí"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.Address)"/></span>
+        </div>
+        
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Text" @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.IdentityCardNumber)"/></span>
+        </div>
+        <div class="flex flex-col gap-1">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 2020-0001"></LumexTextbox>
+            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.StudentLicence)"/></span>
+        </div>
+        <LumexRadioGroup Size="Size.Small" @bind-Value="UpdateReaderModel.SexId"  Label="Seleccione su sexo" TValue="int">
+            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
+            <LumexRadio Value="@(2)">Femenino</LumexRadio>
+        </LumexRadioGroup>
+        <SidebarSectionDivider/>
+        @if (_updatingReader)
+        {
+            <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+        }
+        else
+        {
+            <LumexButton Color="ThemeColor.Primary" OnClick="FetchCreateReaderAsync" Disabled="@(!context.Validate() || _updatingReader)">Crear Lector</LumexButton>
+
+        }
+        
+       
+
+
+    </div>
+</EditForm>
+
+@code{
+
+    public bool _updatingReader { get; set; } = false;
+    public UpdateReaderRequest UpdateReaderModel { get; set; } = new();
+
+
+
+}
+
+@functions{
+
+    protected override void OnInitialized()
+    {
+        if (RightBarContext.ReaderToUpdate is not null)
+        {
+            var reader = RightBarContext.ReaderToUpdate;
+            UpdateReaderModel.FullName = reader.FullName;
+            UpdateReaderModel.SexId = reader.SexId;
+            UpdateReaderModel.PhoneNumber = reader.PhoneNumber;
+            UpdateReaderModel.FullName = reader.FullName;
+            UpdateReaderModel.StudentLicence = reader.StudentLicence;
+            UpdateReaderModel.IdentityCardNumber = reader.IdentityCardNumber;
+            UpdateReaderModel.ReaderId = reader.Id;
+            UpdateReaderModel.Address = reader.Address;
+
+            
+
+
+
+
+
+
+        }
+    }
+    public async Task FetchCreateReaderAsync()
+    {
+        _updatingReader = true;
+        StateHasChanged();
+
+        var result = await ReadersApiServices.CreateAsync(UpdateReaderModel);
+
+        if (result.IsSuccessful())
+        {
+            Toast.Show("Lector creado exitosamente");
+            RightBarContext.SetView();
+            RightBarContext.SetCreatedReader(result.Data);
+            UpdateReaderModel = new();
+        }
+        
+        
+        _updatingReader = false;
+        StateHasChanged();
+    }
+  
+   
+    
+}

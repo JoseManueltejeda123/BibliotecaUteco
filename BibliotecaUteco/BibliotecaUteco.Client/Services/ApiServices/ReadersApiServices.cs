@@ -17,6 +17,11 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
         return await client.FetchPostAsync<ReaderResponse>(ReadersEndpoint, request, cancellationToken);
     }
     
+    public async Task<ApiResult<ReaderResponse>> UpdateAsync(UpdateReaderRequest request, CancellationToken cancellationToken = default)
+    {
+        return await client.FetchPutAsync<ReaderResponse>(ReadersEndpoint, request, cancellationToken);
+    }
+    
     public async Task<ApiResult<List<ReaderResponse>>> GetByFilterAsync(GetReadersByFilterRequest request, CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);

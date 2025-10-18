@@ -19,12 +19,24 @@
             
        </div>
        
-           <EllipsisVerticalIcon Size="18px" class="cursor-pointer ml-auto"/>
+       <LumexDropdown ShowArrow="true"  Id=@($"ReaderActions-{Reader.FullName}")>
+           <LumexDropdownTrigger >
+               <button>
+                   <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
+               </button>
+            
+           </LumexDropdownTrigger>
+           <LumexDropdownMenu>
+               <LumexDropdownItem Id="ActualizarLector">
+                   <StartContent>
+                       <SquarePenIcon Size="18px"/>
+                   </StartContent>
+                   <ChildContent>Actualizar lector</ChildContent>
+               </LumexDropdownItem>
 
-   </div>
-
-   
-    
+           </LumexDropdownMenu>
+       </LumexDropdown>
+       </div>
 
    <div class="w-full flex items-center gap-2">
 
@@ -69,6 +81,18 @@
 </div>
 
 @code{
+    public async Task HideDropdown()
+    {
+        await Task.Delay(20);
+        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay", $"ReaderActions-{Reader.FullName}");
+    }
+
+    public async Task SetUpdateReaderView()
+    {
+        await HideDropdown();
+        RightBarContext.SetReaderToUpdate(Reader);
+        RightBarContext.SetView(RightBarView.EditReader);
+    }
 
     [Parameter]
     public ReaderResponse Reader { get; set; } = new();

@@ -19,6 +19,10 @@ public class RightBarStore
             SetBookToUpdate();
             SetCreatedBook();
             SetBookDetails();
+            SetUserToUpdate();
+            SetCreatedReader();
+            SetReaderToUpdate();
+            SetUpdatedReader();
         }
     }
 
@@ -88,6 +92,29 @@ public class RightBarStore
             if (reader is null) return;
             OnCreatedReaderChanged?.Invoke();
         }
+        
+         public ReaderResponse? ReaderToUpdate { get; set; } = null;
+         
+        public event Action? OnReaderToUpdateChanged ;
+    
+        public void SetReaderToUpdate(ReaderResponse? reader = null)
+        {
+            ReaderToUpdate = reader;
+            if (reader is null) return;
+            OnReaderToUpdateChanged?.Invoke();
+        }
+        
+        
+        public ReaderResponse? UpdatedReader { get; set; } = null;
+         
+        public event Action? OnUpdatedReaderChanged ;
+    
+        public void SetUpdatedReader(ReaderResponse? reader = null)
+        {
+            UpdatedReader = reader;
+            if (reader is null) return;
+            OnUpdatedReaderChanged?.Invoke();
+        }
 }
 
 public enum RightBarView
@@ -100,5 +127,6 @@ public enum RightBarView
     CreateUser,
     UpdateUser,
     CreateReader,
+    EditReader,
     Authors
 }
