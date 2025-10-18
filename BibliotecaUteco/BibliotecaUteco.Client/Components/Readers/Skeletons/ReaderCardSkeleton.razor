@@ -1,0 +1,59 @@
+
+@for(int i = 0; i <= Count; i++)
+{
+<div class="w-full  rounded-lg  bg-neutral-50  flex  flex-col  gap-3 p-3  ">
+
+    <div class="w-full gap-4 items-center flex ">
+        <LumexSkeleton class="w-[50px] h-[50px] rounded-full object-cover" />
+        <div class="flex flex-col gap-1 ">
+            <LumexSkeleton class="w-[300px] h-[20px] rounded-lg"/>
+            <LumexSkeleton class="w-[150px] h-[10px] rounded-lg"/>
+
+
+        </div>
+
+        <LumexSkeleton class="w-[20px] h-[20px] rounded-full object-cover ml-auto" />
+
+    </div>
+
+
+
+
+    <div class="w-full flex items-center gap-2">
+
+
+
+
+        <LumexSkeleton class="w-[100px] h-[10px] rounded-lg"/>
+
+        <hr class="border border-neutral-300 rounded-full h-[10px]"/>
+        <LumexSkeleton class="w-[100px] h-[10px] rounded-lg"/>
+
+
+
+
+    </div>
+    <LumexSkeleton class="w-full h-[2px] rounded-lg"/>
+
+
+    <div class="w-full flex items-center gap-2">
+        <LumexSkeleton class="w-[100px] h-[10px] rounded-lg"/>
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+}
+
+@code{
+    [Parameter] public int Count {get; set;} = 1;
+}

@@ -42,12 +42,18 @@ public class Reader : BaseEntity
     
     [NotMapped]
     public bool LastLoanIsActive { get; set; }
+    
+    [ Column("IdSexo")]
+    public int? SexId { get; set; } 
+    
+    public Sex? Sex { get; set; } 
 
     public static Reader Create(CreateReaderCommand request) => new()
     {
         FullName = request.FullName,
         PhoneNumber = request.PhoneNumber,
         Address = request.Address,
+        SexId = request.SexId,
         IdentityCardNumber = request.IdentityCardNumber,
         StudentLicence = !string.IsNullOrWhiteSpace(request.StudentLicence) 
             ? request.StudentLicence.ToUpper().Trim() 
@@ -63,9 +69,11 @@ public class Reader : BaseEntity
         PhoneNumber = PhoneNumber,
         Address = Address,
         StudentLicence = StudentLicence,
+        IdentityCardNumber = IdentityCardNumber,
         LoansCount = LoansCount,
         LastLoanDate = LastLoanDate,
         LastLoanIsActive = LastLoanIsActive,
+        SexId = SexId ?? 1
 
     };
 

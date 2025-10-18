@@ -24,7 +24,10 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
             [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
             [Description("Cédula (11 dígitos)")]
             public string IdentityCardNumber { get; set; } = null!;
-    
+            
+            [FromBody, JsonPropertyName("sexId"), Required, Range(1, 2)]
+            [Description("ID del sexo")]
+            public int SexId { get; set; }
            
     
             [FromForm(Name = "profilePictureFile"), JsonPropertyName("profilePictureFile")]
@@ -62,7 +65,9 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     
                
                 
-    
+                RuleFor(x => x.SexId)
+                    .GreaterThan(0).WithMessage("Debe seleccionar un sexo valido.");
+                
                 When(x => x.ProfilePictureFile != null, () =>
                 {
                     RuleFor(x => x.ProfilePictureFile!.Length)

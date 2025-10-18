@@ -30,6 +30,10 @@
             <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false" Type="InputType.Text" @bind-Value="@CreateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 2020-0001"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.StudentLicence)"/></span>
         </div>
+        <LumexRadioGroup Size="Size.Small" @bind-Value="CreateReaderModel.SexId"  Label="Seleccione su sexo" TValue="int">
+            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
+            <LumexRadio Value="@(2)">Femenino</LumexRadio>
+        </LumexRadioGroup>
         <SidebarSectionDivider/>
         @if (_creatingReader)
         {

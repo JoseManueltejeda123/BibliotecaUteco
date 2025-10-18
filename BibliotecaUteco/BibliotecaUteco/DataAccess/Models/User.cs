@@ -32,6 +32,10 @@ public class User : BaseEntity
     [ Column("IdRole")]
     public int RoleId { get; set; } = 0;
     
+    [ Column("IdSexo")]
+    public int? SexId { get; set; } 
+    
+    public Sex? Sex { get; set; } 
     
     
     public List<Transaction> Transactions { get; set; } = new();
@@ -72,6 +76,12 @@ public class User : BaseEntity
             IdentityCardNumber = command.IdentityCardNumber;
             hasBeenUpdated = true;
         }
+
+        if (SexId != command.SexId)
+        {
+            SexId = command.SexId;
+            hasBeenUpdated = true;
+        }
         
       
         
@@ -93,7 +103,9 @@ public class User : BaseEntity
         IdentityCardNumber = IdentityCardNumber,
         ProfilePictureUrl = ProfilePictureUrl ?? "",
         RoleName = Role?.Name ?? "",
-        RoleId = RoleId
+        RoleId = RoleId,
+        SexId = SexId ?? 1
+
     };
 
 }

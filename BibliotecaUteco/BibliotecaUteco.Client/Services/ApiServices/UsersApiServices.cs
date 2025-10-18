@@ -13,25 +13,25 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
 {
     private const string UserEndpoint = "/users";
     
-    public async Task<ApiResult<JwtResponse>> LoginUserAsync(AuthenticateUserRequest request)
+    public async Task<ApiResult<JwtResponse>> LoginUserAsync(AuthenticateUserRequest request, CancellationToken cancellationToken = default)
     {
-        return await client.FetchPostAsync<JwtResponse>(UserEndpoint + "/authenticate", request);
+        return await client.FetchPostAsync<JwtResponse>(UserEndpoint + "/authenticate", request, cancellationToken);
         
         
     }
     
-    public async Task<ApiResult<List<UserResponse>>> GetByFilterAsync(GetUsersByFilterRequest request)
+    public async Task<ApiResult<List<UserResponse>>> GetByFilterAsync(GetUsersByFilterRequest request, CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
 
         query["username"] = request.Username;
         string queryString = query?.ToString() ?? "";
-        return await client.FetchGetAsync<List<UserResponse>>(UserEndpoint + $"/by-filter?{queryString}");
+        return await client.FetchGetAsync<List<UserResponse>>(UserEndpoint + $"/by-filter?{queryString}", cancellationToken);
         
         
     }
     
-    public async Task<ApiResult<UserResponse>> CreateAsync(CreateUserRequest request)
+    public async Task<ApiResult<UserResponse>> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -39,6 +39,8 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             form.Add(new StringContent(request.FullName), "fullName");
             form.Add(new StringContent(request.Password), "password");
             form.Add(new StringContent(request.Username), "userName");
+            form.Add(new StringContent(request.SexId.ToString()), "sexId");
+
             form.Add(new StringContent(request.RoleId.ToString()), "roleId");
             form.Add(new StringContent(request.IdentityCardNumber), "identityCardNumber");
 
@@ -50,7 +52,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(request.ProfilePictureFile.ContentType);
                 form.Add(fileContent, "profilePictureFile", request.ProfilePictureFile.Name);
             }
-            return await client.FetchPostAsync<UserResponse>(UserEndpoint, form);
+            return await client.FetchPostAsync<UserResponse>(UserEndpoint, form, cancellationToken);
 
 
         }
@@ -60,7 +62,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         }
        
     }
-    public async Task<ApiResult<UserResponse>> UpdateAsync(UpdateUserRequest request)
+    public async Task<ApiResult<UserResponse>> UpdateAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -68,6 +70,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             form.Add(new StringContent(request.UserId.ToString()), "userId");
             form.Add(new StringContent(request.RemoveProfilePicture.ToString()), "removeProfilePicture");
             form.Add(new StringContent(request.FullName), "fullName");
+            form.Add(new StringContent(request.SexId.ToString()), "sexId");
             form.Add(new StringContent(request.Username), "userName");
             form.Add(new StringContent(request.IdentityCardNumber), "identityCardNumber");
 
@@ -79,7 +82,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(request.ProfilePictureFile.ContentType);
                 form.Add(fileContent, "profilePictureFile", request.ProfilePictureFile.Name);
             }
-            return await client.FetchPutAsync<UserResponse>(UserEndpoint, form);
+            return await client.FetchPutAsync<UserResponse>(UserEndpoint, form, cancellationToken);
 
 
         }

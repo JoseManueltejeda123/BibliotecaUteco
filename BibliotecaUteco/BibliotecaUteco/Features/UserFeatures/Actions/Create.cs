@@ -25,6 +25,10 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
         [FromBody, JsonPropertyName("roleId"), Required, Range(1, 2)]
         [Description("ID del rol")]
         public int RoleId { get; set; }
+        
+        [FromBody, JsonPropertyName("sexId"), Required, Range(1, 2)]
+        [Description("ID del sexo")]
+        public int SexId { get; set; }
 
         [FromForm(Name = "profilePictureFile"), JsonPropertyName("profilePictureFile")]
         [Description("Foto de perfil (opcional)")]
@@ -61,6 +65,9 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions;
 
             RuleFor(x => x.RoleId)
                 .GreaterThan(0).WithMessage("Debe seleccionar un rol válido");
+            
+            RuleFor(x => x.SexId)
+                .GreaterThan(0).WithMessage("Debe seleccionar un sexo valido.");
 
             When(x => x.ProfilePictureFile != null, () =>
             {

@@ -1,7 +1,7 @@
 
 
 
-<aside class=@($"fixed max-md:z-50 h-screen max-h-[100vh]  overflow-y-auto  h-full {(SideBarExpanded ? "w-[250px] " : "w-[75px]")} bg-green-700/90 backdrop-blur-md  backdrop-blur-lg backdrop-opacity-90  flex flex-col items-center py-5 px-3 !text-white gap-3")>
+<aside class=@($"fixed max-md:z-50 h-screen max-h-[100vh] rounded-r-xl  overflow-y-auto  h-full {(SideBarExpanded ? "w-[250px] " : "w-[75px]")} bg-green-700/90 backdrop-blur-md  backdrop-blur-lg backdrop-opacity-90  flex flex-col items-center py-5 px-3 !text-white gap-3")>
    
     @if (SideBarExpanded)
     {
@@ -49,10 +49,11 @@
             </AuthorizeView>
         }
        
+        <LumexTooltip Content="@(SideBarExpanded ? "Colapsar barra" : "Epandir Barra")" Size="Size.Small" ShowArrow="true">
+            <svg @onclick="SwitchSideBarExpanded" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" class="lucide text-white cursor-pointer  lucide-list-collapse-icon lucide-list-collapse"><path d="M10 5h11"/><path d="M10 12h11"/><path d="M10 19h11"/><path d="m3 10 3-3-3-3"/><path d="m3 20 3-3-3-3"/></svg>
 
-        <IconButton OnClick="SwitchSideBarExpanded" TooltipText=@(SideBarExpanded ? "Colapsar barra" : "Epandir Barra") Class=@($"{(SideBarExpanded ? "ml-auto" : "")}")>
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" class="lucide text-white  lucide-list-collapse-icon lucide-list-collapse"><path d="M10 5h11"/><path d="M10 12h11"/><path d="M10 19h11"/><path d="m3 10 3-3-3-3"/><path d="m3 20 3-3-3-3"/></svg>
-        </IconButton>
+        </LumexTooltip>
+      
 
     </div>
     

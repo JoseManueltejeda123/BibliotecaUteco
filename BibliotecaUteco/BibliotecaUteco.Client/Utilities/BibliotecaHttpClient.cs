@@ -29,11 +29,11 @@ public class BibliotecaHttpClient (
     }
 
 
-    private async Task<ApiResult<TResult>> ProcessResult<TResult>(HttpResponseMessage response, bool isFormData = false)
+    private async Task<ApiResult<TResult>> ProcessResult<TResult>(HttpResponseMessage response, CancellationToken cancellationToken = default)
     {
         try
         {
-            var jsonContent = await response.Content.ReadAsStringAsync();
+            var jsonContent = await response.Content.ReadAsStringAsync(cancellationToken);
             if (string.IsNullOrWhiteSpace(jsonContent))
             {
                 toast.Show("Oops", new ToastModel()
@@ -118,16 +118,16 @@ public class BibliotecaHttpClient (
 
     }
 
-    public async Task<ApiResult<TResult>> FetchGetAsync<TResult>(string route)
+    public async Task<ApiResult<TResult>> FetchGetAsync<TResult>(string route, CancellationToken cancellationToken = default)
     {
 
         await AttachTokenAsync();
-        var response =  await client.GetAsync(Prefix + route);
-        return await ProcessResult<TResult>(response);
+        var response =  await client.GetAsync(Prefix + route, cancellationToken);
+        return await ProcessResult<TResult>(response, cancellationToken);
 
     }
 
-    public async Task<ApiResult<TResult>> FetchPostAsync<TResult>(string route, object data)
+    public async Task<ApiResult<TResult>> FetchPostAsync<TResult>(string route, object data, CancellationToken cancellationToken = default)
     {
 
         await AttachTokenAsync();
@@ -135,35 +135,35 @@ public class BibliotecaHttpClient (
 
         if (data is MultipartFormDataContent multipart)
         {
-            response = await client.PostAsync(Prefix + route, multipart);
-            return await ProcessResult<TResult>(response, true);
+            response = await client.PostAsync(Prefix + route, multipart, cancellationToken);
+            return await ProcessResult<TResult>(response, cancellationToken);
         }
        
-        response = await client.PostAsJsonAsync(Prefix + route, data);
-        return await ProcessResult<TResult>(response);
+        response = await client.PostAsJsonAsync(Prefix + route, data, cancellationToken);
+        return await ProcessResult<TResult>(response, cancellationToken);
 
     }
 
-    public async Task<ApiResult<TResult>> FetchPutAsync<TResult>(string route, object data)
+    public async Task<ApiResult<TResult>> FetchPutAsync<TResult>(string route, object data, CancellationToken cancellationToken = default)
     {
         await AttachTokenAsync();
         HttpResponseMessage response;
         
         if (data is MultipartFormDataContent multipart)
         {
-            response = await client.PutAsync(Prefix + route, multipart);
-            return await ProcessResult<TResult>(response, true);
+            response = await client.PutAsync(Prefix + route, multipart, cancellationToken);
+            return await ProcessResult<TResult>(response, cancellationToken);
         }
-        response = await client.PutAsJsonAsync(Prefix + route, data);
-        return await ProcessResult<TResult>(response);
+        response = await client.PutAsJsonAsync(Prefix + route, data, cancellationToken);
+        return await ProcessResult<TResult>(response, cancellationToken);
 
     }
 
-    public async Task<ApiResult<TResult>> FetchDeleteAsync<TResult>(string route)
+    public async Task<ApiResult<TResult>> FetchDeleteAsync<TResult>(string route, CancellationToken cancellationToken = default)
     {
         await AttachTokenAsync();
-        var response = await client.DeleteAsync(Prefix + route );
+        var response = await client.DeleteAsync(Prefix + route, cancellationToken );
        
-        return await ProcessResult<TResult>(response);
+        return await ProcessResult<TResult>(response, cancellationToken);
     }
 }

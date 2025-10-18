@@ -11,6 +11,10 @@ public class UserResponse : BaseResponse
     public string RoleName { get; set; } = "";
 
     public string ProfilePictureUrl { get; set; } = "";
+    
+    public int SexId  { get; set; }
+
+    public string SexName => SexId == 1 ? "boy" : "girl"; 
 
     public string _roleName => RoleId switch
     {

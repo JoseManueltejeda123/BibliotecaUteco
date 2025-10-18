@@ -63,7 +63,7 @@ app.UseExceptionHandler(appError =>
             logger.LogCritical($"Server Error: {contextFeature.Error.Message}");
 
             await context.Response.WriteAsJsonAsync(
-                ApiResult<object>.BuildFailure(HttpStatus.Unauthorized,"Ocurrió un error en el servidor")
+                ApiResult<object>.BuildFailure(HttpStatus.InternalServerError,"Ocurrió un error en el servidor")
 
             );
         }

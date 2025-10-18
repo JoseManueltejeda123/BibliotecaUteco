@@ -20,6 +20,7 @@ public static class UserDbSetActions
             CreatedAt = b.CreatedAt,
             UpdatedAt = b.UpdatedAt,
             Username = b.Username,
+            SexId = b.SexId,
             IdentityCardNumber = b.IdentityCardNumber,
             ProfilePictureUrl = b.ProfilePictureUrl,
             Role = b.Role

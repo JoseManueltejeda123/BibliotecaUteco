@@ -13,14 +13,14 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         private const string BooksEndpoint = "/books";
 
 
-        public async Task<ApiResult<bool>> DeleteBookAsync(DeleteBookRequest request)
+        public async Task<ApiResult<bool>> DeleteBookAsync(DeleteBookRequest request, CancellationToken cancellationToken = default)
         {
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["bookId"] = request.BookId.ToString();
             string queryString = query?.ToString() ?? "";
-            return await client.FetchDeleteAsync<bool>(BooksEndpoint + $"/delete?{queryString}");
+            return await client.FetchDeleteAsync<bool>(BooksEndpoint + $"/delete?{queryString}", cancellationToken);
         }
-        public async Task<ApiResult<BookResponse>> CreateBookAsync(CreateBookRequest request)
+        public async Task<ApiResult<BookResponse>> CreateBookAsync(CreateBookRequest request, CancellationToken cancellationToken = default)
         {
 
             var form = new MultipartFormDataContent();
@@ -39,18 +39,18 @@ namespace BibliotecaUteco.Client.Services.ApiServices
 
             if (request.CoverFile is not null)
             {
-                var stream = request.CoverFile.OpenReadStream(maxAllowedSize: 5_000_000);
+                var stream = request.CoverFile.OpenReadStream(maxAllowedSize: FilesSettings.MaxFileSize);
                 var fileContent = new StreamContent(stream);
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(request.CoverFile.ContentType);
                 form.Add(fileContent, "coverFile", request.CoverFile.Name);
             }
 
-            return await client.FetchPostAsync<BookResponse>(BooksEndpoint, form);
+            return await client.FetchPostAsync<BookResponse>(BooksEndpoint, form, cancellationToken);
 
 
         }
         
-         public async Task<ApiResult<BookResponse>> UpdateBookAsync(UpdateBookRequest request)
+         public async Task<ApiResult<BookResponse>> UpdateBookAsync(UpdateBookRequest request, CancellationToken cancellationToken = default)
                 {
         
                     var form = new MultipartFormDataContent();
@@ -77,12 +77,12 @@ namespace BibliotecaUteco.Client.Services.ApiServices
                         form.Add(fileContent, "coverFile", request.CoverFile.Name);
                     }
         
-                    return await client.FetchPutAsync<BookResponse>(BooksEndpoint, form);
+                    return await client.FetchPutAsync<BookResponse>(BooksEndpoint, form, cancellationToken);
         
         
                 }
 
-        public async Task<ApiResult<List<BookResponse>>> GetByFilterAsync(GetBooksByFilterRequest request)
+        public async Task<ApiResult<List<BookResponse>>> GetByFilterAsync(GetBooksByFilterRequest request, CancellationToken cancellationToken = default)
         {
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["bookName"] = request.BookName;
@@ -93,7 +93,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
 
 
             string queryString = query?.ToString() ?? "";
-            return await client.FetchGetAsync<List<BookResponse>>(BooksEndpoint + $"/by-filter?{queryString}");
+            return await client.FetchGetAsync<List<BookResponse>>(BooksEndpoint + $"/by-filter?{queryString}", cancellationToken);
         }
     }
 

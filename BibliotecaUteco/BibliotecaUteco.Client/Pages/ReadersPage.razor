@@ -1,4 +1,5 @@
 @page "/readers"
+@using BibliotecaUteco.Client.Requests.Readers.Queries
 @implements IDisposable
 <PageTitle>Lectores</PageTitle>
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
@@ -12,18 +13,23 @@
             <LumexTextbox Type="@InputType.Search"
                           Placeholder="Buscar lectores"
                           LabelPlacement="@LabelPlacement.Outside"
+                          ValueChanged="async (e) => {await HandleOnInput(Filter.Filter.Length >= 1, e); }"
+                          Value="@Filter.Filter"
+                          maxLenght="11"
+                          
+                          Behavior="InputBehavior.OnInput"
+                          
+                          Disabled="_fetchingReaders"
+                          
                           />
             <p class="text-[13px] text-black">Usa los filtros de abajo para filtrar lectores por matricula o cédula </p>
         </div>
        
-        <LumexTooltip Content=@($"Buscar libros Prestamos ")>
-            <LumexButton Type="ButtonType.Submit" Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
-        </LumexTooltip>
+     
     </div>
     <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
-        <LumexChip  @onclick='()=>{SetFilterBy("all");}' Variant="@(FilterBy == "all" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Todo</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterBy("studentIdentity");}' Variant="@(FilterBy == "studentIdentity" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Solo matrícula</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterBy("identity");}' Variant="@(FilterBy == "identity" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por cédula</LumexChip>
+        <LumexChip  @onclick='async ()=>{await SetFilterBy(ReadersFilterType.StudentLicence);}' Variant="@(FilterBy == ReadersFilterType.StudentLicence ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por matrícula</LumexChip>
+        <LumexChip  @onclick='async ()=>{await SetFilterBy(ReadersFilterType.IdentityCardNumber);}' Variant="@(FilterBy == ReadersFilterType.IdentityCardNumber ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por cédula</LumexChip>
 
      
     </div>
@@ -35,7 +41,7 @@
             <UserIcon Size="18px" class="text-green-700"/>
             <p class="text-[13px] text-green-700">Agregar Usuario</p>
         </button>
-        @if (!Readers.Any())
+        @if (!Readers.Any() && !_fetchingReaders)
         {
             <p class=" text-center text-[13px] mt-[30px] font-semibold">No hay lectores</p>
         }
@@ -44,6 +50,12 @@
             <ReaderCard Reader="reader"/>
 
         }
+        @if(_fetchingReaders)
+        {
+         <ReaderCardSkeleton Count="@(5)"/>
+
+        }
+        
         
         
                    
@@ -54,26 +66,119 @@
 </div>
 
 @code{
-    public string FilterBy {get; set;} = "all";
+    public ReadersFilterType FilterBy {get; set;} = ReadersFilterType.IdentityCardNumber;
     public List<ReaderResponse> Readers { get; set; } = new();
+    public bool _fetchingReaders { get; set; } = false;
+    public bool _hasMore { get; set; } = true;
+    public SearchReadersFilter Filter { get; set; } = new();
+    public CancellationTokenSource? _ctSearch {get; set;} 
+    public CancellationTokenSource? _ctOnInput {get; set;} 
 
 
+    public class SearchReadersFilter
+    {
+        public string Filter { get; set; } = "";
+    }
 
+    public enum ReadersFilterType
+    {
+        IdentityCardNumber,
+        StudentLicence
+    }
 
 
 
 }
 
 @functions{
-    public void SetFilterBy(string filter){
+    public async Task SetFilterBy(ReadersFilterType filter){
+      
+            
+         
         FilterBy = filter;
+        await FetchGetReadersByFilterAsync();
     }
+
+    public async Task HandleOnInput(bool isValid, string? value)
+    {
+        
+
+        Filter.Filter = value ?? "";
+
+       
+        if (_ctOnInput is not null)
+        {
+            await _ctOnInput.CancelAsync();
+
+        }
+
+        _ctOnInput = new();
+
+        try
+        {
+            await Task.Delay(500, _ctOnInput.Token);
+            await FetchGetReadersByFilterAsync();
+        }
+        catch
+        {
+            
+        }
+    }
+
+    public async Task FetchGetReadersByFilterAsync()
+    {
+        try
+        {
+            if (_ctSearch is not null)
+            {
+
+                await _ctSearch.CancelAsync();
+            }
+
+        _ctSearch = new();
+        _fetchingReaders = true;
+        Readers.Clear();
+        StateHasChanged();
+        var result = await ReadersApiServices.GetByFilterAsync(BuildQuery(), _ctSearch.Token);
+
+        if (result.IsSuccessful())
+        {
+        Readers.AddRange(result.Data);
+        }
+
+        if (!result.IsSuccessful() || result.Data.Count() < 15)
+        {
+        _hasMore = false;
+        }
+
+        _fetchingReaders = false;
+        StateHasChanged();
+        }
+        catch
+        {
+            
+        }
+       
+    }
+    protected override async Task OnInitializedAsync()
+    {
+       await FetchGetReadersByFilterAsync();
+    }
+
+    public GetReadersByFilterRequest BuildQuery(bool withSkip = false) => new()
+    {
+        StudentLicence = FilterBy == ReadersFilterType.StudentLicence ? Filter.Filter : null,
+        IdentityCardNumber = FilterBy == ReadersFilterType.IdentityCardNumber ? Filter.Filter : null,
+        Skip = Readers.Count,
+        Take = 15
+    };
+    
 
     public void HandleCreatedReaderChanged()
     {
         if (RightBarContext.CreatedReader is not null)
         {
-            Readers.Add(RightBarContext.CreatedReader);
+            Readers.Insert(0, RightBarContext.CreatedReader);
             RightBarContext.SetCreatedReader();
             StateHasChanged();
         }
@@ -97,3 +202,4 @@
 
 
 }
+

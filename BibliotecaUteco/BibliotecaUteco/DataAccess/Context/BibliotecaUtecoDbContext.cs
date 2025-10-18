@@ -14,6 +14,8 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
     public DbSet<Reader>  Readers { get; set; }
     public DbSet<Penalty> Penalties { get; set; }
     public DbSet<Loan> Loans { get; set; }
+    public DbSet<Sex> Sexes { get; set; }
+
     public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,6 +42,27 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
 
             });
         });
+        modelBuilder.Entity<Sex>(x =>
+        {
+            x.HasMany(r => r.Users).WithOne(u => u.Sex).HasForeignKey(u => u.SexId).OnDelete(DeleteBehavior.Restrict);
+            x.HasIndex(u => u.Name).IsUnique(true);
+            x.HasData(new Sex[]
+            {
+                new Sex()
+                {
+                    Id = 1,
+                    Name = "M",
+
+                },
+                new Sex()
+                {
+                    Id = 2,
+                    Name = "F",
+
+                }
+
+            });
+        });
         
         modelBuilder.Entity<User>(x =>
         {
@@ -58,7 +81,8 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                     Username = "jose.apolinar",
                     Password = new string("Jose.Apolinar1").Hash(),
                     IdentityCardNumber = "00112345678",
-                    RoleId = 1
+                    RoleId = 1,
+                    SexId = 1
                 },
                 new User()
                 {
@@ -67,7 +91,8 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                     Username = "manuel.lopez",
                     Password = new string("Manuel.Lopez1").Hash(),
                     IdentityCardNumber = "00212345678",
-                    RoleId = 2
+                    RoleId = 2,
+                    SexId = 1
                 }
 
             });

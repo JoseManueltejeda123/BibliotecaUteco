@@ -30,6 +30,10 @@ public class CreateUserRequest
     [Required(ErrorMessage = "El rol es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido.")]
     public int RoleId => IsAdmin ? 1 : 2;
+    
+    [Range(1,2)]
+    public int SexId { get; set; } = 1;
+    public string SexName => SexId == 1 ? "boy" : "girl"; 
 
     public bool IsAdmin { get; set; } = false;
 

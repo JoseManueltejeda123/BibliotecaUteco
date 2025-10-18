@@ -2,7 +2,7 @@
     <div class="flex w-full items-center gap-2">
         @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
         {
-            <LumexAvatar Size="Size.Small" Src="@User.ProfilePictureUrl" Color="ThemeColor.Primary" Name="@User.FullName"/>
+        <img class="w-[30px] h-[30px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{User.SexName}?username={User.Username}")/>
 
         }
         else

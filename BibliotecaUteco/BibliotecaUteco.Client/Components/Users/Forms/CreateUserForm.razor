@@ -14,7 +14,7 @@
         else
         {
             <div class="w-full flex flex-col items-center">
-                <LumexAvatar Size="Size.Large" Radius="Radius.Small" Class="w-[75px] h-[75px] "  Color="ThemeColor.Primary" Name="@CreateUserModel.FullName"></LumexAvatar>
+                <img class="w-[50px] h-[50px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{CreateUserModel.SexName}?username={CreateUserModel.Username}")/>
 
             </div>
           
@@ -58,6 +58,10 @@
         <div class="flex flex-col gap-1">
             <LumexCheckbox Size="Size.Small" Color="ThemeColor.Primary" Disabled="_creatingUser"  @bind-Value="CreateUserModel.IsAdmin">Hacer administrador</LumexCheckbox>
         </div>
+        <LumexRadioGroup Size="Size.Small" @bind-Value="CreateUserModel.SexId"  Label="Seleccione su sexo" TValue="int">
+            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
+            <LumexRadio Value="@(2)">Femenino</LumexRadio>
+        </LumexRadioGroup>
         <SidebarSectionDivider/>
         @if (_creatingUser)
         {

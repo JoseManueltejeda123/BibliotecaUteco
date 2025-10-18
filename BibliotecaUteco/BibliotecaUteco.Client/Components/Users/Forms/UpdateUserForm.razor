@@ -23,7 +23,7 @@
             else
             {
                 <div class="w-full flex flex-col items-center">
-                    <LumexAvatar Size="Size.Large" Radius="Radius.Small" Class="w-[75px] h-[75px] "  Color="ThemeColor.Primary" Name="@UpdateUserModel.FullName"></LumexAvatar>
+                    <img class="w-[50px] h-[50px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{UpdateUserModel.SexName}?username={UpdateUserModel.Username}")/>
 
                 </div>
           
@@ -70,6 +70,10 @@
 
 
         </div>
+        <LumexRadioGroup Size="Size.Small" @bind-Value="UpdateUserModel.SexId"  Label="Seleccione su sexo" TValue="int">
+            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
+            <LumexRadio Value="@(2)">Femenino</LumexRadio>
+        </LumexRadioGroup>
        
         <SidebarSectionDivider/>
         @if (_updatingUser)
@@ -112,6 +116,7 @@
             UpdateUserModel.UserId = user.Id;
             UpdateUserModel.Username = user.Username;
             UpdateUserModel.FullName = user.FullName;
+            UpdateUserModel.SexId = user.SexId;
             UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
             _prevProfilePicture = user.ProfilePictureUrl;
         }

@@ -23,6 +23,9 @@ public class CreateReaderRequest
     [MaxLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     public string IdentityCardNumber { get; set; } = null!;
+    
+    [Range(1,2)]
+    public int SexId { get; set; } = 1;
 
     [MaxLength(9, ErrorMessage = "La matrícula estudiantil no puede tener más de 9 caracteres.")]
     [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]

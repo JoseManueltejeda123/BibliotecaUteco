@@ -17,6 +17,7 @@ public interface IBibliotecaUtecoDbContext
     public DbSet<Penalty> Penalties { get; set; }
     public DbSet<Loan> Loans { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Sex> Sexes { get; set; }
     ChangeTracker ChangeTracker { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     DatabaseFacade Database { get; }

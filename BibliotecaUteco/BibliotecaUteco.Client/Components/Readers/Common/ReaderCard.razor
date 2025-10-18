@@ -1,53 +1,71 @@
 @using BibliotecaUteco.Client.Utilities
-<div class="w-full  rounded-lg  bg-neutral-5 hover:bg-neutral-100 flex  gap-3 p-3  ">
-    <LumexAvatar Name="@Reader.FullName"  Color="RandomColorHelper.GetRandomColor()" Size="Size.Small" Class=" !shrink-0" />
+<div class="w-full border-neutral-100 border rounded-xl  bg-neutral-50 hover:bg-neutral-100 flex  flex-col  gap-3 p-3  ">
     
-    <div class="w-full flex flex-col">
-        <label class="text-[16px] font-semibold opacity-80 text-black ">@Reader.FullName</label>
-        
-       
-        @if (!string.IsNullOrEmpty(Reader.IdentityCardNumber))
-        {
-            <label class="text-[13px] font-normal text-black">Cédula: @Reader.IdentityCardNumber</label>
+   <div class="w-full gap-4 items-center flex ">
+       <img class="w-[50px] h-[50px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{Reader.SexName}?username={Reader.FullName}")/>
+       <div class="flex flex-col gap-1 ">
+           <label class="text-[16px] font-semibold opacity-80 text-black ">@Reader.FullName</label>
+           <label class="text-[13px] font-normal ">Info: @Reader.IdentityCardNumber 
+                   (@if (!string.IsNullOrEmpty(Reader.StudentLicence))
+                   {
+                       @Reader.StudentLicence
+                       }
+                       else
+                       {
+                       @(" -------")
+                   })
+           </label>
 
-        }
-        <SidebarSectionDivider Name="Información básica"/>
+            
+       </div>
        
-        
-        <label class="text-[13px] font-normal text-black"><strong>Matrícula: </strong>
-            @if (!string.IsNullOrEmpty(Reader.StudentLicence))
-             {
-                 @Reader.StudentLicence
-             }
-            else
-            {
-                @(" -------")
-            }</label>
-        <label class="text-[13px] font-normal text-black"><strong>Vivienda:</strong> @Reader.Address</label>
-        <label class="text-[13px] font-normal text-black"><strong>No. Teléfono:</strong> @Reader.FormattedPhoneNumber</label>
+           <EllipsisVerticalIcon Size="18px" class="cursor-pointer ml-auto"/>
 
-        
-        <SidebarSectionDivider Name="Detalles de préstamos"/>
-        
-        <label class="text-[13px] font-normal  "><strong>Ultimo Prestamo:</strong> 
-            @if (Reader.LastLoanDate is not null)
-            {
-                @Reader.LastLoanDate.Value.ToLocalTime().ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES")) @(Reader.LastLoanIsActive ? "(Activo)" : "(Devuelto)")
-            }
-            else
-            {
-                @("---")
-            }
-        </label>
-        <label class="text-[13px] font-normal "><strong>Prestamos pedidos:</strong> @Reader.LoansCount</label>
-    </div>
-    
-    <EllipsisVerticalIcon Size="18px" class="cursor-pointer"/>
-  
-    
+   </div>
 
    
     
+
+   <div class="w-full flex items-center gap-2">
+
+
+       
+
+       <div class="flex gap-2 items-center">
+           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-house-icon lucide-map-pin-house"><path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z"/><path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2"/><path d="M18 22v-3"/><circle cx="10" cy="10" r="3"/></svg>
+           <label class="text-[13px] font-semibold "> @Reader.Address</label>
+       </div>
+       <hr class="border border-neutral-300 rounded-full h-[10px]"/>
+       <div class="flex gap-2 items-center">
+           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+           <label class="text-[13px] font-semibold "> @Reader.FormattedPhoneNumber</label>
+
+       </div>
+
+
+
+   </div>
+   <SidebarSectionDivider Name="Detalles de préstamos"/>
+
+   <div class="w-full flex items-center gap-2">
+       <LumexChip Color="ThemeColor.Secondary" Variant="ChipVariant.Flat" Class="px-2">
+           <StartContent>
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-spline-icon lucide-chart-spline"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7"/></svg>
+           </StartContent>
+           <ChildContent>
+               @Reader.LoansCount Prestamos pedidos
+           </ChildContent>
+       </LumexChip>
+      
+
+   </div>
+   
+  
+
+
+
+
+
 </div>
 
 @code{

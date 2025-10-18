@@ -24,7 +24,11 @@ public class UpdateUserRequest
     [MaxLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     public string IdentityCardNumber { get; set; } = null!;
+    
+      [Range(1,2)]
+        public int SexId { get; set; } = 1;
 
+        public string SexName => SexId == 1 ? "boy" : "girl"; 
 
     [Required]
     public bool RemoveProfilePicture { get; set; } = false;

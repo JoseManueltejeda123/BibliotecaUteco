@@ -17,6 +17,10 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions;
         [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
         [Description("Cédula de identidad (11 dígitos)")]
         public string IdentityCardNumber { get; set; } = null!;
+        
+        [FromBody, JsonPropertyName("sexId"), Required, Range(1, 2)]
+        [Description("ID del sexo")]
+        public int SexId { get; set; }
 
         [FromBody, JsonPropertyName("studentLicence"), MaxLength(9), MinLength(3)]
         [Description("Matrícula de estudiante (opcional)")]
@@ -50,6 +54,8 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions;
              .NotEmpty().WithMessage("La cédula es obligatoria")
              .Length(11).WithMessage("La cédula debe tener exactamente 11 dígitos")
              .Matches(@"^\d{11}$").WithMessage("La cédula solo puede contener números");
+         RuleFor(x => x.SexId)
+             .GreaterThan(0).WithMessage("Debe seleccionar un sexo valido.");
 
          When(x => !string.IsNullOrWhiteSpace(x.StudentLicence), () =>
          {
