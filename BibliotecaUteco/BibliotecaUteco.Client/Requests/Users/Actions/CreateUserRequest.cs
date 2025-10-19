@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BibliotecaUteco.Client.Utilities;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BibliotecaUteco.Client.Requests.Users.Actions;
@@ -31,13 +32,17 @@ public class CreateUserRequest
 
     [Required(ErrorMessage = "El rol es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido.")]
-    public int RoleId => IsAdmin ? 1 : 2;
+    public int RoleId => RoleParser.ParseRole(_roleName);
+    
+    
+    
 
-    [Range(1, 2)]
-    public int SexId { get; set; } = 1;
+    [Range(1, 2)] 
+    public int SexId => SexParser.ParseSex(_sexName);
     public string SexName => SexId == 1 ? "boy" : "girl";
 
-    public bool IsAdmin { get; set; } = false;
+    public string _roleName { get; set; } = "Bibliotecario";
+    public string _sexName { get; set; } = "Masculino";
 
     public IBrowserFile? ProfilePictureFile { get; set; }
 }

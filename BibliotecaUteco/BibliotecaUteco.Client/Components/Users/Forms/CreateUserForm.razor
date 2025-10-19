@@ -1,7 +1,7 @@
 @using BibliotecaUteco.Client.Utilities
 <EditForm Model="CreateUserModel"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
-    <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
+    <div class="w-full flex flex-col gap-4 p-3 mt-[40px] ">
         <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
         
         @if (!string.IsNullOrEmpty(ProfilePicturePreview) && CreateUserModel.ProfilePictureFile is not null)
@@ -32,36 +32,60 @@
 
         }
         
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.FullName)"/></span>
 
         </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="CreateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.Username)"/></span>
 
 
         </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="@(ShowPassword ? InputType.Text : InputType.Password)" @bind-Value="CreateUserModel.Password" Label="Contraseña" Description="Máximo 30 caracteres. Mínimo 8." PlaceHolder="********"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="@(ShowPassword ? InputType.Text : InputType.Password)" @bind-Value="CreateUserModel.Password" Label="Contraseña" Description="Máximo 30 caracteres. Mínimo 8." PlaceHolder="********"></LumexTextbox>
             <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar visibilidad</a>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.Password)"/></span>
         </div>
         
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="@CreateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true" Type="InputType.Text" @bind-Value="@CreateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateUserModel.IdentityCardNumber)"/></span>
 
 
         </div>
-        <div class="flex flex-col gap-1">
-            <LumexCheckbox Size="Size.Small" Color="ThemeColor.Primary" Disabled="_creatingUser"  @bind-Value="CreateUserModel.IsAdmin">Hacer administrador</LumexCheckbox>
-        </div>
-        <LumexRadioGroup Size="Size.Small" @bind-Value="CreateUserModel.SexId"  Label="Seleccione su sexo" TValue="int">
-            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
-            <LumexRadio Value="@(2)">Femenino</LumexRadio>
-        </LumexRadioGroup>
+        <LumexSelect Size="Size.Small" TValue="@(string)"
+                     @bind-Value="@CreateUserModel._sexName"
+                     Label="Sexo del usuario"
+                     Placeholder="Selecciona el sexo del usuario"
+                     Class="max-w-xs">
+           
+            <LumexSelectItem @key=@("Masculino") Value=@("Masculino")>
+                Masculino
+            </LumexSelectItem>
+            <LumexSelectItem @key=@("Femenino") Value=@("Femenino")>
+                                                      
+                Femenino
+            </LumexSelectItem>
+            
+        </LumexSelect>
+
+        <LumexSelect Size="Size.Small" TValue="@(string)"
+                     Label="Rol del usuario"
+                     @bind-Value="CreateUserModel._roleName"
+                     Placeholder="Selecciona el rol del usuario"
+                     Class="max-w-xs">
+           
+            <LumexSelectItem @key='@("Administrador")' Value='@("Administrador")'>
+                Administrador
+            </LumexSelectItem>
+            <LumexSelectItem @key='@("Bibliotecario")' Value='@("Bibliotecario")'>
+                Bibliotecario
+            </LumexSelectItem>
+            
+        </LumexSelect>
+ 
         <SidebarSectionDivider/>
         @if (_creatingUser)
         {
@@ -86,12 +110,15 @@
     public string? ProfilePicturePreview { get; set; } = null;
     private InputFile? fileInput;
     public bool ShowPassword { get; set; } = false;
+    
 
 
 
 }
 
 @functions{
+
+   
 
     public async Task FetchCreateUserAsync()
     {

@@ -637,8 +637,8 @@
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
-  .mr-\[300px\] {
-    margin-right: 300px;
+  .mr-\[350px\] {
+    margin-right: 350px;
   }
   .-mb-1 {
     margin-bottom: calc(var(--spacing) * -1);
@@ -6072,7 +6072,7 @@
 @import url("https://use.typekit.net/wjv8wts.css");
 html, body {
   font-family: "inter-variable", sans-serif;
-  background-color: var(--lumex-neutral-50);
+  background-color: #FAFAFAFF !important;
 }
 html {
   scrollbar-width: thin;
@@ -6108,12 +6108,20 @@ input[type="search"]::-webkit-search-cancel-button {
   font-family: "Inconsolata";
 }
 input {
-  background-color: var(--color-neutral-100);
+  background-color: inherit;
 }
 div[data-slot="input-wrapper"] {
+  border-radius: var(--radius-xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
-  border-color: var(--color-neutral-300);
+  border-color: var(--color-neutral-200);
+  background-color: var(--color-neutral-100);
+}
+button[data-slot="trigger"] {
+  border-radius: var(--radius-xl);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-neutral-200);
   background-color: var(--color-neutral-100);
 }
 .icon-button-sm {

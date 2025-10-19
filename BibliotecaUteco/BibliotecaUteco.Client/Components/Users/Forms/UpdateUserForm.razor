@@ -52,28 +52,39 @@
 
         
         
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox  Size="Size.Small" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.FullName)"/></span>
 
         </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox  Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="UpdateUserModel.Username" Label="Nombre de usuario" Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto." PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.Username)"/></span>
 
 
         </div>
       
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="@UpdateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+        <div class="flex flex-col ">
+            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="true" Type="InputType.Text" @bind-Value="@UpdateUserModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.IdentityCardNumber)"/></span>
 
 
         </div>
-        <LumexRadioGroup Size="Size.Small" @bind-Value="UpdateUserModel.SexId"  Label="Seleccione su sexo" TValue="int">
-            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
-            <LumexRadio Value="@(2)">Femenino</LumexRadio>
-        </LumexRadioGroup>
+        <LumexSelect Size="Size.Small" TValue="@(string)"
+                     @bind-Value="@UpdateUserModel._sexName"
+                     Label="Sexo del usuario"
+                     Placeholder="Selecciona el sexo del usuario"
+                     Class="max-w-xs">
+           
+            <LumexSelectItem @key=@("Masculino") Value=@("Masculino")>
+                Masculino
+            </LumexSelectItem>
+            <LumexSelectItem @key=@("Femenino") Value=@("Femenino")>
+                                                      
+                Femenino
+            </LumexSelectItem>
+            
+        </LumexSelect>
        
         <SidebarSectionDivider/>
         @if (_updatingUser)
@@ -112,7 +123,7 @@
         UpdateUserModel.UserId = user.Id;
         UpdateUserModel.Username = user.Username;
         UpdateUserModel.FullName = user.FullName;
-        UpdateUserModel.SexId = user.SexId;
+        UpdateUserModel._sexName = SexParser.ParseSexFromId(user.SexId);
         UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
         _prevProfilePicture = user.ProfilePictureUrl;
     }
@@ -142,7 +153,7 @@
             Toast.Show("Usuario actualizado exitosamente");
          
             UpdateUserModel = new();
-            await RightBarContext.CloseAsync();
+            await Task.WhenAny(RightBarContext.CloseAsync());
         }
         
         

@@ -13,6 +13,8 @@ public record RightBarState
     public ReaderResponse? CreatedReader { get; init; }
     public ReaderResponse? ReaderToUpdate { get; init; }
     public ReaderResponse? UpdatedReader { get; init; }
+    
+    public ReaderResponse? ReaderToLoan {get; init;}
     public static RightBarState Empty => new();
 
     public RightBarState ClearData() =>
@@ -26,6 +28,7 @@ public record RightBarState
             CreatedReader = null,
             ReaderToUpdate = null,
             UpdatedReader = null,
+            ReaderToLoan = null
         };
 }
 
@@ -125,6 +128,15 @@ public class RightBarStore : IDisposable
                 BookDetails = book,
             }
         );
+    
+     public Task SetReaderToLoan(ReaderResponse reader) =>
+            UpdateStateAsync(s =>
+                s.ClearData() with
+                {
+                    ReaderToLoan = reader,
+                    View = RightBarView.CreateLoan,
+                }
+            );
 
     public Task CloseAsync() => UpdateStateAsync(s => RightBarState.Empty);
 
@@ -145,5 +157,6 @@ public enum RightBarView
     UpdateUser,
     CreateReader,
     UpdateReader,
+    CreateLoan,
     Authors,
 }

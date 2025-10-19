@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BibliotecaUteco.Client.Utilities;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BibliotecaUteco.Client.Requests.Users.Actions;
@@ -27,10 +28,14 @@ public class UpdateUserRequest
     [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     public string IdentityCardNumber { get; set; } = null!;
 
-    [Range(1, 2)]
-    public int SexId { get; set; } = 1;
+    
 
+    [Range(1, 2)] 
+    public int SexId => SexParser.ParseSex(_sexName);
     public string SexName => SexId == 1 ? "boy" : "girl";
+
+   
+    public string _sexName { get; set; } = "Masculino";
 
     [Required]
     public bool RemoveProfilePicture { get; set; } = false;

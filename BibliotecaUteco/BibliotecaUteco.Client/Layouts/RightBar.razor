@@ -1,6 +1,6 @@
 @implements  IDisposable
 
-<aside class=@($"fixed overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[300px] bg-white   flex flex-col items-center  border-l border-neutral-300")>
+<aside class=@($"fixed overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[350px] bg-white   flex flex-col items-center  border-l border-neutral-300")>
     <div class="w-full flex sticky top-0  bg-neutral-100/50 px-3 backdrop-blur-md justify-between font-semibold text-black text-sm z-[100] items-center">
         @(RightBarContext.State.View switch
         {
@@ -13,10 +13,13 @@
             RightBarView.CreateUser => "Crear Usuario",
             RightBarView.CreateReader => "Crear Lector",            
             RightBarView.UpdateReader => "Actualizar Lector",
+            RightBarView.CreateLoan => "Crear Prestamo",
+
+                
              _ => ""
         })
         <IconButton OnClick="CloseAsync" Small="@true" Class="" TooltipText="Cerrar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-black  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 
         </IconButton>
     </div>
@@ -52,6 +55,10 @@
     else if(RightBarContext.State.View == RightBarView.UpdateReader)
     {
         <UpdateReaderForm/>
+    }
+    else if(RightBarContext.State.View == RightBarView.CreateLoan)
+    {
+    
     }
     
 </aside>
