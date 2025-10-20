@@ -10,7 +10,7 @@ public class CreateLoanCommand : ICommand<IApiResult>
     [Description("Lista de IDs de libros (1-10 libros)")]
     public List<int> BookIds { get; set; } = new();
 
-    [FromBody, JsonPropertyName("maxLoanDays"), Required, Range(7, 14)]
+    [FromBody, JsonPropertyName("maxLoanDays"), Required, Range(1, 30)]
     [Description("Días máximos del préstamo (7-14 días)")]
     public int MaxLoanDays { get; set; } = 14;
 }
@@ -35,8 +35,8 @@ public class CreateLoanCommandValidator : AbstractValidator<CreateLoanCommand>
             .WithMessage("No puede incluir libros duplicados");
 
         RuleFor(x => x.MaxLoanDays)
-            .InclusiveBetween(7, 14)
-            .WithMessage("Los días de préstamo deben estar entre 7 y 14");
+            .InclusiveBetween(1, 30)
+            .WithMessage("Los días de préstamo deben estar entre 1 y 30 dias");
     }
 }
 

@@ -10,6 +10,6 @@ public class CreateLoanRequest
     [MinLength(1), MaxLength(10), Required]
     public List<int> BookIds { get; set; } = new();
 
-    [Range(7, 14), Required]
-    public int MaxLoanDays { get; set; } = 14;
+    [Range(1, 30), Required]
+    public int MaxLoanDays { get; set; } = 1;
 }

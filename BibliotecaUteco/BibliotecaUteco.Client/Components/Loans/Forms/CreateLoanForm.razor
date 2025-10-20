@@ -48,11 +48,22 @@
         }
         
         <p class="text-[13px] opacity-80">Máximo 10 libros. @SelectedBooks.Count() @("/10") seleccionados </p>
-        <SidebarSectionDivider Name="Información extra"/>
+        <SidebarSectionDivider Name="Duración del prestamo"/>
         
         @if (SelectedBooks.Any())
         {
-            <Animate class="flex flex-col gap-2" Animation="@Animations.FadeIn" Duration="TimeSpan.FromMilliseconds(300)">
+            <Animate class="flex flex-col gap-3" Animation="@Animations.FadeIn" Duration="TimeSpan.FromMilliseconds(300)">
+
+                <LumexNumbox TValue="int"
+                             Label="Dias del prestamo"
+                             Placeholder="1"
+                             step="1"
+                             max="30"
+                             min="1"
+                             @bind-Value="CreateLoanModel.MaxLoanDays"
+                             Size="Size.Small"
+                             LabelPlacement="@LabelPlacement.Inside"
+                             EndContent="@_clockDangerIcon" />
                 <div class="flex w-full gap-3 items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-clock-icon lucide-clock"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
                     <div>
@@ -62,13 +73,16 @@
 
                     </div>
                 </div>
+                
                 <div class="flex w-full gap-3 items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-700 lucide lucide-clock-alert-icon lucide-clock-alert"><path d="M12 6v6l4 2"/><path d="M20 12v5"/><path d="M20 21h.01"/><path d="M21.25 8.2A10 10 0 1 0 16 21.16"/></svg>            <div>
 
-                        <p class="text-sm font-semibold">@DateTime.Now.AddDays(14).ToString("d 'de' MMMM 'del' yyyy", new CultureInfo("es-ES"))</p>
+                        <p class="text-sm font-semibold">@DateTime.Now.AddDays(CreateLoanModel.MaxLoanDays).ToString("d 'de' MMMM 'del' yyyy", new CultureInfo("es-ES"))</p>
                         <p class="text-xs text-red-600">Fecha de vencimiento del prestamo</p>
 
                     </div>
+                    
+                   
                 </div>
             </Animate>
         }
@@ -78,12 +92,20 @@
         }
         else
         {
-            <LumexButton OnClick="FetchCreateLoanFeature" Class="mt-[20px]" Disabled="@(_creatingLoan || !context.Validate())" Color="ThemeColor.Primary">Crear Préstamo</LumexButton>
+            <LumexButton OnClick="SetDeleteGenreConfirmationModal" Class="mt-[20px]" Disabled="@(_creatingLoan || !context.Validate())" Color="ThemeColor.Primary">Crear Préstamo</LumexButton>
 
         }
 
     </div>
 </EditForm>
+
+@if (_creatingLoan)
+{
+    <div class="absolute w-full h-full b-white/30 flex flex-col gap-1 justify-center items-center">
+        <p class="text-sm font-normal">Espera mientras creamos el prestamo</p>
+        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+    </div>
+}
 
 @code{
     public bool _creatingLoan {get; set;} = false;
@@ -94,11 +116,37 @@
     public string BookFilter {get; set;} = "";
     public List<BookResponse> SelectedBooks { get; set; } = new();
     public CreateLoanRequest CreateLoanModel { get; set; } = new();
+    public RenderFragment _clockDangerIcon => @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-300 lucide lucide-clock-alert-icon lucide-clock-alert"><path d="M12 6v6l4 2"/><path d="M20 12v5"/><path d="M20 21h.01"/><path d="M21.25 8.2A10 10 0 1 0 16 21.16"/></svg>;         
+
 
 
 }
 
 @functions{
+
+    public async Task SetDeleteGenreConfirmationModal()
+    {
+        if(_creatingLoan) return;
+
+        
+        var confirmed = await DialogService.ShowAsync(
+            title: "Crear Préstamo",
+            body: $"¿Desea Crear el prestamo para {Reader.FullName}? Una vez creado este no se puede eliminar o actualizar. Si necesita modificar, marquelo como devuelto y cree otro.",
+            acceptText: "Sí, Crear Préstamo",
+            cancelText: "Cancelar",
+                acceptColor: ThemeColor.Primary
+            
+        );
+
+        if (confirmed)
+        {
+            await FetchCreateLoanAsync();
+        }
+    }
+    public void ChangeMaxLoanDays(int number)
+    {
+        CreateLoanModel.MaxLoanDays += number;
+    }
 
     public void HandleBookAdded(BookResponse book)
     {
@@ -177,7 +225,7 @@
         StateHasChanged();
     }
   
-    public async Task FetchCreateLoanFeature()
+    public async Task FetchCreateLoanAsync()
     {
         _creatingLoan = true;
         StateHasChanged();
@@ -186,6 +234,8 @@
         if (result.IsSuccessful())
         {
             Toast.Show("Prestamo creado con exito");
+            await RightBarContext.CloseAsync();
+
         }
             _creatingLoan = false;
             StateHasChanged();

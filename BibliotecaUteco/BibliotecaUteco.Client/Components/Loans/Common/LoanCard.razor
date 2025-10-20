@@ -60,8 +60,18 @@
                         <LumexButton Class="ml-auto" Size="Size.Small" Color="ThemeColor.Primary" Variant="Variant.Ghost">Marcar como entregado</LumexButton>
                     }
                 </div>
-
                 
+                <SidebarSectionDivider Name="Libros"/>
+            
+                @foreach (var book in Loan.Books.Take(ShowAllBooks ? Loan.Books.Count() : 1))
+                {
+                    <BookCardMini ShowAvailability="false" Book="@book" @key="book.Id"/>
+                }
+                @if(Loan.Books.Count() > 1)
+                {
+                    <a class="text-green-700 text-[13px] underline cursor-pointer" @onclick="() => { ShowAllBooks = !ShowAllBooks;}">@(ShowAllBooks ? "Ocultar libros" : $"Mostrar +{Loan.Books.Count() - 1 } libros ")</a>
+
+                }
 
             </div>
             
@@ -79,4 +89,5 @@
     [Parameter]
     public LoanResponse Loan { get; set; } = new();
 
+    public bool ShowAllBooks { get; set; } = false;
 }

@@ -7,7 +7,7 @@ namespace BibliotecaUteco.DataAccess.Models;
 public class Loan : BaseEntity
 {
     [Column("MaxDiasDePrestamo")]
-    [Range(7, 30)]
+    [Range(1, 30)]
     public int MaxLoanDays { get; set; }
 
     [Column("FechaEntrega")]
@@ -34,6 +34,8 @@ public class Loan : BaseEntity
     
     [NotMapped]
     public int BookCount { get; set; }
+
+    [NotMapped] public List<Book> LoanedBooks { get; set; } = new();
     
     public static Loan Create(CreateLoanCommand command) => new()
     {
@@ -51,6 +53,7 @@ public class Loan : BaseEntity
         UpdatedAt = CreatedAt,
         MaxLoanDays = MaxLoanDays,
         DueDate = DueDate,
+        Books = LoanedBooks.Select(b => b.ToResponse()).ToList() ?? new(),
         ReturnedDate = ReturnedDate,
         Reader = Reader.ToResponse() ?? new(),
         ReaderId = ReaderId,

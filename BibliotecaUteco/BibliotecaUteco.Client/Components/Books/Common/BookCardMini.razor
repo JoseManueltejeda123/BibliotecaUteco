@@ -36,17 +36,21 @@
 
              <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
             }
-
-            @if (Book.AvailableAmount >= 1)
+            
+            @if (ShowAvailability)
             {
-                 <p class="text-blue-500 text-xs ">@Book.AvailableAmount disponibles</p>
-            }
-            else
-            {
+                @if (Book.AvailableAmount >= 1)
+                {
+                    <p class="text-blue-500 text-xs ">@Book.AvailableAmount disponibles</p>
+                }
+                else
+                {
 
-                <p class="text-red-500 text-xs">No disponibles</p>
+                    <p class="text-red-500 text-xs">No disponibles</p>
 
+                }
             }
+          
         </div>
         @if (ShowAddButton && Book.AvailableAmount >= 1)
         {
@@ -93,12 +97,11 @@
     [Parameter]
     public EventCallback<BookResponse> OnRemoveClicked { get; set; }
 
+    [Parameter] public bool ShowAvailability { get; set; } = true;
 
 
 
-    public async Task FetchDeleteBookAsync()
-    {
-    }
+    
 
     public async Task TriggerOnAddClicked()
     {

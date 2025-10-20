@@ -20,6 +20,7 @@ public static class ReadersDbSetActions
                 FullName = r.FullName,
                 IdentityCardNumber = r.IdentityCardNumber,
                 Address = r.Address,
+                
                 PhoneNumber = r.PhoneNumber,
                 SexId = r.SexId,
                 StudentLicence = r.StudentLicence,

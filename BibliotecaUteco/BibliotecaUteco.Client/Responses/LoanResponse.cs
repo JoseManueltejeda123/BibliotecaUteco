@@ -14,6 +14,8 @@ public class LoanResponse : BaseResponse
 
     public ReaderResponse Reader { get; set; } = null!;
 
+    public List<BookResponse> Books { get; set; } = new();
+
     public int ReaderId { get; set; }
     
     public bool HasPenalty { get; set; }

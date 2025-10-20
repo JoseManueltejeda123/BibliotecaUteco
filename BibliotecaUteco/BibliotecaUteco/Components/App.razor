@@ -52,6 +52,12 @@
             console.warn("Error removing dropdown overlay:", err);
         }
     };
+
+    window.copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+            .catch(err => console.error("Error al copiar al portapapeles:", err));
+    };
+
 </script>
 </body>
 

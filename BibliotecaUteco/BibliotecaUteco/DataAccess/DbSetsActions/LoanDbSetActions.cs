@@ -12,6 +12,21 @@ public static class LoanDbSetActions
             MaxLoanDays = l.MaxLoanDays,
             DueDate = l.DueDate,
             ReturnedDate = l.ReturnedDate,
+            LoanedBooks = l.Books.Select(b => b.Book).Select(b => new Book()
+            {
+                Id = b.Id,
+                CreatedAt =   b.CreatedAt, 
+                Name =   b.Name,
+                CoverUrl = b.CoverUrl,
+                Authors = b.Authors.Select(ba => new BookAuthor()
+                {
+                        
+                    Author = ba.Author
+                }).ToList()
+
+                    
+            }).ToList(),
+
             Reader = new Reader()
             {
                 Id = l.Reader.Id,
@@ -86,6 +101,21 @@ public static class LoanDbSetActions
                 MaxLoanDays = l.MaxLoanDays,
                 DueDate = l.DueDate,
                 ReturnedDate = l.ReturnedDate,
+                LoanedBooks = l.Books.Select(b => b.Book).Select(b => new Book()
+                {
+                    Id = b.Id,
+                    CreatedAt =   b.CreatedAt, 
+                    Name =   b.Name,
+                    CoverUrl = b.CoverUrl,
+                    Authors = b.Authors.Select(ba => new BookAuthor()
+                    {
+                        
+                        Author = ba.Author
+                    }).ToList()
+
+                    
+                }).ToList(),
+                
                 Reader = new Reader()
                 {
                     Id = l.Reader.Id,
