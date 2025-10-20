@@ -74,6 +74,7 @@
     --color-rose-700: oklch(51.4% 0.222 16.935);
     --color-rose-800: oklch(45.5% 0.188 13.697);
     --color-rose-900: oklch(41% 0.159 10.272);
+    --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-zinc-50: oklch(98.5% 0 0);
     --color-zinc-100: oklch(96.7% 0.001 286.375);
     --color-zinc-200: oklch(92% 0.004 286.32);
@@ -827,6 +828,9 @@
   .h-\[10px\] {
     height: 10px;
   }
+  .h-\[15px\] {
+    height: 15px;
+  }
   .h-\[20px\] {
     height: 20px;
   }
@@ -1518,6 +1522,9 @@
   .border-transparent {
     border-color: transparent;
   }
+  .border-violet-300 {
+    border-color: var(--color-violet-300);
+  }
   .border-warning {
     border-color: var(--lumex-warning);
   }
@@ -1799,6 +1806,12 @@
   }
   .bg-transparent {
     background-color: transparent;
+  }
+  .bg-violet-300 {
+    background-color: var(--color-violet-300);
+  }
+  .bg-violet-500 {
+    background-color: var(--color-violet-500);
   }
   .bg-warning {
     background-color: var(--lumex-warning);

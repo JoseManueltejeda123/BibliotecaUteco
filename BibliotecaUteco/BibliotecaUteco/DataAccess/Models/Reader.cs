@@ -31,6 +31,9 @@ public class Reader : BaseEntity
 
     [NotMapped]
     public int LoansCount { get; set; } = 0;
+    
+    [NotMapped]
+    public int ReturnedLoans { get; set; } = 0;
 
     [NotMapped]
     public DateTime? LastLoanDate { get; set; }
@@ -121,6 +124,7 @@ public class Reader : BaseEntity
             LoansCount = LoansCount,
             LastLoanDate = LastLoanDate,
             LastLoanIsActive = LastLoanIsActive,
+            ReturnedLoansCount = ReturnedLoans,
             SexId = SexId ?? 1,
         };
 }

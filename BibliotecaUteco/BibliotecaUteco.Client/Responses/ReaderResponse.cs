@@ -19,6 +19,8 @@ public class ReaderResponse : BaseResponse
     public bool LastLoanIsActive { get; set; }
     public int SexId { get; set; }
     public string SexName => SexId == 1 ? "Boy" : "Girl";
+        public int ReturnedLoansCount { get; set; } = 0;
+
 
     public string FormattedPhoneNumber => !string.IsNullOrEmpty(PhoneNumber) ?
         Regex.Replace(PhoneNumber, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3") : "";

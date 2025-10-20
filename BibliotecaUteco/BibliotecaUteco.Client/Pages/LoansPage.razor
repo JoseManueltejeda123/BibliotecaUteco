@@ -45,7 +45,7 @@
         {
             @foreach (var loan in Loans)
             {
-                <LoanCard Loan="@loan"/>
+                <LoanCard @key="loan.Id" Loan="@loan"/>
             }
 
             @if (_hasMore)

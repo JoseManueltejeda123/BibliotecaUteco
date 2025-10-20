@@ -13,7 +13,7 @@
 
         <LumexPopover Shadow="Shadow.Medium" ShowArrow="true">
             <LumexPopoverTrigger>
-                <LumexButton Disabled="@(SelectedBooks.Count() >= 10)" Size="Size.Small" Variant="Variant.Flat" Color="ThemeColor.Default">Aregar libro</LumexButton>
+                <LumexButton Disabled="@(SelectedBooks.Count() >= 10 || _creatingLoan)" Size="Size.Small" Variant="Variant.Flat" Color="ThemeColor.Default">Aregar libro</LumexButton>
             </LumexPopoverTrigger>
             <LumexPopoverContent Class="w-full px-2 py-3 flex flex-col gap-1 w-[250px] h-fit " >
                 <LumexTextbox Type="@InputType.Search"
@@ -44,7 +44,7 @@
         </LumexPopover>
         @foreach(var book in SelectedBooks)
         {
-            <BookCardMini ShowRemoveButton="true" OnRemoveClicked="HandleBookRemoved" ShowAddButton="@(false)" Book="@book"/>
+            <BookCardMini ShowRemoveButton="@(!_creatingLoan)" OnRemoveClicked="HandleBookRemoved" ShowAddButton="@(false)" Book="@book"/>
         }
         
         <p class="text-[13px] opacity-80">Máximo 10 libros. @SelectedBooks.Count() @("/10") seleccionados </p>
@@ -60,6 +60,7 @@
                              step="1"
                              max="30"
                              min="1"
+                             Disabled="@(_creatingLoan)"
                              @bind-Value="CreateLoanModel.MaxLoanDays"
                              Size="Size.Small"
                              LabelPlacement="@LabelPlacement.Inside"
@@ -99,13 +100,6 @@
     </div>
 </EditForm>
 
-@if (_creatingLoan)
-{
-    <div class="absolute w-full h-full b-white/30 flex flex-col gap-1 justify-center items-center">
-        <p class="text-sm font-normal">Espera mientras creamos el prestamo</p>
-        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
-    </div>
-}
 
 @code{
     public bool _creatingLoan {get; set;} = false;
