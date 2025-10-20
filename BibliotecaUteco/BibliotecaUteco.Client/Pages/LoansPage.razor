@@ -1,50 +1,76 @@
 ﻿@page "/loans"
-<PageTitle>Penalizaciones</PageTitle>
+@using BibliotecaUteco.Client.Requests.Loans.Queries
+<PageTitle>Préstamos</PageTitle>
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
 
     <div class="flex w-full items-center gap-2 justify-between">
         <h2 class="text-3xl font-semibold">Préstamos</h2>
-       
     </div>
 
-    <div class="flex w-full gap-2 items-center">
-        <LumexTextbox Type="@InputType.Search"
-                        Label="Filtrar Préstamos"
-                        Placeholder="@PlaceholderText"
-                        LabelPlacement="@LabelPlacement.Outside"
-                        Description="Usa los filtros de abajo para filtrar por Id o por la matricula/cédula del lector"/>
-         <LumexTooltip Content=@($"Buscar libros Prestamos ")>
-                    <LumexButton Type="ButtonType.Submit"  Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
+        <div class="w-full flex flex-col gap-1">
+            <LumexTextbox Type="@InputType.Search"
+                          Label="Filtrar Préstamos"
+                          Behavior="InputBehavior.OnInput"
+                          Clearable="true"
+                          ValueChanged="async (e) => { await HandleOnChange(e); }"
+                          OnCleared="FetchLoansAsync"
+                          Required="false"
+                          Disabled="@(_searchingLoans)"
+                          Value="@FilterText"
+                          Placeholder="@PlaceholderText"
+                          maxLenght="50"
+                          LabelPlacement="@LabelPlacement.Outside"/>
+            <p class="text-[13px]">Usa los filtros de abajo para buscar por lector, cédula o matrícula.</p>
+        </div>
 
-                </LumexTooltip>
-    </div>
     <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
-        <LumexChip  @onclick='()=>{SetFilterBy("reader");}' Variant="@(FilterBy == "reader" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Lector</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterBy("userIdentifier");}' Variant="@(FilterBy == "userIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Cédula</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterBy("studentIdentifier");}' Variant="@(FilterBy == "studentIdentifier" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por Matrícula</LumexChip>
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(LoansFilter.IdentityCardNumber); }' Variant="@(FilterBy == LoansFilter.IdentityCardNumber ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Cédula</LumexChip>
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(LoansFilter.StudentLicence); }' Variant="@(FilterBy == LoansFilter.StudentLicence ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Matrícula</LumexChip>
 
-        <div class="border rounded-full border-neutral-300 h-[10px] " />
+        <div class="border rounded-full border-neutral-300 h-[10px]" />
 
-        <LumexChip @onclick='()=>{SetFilterByState("all");}' Variant="@(FilterByState == "all" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Todos</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterByState("pending");}' Variant="@(FilterByState == "pending" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Pendientes</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterByState("returned");}' Variant="@(FilterByState == "returned" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Entregados</LumexChip>
-        <LumexChip  @onclick='()=>{SetFilterByState("exceeded");}' Variant="@(FilterByState == "exceeded" ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Excedidos</LumexChip>
-
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.All); }' Variant="@(FilterByState == LoansState.All ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Todos</LumexChip>
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Pending); }' Variant="@(FilterByState == LoansState.Pending ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Pendientes</LumexChip>
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Returned); }' Variant="@(FilterByState ==LoansState.Returned ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Entregados</LumexChip>
+        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Exceeded); }' Variant="@(FilterByState == LoansState.Exceeded ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Excedidos</LumexChip>
     </div>
-    <SidebarSectionDivider Name="Prestamos"/>
+
+    <SidebarSectionDivider Name="Préstamos"/>
+
     <div class="w-full flex flex-col gap-3">
         <p class="text-sm font-semibold text-center">Para crear un préstamo ve al apartado de lectores, busca el lector, clickea sus opciones y presiona "Registrar préstamo"</p>
-        <LoanCard IsPending="@true"/>
-         <LoanCard IsPending="@false"/>
-        <LoanCard IsPending="@true" IsExceeded="@true" />
+        
+        
+        @if (Loans.Any())
+        {
+            @foreach (var loan in Loans)
+            {
+                <LoanCard Loan="@loan"/>
+            }
 
+            @if (_hasMore)
+            {
+                <LumexButton @onclick="FetchMoreLoans" Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary">
+                    Obtener Más
+                </LumexButton>
+            }
+        }
+        else if (!string.IsNullOrEmpty(FilterText))
+        {
+            <NoResultsFound/>
+        }
     </div>
-   
 </div>
 
-@code{
-    public string FilterBy {get; set;} = "userIdentifier";
-    public string FilterByState {get; set;} = "all";
+@code {
+    public LoansFilter FilterBy { get; set; } = LoansFilter.IdentityCardNumber;
+    public LoansState FilterByState { get; set; } = LoansState.All;
+    public string FilterText { get; set; } = "";
+    public bool _searchingLoans { get; set; } = false;
+    public bool _hasMore { get; set; } = true;
+    private CancellationTokenSource? cts;
+    private CancellationTokenSource? fetchCts;
+    public List<LoanResponse> Loans { get; set; } = new();
 
     public string PlaceholderText
     {
@@ -52,28 +78,133 @@
         {
             return FilterBy switch
             {
-                "reader" => "Ej: Nombre del lector",
-                "userIdentifier" => "Ej: 000-0000000-0",
-                "studentIdentifier" => "Ej: 2021-1234",
+                LoansFilter.IdentityCardNumber => "Ej: 00112345678",
+                LoansFilter.StudentLicence => "Ej: 2021-1234",
                 _ => "Buscar..."
             };
         }
     }
 
-   
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchLoansAsync();
+    }
 
-}
+    public async Task HandleOnChange( string? value)
+    {
+       
+        FilterText = value ?? "";
 
-@functions{
-    public void SetFilterBy(string filter){
+        if (cts is not null)
+            await cts.CancelAsync();
+
+        cts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(500, cts.Token); 
+            await FetchLoansAsync();
+        }
+        catch
+        {
+            // Cancelado, ignorar
+        }
+    }
+
+    public async Task SetFilterBy(LoansFilter filter)
+    {
         FilterBy = filter;
+        await FetchLoansAsync();
     }
 
-    public void SetFilterByState(string filter){
+    public async Task SetFilterByState(LoansState filter)
+    {
         FilterByState = filter;
+        await FetchLoansAsync();
     }
 
-   
-    
+    public async Task FetchLoansAsync()
+    {
+        if (fetchCts is not null)
+        {
+            await fetchCts.CancelAsync();
+        }
 
+        fetchCts = new();
+        Loans.Clear();
+        _hasMore = true;
+        _searchingLoans = true;
+        StateHasChanged();
+
+        var request = BuildQuery(false);
+        var result = await LoansApiServices.GetByFilterAsync(request, fetchCts.Token);
+
+        if (result.IsSuccessful())
+        {
+            Loans = result.Data;
+        }
+
+        if (!result.IsSuccessful() || result.Data.Count < 5)
+        {
+            _hasMore = false;
+        }
+
+        _searchingLoans = false;
+        StateHasChanged();
+    }
+
+    public async Task FetchMoreLoans()
+    {
+        if (!_hasMore) return;
+        if (fetchCts is not null)
+        {
+            await fetchCts.CancelAsync();
+        }
+
+        fetchCts = new();
+        _searchingLoans = true;
+        StateHasChanged();
+
+        var result = await LoansApiServices.GetByFilterAsync(BuildQuery(true), fetchCts.Token);
+
+        if (result.IsSuccessful())
+        {
+            Loans.AddRange(result.Data);
+        }
+
+        if (!result.IsSuccessful() || result.Data.Count < 5)
+        {
+            _hasMore = false;
+        }
+
+        _searchingLoans = false;
+        StateHasChanged();
+    }
+
+    public GetLoansByFilterRequest BuildQuery(bool withSkip = true) => new()
+    {
+        IdentityCardNumber = FilterBy == LoansFilter.IdentityCardNumber ? FilterText : null,
+        StudentLicence = FilterBy == LoansFilter.StudentLicence ? FilterText : null,
+        JustPendingOnes = FilterByState == LoansState.Pending,
+        JustExceededOnes = FilterByState == LoansState.Exceeded,
+        JustReturnedOnes = FilterByState == LoansState.Returned,
+        Take = 5,
+        Skip = withSkip ? Loans.Count : 0
+    };
+
+ 
+
+    public enum LoansFilter
+    {
+        IdentityCardNumber,
+        StudentLicence,
+       
+    }
+    
+    public enum LoansState{
+        Returned,
+        Exceeded,
+        Pending,
+        All
+    }
 }

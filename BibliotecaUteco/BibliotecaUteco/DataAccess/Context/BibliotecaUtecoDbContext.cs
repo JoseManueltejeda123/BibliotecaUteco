@@ -264,6 +264,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                 .WithOne(l => l.Loan)
                 .HasForeignKey(l => l.LoanId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
         });
         modelBuilder.Entity<Transaction>(x =>
         {

@@ -54,8 +54,13 @@
 @using BibliotecaUteco.Client.Requests.Readers.Actions
 
 @using BibliotecaUteco.Client.Components.Readers.Forms
+@using BibliotecaUteco.Client.Components.Loans.Forms
 
 @using BibliotecaUteco.Client.Requests.Books.Actions
+@using BibliotecaUteco.Client.Requests.Loans.Actions
+@using BibliotecaUteco.Client.Requests.Books.Queries
+
+
 @using System.ComponentModel.DataAnnotations
 @using BlazorAnimate
 
@@ -78,5 +83,6 @@
 @inject IAuthorsApiServices AuthorsApiServices;
 @inject IBooksApiServices BooksApiServices
 @inject IReadersApiServices ReadersApiServices
+@inject ILoansApiServices LoansApiServices
 
 @inject IDialogService DialogService

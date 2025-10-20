@@ -20,6 +20,6 @@ public class ReaderResponse : BaseResponse
     public int SexId { get; set; }
     public string SexName => SexId == 1 ? "Boy" : "Girl";
 
-    public string FormattedPhoneNumber =>
-        Regex.Replace(PhoneNumber, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
+    public string FormattedPhoneNumber => !string.IsNullOrEmpty(PhoneNumber) ?
+        Regex.Replace(PhoneNumber, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3") : "";
 }

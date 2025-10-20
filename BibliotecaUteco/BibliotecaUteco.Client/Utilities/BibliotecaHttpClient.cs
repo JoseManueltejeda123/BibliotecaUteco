@@ -41,7 +41,7 @@ public class BibliotecaHttpClient(
             var jsonContent = await response.Content.ReadAsStringAsync(cancellationToken);
             if (string.IsNullOrWhiteSpace(jsonContent))
             {
-                toast.Show(
+                toast.Error(
                     "Oops",
                     new ToastModel()
                     {
@@ -64,7 +64,7 @@ public class BibliotecaHttpClient(
 
             if (apiResult == null)
             {
-                toast.Show(
+                toast.Error(
                     "Oops",
                     new ToastModel()
                     {
@@ -84,7 +84,7 @@ public class BibliotecaHttpClient(
             {
                 foreach (var message in apiResult.Messages)
                 {
-                    toast.Show(
+                    toast.Error(
                         "Error",
                         new ToastModel()
                         {
@@ -106,7 +106,7 @@ public class BibliotecaHttpClient(
         }
         catch (Exception ex)
         {
-            toast.Show(
+            toast.Error(
                 "Oops",
                 new ToastModel()
                 {
@@ -136,6 +136,7 @@ public class BibliotecaHttpClient(
         }
         catch(Exception)
         {
+            toast.Error("Algo salió mal");
             return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
         }
        
@@ -163,7 +164,9 @@ public class BibliotecaHttpClient(
             return await ProcessResult<TResult>(response, cancellationToken);
         }
         catch(Exception)
-        {
+        {            
+            toast.Error("Algo salió mal");
+
             return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
         }
     }
@@ -189,6 +192,8 @@ public class BibliotecaHttpClient(
         }
         catch(Exception)
         {
+            toast.Error("Algo salió mal");
+
             return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
         }
     }
@@ -207,6 +212,8 @@ public class BibliotecaHttpClient(
         }
         catch (Exception)
         {
+            toast.Error("Algo salió mal");
+
             return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
         }
     }

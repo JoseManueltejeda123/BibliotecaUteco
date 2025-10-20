@@ -1,0 +1,113 @@
+
+
+    <div class="w-full px-3 py-1 rounded-xl hover:bg-neutral-100 gap-3 flex items-center group transition-all cursor-pointer group">
+        
+
+
+        @if (string.IsNullOrEmpty(Book.CoverUrl))
+        {
+            <div
+                class="object-contain w-[30px] aspect-[2/3] bg-neutral-950 ">
+
+            </div>
+        }
+        else
+        {
+        <img src="@Book.CoverUrl"
+             class="object-cover w-[30px] aspect-[2/3] brightness-75 "
+
+             alt="@Book.Name"/>
+        }
+
+        <div class="flex flex-col flex-grow gap-1 text-small   ">
+            <p class="font-semibold line-clamp-1 text-xs ">@Book.Name</p>
+            <p class="font-medium line-clamp-1 text-xs">
+
+
+                @if (Book.Authors.Any())
+                {
+                    @(Book.Authors.First().Author.FullName)
+                }
+
+
+            </p>
+            @if (Book.Authors.Count() >= 2)
+            {
+
+             <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
+            }
+
+            @if (Book.AvailableAmount >= 1)
+            {
+                 <p class="text-blue-500 text-xs ">@Book.AvailableAmount disponibles</p>
+            }
+            else
+            {
+
+                <p class="text-red-500 text-xs">No disponibles</p>
+
+            }
+        </div>
+        @if (ShowAddButton && Book.AvailableAmount >= 1)
+        {
+            <LumexTooltip Content=@("Agregar libro") Size="Size.Small" ShowArrow="true">
+                <button @onclick="TriggerOnAddClicked" class="ml-auto cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </button>
+            </LumexTooltip>
+        
+        }
+        
+        @if (ShowRemoveButton)
+        {
+            <LumexTooltip Content=@("Remover libro") Size="Size.Small" ShowArrow="true">
+                <button @onclick="TriggerOnRemoveClicked" class="ml-auto cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
+                </button>
+            </LumexTooltip>
+        
+        }
+
+
+
+
+    </div>
+
+
+
+
+
+@code{
+
+
+    [Parameter]
+    public bool ShowAddButton { get; set; } = true;
+
+    [Parameter] public bool ShowRemoveButton { get; set; } = false;
+
+    [Parameter] public BookResponse Book {get; set;} = new();
+
+    [Parameter]
+    public EventCallback<BookResponse> OnAddClicked { get; set; }
+    
+    [Parameter]
+    public EventCallback<BookResponse> OnRemoveClicked { get; set; }
+
+
+
+
+    public async Task FetchDeleteBookAsync()
+    {
+    }
+
+    public async Task TriggerOnAddClicked()
+    {
+        await OnAddClicked.InvokeAsync(Book);
+    }
+
+    public async Task TriggerOnRemoveClicked()
+    {
+        await OnRemoveClicked.InvokeAsync(Book);
+    }
+
+}

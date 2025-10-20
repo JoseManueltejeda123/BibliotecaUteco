@@ -1,29 +1,33 @@
 @implements  IDisposable
 
-<aside class=@($"fixed overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[350px] bg-white   flex flex-col items-center  border-l border-neutral-300")>
-    <div class="w-full flex sticky top-0  bg-neutral-100/50 px-3 backdrop-blur-md justify-between font-semibold text-black text-sm z-[100] items-center">
-        @(RightBarContext.State.View switch
-        {
-            
-            RightBarView.CreatingBook => "Registrar Libro",     
+<aside class=@($"fixed bg-white overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[350px]   flex flex-col items-center  border-l border-neutral-300")>
+    <div class="w-full flex sticky top-0  bg-neutral-100/50 px-3 py-2 backdrop-blur-md gap-2 font-semibold   z-[100] items-center">
+        
+        <button @onclick="CloseAsync" >
+            <CircleXFilledIcon  Size="20px"/>
+
+        </button>
+        <p class="text-neutral-900 opacity-80 text-[13px]">
+            @(RightBarContext.State.View switch
+            {
+
+            RightBarView.CreatingBook => "Registrar Libro",
             RightBarView.UpdateBook => "Actualizar Libro",
             RightBarView.BookDetails => "Acerca del libro",
             RightBarView.Users => "Administrar Usuarios",
             RightBarView.UpdateUser => "Actualizar Usuario",
             RightBarView.CreateUser => "Crear Usuario",
-            RightBarView.CreateReader => "Crear Lector",            
+            RightBarView.CreateReader => "Crear Lector",
             RightBarView.UpdateReader => "Actualizar Lector",
             RightBarView.CreateLoan => "Crear Prestamo",
 
-                
-             _ => ""
-        })
-        <IconButton OnClick="CloseAsync" Small="@true" Class="" TooltipText="Cerrar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-black  lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 
-        </IconButton>
+            _ => ""
+            })
+        </p>
+        
+       
     </div>
-    
     @if (RightBarContext.State.View == RightBarView.CreatingBook)
     {
         <CreateBookForm/>
@@ -58,7 +62,7 @@
     }
     else if(RightBarContext.State.View == RightBarView.CreateLoan)
     {
-    
+        <CreateLoanForm/>
     }
     
 </aside>
