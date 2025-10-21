@@ -8,9 +8,9 @@ public class LoanResponse : BaseResponse
     public DateTime? ReturnedDate { get; set; } = null;
 
     public DateTime DueDateLocal => DueDate.ToLocalTime();
-    public string DueDateLocalFormatted => DueDateLocal.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
+    public string DueDateLocalFormatted => DueDateLocal.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES"));
     public DateTime? ReturnedDateLocal => ReturnedDate?.ToLocalTime();
-    public string? ReturnedDateLocalFormatted => ReturnedDateLocal?.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES")) ;
+    public string? ReturnedDateLocalFormatted => ReturnedDateLocal?.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES")) ;
 
     public ReaderResponse Reader { get; set; } = null!;
 

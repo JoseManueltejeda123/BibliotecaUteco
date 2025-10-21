@@ -20,6 +20,8 @@
             RightBarView.CreateReader => "Crear Lector",
             RightBarView.UpdateReader => "Actualizar Lector",
             RightBarView.CreateLoan => "Crear Prestamo",
+            RightBarView.PayPenalty => "Pagar Penalización",
+
 
 
             _ => ""
@@ -96,6 +98,10 @@
     else if(RightBarContext.State.View == RightBarView.CreateLoan)
     {
         <CreateLoanForm/>
+    }
+    else if(RightBarContext.State.View == RightBarView.PayPenalty)
+    {
+        <PayPenaltyForm/>
     }
     
 </aside>

@@ -34,6 +34,7 @@ public class Loan : BaseEntity
     
     [NotMapped]
     public int BookCount { get; set; }
+    
 
     [NotMapped] public List<Book> LoanedBooks { get; set; } = new();
     

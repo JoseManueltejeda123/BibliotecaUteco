@@ -52,9 +52,11 @@
 
 @using BibliotecaUteco.Client.Requests.Genres.Queries
 @using BibliotecaUteco.Client.Requests.Readers.Actions
+@using BibliotecaUteco.Client.Requests.Penalties.Actions
 
 @using BibliotecaUteco.Client.Components.Readers.Forms
 @using BibliotecaUteco.Client.Components.Loans.Forms
+@using BibliotecaUteco.Client.Components.Penalizations.Forms
 
 @using BibliotecaUteco.Client.Requests.Books.Actions
 @using BibliotecaUteco.Client.Requests.Loans.Actions
@@ -84,5 +86,5 @@
 @inject IBooksApiServices BooksApiServices
 @inject IReadersApiServices ReadersApiServices
 @inject ILoansApiServices LoansApiServices
-
+@inject IPenaltiesApiServices PenaltiesApiServices
 @inject IDialogService DialogService
