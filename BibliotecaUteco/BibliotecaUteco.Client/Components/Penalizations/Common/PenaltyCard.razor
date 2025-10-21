@@ -1,0 +1,74 @@
+
+<div class=@($"w-full outlined  transition-all bg-neutral-100 border-neutral-200 border rounded-xl p-3 flex gap-3")>
+    <div class=@($"rounded-full {(Penalty.IsDue ? "bg-red-300 text-red-700" : "bg-green-300 text-green-700")}  flex items-center justify-center shrink-0 w-[30px] h-[30px]")>
+        @if(!Penalty.IsDue){
+            <CircleCheckFilledIcon Size="22px"/>
+        }
+        else
+        {
+            <OctagonAlertFilledIcon Size="22px"/>
+        }
+    </div>
+    <div class="w-full  flex flex-col">
+        <div class="flex w-full  justify-between">
+            <div>
+                <p class="text-[15px]">Multa para <strong>@Penalty.ReaderName</strong></p>
+                <label class="text-[13px] opacity-80 font-normal">Id Prestamo: @Penalty.LoanId</label>
+            </div>
+
+
+            @if(Penalty.IsDue)
+            {
+                <LumexButton OnClick="SetPayPenaltyView" Size="@Size.Small"
+                        Color="@ThemeColor.Primary"
+                        >
+                    Pagar
+                </LumexButton>
+            }
+            
+        </div>
+        <div class="flex w-full items-start max-md:flex-col gap-8 max-md:gap-1">
+
+            <div class="flex flex-col">
+              <SidebarSectionDivider Name="Detalles de cobro"/>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Taza de penalización (diario): <span class="bg-black px-2  text-white inconsolata">RD$ @(Penalty._dailyFineRate)</span></span>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Dias excedidos: <span class="bg-black px-2  text-white inconsolata">@Penalty.OverdueDays</span></span>
+
+                <span class="font-semibold text-sm mt-2 inconsolata">Monto a pagar: <span class="bg-neutral-950 px-2  text-white ">RD$ @Penalty._totalAmount  </span></span>
+
+
+            </div>
+          
+
+            @if(!Penalty.IsDue)
+            {
+                <div class="flex flex-col">
+                  <SidebarSectionDivider Name="Detalles de pago"/>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto dado: <span class="bg-black px-2 text-white inconsolata">RD$ @Penalty._givenAmount</span></span>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto develto: <span class="bg-black px-2  text-white inconsolata">RD$ @Penalty._returnedAmount </span></span>
+
+
+                </div>
+              
+            }
+            
+        </div>
+        
+    </div>
+    
+</div>
+@code{
+
+    [Parameter] public PenaltyResponse Penalty { get; set; } = new();
+    
+    
+}
+
+@functions{
+
+    public async Task SetPayPenaltyView()
+    {
+        await RightBarContext.OpenPayPenalty(Penalty);
+    }
+
+}
