@@ -46,7 +46,7 @@ internal class UpdateAuthorEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<UpdateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)

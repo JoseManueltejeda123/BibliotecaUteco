@@ -46,7 +46,7 @@ internal class CreateAuthorEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .DisableAntiforgery()
             .RequireCors()
             .Accepts<CreateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)

@@ -133,7 +133,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                         });
                     }
                 )
-                .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+                .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)

@@ -44,7 +44,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                         });
                     }
                 )
-                .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+                .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<CreateGenreCommand>(false, ApplicationContentTypes.ApplicationJson)

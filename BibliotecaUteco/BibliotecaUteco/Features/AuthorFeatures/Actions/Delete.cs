@@ -34,7 +34,7 @@ internal class DeleteAuthorEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<DeleteAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
