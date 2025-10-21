@@ -148,7 +148,7 @@ internal class UpdateBookEndpoint : IEndpoint
                     );
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .DisableAntiforgery()
             .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
