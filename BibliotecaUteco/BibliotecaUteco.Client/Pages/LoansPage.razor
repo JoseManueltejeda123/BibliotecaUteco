@@ -50,12 +50,22 @@
 
             @if (_hasMore)
             {
-                <LumexButton @onclick="FetchMoreLoans" Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary">
+                <LumexButton @onclick="FetchMoreLoans" Disabled="@(_searchingLoans)" Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary">
                     Obtener Más
                 </LumexButton>
             }
         }
-        else if (!string.IsNullOrEmpty(FilterText))
+        else if (_searchingLoans)
+        {
+            <div class="w-full justify-center items-center flex">
+                <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+            </div>   
+        }
+        else if(string.IsNullOrEmpty(FilterText))
+        {
+                <p class="text-[13px] text-center">No hay prestamos tomados</p>
+        }
+        else 
         {
             <NoResultsFound/>
         }
@@ -125,9 +135,11 @@
 
     public async Task FetchLoansAsync()
     {
+        try
+        {
         if (fetchCts is not null)
         {
-            await fetchCts.CancelAsync();
+        await fetchCts.CancelAsync();
         }
 
         fetchCts = new();
@@ -141,44 +153,56 @@
 
         if (result.IsSuccessful())
         {
-            Loans = result.Data;
+        Loans = result.Data;
         }
 
         if (!result.IsSuccessful() || result.Data.Count < 5)
         {
-            _hasMore = false;
+        _hasMore = false;
         }
 
         _searchingLoans = false;
         StateHasChanged();
+        }
+        catch
+        {
+            
+        }
+        
     }
 
     public async Task FetchMoreLoans()
     {
-        if (!_hasMore) return;
-        if (fetchCts is not null)
-        {
-            await fetchCts.CancelAsync();
+        try{
+            if (!_hasMore) return;
+            if (fetchCts is not null)
+            {
+                await fetchCts.CancelAsync();
+            }
+
+            fetchCts = new();
+            _searchingLoans = true;
+            StateHasChanged();
+
+            var result = await LoansApiServices.GetByFilterAsync(BuildQuery(true), fetchCts.Token);
+
+            if (result.IsSuccessful())
+            {
+                Loans.AddRange(result.Data);
+            }
+
+            if (!result.IsSuccessful() || result.Data.Count < 5)
+            {
+                _hasMore = false;
+            }
+
+            _searchingLoans = false;
+            StateHasChanged();
         }
-
-        fetchCts = new();
-        _searchingLoans = true;
-        StateHasChanged();
-
-        var result = await LoansApiServices.GetByFilterAsync(BuildQuery(true), fetchCts.Token);
-
-        if (result.IsSuccessful())
-        {
-            Loans.AddRange(result.Data);
+        catch{
+        
         }
-
-        if (!result.IsSuccessful() || result.Data.Count < 5)
-        {
-            _hasMore = false;
-        }
-
-        _searchingLoans = false;
-        StateHasChanged();
+        
     }
 
     public GetLoansByFilterRequest BuildQuery(bool withSkip = true) => new()

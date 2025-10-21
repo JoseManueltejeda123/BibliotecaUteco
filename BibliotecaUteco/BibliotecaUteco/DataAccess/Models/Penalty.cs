@@ -27,8 +27,28 @@ public class Penalty : BaseEntity
 
     [Column("MontoDado")]
     public double GivenAmount { get; set; }
-    public Transaction Transaction { get; set; } = null!;
+    public Transaction? Transaction { get; set; }
 
     [Column("IdTransaccion")]
-    public int TransactionId { get; set; }
+    public int? TransactionId { get; set; }
+    
+    public static Penalty Create(Loan loan)
+    {
+        
+        var overdueDays = (DateTime.UtcNow.Date - loan.DueDate.Date).Days;
+        var totalAmount = overdueDays * LoanSettings.DailyFineRate;
+
+        return new Penalty
+        {
+            LoanId = loan.Id,
+            Loan = loan,
+            OverdueDays = overdueDays,
+            IsDue = true,
+            DailyFineRate = LoanSettings.DailyFineRate,
+            TotalAmount = totalAmount,
+            ReturnedAmount = 0,
+            GivenAmount = 0,
+       
+        };
+    }
 }

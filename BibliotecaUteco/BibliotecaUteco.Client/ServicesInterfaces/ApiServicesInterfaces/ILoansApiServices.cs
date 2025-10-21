@@ -15,4 +15,9 @@ public interface ILoansApiServices
         GetLoansByFilterRequest request,
         CancellationToken cancellationToken = default
     );
+
+    Task<ApiResult<LoanResponse>> MarkAsReturnedAsync(
+        MarkLoanAsReturnedRequest request,
+        CancellationToken cancellationToken = default
+    );
 }

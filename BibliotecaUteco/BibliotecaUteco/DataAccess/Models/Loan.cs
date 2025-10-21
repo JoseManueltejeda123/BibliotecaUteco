@@ -24,7 +24,7 @@ public class Loan : BaseEntity
     public Penalty? Penalty { get; set; }
 
     [NotMapped]
-    public int ExceededBy => (DateTime.UtcNow - DueDate).Days;
+    public int ExceededBy => (DateTime.UtcNow.Date - DueDate.Date).Days;
 
     [NotMapped]
     public bool IsExceeded => ExceededBy >= 1;
@@ -52,12 +52,14 @@ public class Loan : BaseEntity
         CreatedAt = CreatedAt,
         UpdatedAt = CreatedAt,
         MaxLoanDays = MaxLoanDays,
+        ExceededBy = ExceededBy,
         DueDate = DueDate,
         Books = LoanedBooks.Select(b => b.ToResponse()).ToList() ?? new(),
         ReturnedDate = ReturnedDate,
         Reader = Reader.ToResponse() ?? new(),
         ReaderId = ReaderId,
         HasPenalty = HasPenalty,
+        IsExceeded = IsExceeded,
         BookCount = BookCount
     };
 }

@@ -23,6 +23,18 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
         );
     }
     
+    public async Task<ApiResult<LoanResponse>> MarkAsReturnedAsync(
+        MarkLoanAsReturnedRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await client.FetchPutAsync<LoanResponse>(
+            LoansEndpoint + "/mark-as-returned",
+            request,
+            cancellationToken
+        );
+    }
+    
     public async Task<ApiResult<List<LoanResponse>>> GetByFilterAsync(
         GetLoansByFilterRequest request,
         CancellationToken cancellationToken = default

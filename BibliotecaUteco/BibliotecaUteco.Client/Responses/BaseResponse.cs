@@ -12,5 +12,5 @@ public class BaseResponse
     public string UpdatedAtLocalFormatted =>
         UpdatedAtLocal.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
     public string CreatedAtLocalFormatted =>
-        CreatedAt.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
+        CreatedAtLocal.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"));
 }
