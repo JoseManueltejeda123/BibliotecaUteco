@@ -13,9 +13,20 @@ public class Transaction : BaseEntity
     public int UserId { get; set; }
     public Penalty? Penalty { get; set; }
     
+    
     public static Transaction Create(int userId, double amount) => new()
     {
         Amount = amount,
         UserId = userId
+    };
+
+    public TransactionResponse ToResponse() => new()
+    {
+        Id = Id,
+        CreatedAt = CreatedAt,
+        UpdatedAt = UpdatedAt,
+        Amount = Amount,
+        User = User.ToResponse(),
+        UserId = UserId
     };
 }

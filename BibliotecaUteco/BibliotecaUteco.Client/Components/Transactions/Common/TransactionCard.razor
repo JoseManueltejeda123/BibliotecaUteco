@@ -1,5 +1,5 @@
-<div class=@($"w-full p-3 flex  rounded-xl gap-3 bg-neutral-100/70 {(Mount < 0 ? "hover:bg-red-50 text-red-800": "hover:bg-green-50 text-green-800")}")>
-        @if (Mount < 0)
+<div class=@($"w-full p-3 flex  rounded-xl gap-3 bg-neutral-100/70 {(Transaction.Amount < 0 ? "hover:bg-red-50 text-red-800": "hover:bg-green-50 text-green-800")}")>
+        @if (Transaction.Amount < 0)
         {
 
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
@@ -13,7 +13,7 @@
         <div class="flex flex-col gap-1 w-full">
             
             <div class="flex w-full">
-                @if (Mount < 0)
+                @if (Transaction.Amount < 0)
                 {
                     <label class="text-sm font-semibold">Retiro de caja</label>
 
@@ -23,18 +23,25 @@
                     <label class="text-sm font-semibold">Abono a caja</label>
 
                 }
-                <p class="text-[13px] font-semibold text-neutral-700 ml-auto">17 Oct 2025</p>
+                <p class="text-[13px] text-nowrap font-semibold text-neutral-700 ml-auto">@Transaction.CreatedAtLocalFormatted</p>
             </div>
            
-            <label class="text-lg font-semibold">RD$ @Mount</label>
+            <label class="text-lg font-semibold">RD$ @Transaction.Amount.ToString("F2")</label>
 
             <SidebarSectionDivider Name="Creador de la transacción"/>
 
             <div class="flex items-center gap-3 text-neutral-800">
-                <LumexAvatar Size="Size.Small" Color="ThemeColor.Primary" Name="Manuel Lopez"/>
+                @if (!string.IsNullOrEmpty(Transaction.User.ProfilePictureUrl))
+                {
+                    <img class="rounded-full size-[35px]" src="@Transaction.User.ProfilePictureUrl" alt="user-pfp"/>
+                }
+                else
+                {
+                    <img alt="user-pfp" class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{Transaction.User.SexName}?username={Transaction.User.Username}")/>
+                }
                 <div class="flex flex-col">
-                    <p class="text-sm">Manuel López</p>
-                    <p class="text-xs">@("@manuel.lopez")</p>
+                    <p class="text-sm">@Transaction.User.FullName</p>
+                    <p class="text-xs"> @("@" + Transaction.User.Username)</p>
 
                 </div>
             </div>
@@ -51,6 +58,6 @@
 @code{
 
 
-    [Parameter] public int Mount { get; set; } = 0;
+    [Parameter] public TransactionResponse Transaction { get; set; } = new();
 
 }
