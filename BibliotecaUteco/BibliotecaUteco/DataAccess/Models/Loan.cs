@@ -23,11 +23,10 @@ public class Loan : BaseEntity
     public int ReaderId { get; set; }
     public Penalty? Penalty { get; set; }
 
-    [NotMapped]
-    public int ExceededBy => (DateTime.UtcNow.Date - DueDate.Date).Days;
+    [NotMapped] public int ExceededBy => (DateTime.UtcNow - DueDate).Days;
 
     [NotMapped]
-    public bool IsExceeded => ExceededBy >= 1;
+    public bool IsExceeded => ExceededBy > 0;
     
     [NotMapped]
     public bool HasPenalty { get; set; }

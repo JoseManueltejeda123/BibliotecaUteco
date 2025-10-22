@@ -96,8 +96,16 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
             loan.ReturnedDate = DateTime.UtcNow;
             await context.SaveChangesAsync(cancellationToken);
 
-            // Verificar si se debe crear una penalización
-            if (loan.ReturnedDate.Value > loan.DueDate)
+            if (!loan.ReturnedDate.HasValue)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return ApiResult<LoanResponse>.BuildFailure(
+                    HttpStatus.BadRequest,
+                    "No pudimos crear la penalización. El préstamo no se marcó como entregado"
+                );
+            }
+            
+            if (loan.ReturnedDate.Value > loan.DueDate && (loan.ReturnedDate.Value - loan.DueDate).Days >= 1)
             {
                 var penaltyInsertion = await context.Penalties.AddAsync(
                     Penalty.Create(loan),

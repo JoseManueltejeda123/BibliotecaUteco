@@ -3,7 +3,7 @@
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
         
-        <p class="text-[13px] opacity-80">Estas a punto de crear un préstamo para @(Reader.FullName). los prestamos tienen un tiempo máximo de 14 dias (2 semanas). Despues de pasado ese tiempo el prestamo se marca como excedido (si corresponse). </p>
+        <p class="text-[13px] opacity-80">Estas a punto de crear un préstamo para @(Reader.FullName). los prestamos tienen un tiempo máximo de @LoanSettings.MaxLoanDays dias. Despues de pasado 24 horas de la fecha de entrega este se marca como excedido. </p>
         
         <div class="flex flex-col gap-1 w-full">
             <ReaderCardMini Reader="@Reader"/>

@@ -8,6 +8,8 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
+    --color-red-100: oklch(93.6% 0.032 17.717);
+    --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
@@ -1571,6 +1573,9 @@
   .border-l-transparent {
     border-left-color: transparent;
   }
+  .bg-\[var\(--lumex-primary\)\] {
+    background-color: var(--lumex-primary);
+  }
   .bg-background {
     background-color: var(--lumex-background);
   }
@@ -2247,6 +2252,9 @@
   }
   .text-success-foreground {
     color: var(--lumex-success-foreground);
+  }
+  .text-violet-700 {
+    color: var(--color-violet-700);
   }
   .text-warning {
     color: var(--lumex-warning);
@@ -6188,7 +6196,7 @@ button[data-slot="trigger"] {
   }
 }
 :root, .light {
-  --lumex-primary: var(--color-green-700);
+  --lumex-primary: #3aa141;
 }
 #blazor-error-ui {
   background: lightyellow;

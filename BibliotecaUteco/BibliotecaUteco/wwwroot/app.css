@@ -91,7 +91,7 @@ button[data-slot="trigger"]{
 
 :root, .light {
     
-    --lumex-primary: var(--color-green-700);
+    --lumex-primary: #3aa141;
     
 }
 #blazor-error-ui {
