@@ -1,8 +1,10 @@
-<div class="flex items-center gap-3 justify-between text-neutral-800 w-full  p-2 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
-    <div class="flex w-full items-center gap-2">
+@implements  IDisposable
+
+<div class="flex items-center relative gap-3 justify-between text-neutral-800 w-full  px-2 py-3 bg-neutral-100/70 hover:bg-neutral-100 rounded-lg">
+    <div class="flex w-full  items-center gap-2">
         @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
         {
-        <img class="w-[30px] h-[30px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{User.SexName}?username={User.Username}")/>
+        <img class="w-[30px] h-[30px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={User.Username}")/>
 
         }
         else
@@ -10,55 +12,89 @@
             <img class="w-[30px] h-[30px] rounded-full object-cover" src="@User.ProfilePictureUrl"/>
         }
         <div class="flex flex-col">
-            <p class="text-sm line-clamp-1">@User.FullName</p>
-            <p class="text-xs">@(User.Username + " ")(@User._roleName)</p>
+            <p class="text-sm line-clamp-1 font-semibold">@User.FullName</p>
+            <p class="text-xs">@(User.Username + " ")(@User.Role.ToString())</p>
 
         </div>
     </div>
-   
-    <LumexDropdown ShowArrow="true"  Id=@($"UserActions-{User.Username}")>
-        <LumexDropdownTrigger >
-            <button>
-                <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
-            </button>
-            
-        </LumexDropdownTrigger>
-        <LumexDropdownMenu>
-            <LumexDropdownItem OnClick="SetUpdateUserView"  Id="ActualizarUsuario">
-                <StartContent>
-                    <SquarePenIcon Size="18px"/>
-                </StartContent>
-                <ChildContent>Actualizar usuario</ChildContent>
-            </LumexDropdownItem>
+   <AuthorizeView>
+       <Authorized>
+           <LumexDropdown  @ref="dropdownRef" ShowArrow="true" Placement="PopoverPlacement.Bottom"  >
+               <LumexDropdownTrigger >
+                   <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
+               </LumexDropdownTrigger>
+               <LumexDropdownMenu>
+                   <LumexDropdownItem Disabled="true" Id="info">
+                       <StartContent>
+                           <InfoFilledIcon Size="18px"/>
+                       </StartContent>
+                       <ChildContent>
+                           <div class="w-full">
+                               <p class="text-[13px] font-semibold">@User.FullName</p>
+                               <p class="text-xs ">@User.Role.ToString()</p>
+                           </div>
+                       </ChildContent>
 
-        </LumexDropdownMenu>
-    </LumexDropdown>
+                   </LumexDropdownItem>
+
+                   <LumexDropdownItem Disabled="true" Id="Divider">
+                       <LumexDivider/>
+                   </LumexDropdownItem>
+                   <LumexDropdownItem OnClick="SetUpdateUserView" Id="ActualizarUsuario">
+                       <StartContent>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                       </StartContent>
+                       <ChildContent>Actualizar usuario</ChildContent>
+                   </LumexDropdownItem>
+                   
+                   
+                  
+                   @if((User.Role.ToString() != "Admin" || context.User.FindFirst("sub")?.Value == User.Id.ToString()) && context.User.FindFirst("role")?.Value == "Admin" )
+                   {
+                       <LumexDropdownItem OnClick="SetUpdateUserView" Id="ChangePassword">
+                           <StartContent>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>                </StartContent>
+                           <ChildContent>Actualizar contraseña</ChildContent>
+                       </LumexDropdownItem>
+                   }
+                   
+                  
+               </LumexDropdownMenu>
+           </LumexDropdown>
+       </Authorized>
+   </AuthorizeView>
+   
 </div>
 
 @code{
 
-    public bool IsOpen {get; set;}
     
     
     [Parameter] public UserResponse User { get; set; } = new();
-    
-    
+    public LumexDropdown dropdownRef;
+
+
 
 }
 
 
 
 @functions{
-    public async Task HideDropdown()
-    {
-        await Task.Delay(20);
-        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay", $"UserActions-{User.Username}");
-    }
+   
     public async Task SetUpdateUserView()
     {
+        dropdownRef.Open = false;
+        StateHasChanged();
+        await Task.Delay(20);
         await RightBarContext.OpenUpdateUserAsync(User);
-        await HideDropdown();                            
     }
-   
+
+    
+
+    public void Dispose()
+    {
+        StateHasChanged();
+    }
+    
 
 }

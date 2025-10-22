@@ -14,7 +14,7 @@
         else
         {
             <div class="w-full flex flex-col items-center">
-                <img class="w-[70px] h-[70px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{CreateUserModel.SexName}?username={CreateUserModel.Username}")/>
+                <img class="w-[70px] h-[70px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={CreateUserModel.Username}") />
 
             </div>
           
@@ -55,38 +55,38 @@
 
 
         </div>
-        <LumexSelect Size="Size.Small" TValue="@(string)"
-                     @bind-Value="@CreateUserModel._sexName"
+        <LumexSelect Size="Size.Small" TValue="@(ApplicationSexes)"
+                     @bind-Value="@CreateUserModel._sex"
                      Label="Sexo del usuario"
                      Placeholder="Selecciona el sexo del usuario"
                      Class="max-w-xs">
            
-            <LumexSelectItem @key=@("Masculino") Value=@("Masculino")>
+            <LumexSelectItem @key=@(ApplicationSexes.Male) Value=@(ApplicationSexes.Male)>
                 Masculino
             </LumexSelectItem>
-            <LumexSelectItem @key=@("Femenino") Value=@("Femenino")>
+            <LumexSelectItem @key=@(ApplicationSexes.Female) Value=@(ApplicationSexes.Female)>
                                                       
                 Femenino
             </LumexSelectItem>
             
         </LumexSelect>
 
-        <LumexSelect Size="Size.Small" TValue="@(string)"
+        <LumexSelect Size="Size.Small" TValue="@(ApplicationRoles)"
                      Label="Rol del usuario"
-                     @bind-Value="CreateUserModel._roleName"
+                     Value="CreateUserModel._role"
                      Placeholder="Selecciona el rol del usuario"
                      Class="max-w-xs">
            
-            <LumexSelectItem @key='@("Administrador")' Value='@("Administrador")'>
+            <LumexSelectItem @key='@(ApplicationRoles.Admin)' Value='@(ApplicationRoles.Admin)'>
                 Administrador
             </LumexSelectItem>
-            <LumexSelectItem @key='@("Bibliotecario")' Value='@("Bibliotecario")'>
+            <LumexSelectItem @key='@(ApplicationRoles.Admin)' Value='@(ApplicationRoles.Admin)'>
                 Bibliotecario
             </LumexSelectItem>
             
         </LumexSelect>
  
-        <SidebarSectionDivider/>
+        <SectionDivider/>
         @if (_creatingUser)
         {
             <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>

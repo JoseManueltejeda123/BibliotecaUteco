@@ -1,3 +1,5 @@
+using BibliotecaUteco.Client.Utilities;
+
 namespace BibliotecaUteco.Client.Responses;
 
 public class UserResponse : BaseResponse
@@ -8,7 +10,6 @@ public class UserResponse : BaseResponse
 
     public string IdentityCardNumber { get; set; } = "";
 
-    public string RoleName { get; set; } = "";
 
     public string ProfilePictureUrl { get; set; } = "";
 
@@ -16,12 +17,7 @@ public class UserResponse : BaseResponse
 
     public string SexName => SexId == 1 ? "boy" : "girl";
 
-    public string _roleName =>
-        RoleId switch
-        {
-            1 => "Admin",
-            _ => "Bibliotecario",
-        };
-
-    public int RoleId { get; set; } = 0;
+    public ApplicationRoles Role {get; set;}
+       
+    public int RoleId {get; set;} = 0;
 }

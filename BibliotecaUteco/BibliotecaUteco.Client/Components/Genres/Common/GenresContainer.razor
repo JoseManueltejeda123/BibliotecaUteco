@@ -56,7 +56,7 @@
             </EditForm>
 
         </div>
-    <SidebarSectionDivider Name="Géneros"/>
+    <SectionDivider Name="Géneros"/>
 
     
            
@@ -85,7 +85,7 @@
              {
                  foreach(var genre in Genres)
                  {   
-                    <GenreCard Index="@(Genres.IndexOf(genre))" OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
+                    <GenreCard @key="genre.Id" Index="@(Genres.IndexOf(genre))" OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
     
                  }
              }

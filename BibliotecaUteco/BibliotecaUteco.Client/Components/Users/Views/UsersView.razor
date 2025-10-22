@@ -5,14 +5,9 @@
         <button @onclick="SetCreateUserView" class="hover:bg-green-50 my-3 cursor-pointer transition-all rounded-lg border-dashed border w-full flex items-center justify-center p-2 border-green-600 gap-2">
             <span class="text-green-600 font-semibold text-sm">Crear Usuario</span>
         </button>
-        @foreach (var user in Users)
-        {
-            <UserCard User="user"/>
-            <div class="ml-auto w-[80%]">
-                <LumexDivider/>
-            </div>
-
-        }
+        
+        <UsersContainer Users="@Users"></UsersContainer>
+       
         
         @if (_fetchingUsers)
         {

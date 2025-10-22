@@ -2,7 +2,7 @@
 <div class="w-full border-neutral-100 border rounded-xl  bg-neutral-50 hover:bg-neutral-100 flex  flex-col  gap-3 p-3  ">
     
    <div class="w-full gap-4 items-center flex ">
-       <img class="w-[50px] h-[50px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{Reader.SexName}?username={Reader.FullName}")/>
+       <img class="w-[50px] h-[50px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Reader.FullName}")/>
        <div class="flex flex-col gap-1 ">
            <label class="text-[16px] font-semibold opacity-80 text-black ">@Reader.FullName</label>
            <label class="text-[13px] font-normal line-clamp-1">Info: @Reader.IdentityCardNumber 
@@ -52,7 +52,7 @@
                }
               
                <LumexDropdownItem Disabled="true" Id="Divider">
-                   <SidebarSectionDivider Name="Zona de peligro"/>
+                   <SectionDivider Name="Zona de peligro"/>
                </LumexDropdownItem>
                <LumexDropdownItem Disabled="@(_deletingReader || Reader.LastLoanIsActive)" OnClick="SetDeleteReaderConfirmationModal" Id="EliminarLector" Color="ThemeColor.Danger" class="text-red-600">
                    <StartContent>
@@ -83,7 +83,7 @@
 
 
    </div>
-   <SidebarSectionDivider Name="Detalles de préstamos"/>
+   <SectionDivider Name="Detalles de préstamos"/>
 
    <div class="w-full flex flex-col  gap-2">
 

@@ -2,12 +2,20 @@ namespace BibliotecaUteco.Client.Utilities;
 
 public static class RoleParser
 {
-    public static int ParseRole(string roleName)
+    public static ApplicationRoles ParseRole(int roleId)
     {
-        return roleName switch
+        return roleId switch
         {
-             "Administrador" => 1,
-            _ => 2
+             1 => ApplicationRoles.Admin,
+            _ => ApplicationRoles.Librarian
         };
     }
+    
+    
+}
+
+public enum ApplicationRoles
+{
+    Admin = 1,
+    Librarian = 2,
 }

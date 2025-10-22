@@ -32,17 +32,16 @@ public class CreateUserRequest
 
     [Required(ErrorMessage = "El rol es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido.")]
-    public int RoleId => RoleParser.ParseRole(_roleName);
+    public int RoleId => (int)_role;
     
     
     
 
     [Range(1, 2)] 
-    public int SexId => SexParser.ParseSex(_sexName);
-    public string SexName => SexId == 1 ? "boy" : "girl";
+    public int SexId => (int)_sex;
 
-    public string _roleName { get; set; } = "Bibliotecario";
-    public string _sexName { get; set; } = "Masculino";
+    public ApplicationRoles _role { get; set; } = ApplicationRoles.Librarian;
+    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Male;
 
     public IBrowserFile? ProfilePictureFile { get; set; }
 }

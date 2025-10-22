@@ -31,11 +31,10 @@ public class UpdateUserRequest
     
 
     [Range(1, 2)] 
-    public int SexId => SexParser.ParseSex(_sexName);
-    public string SexName => SexId == 1 ? "boy" : "girl";
+    public int SexId => (int)_sex;
 
    
-    public string _sexName { get; set; } = "Masculino";
+    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Male;
 
     [Required]
     public bool RemoveProfilePicture { get; set; } = false;

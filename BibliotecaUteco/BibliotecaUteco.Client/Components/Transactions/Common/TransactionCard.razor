@@ -28,7 +28,7 @@
            
             <label class="text-lg font-semibold">RD$ @Transaction.Amount.ToString("F2")</label>
 
-            <SidebarSectionDivider Name="Creador de la transacción"/>
+            <SectionDivider Name="Creador de la transacción"/>
 
             <div class="flex items-center gap-3 text-neutral-800">
                 @if (!string.IsNullOrEmpty(Transaction.User.ProfilePictureUrl))
@@ -37,7 +37,7 @@
                 }
                 else
                 {
-                    <img alt="user-pfp" class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{Transaction.User.SexName}?username={Transaction.User.Username}")/>
+                    <img alt="user-pfp" class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Transaction.User.Username}")/>
                 }
                 <div class="flex flex-col">
                     <p class="text-sm">@Transaction.User.FullName</p>
