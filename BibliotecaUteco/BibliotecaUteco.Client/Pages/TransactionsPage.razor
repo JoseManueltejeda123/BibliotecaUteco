@@ -1,4 +1,5 @@
 @page "/transactions"
+@using BibliotecaUteco.Client.Requests.Transactions.Queries
 
 <PageTitle>Transacciones</PageTitle>
 
@@ -12,13 +13,17 @@
             </div>
 
             <div class="flex w-full gap-2 items-center">
-                <LumexTextbox Type="@InputType.Search"
+                <LumexNumbox TValue="int?"
+                             
+                             ValueChanged="async (e) => { await HandleOnInputChanged(e);}"
                               Label="Buscar transacciones"
                               Placeholder="Buscar por usuario"
-                              LabelPlacement="@LabelPlacement.Outside"/>
-                <LumexTooltip Content=@($"Buscar transacciones ")>
-                    <LumexButton Type="ButtonType.Submit"  Size="Size.Medium" Color="ThemeColor.Primary">Buscar</LumexButton>
-                </LumexTooltip>
+                             minValue="0"
+                             Step="1"
+                             Behavior="InputBehavior.OnInput"
+                             LabelPlacement="@LabelPlacement.Outside"
+                />
+            
             </div>
 
 
@@ -27,8 +32,53 @@
                 <button class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
                     <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
                 </button>
-                <TransactionCard Mount="100"/>
-                <TransactionCard Mount="-100"/>
+                
+                @if (Transactions.Any())
+                {
+                    @foreach (var transaction in Transactions)
+                    {
+                      
+                        <TransactionCard Transaction="@transaction" @key="transaction.Id"/>
+
+                       
+                        var index = Transactions.IndexOf(transaction);
+
+                        if (index < Transactions.Count - 1 && Transactions.Count > 1)
+                        {
+                            var nextTransaction = Transactions[index + 1];
+
+                            if (nextTransaction.CreatedAt.Month != transaction.CreatedAt.Month ||
+                            nextTransaction.CreatedAt.Year != transaction.CreatedAt.Year)
+                            {
+                              <SidebarSectionDivider Name="@nextTransaction.CreatedAt.ToString("MMMM yyyy")" />
+                            }
+                        }
+                        
+
+                    }
+                    
+                    
+                }
+                else if (!_hasMore && Filter != 0 && !_fetchingTransactions)
+                {
+                    <NoResultsFound/>
+                }
+                
+                else if(!_hasMore)
+                {
+                    <p class="text-center text-sm font-semibold opacity-80">No hay transacciones</p>
+                }
+              
+                @if (_fetchingTransactions)
+                {
+                    <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+
+                }
+                
+                @if (!_fetchingTransactions && _hasMore)
+                {
+                    <LumexButton OnClick="FetchMore" Variant="Variant.Ghost" Color="ThemeColor.Primary">Obtener Mas</LumexButton>
+                }
 
 
             </div>
@@ -45,14 +95,111 @@
 
 @code{
     
+    public bool _fetchingTransactions {get; set;} = false;
+    public int Filter { get; set; } = 0;
+    public List<TransactionResponse> Transactions { get; set; } = new();
+    public CancellationTokenSource? _fetchCts {get; set;}
+    public CancellationTokenSource? _inputCts {get; set;}
+    public bool _hasMore {get; set;} = true;
 
-   
 
 }
 
 @functions{
-  
 
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchGetTransactionsByFilterAsync();
+    }
+    public async Task HandleOnInputChanged(int? value)
+    {
+        
+        Filter = value ?? 0;
+
+        if (_inputCts is not null)
+        {
+            await _inputCts.CancelAsync();
+        }
+
+        try
+        {
+            _inputCts = new();
+
+            await Task.Delay(500, _inputCts.Token);
+            
+            await FetchGetTransactionsByFilterAsync();
+        }
+        catch
+        {
+        }
+    }
+
+    public async Task FetchGetTransactionsByFilterAsync()
+    {
+        if (_fetchingTransactions) return;
+
+        if (_fetchCts is not null)
+        {
+            await _fetchCts.CancelAsync();
+        }
+        
+        _fetchCts = new();
+        _fetchingTransactions = true;
+        Transactions.Clear();
+        StateHasChanged();
+
+        var result = await TransactionsApiServices.GetByFilterAsync(BuildQuery());
+
+        if (result.IsSuccessful())
+        {
+            Transactions.AddRange(result.Data);
+            _hasMore = result.Data.Count() >= 10;
+        }
+        else
+        {
+        _hasMore = false;
+        }
+        _fetchingTransactions = false;
+        StateHasChanged();
+
+    }
     
+    public async Task FetchMore()
+    {
+        if (_fetchingTransactions) return;
+
+        if (_fetchCts is not null)
+        {
+            await _fetchCts.CancelAsync();
+        }
+        
+        _fetchCts = new();
+        _fetchingTransactions = true;
+        StateHasChanged();
+
+        var result = await TransactionsApiServices.GetByFilterAsync(BuildQuery(true));
+
+        if (result.IsSuccessful())
+        {
+            Transactions.AddRange(result.Data);
+            _hasMore = result.Data.Count() >= 10;
+        }
+        else
+        {
+            _hasMore = false;
+        }
+        _fetchingTransactions = false;
+        StateHasChanged();
+
+    }
+
+    public GetTransactionsByFilterRequest BuildQuery(bool withSkip = false) => new()
+    {
+        Skip = withSkip ? Transactions.Count() : 0,
+        Take = 10,
+        UserId = Filter == 0 ? null : Filter
+        
+    };
+
 
 }

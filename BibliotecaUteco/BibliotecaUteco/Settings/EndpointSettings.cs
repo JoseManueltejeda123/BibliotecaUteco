@@ -12,5 +12,6 @@ public static class EndpointSettings
     public static string LoansEndpoint => $"api/{ApiV1}/loans";
     
     public static string PenaltiesEndpoint => $"api/{ApiV1}/penalties";
+    public static string TransactionsEndpoint => $"api/{ApiV1}/transactions";
 
 }
