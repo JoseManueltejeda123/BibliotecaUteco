@@ -40,8 +40,8 @@ public class CreateUserRequest
     [Range(1, 2)] 
     public int SexId => (int)_sex;
 
-    public ApplicationRoles _role { get; set; } = ApplicationRoles.Librarian;
-    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Male;
+    public ApplicationRoles _role { get; set; } = ApplicationRoles.Bibliotecario;
+    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
 
     public IBrowserFile? ProfilePictureFile { get; set; }
 }

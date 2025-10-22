@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using BibliotecaUteco.Client.Utilities;
 
 namespace BibliotecaUteco.Client.Responses;
 
@@ -18,7 +19,7 @@ public class ReaderResponse : BaseResponse
     public DateTime? LastLoanDate { get; set; }
     public bool LastLoanIsActive { get; set; }
     public int SexId { get; set; }
-    public string SexName => SexId == 1 ? "Boy" : "Girl";
+    public ApplicationSexes Sex {get; set;} 
         public int ReturnedLoansCount { get; set; } = 0;
 
 

@@ -33,7 +33,7 @@ public static class JwtDependencies
                     policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
                     policy.RequireRole(
-                        new string[] { nameof(RolesHelper.Librarian), nameof(RolesHelper.Admin) }
+                        new string[] { nameof(ApplicationRoles.Bibliotecario), nameof(ApplicationRoles.Admin) }
                     );
                 }
             );
@@ -43,7 +43,7 @@ public static class JwtDependencies
                 {
                     policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole(new string[] { nameof(RolesHelper.Admin) });
+                    policy.RequireRole(new string[] { nameof(ApplicationRoles.Admin) });
                 }
             );
         });

@@ -473,7 +473,7 @@ namespace BibliotecaUteco.Migrations
                     {
                         1,
                         new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(7244),
-                        "Librarian",
+                        "Bibliotecario",
                         new DateTime(2025, 10, 12, 4, 35, 42, 64, DateTimeKind.Utc).AddTicks(7251),
                     },
                     {

@@ -524,7 +524,7 @@ namespace BibliotecaUteco.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(2025, 10, 21, 1, 39, 12, 985, DateTimeKind.Utc).AddTicks(910),
-                            Name = "Librarian",
+                            Name = "Bibliotecario",
                             UpdatedAt = new DateTime(2025, 10, 21, 1, 39, 12, 985, DateTimeKind.Utc).AddTicks(917)
                         },
                         new

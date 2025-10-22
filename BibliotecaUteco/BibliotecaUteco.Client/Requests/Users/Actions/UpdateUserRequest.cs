@@ -34,7 +34,7 @@ public class UpdateUserRequest
     public int SexId => (int)_sex;
 
    
-    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Male;
+    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
 
     [Required]
     public bool RemoveProfilePicture { get; set; } = false;

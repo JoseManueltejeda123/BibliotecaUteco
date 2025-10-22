@@ -7,7 +7,7 @@ public static class RoleParser
         return roleId switch
         {
              1 => ApplicationRoles.Admin,
-            _ => ApplicationRoles.Librarian
+            _ => ApplicationRoles.Bibliotecario
         };
     }
     
@@ -17,5 +17,5 @@ public static class RoleParser
 public enum ApplicationRoles
 {
     Admin = 1,
-    Librarian = 2,
+    Bibliotecario = 2,
 }

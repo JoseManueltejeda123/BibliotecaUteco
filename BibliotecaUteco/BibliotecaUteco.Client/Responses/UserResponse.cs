@@ -15,8 +15,7 @@ public class UserResponse : BaseResponse
 
     public int SexId { get; set; }
 
-    public string SexName => SexId == 1 ? "boy" : "girl";
-
+    public ApplicationSexes Sex {get; set;} 
     public ApplicationRoles Role {get; set;}
        
     public int RoleId {get; set;} = 0;
