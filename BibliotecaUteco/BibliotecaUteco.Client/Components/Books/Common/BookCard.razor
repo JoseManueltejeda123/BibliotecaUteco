@@ -27,11 +27,10 @@
                     <ChildContent>Ver detalles</ChildContent>
                 </LumexDropdownItem>
                 
-                @if (!string.IsNullOrEmpty(context.User?.FindFirst("role")?.Value) && context.User?.FindFirst("role")?.Value == "Admin")
-                {
+              
 
                     <LumexDropdownItem Id="Divider2" Disabled="true">
-                        <SidebarSectionDivider Name="Zona de peligro"/>
+                        <SectionDivider Name="Zona de peligro"/>
                     </LumexDropdownItem>
                     <LumexDropdownItem OnClick="SetDeleteBookConfirmationModal" Disabled="_deletingBook" Id="EliminarLibro" Color="@ThemeColor.Danger" Class="text-danger">
                         <StartContent>
@@ -39,7 +38,7 @@
                         </StartContent>
                         <ChildContent>Eliminar libro</ChildContent>
                     </LumexDropdownItem>
-                }
+                
                
 
                       

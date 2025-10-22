@@ -27,7 +27,7 @@ else if(!HideActions)
 {
     <AuthorizeView>
         <Authorized>
-            <LumexDropdown ShowArrow="true"  Id=@($"AuthorsActions-{Author.FullName}")>
+            <LumexDropdown @ref="dropdownRef" ShowArrow="true"  >
                 <LumexDropdownTrigger>
                     <EllipsisVerticalIcon Size="18px"/>
                 </LumexDropdownTrigger>
@@ -95,6 +95,8 @@ else if(!HideActions)
     [Parameter] public EventCallback<AuthorResponse> OnRemove { get; set; }
 
     public ThemeColor RandomColor { get; set; } = ThemeColor.Default;
+    
+    public LumexDropdown dropdownRef {get; set;}
 
 }
 
@@ -124,8 +126,9 @@ else if(!HideActions)
     }
     public async Task HideDropdown()
     {
+        dropdownRef.Open = false;
+        StateHasChanged();
         await Task.Delay(20);
-        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay", $"AuthorsActions-{Author.FullName}");
     }
     protected override void OnAfterRender(bool firstRender)
     {
@@ -138,8 +141,8 @@ else if(!HideActions)
 
     public async Task TriggerOnUpdate()
     {
-        await OnUpdate.InvokeAsync(Author);
-        await HideDropdown();
+    await HideDropdown();
+    await OnUpdate.InvokeAsync(Author);
     }
     public async Task TriggerOnClicked(){
         await HideDropdown();

@@ -11,12 +11,18 @@ public class SexParser
         };
     }
     
-    public static string ParseSexFromId(int sexId)
+    public static ApplicationSexes ParseSexFromId(int sexId)
     {
         return sexId switch
         {
-            1 => "Masculino",
-            _ => "Femenino"
+            1 => ApplicationSexes.Male,
+            _ => ApplicationSexes.Female
         };
     }
+}
+
+public enum ApplicationSexes
+{
+    Male = 1,
+    Female = 2
 }

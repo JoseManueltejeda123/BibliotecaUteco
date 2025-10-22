@@ -56,7 +56,7 @@
                 <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => {await SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>
 
             </div>
-            <SidebarSectionDivider Name="Libros"/>
+            <SectionDivider Name="Libros"/>
             <div class="grid max-sm:grid-cols-2 max-md:grid-cols-3 grid-cols-6 gap-7">
                
                 <button @onclick="ShowCreateBookForm" class="border-dotted border-[3px] border-green-600 aspect-[2/3] w-full rounded-xl hover:bg-green-100/30 transition-all flex flex-col justify-center items-center gap-2 cursor-pointer ">

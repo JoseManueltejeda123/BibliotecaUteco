@@ -30,7 +30,7 @@
         <div class="flex w-full items-start max-md:flex-col gap-8 max-md:gap-1">
 
             <div class="flex flex-col">
-              <SidebarSectionDivider Name="Detalles de cobro"/>
+              <SectionDivider Name="Detalles de cobro"/>
                 <span class="font-semibold text-sm mt-2 inconsolata"> Taza de penalización (diario): <span class="bg-black px-2  text-white inconsolata">RD$ @(Penalty._dailyFineRate)</span></span>
                 <span class="font-semibold text-sm mt-2 inconsolata"> Dias excedidos: <span class="bg-black px-2  text-white inconsolata">@Penalty.OverdueDays</span></span>
 
@@ -43,7 +43,7 @@
             @if(!Penalty.IsDue)
             {
                 <div class="flex flex-col">
-                  <SidebarSectionDivider Name="Detalles de pago"/>
+                  <SectionDivider Name="Detalles de pago"/>
                     <span class="font-semibold text-sm mt-2 inconsolata"> Monto dado: <span class="bg-black px-2 text-white inconsolata">RD$ @Penalty._givenAmount</span></span>
                     <span class="font-semibold text-sm mt-2 inconsolata"> Monto develto: <span class="bg-black px-2  text-white inconsolata">RD$ @Penalty._returnedAmount </span></span>
 

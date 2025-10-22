@@ -36,7 +36,7 @@
 
                 }
 
-               <SidebarSectionDivider Name="Detalles"/>
+               <SectionDivider Name="Detalles"/>
 
                 <div class="w-full flex items-center gap-2">
             
@@ -61,7 +61,7 @@
                     }
                 </div>
                 
-                <SidebarSectionDivider Name="Libros"/>
+                <SectionDivider Name="Libros"/>
             
                 @foreach (var book in Loan.Books.Take(ShowAllBooks ? Loan.Books.Count() : 1))
                 {

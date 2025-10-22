@@ -23,7 +23,7 @@
             else
             {
                 <div class="w-full flex flex-col items-center">
-                    <img class="w-[70px] h-[70px] rounded-full object-cover" src=@($"https://avatar.iran.liara.run/public/{UpdateUserModel.SexName}?username={UpdateUserModel.Username}")/>
+                    <img class="w-[70px] h-[70px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={UpdateUserModel.Username}") />
 
                 </div>
           
@@ -70,23 +70,23 @@
 
 
         </div>
-        <LumexSelect Size="Size.Small" TValue="@(string)"
-                     @bind-Value="@UpdateUserModel._sexName"
+        <LumexSelect Size="Size.Small" TValue="@(ApplicationSexes)"
+                     @bind-Value="@UpdateUserModel._sex"
                      Label="Sexo del usuario"
                      Placeholder="Selecciona el sexo del usuario"
                      Class="max-w-xs">
            
-            <LumexSelectItem @key=@("Masculino") Value=@("Masculino")>
+            <LumexSelectItem @key=@(ApplicationSexes.Male) Value=@(ApplicationSexes.Male)>
                 Masculino
             </LumexSelectItem>
-            <LumexSelectItem @key=@("Femenino") Value=@("Femenino")>
+            <LumexSelectItem @key=@(ApplicationSexes.Female) Value=@(ApplicationSexes.Female)>
                                                       
                 Femenino
             </LumexSelectItem>
             
         </LumexSelect>
        
-        <SidebarSectionDivider/>
+        <SectionDivider/>
         @if (_updatingUser)
         {
             <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
@@ -123,7 +123,7 @@
         UpdateUserModel.UserId = user.Id;
         UpdateUserModel.Username = user.Username;
         UpdateUserModel.FullName = user.FullName;
-        UpdateUserModel._sexName = SexParser.ParseSexFromId(user.SexId);
+        UpdateUserModel._sex = SexParser.ParseSexFromId(user.SexId);
         UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
         _prevProfilePicture = user.ProfilePictureUrl;
     }

@@ -3,7 +3,7 @@
 <Animate Animation="Animations.FadeIn" Delay="@TimeSpan.FromMilliseconds(Index * 100)" >
     <AuthorizeView>
     <Authorized>
-        <LumexDropdown ShowArrow="true" Id=@($"GenreActions-{Genre.Name}")>
+        <LumexDropdown @ref="dropdownRef" ShowArrow="true" >
             <LumexDropdownTrigger>
                 <button>
                     <LumexChip Disabled="_deletingGenre" Class="cursor-pointer"  Size="Size.Small" Variant="ChipVariant.Flat" Color="@Color">
@@ -71,6 +71,7 @@
     [Parameter] public bool ShowActions {get; set;} = true;
     
     [Parameter] public int Index {get; set;} = 0;
+    public LumexDropdown dropdownRef {get; set;}
 
 }
 
@@ -105,8 +106,9 @@
 
     public async Task HideDropdown()
     {
+        dropdownRef.Open = false;
+        StateHasChanged();
         await Task.Delay(20);
-        await JsRuntime.InvokeVoidAsync("removeDropdownOverlay", $"GenreActions-{Genre.Name}");
     }
 
     public async Task FetchDeleteGenreAsync()
@@ -130,13 +132,15 @@
 
     public async Task TriggerOnClicked()
     {
-        await OnClicked.InvokeAsync(Genre);
-        await HideDropdown();
+    await HideDropdown();
+
+    await OnClicked.InvokeAsync(Genre);
     }
 
      public async Task TriggerOnUpdateGenreClicked()
      {
-        await OnUpdateGenreClicked.InvokeAsync(Genre);
-        await HideDropdown();
+     await HideDropdown();
+
+     await OnUpdateGenreClicked.InvokeAsync(Genre);
      }
 }

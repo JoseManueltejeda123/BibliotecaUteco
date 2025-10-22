@@ -95,8 +95,8 @@ public class User : BaseEntity
             FullName = FullName,
             IdentityCardNumber = IdentityCardNumber,
             ProfilePictureUrl = ProfilePictureUrl ?? "",
-            RoleName = Role?.Name ?? "",
-            RoleId = Role?.Id ?? 0, 
+            Role = RoleParser.ParseRole(RoleId),
+            RoleId = RoleId, 
             SexId = SexId ?? 1,
         };
 }

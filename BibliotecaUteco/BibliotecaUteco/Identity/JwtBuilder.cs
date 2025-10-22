@@ -30,7 +30,7 @@ public class JwtBuilder(IOptions<JwtSettings> jwtSettings)
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Picture, user.ProfilePictureUrl),
                     new Claim(JwtRegisteredClaimNames.Name, user.FullName),
-                    new Claim("role", user.RoleName),
+                    new Claim("role", user.Role.ToString()),
                     new Claim("createdAt", user.CreatedAt.ToString(CultureInfo.InvariantCulture)),
                 ]
             ),

@@ -27,7 +27,7 @@
             </div>
 
 
-            <SidebarSectionDivider Name="Transacciones de caja"/>
+            <SectionDivider Name="Transacciones de caja"/>
             <div class="w-full flex flex-col gap-3">
                 <button class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
                     <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
@@ -50,7 +50,7 @@
                             if (nextTransaction.CreatedAt.Month != transaction.CreatedAt.Month ||
                             nextTransaction.CreatedAt.Year != transaction.CreatedAt.Year)
                             {
-                              <SidebarSectionDivider Name="@nextTransaction.CreatedAt.ToString("MMMM yyyy")" />
+                              <SectionDivider Name="@nextTransaction.CreatedAt.ToString("MMMM yyyy")" />
                             }
                         }
                         

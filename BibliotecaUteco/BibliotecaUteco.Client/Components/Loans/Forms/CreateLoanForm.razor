@@ -9,7 +9,7 @@
             <ReaderCardMini Reader="@Reader"/>
         </div>
         
-        <SidebarSectionDivider Name="Libros a prestar"/>
+        <SectionDivider Name="Libros a prestar"/>
 
         <LumexPopover Shadow="Shadow.Medium" ShowArrow="true">
             <LumexPopoverTrigger>
@@ -48,7 +48,7 @@
         }
         
         <p class="text-[13px] opacity-80">Máximo 10 libros. @SelectedBooks.Count() @("/10") seleccionados </p>
-        <SidebarSectionDivider Name="Duración del prestamo"/>
+        <SectionDivider Name="Duración del prestamo"/>
         
         @if (SelectedBooks.Any())
         {
