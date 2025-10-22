@@ -76,10 +76,10 @@
                      Placeholder="Selecciona el sexo del usuario"
                      Class="max-w-xs">
            
-            <LumexSelectItem @key=@(ApplicationSexes.Male) Value=@(ApplicationSexes.Male)>
+            <LumexSelectItem @key=@(ApplicationSexes.Masculino) Value=@(ApplicationSexes.Masculino)>
                 Masculino
             </LumexSelectItem>
-            <LumexSelectItem @key=@(ApplicationSexes.Female) Value=@(ApplicationSexes.Female)>
+            <LumexSelectItem @key=@(ApplicationSexes.Femenino) Value=@(ApplicationSexes.Femenino)>
                                                       
                 Femenino
             </LumexSelectItem>
@@ -123,7 +123,7 @@
         UpdateUserModel.UserId = user.Id;
         UpdateUserModel.Username = user.Username;
         UpdateUserModel.FullName = user.FullName;
-        UpdateUserModel._sex = SexParser.ParseSexFromId(user.SexId);
+        UpdateUserModel._sex = SexParser.ParseSex(user.SexId);
         UpdateUserModel.IdentityCardNumber = user.IdentityCardNumber;
         _prevProfilePicture = user.ProfilePictureUrl;
     }

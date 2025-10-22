@@ -9,6 +9,7 @@
       "Courier New", monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-300: oklch(80.8% 0.114 19.571);
+    --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-red-700: oklch(50.5% 0.213 27.518);
@@ -562,6 +563,9 @@
   .z-\[-1\] {
     z-index: -1;
   }
+  .z-\[1\] {
+    z-index: 1;
+  }
   .z-\[100\] {
     z-index: 100;
   }
@@ -983,9 +987,6 @@
   }
   .w-\[50px\] {
     width: 50px;
-  }
-  .w-\[60\%\] {
-    width: 60%;
   }
   .w-\[70px\] {
     width: 70px;
@@ -1729,6 +1730,12 @@
   .bg-neutral-950 {
     background-color: var(--color-neutral-950);
   }
+  .bg-neutral-950\/30 {
+    background-color: color-mix(in srgb, oklch(14.5% 0 0) 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-950) 30%, transparent);
+    }
+  }
   .bg-orange-100\/30 {
     background-color: color-mix(in srgb, oklch(95.4% 0.038 75.164) 30%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2082,9 +2089,6 @@
   .text-\[16px\] {
     font-size: 16px;
   }
-  .text-\[17px\] {
-    font-size: 17px;
-  }
   .text-\[20px\] {
     font-size: 20px;
   }
@@ -2211,6 +2215,9 @@
   .text-primary-foreground {
     color: var(--lumex-primary-foreground);
   }
+  .text-red-400 {
+    color: var(--color-red-400);
+  }
   .text-red-500 {
     color: var(--color-red-500);
   }
@@ -2261,9 +2268,6 @@
   }
   .underline {
     text-decoration-line: underline;
-  }
-  .decoration-green-700 {
-    text-decoration-color: var(--color-green-700);
   }
   .underline-offset-4 {
     text-underline-offset: 4px;
@@ -2346,6 +2350,12 @@
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-black {
+    --tw-shadow-color: #000;
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-shadow-color: color-mix(in oklab, var(--color-black) var(--tw-shadow-alpha), transparent);
+    }
+  }
   .shadow-danger\/40 {
     --tw-shadow-color: var(--lumex-danger);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2423,6 +2433,10 @@
       outline: 2px solid transparent;
       outline-offset: 2px;
     }
+  }
+  .brightness-50 {
+    --tw-brightness: brightness(50%);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .brightness-75 {
     --tw-brightness: brightness(75%);

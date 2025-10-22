@@ -2,27 +2,20 @@ namespace BibliotecaUteco.Client.Utilities;
 
 public class SexParser
 {
-    public static int ParseSex(string sexName)
-    {
-        return sexName switch
-        {
-             "Masculino" => 1,
-            _ => 2
-        };
-    }
     
-    public static ApplicationSexes ParseSexFromId(int sexId)
+    
+    public static ApplicationSexes ParseSex(int sexId)
     {
         return sexId switch
         {
-            1 => ApplicationSexes.Male,
-            _ => ApplicationSexes.Female
+            1 => ApplicationSexes.Masculino,
+            _ => ApplicationSexes.Femenino
         };
     }
 }
 
 public enum ApplicationSexes
 {
-    Male = 1,
-    Female = 2
+    Masculino = 1,
+    Femenino = 2
 }

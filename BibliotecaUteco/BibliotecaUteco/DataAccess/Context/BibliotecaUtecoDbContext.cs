@@ -32,7 +32,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
             x.HasData(
                 new Role[]
                 {
-                    new Role() { Id = 1, Name = "Librarian" },
+                    new Role() { Id = 1, Name = "Bibliotecario" },
                     new Role() { Id = 2, Name = "Admin" },
                 }
             );

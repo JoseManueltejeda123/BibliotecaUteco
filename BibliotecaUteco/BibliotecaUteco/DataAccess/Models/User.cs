@@ -96,6 +96,7 @@ public class User : BaseEntity
             IdentityCardNumber = IdentityCardNumber,
             ProfilePictureUrl = ProfilePictureUrl ?? "",
             Role = RoleParser.ParseRole(RoleId),
+            Sex= SexParser.ParseSex(SexId ?? 1),
             RoleId = RoleId, 
             SexId = SexId ?? 1,
         };
