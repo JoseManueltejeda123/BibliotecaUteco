@@ -41,7 +41,7 @@ public class ApiResult<T> : IApiResult
 
     public static ApiResult<T> BuildFailure(
         HttpStatus status = HttpStatus.BadRequest,
-        string message = "Success",
+        string message = "Error",
         List<string>? messages = null
     ) =>
         new()
@@ -52,6 +52,8 @@ public class ApiResult<T> : IApiResult
             Data = default,
         };
 }
+
+
 
 public enum HttpStatus
 {
