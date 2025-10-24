@@ -1,5 +1,7 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using BibliotecaUteco.Client.Identity.Provider;
 using BibliotecaUteco.Client.Responses;
@@ -17,7 +19,7 @@ public class BibliotecaHttpClient(
 )
 {
     public string Prefix { get; set; } = "api/v1";
-
+    
     private async Task AttachTokenAsync()
     {
         var token = await localStorageService.GetTokenAsync();
@@ -31,74 +33,64 @@ public class BibliotecaHttpClient(
         }
     }
 
-    private async Task<ApiResult<TResult>> ProcessResult<TResult>(
+    public void ShowErrorToast(string message)
+    {
+        toast.Error(
+            "Oops",
+            new ToastModel()
+            {
+                Description = message,
+                Title = "Oops!",
+                Type = ToastType.Error,
+                Position = ToastPosition.BottomCenter,
+            }
+        );
+    }
+
+    private async Task<ApiResponse<TResult>> ProcessResult<TResult>(
         HttpResponseMessage response,
         CancellationToken cancellationToken = default
     )
     {
+         ApiResponse<TResult> failure = new ApiResponse<TResult>()
+                    {
+                        Data = default,
+                        IsSuccess = false,
+                        Messages = ["Tuvimos un problema al hacer esta peticion"],
+                        Status = HttpStatus.BadRequest
+                            
+                    }; 
         try
         {
+           
+            
             var jsonContent = await response.Content.ReadAsStringAsync(cancellationToken);
-            if (string.IsNullOrWhiteSpace(jsonContent))
-            {
-                toast.Error(
-                    "Oops",
-                    new ToastModel()
-                    {
-                        Description = "El servidor retornó una respuesta vacía",
-                        Title = "Oops!",
-                        Type = ToastType.Error,
-                        Position = ToastPosition.BottomCenter,
-                    }
-                );
-                return ApiResult<TResult>.BuildFailure(
-                    HttpStatus.BadRequest,
-                    "Respuesta vacía del servidor"
-                );
-            }
+            
 
-            var apiResult = JsonSerializer.Deserialize<ApiResult<TResult>>(
+            var apiResult = JsonSerializer.Deserialize<ApiResponse<TResult>>(
                 jsonContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
             );
-
-            if (apiResult == null)
+            
+            if (apiResult is null)
             {
-                toast.Error(
-                    "Oops",
-                    new ToastModel()
-                    {
-                        Description = "Hubo un problema. Intenta mas luego",
-                        Title = "Oops!",
-                        Type = ToastType.Error,
-                        Position = ToastPosition.BottomCenter,
-                    }
-                );
-                return ApiResult<TResult>.BuildFailure(
-                    HttpStatus.BadRequest,
-                    "Hubo un problema al deserializar la respuesta"
-                );
+               
+                ShowErrorToast("El servidor retornó una respuesta vacía");
+                return failure;
+
             }
 
             if (!response.IsSuccessStatusCode)
             {
                 foreach (var message in apiResult.Messages)
                 {
-                    toast.Error(
-                        "Error",
-                        new ToastModel()
-                        {
-                            Description = message,
-                            Title = "Error",
-                            Type = ToastType.Error,
-                            Position = ToastPosition.BottomCenter,
-                        }
-                    );
+                    ShowErrorToast(message);
                 }
             }
 
             if (apiResult.Status == HttpStatus.Unauthorized)
             {
+                ShowErrorToast("Su sessión ha expirado");
                 await authState.UpdateAuthenticationStateAsync(null);
             }
 
@@ -106,115 +98,81 @@ public class BibliotecaHttpClient(
         }
         catch (Exception ex)
         {
-            toast.Error(
-                "Oops",
-                new ToastModel()
-                {
-                    Description = ex.InnerException?.Message ?? ex.Message,
-                    Title = "Oops!",
-                    Type = ToastType.Error,
-                    Position = ToastPosition.BottomCenter,
-                }
-            );
-            return ApiResult<TResult>.BuildFailure(
-                HttpStatus.BadRequest,
-                "Tuvimos un problema. Intentalo mas tarde"
-            );
+            ShowErrorToast(ex.InnerException?.Message ?? ex.Message);
+            return failure;
         }
     }
 
-    public async Task<ApiResult<TResult>> FetchGetAsync<TResult>(
+    public async Task<ApiResponse<TResult>> FetchGetAsync<TResult>(
         string route,
         CancellationToken cancellationToken = default
-    )
+    )=> await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.GET, route, token: cancellationToken), cancellationToken);
+
+    public async Task<ApiResponse<TResult>> FetchPostAsync<TResult>(
+        string route,
+        object data,
+        CancellationToken cancellationToken = default
+    )=>  await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.POST, route, data, cancellationToken), cancellationToken);
+    
+
+    public async Task<ApiResponse<TResult>> FetchPutAsync<TResult>(
+        string route,
+        object data,
+        CancellationToken cancellationToken = default
+    )=>  await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.PUT, route, data, cancellationToken), cancellationToken);
+
+    public async Task<ApiResponse<TResult>> FetchDeleteAsync<TResult>(
+        string route,
+        CancellationToken cancellationToken = default
+    ) => await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.DELETE, route, token: cancellationToken), cancellationToken);
+    
+    
+    public async Task<HttpResponseMessage> CallAsync<TResponse>(HttpMethod method, string route, object? body = null, CancellationToken token = default)
     {
         try
         {
             await AttachTokenAsync();
-            var response = await client.GetAsync(Prefix + route, cancellationToken);
-            return await ProcessResult<TResult>(response, cancellationToken);
-        }
-        catch(Exception)
-        {
-            toast.Error("Algo salió mal");
-            return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
-        }
-       
-    }
-
-    public async Task<ApiResult<TResult>> FetchPostAsync<TResult>(
-        string route,
-        object data,
-        CancellationToken cancellationToken = default
-    )
-    {
-        
-
-        try{
-            await AttachTokenAsync();
-            HttpResponseMessage response;
-
-            if (data is MultipartFormDataContent multipart)
+            return method switch
             {
-                response = await client.PostAsync(Prefix + route, multipart, cancellationToken);
-                return await ProcessResult<TResult>(response, cancellationToken);
-            }
+                HttpMethod.GET => await client.GetAsync(Prefix + route, token),
+                HttpMethod.DELETE => await client.DeleteAsync(Prefix + route, token),
+                HttpMethod.POST => body is MultipartFormDataContent multipart
+                    ? await client.PostAsync(Prefix + route, multipart, token)
+                    : await client.PostAsJsonAsync(Prefix + route, body, token),
+                HttpMethod.PUT => body is MultipartFormDataContent multipart
+                    ? await client.PutAsync(Prefix + route, multipart, token)
+                    : await client.PutAsJsonAsync(Prefix + route, body, token),
+                _ => throw new NotImplementedException("No existe el metodo pedido")
 
-            response = await client.PostAsJsonAsync(Prefix + route, data, cancellationToken);
-            return await ProcessResult<TResult>(response, cancellationToken);
+            };
         }
-        catch(Exception)
-        {            
-            toast.Error("Algo salió mal");
-
-            return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
-        }
-    }
-
-    public async Task<ApiResult<TResult>> FetchPutAsync<TResult>(
-        string route,
-        object data,
-        CancellationToken cancellationToken = default
-    )
-    {
-        try{
-
-            await AttachTokenAsync();
-            HttpResponseMessage response;
-
-            if (data is MultipartFormDataContent multipart)
+        catch (Exception ex)
+        {
+            var apiResponse = new ApiResponse<TResponse>
             {
-                response = await client.PutAsync(Prefix + route, multipart, cancellationToken);
-                return await ProcessResult<TResult>(response, cancellationToken);
-            }
-            response = await client.PutAsJsonAsync(Prefix + route, data, cancellationToken);
-            return await ProcessResult<TResult>(response, cancellationToken);
-        }
-        catch(Exception)
-        {
-            toast.Error("Algo salió mal");
+                IsSuccess = false,
+                Messages = [ex.InnerException?.Message ?? ex.Message],
+                Status = HttpStatus.BadRequest,
+                Data = default
+            };
 
-            return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
+            var json = JsonSerializer.Serialize(apiResponse);
+    
+            return new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
         }
+
     }
+}
 
-    public async Task<ApiResult<TResult>> FetchDeleteAsync<TResult>(
-        string route,
-        CancellationToken cancellationToken = default
-    )
-    {
 
-        try
-        {
-            await AttachTokenAsync();
-            var response = await client.DeleteAsync(Prefix + route, cancellationToken);
-            return await ProcessResult<TResult>(response, cancellationToken);
-        }
-        catch (Exception)
-        {
-            toast.Error("Algo salió mal");
 
-            return ApiResult<TResult>.BuildFailure(HttpStatus.InternalServerError, "Algo ocurrió. Intenta mas tarde");
-        }
-    }
+public enum HttpMethod
+{
+    GET,
+    PUT,
+    POST,
+    DELETE
 }

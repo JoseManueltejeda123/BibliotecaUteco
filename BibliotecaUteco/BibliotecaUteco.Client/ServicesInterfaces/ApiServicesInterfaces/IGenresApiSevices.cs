@@ -6,20 +6,20 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces
 {
     public interface IGenresApiSevices
     {
-        Task<ApiResult<GenreResponse>> CreateAsync(
+        Task<ApiResponse<GenreResponse>> CreateAsync(
             CreateGenreRequest request,
             CancellationToken cancellationToken = default
         );
-        Task<ApiResult<List<GenreResponse>>> GetByNameAsync(
+        Task<ApiResponse<List<GenreResponse>>> GetByNameAsync(
             GetGenresByNameRequest request,
             CancellationToken cancellationToken = default
         );
-        Task<ApiResult<GenreResponse>> UpdateAsync(
+        Task<ApiResponse<GenreResponse>> UpdateAsync(
             UpdateGenreRequest request,
             CancellationToken cancellationToken = default
         );
 
-        Task<ApiResult<bool>> DeleteAsync(
+        Task<ApiResponse<bool>> DeleteAsync(
             DeleteGenreRequest request,
             CancellationToken cancellationToken = default
         );

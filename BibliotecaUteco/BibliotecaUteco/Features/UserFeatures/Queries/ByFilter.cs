@@ -39,9 +39,10 @@ internal class GetUserByNameEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<ApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(GetUserByNameEndpoint))
             .WithDescription("Busca una lista de usuarios por su nombre de usuario");
@@ -60,7 +61,7 @@ public class GetUserByNameQueryHandler(IBibliotecaUtecoDbContext context)
 
         var users = await context.Users.GetByFilterAsync(request.Username, cancellationToken);
 
-        return ApiResult<List<UserResponse>>.BuildSuccess(
+        return new SuccessApiResult<List<UserResponse>>(
             users.Select(u => u.ToResponse()).ToList()
         );
     }

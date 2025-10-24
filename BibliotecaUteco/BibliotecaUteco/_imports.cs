@@ -11,3 +11,5 @@ global using BibliotecaUteco.Settings;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
+global using BibliotecaUteco.Identity;
+global using BibliotecaUteco.Utilities;

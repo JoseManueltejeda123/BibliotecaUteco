@@ -50,10 +50,10 @@ internal class CreateAuthorEndpoint : IEndpoint
             .DisableAntiforgery()
             .RequireCors()
             .Accepts<CreateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Author))
             .WithName(nameof(CreateAuthorEndpoint))
             .WithDescription(
@@ -78,8 +78,7 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context)
             )
         )
         {
-            return ApiResult<AuthorResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya existe este autor/a con este mismo nombre"
             );
         }
@@ -95,11 +94,10 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context)
         );
 
         if (authors.FirstOrDefault() is null)
-            return ApiResult<AuthorResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "No pudimos obtener el autor recien creado"
             );
 
-        return ApiResult<AuthorResponse>.BuildSuccess(authors.FirstOrDefault()?.ToResponse());
+        return new SuccessApiResult<AuthorResponse>(authors.FirstOrDefault()?.ToResponse());
     }
 }

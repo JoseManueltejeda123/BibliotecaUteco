@@ -150,10 +150,12 @@ internal class UpdateBookEndpoint : IEndpoint
             )
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .DisableAntiforgery()
-            .Produces<ApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Book))
             .WithName(nameof(UpdateBookEndpoint))
             .WithDescription(
@@ -184,8 +186,7 @@ public class UpdateBookCommandHandler(
             )
         )
         {
-            return ApiResult<BookResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya existe un libro diferente con este mismo nombre"
             );
         }
@@ -196,8 +197,7 @@ public class UpdateBookCommandHandler(
 
         if (bookToUpdate is null)
         {
-            return ApiResult<BookResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "No pudimos encotrar el libro a actualizar"
             );
         }
@@ -214,7 +214,7 @@ public class UpdateBookCommandHandler(
                 && !result.Item1
             )
             {
-                return ApiResult<BookResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+                return new BadRequestApiResult( result.Item2);
             }
 
             bookToUpdate.CoverUrl = result.Item2;
@@ -229,8 +229,7 @@ public class UpdateBookCommandHandler(
                     && !result.Item1
                 )
                 {
-                    return ApiResult<BookResponse>.BuildFailure(
-                        HttpStatus.BadRequest,
+                    return new BadRequestApiResult(
                         result.Item2
                     );
                 }
@@ -258,12 +257,11 @@ public class UpdateBookCommandHandler(
             && response is null
         )
         {
-            return ApiResult<BookResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "No pudimos encotrar el libro despues de haberlo actualizado"
             );
         }
 
-        return ApiResult<BookResponse>.BuildSuccess(response.ToResponse());
+        return new SuccessApiResult<BookResponse>(response.ToResponse());
     }
 }

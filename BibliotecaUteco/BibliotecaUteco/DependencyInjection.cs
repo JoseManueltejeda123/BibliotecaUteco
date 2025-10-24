@@ -1,5 +1,7 @@
 using BibliotecaUteco.Dependencies;
 using BibliotecaUteco.Services;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 namespace BibliotecaUteco;
 
@@ -10,6 +12,7 @@ public static class DependencyInjection
         WebApplicationBuilder builder
     )
     {
+       
         services.AddScoped<IFileUploadService, FileUploadService>();
         services.AddBibliotecaUtecoDbContextServices(builder.Configuration);
         services.AddJwtServices(builder.Configuration);

@@ -121,11 +121,12 @@ internal class CreateUserEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<ApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(CreateUserEndpoint))
             .WithDescription("Crea un nuevo usuario en el sistema");
@@ -144,8 +145,7 @@ public class CreateUserCommandHandler(
     {
         if (await context.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
-            return ApiResult<UserResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "El nombre de usuario ya existe"
             );
         }
@@ -157,16 +157,14 @@ public class CreateUserCommandHandler(
             )
         )
         {
-            return ApiResult<UserResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "La cédula ya está registrada"
             );
         }
 
         if (!await context.Roles.AnyAsync(r => r.Id == request.RoleId, cancellationToken))
         {
-            return ApiResult<UserResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "El rol especificado no existe"
             );
         }
@@ -189,7 +187,7 @@ public class CreateUserCommandHandler(
                 && !result.Item1
             )
             {
-                return ApiResult<UserResponse>.BuildFailure(HttpStatus.BadRequest, result.Item2);
+                return new BadRequestApiResult( result.Item2);
             }
 
             insertion.Entity.ProfilePictureUrl = result.Item2;
@@ -204,12 +202,11 @@ public class CreateUserCommandHandler(
 
         if (createdUser == null)
         {
-            return ApiResult<UserResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "Error al crear el usuario"
             );
         }
 
-        return ApiResult<UserResponse>.BuildSuccess(createdUser.ToResponse());
+        return new SuccessApiResult<UserResponse>(createdUser.ToResponse());
     }
 }

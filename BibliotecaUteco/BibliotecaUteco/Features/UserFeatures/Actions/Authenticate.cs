@@ -70,10 +70,12 @@ internal class AuthenticateUserEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<AuthenticateUserCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(AuthenticateUserEndpoint))
             .WithDescription(
@@ -102,8 +104,7 @@ public class AuthenticateUserCommandHandler(
             && user is null
         )
         {
-            return ApiResult<JwtResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "Credenciales incorrectas"
             );
         }
@@ -112,12 +113,11 @@ public class AuthenticateUserCommandHandler(
 
         if (token is null)
         {
-            return ApiResult<JwtResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "Credenciales incorrectas"
             );
         }
 
-        return ApiResult<JwtResponse>.BuildSuccess(token);
+        return new SuccessApiResult<JwtResponse>(token);
     }
 }

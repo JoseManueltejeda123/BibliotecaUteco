@@ -12,7 +12,7 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
 {
     private const string ReadersEndpoint = "/readers";
 
-    public async Task<ApiResult<ReaderResponse>> CreateAsync(
+    public async Task<ApiResponse<ReaderResponse>> CreateAsync(
         CreateReaderRequest request,
         CancellationToken cancellationToken = default
     )
@@ -24,7 +24,7 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
         );
     }
 
-    public async Task<ApiResult<bool>> DeleteAsync(
+    public async Task<ApiResponse<bool>> DeleteAsync(
         DeleteReaderRequest request,
         CancellationToken cancellationToken = default
     )
@@ -42,7 +42,7 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
         );
     }
 
-    public async Task<ApiResult<ReaderResponse>> UpdateAsync(
+    public async Task<ApiResponse<ReaderResponse>> UpdateAsync(
         UpdateReaderRequest request,
         CancellationToken cancellationToken = default
     )
@@ -54,7 +54,7 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
         );
     }
 
-    public async Task<ApiResult<List<ReaderResponse>>> GetByFilterAsync(
+    public async Task<ApiResponse<List<ReaderResponse>>> GetByFilterAsync(
         GetReadersByFilterRequest request,
         CancellationToken cancellationToken = default
     )

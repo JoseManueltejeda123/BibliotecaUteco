@@ -12,7 +12,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
     {
         private const string BooksEndpoint = "/books";
 
-        public async Task<ApiResult<bool>> DeleteBookAsync(
+        public async Task<ApiResponse<bool>> DeleteBookAsync(
             DeleteBookRequest request,
             CancellationToken cancellationToken = default
         )
@@ -26,7 +26,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<BookResponse>> CreateBookAsync(
+        public async Task<ApiResponse<BookResponse>> CreateBookAsync(
             CreateBookRequest request,
             CancellationToken cancellationToken = default
         )
@@ -64,7 +64,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<BookResponse>> UpdateBookAsync(
+        public async Task<ApiResponse<BookResponse>> UpdateBookAsync(
             UpdateBookRequest request,
             CancellationToken cancellationToken = default
         )
@@ -100,7 +100,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             return await client.FetchPutAsync<BookResponse>(BooksEndpoint, form, cancellationToken);
         }
 
-        public async Task<ApiResult<List<BookResponse>>> GetByFilterAsync(
+        public async Task<ApiResponse<List<BookResponse>>> GetByFilterAsync(
             GetBooksByFilterRequest request,
             CancellationToken cancellationToken = default
         )

@@ -11,7 +11,7 @@ public class PenaltiesApiServices(BibliotecaHttpClient client) : IPenaltiesApiSe
 {
     private const string PenaltiesEndpoint = "/penalties";
 
-    public async Task<ApiResult<List<PenaltyResponse>>> GetByFilterAsync(
+    public async Task<ApiResponse<List<PenaltyResponse>>> GetByFilterAsync(
         GetPenaltiesByFilterRequest request,
         CancellationToken cancellationToken = default
     )
@@ -34,7 +34,7 @@ public class PenaltiesApiServices(BibliotecaHttpClient client) : IPenaltiesApiSe
             cancellationToken
         );
     }
-    public async Task<ApiResult<PenaltyResponse>> PayAsync(
+    public async Task<ApiResponse<PenaltyResponse>> PayAsync(
         PayPenaltyRequest request,
         CancellationToken cancellationToken = default
     )

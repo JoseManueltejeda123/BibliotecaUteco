@@ -11,7 +11,7 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
 {
     private const string LoansEndpoint = "/loans";
 
-    public async Task<ApiResult<LoanResponse>> CreateAsync(
+    public async Task<ApiResponse<LoanResponse>> CreateAsync(
         CreateLoanRequest request,
         CancellationToken cancellationToken = default
     )
@@ -23,7 +23,7 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
         );
     }
     
-    public async Task<ApiResult<LoanResponse>> MarkAsReturnedAsync(
+    public async Task<ApiResponse<LoanResponse>> MarkAsReturnedAsync(
         MarkLoanAsReturnedRequest request,
         CancellationToken cancellationToken = default
     )
@@ -35,7 +35,7 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
         );
     }
     
-    public async Task<ApiResult<List<LoanResponse>>> GetByFilterAsync(
+    public async Task<ApiResponse<List<LoanResponse>>> GetByFilterAsync(
         GetLoansByFilterRequest request,
         CancellationToken cancellationToken = default
     )

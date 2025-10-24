@@ -65,10 +65,11 @@ internal class GetPenaltiesByFilterEndpoint : IEndpoint
             )
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
-            .Produces<ApiResult<List<PenaltyResponse>>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<List<PenaltyResponse>>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Penalty))
             .WithName(nameof(GetPenaltiesByFilterEndpoint))
             .WithDescription("Obtiene una lista de penalizaciones con filtros opcionales");
@@ -87,6 +88,6 @@ public class GetPenaltiesByFilterCommandHandler(IBibliotecaUtecoDbContext contex
         
       var result = await context.Penalties.GetByFilterAsync(request.IsDue, request.LoanId, request.Skip, request.Take, cancellationToken);
 
-        return ApiResult<List<PenaltyResponse>>.BuildSuccess(result.Select(p => p.ToResponse()).ToList());
+        return new SuccessApiResult<List<PenaltyResponse>>(result.Select(p => p.ToResponse()).ToList());
     }
 }

@@ -6,17 +6,17 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface ILoansApiServices
 {
-    Task<ApiResult<LoanResponse>> CreateAsync(
+    Task<ApiResponse<LoanResponse>> CreateAsync(
         CreateLoanRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<List<LoanResponse>>> GetByFilterAsync(
+    Task<ApiResponse<List<LoanResponse>>> GetByFilterAsync(
         GetLoansByFilterRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<LoanResponse>> MarkAsReturnedAsync(
+    Task<ApiResponse<LoanResponse>> MarkAsReturnedAsync(
         MarkLoanAsReturnedRequest request,
         CancellationToken cancellationToken = default
     );

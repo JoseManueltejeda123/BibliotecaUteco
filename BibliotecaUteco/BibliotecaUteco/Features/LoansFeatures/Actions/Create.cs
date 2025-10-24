@@ -64,12 +64,14 @@ internal class CreateLoanEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<CreateLoanCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<LoanResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<LoanResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Loan))
             .WithName(nameof(CreateLoanEndpoint))
             .WithDescription("Crea un nuevo préstamo de libros");
@@ -87,8 +89,7 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
     {
         if(await context.Readers.AsNoTracking().IgnoreAutoIncludes().FirstOrDefaultAsync(r => r.Id == request.ReaderId, cancellationToken) is var reader && reader is null)
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 $"No se encontró el lector con ID {request.ReaderId}"
             );
         }
@@ -99,8 +100,7 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
             cancellationToken
         ))
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "El lector tiene préstamos sin devolver y no puede realizar nuevos préstamos"
             );
         }
@@ -126,8 +126,7 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
 
             var missingBooks = books.Where(b => missingIds.Contains(b.Id)).ToList();
                             
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 $"No se encontraron los siguientes libros: {string.Join(", ", missingIds, missingBooks)}"
             );
            
@@ -136,8 +135,7 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
         var unavailableBooks = books.Where(b => (b.AvailableAmount <= 0)).ToList();
         if (unavailableBooks.Any())
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 $"Los siguientes libros no están disponibles: {string.Join(", ", unavailableBooks.Select(b => b.Name))}"
             );
         }
@@ -151,8 +149,7 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
 
         if (insertion.Entity.Id == 0)
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "Error al crear el préstamo"
             );
         }
@@ -163,12 +160,11 @@ public class CreateLoanCommandHandler(IBibliotecaUtecoDbContext context)
 
         if (createdLoan == null)
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "El préstamo no pudo ser encontrado tras su creación"
             );
         }
 
-        return ApiResult<LoanResponse>.BuildSuccess(createdLoan.ToResponse());
+        return new SuccessApiResult<LoanResponse>(createdLoan.ToResponse());
     }
 }

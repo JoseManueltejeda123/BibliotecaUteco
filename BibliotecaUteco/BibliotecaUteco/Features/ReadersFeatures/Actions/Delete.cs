@@ -45,11 +45,13 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<ApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Reader))
             .WithName(nameof(DeleteReaderEndpoint))
             .WithDescription("Elimina un lector existente del sistema.");
@@ -66,24 +68,21 @@ public class DeleteReaderCommandHandler(IBibliotecaUtecoDbContext context) : ICo
 
         if (await context.Readers.AsNoTracking().FirstOrDefaultAsync(r => r.Id == request.ReaderId, cancellationToken) is var reader && reader is null)
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "No se encontró el lector especificado."
             );
         }
 
         if (await context.Loans.AnyAsync(r => r.ReaderId == request.ReaderId, cancellationToken))
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "Este usuario tiene prestamos activos."
             );
         }
 
         if (await context.Loans.AnyAsync(r => r.ReaderId == request.ReaderId && r.Penalty != null && r.Penalty.IsDue, cancellationToken))
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.PaymentRequired,
+            return new BadRequestApiResult(
                 "Este usuario tiene una penalizacion sin pagar"
             );
         }
@@ -91,10 +90,10 @@ public class DeleteReaderCommandHandler(IBibliotecaUtecoDbContext context) : ICo
         var rows = await context.Readers.Where(r => r.Id == request.ReaderId).ExecuteDeleteAsync();
             await context.SaveChangesAsync(cancellationToken);
 
-            if (rows <= 0) return ApiResult<bool>.BuildFailure(HttpStatus.BadRequest, "No se eliminó ningun lector");
+            if (rows <= 0) return new BadRequestApiResult( "No se eliminó ningun lector");
         
 
-        return ApiResult<bool>.BuildSuccess( rows >= 1);
+        return new SuccessApiResult<bool>( rows >= 1);
     }
 }
 

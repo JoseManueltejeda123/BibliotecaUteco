@@ -44,11 +44,9 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .DisableAntiforgery()
                 .Accepts<DeleteGenreCommand>(false, ApplicationContentTypes.ApplicationJson)
                 .Produces<IApiResult>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
+                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(DeleteGenreEndpoint))
                 .WithDescription(
@@ -71,12 +69,11 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
 
             if (rows <= 0)
             {
-                return ApiResult<bool>.BuildFailure(
-                    HttpStatus.NotFound,
+                return new NotFoundApiResult(
                     "No se encontró el género"
                 );
             }
-            return ApiResult<bool>.BuildSuccess(true);
+            return new SuccessApiResult<bool>(true);
         }
     }
 }

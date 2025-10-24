@@ -1,4 +1,5 @@
 @page "/transactions"
+@implements IDisposable
 @using BibliotecaUteco.Client.Requests.Transactions.Queries
 
 <PageTitle>Transacciones</PageTitle>
@@ -13,13 +14,12 @@
             </div>
 
             <div class="flex w-full gap-2 items-center">
-                <LumexNumbox TValue="int?"
+                <LumexTextbox 
                              
                              ValueChanged="async (e) => { await HandleOnInputChanged(e);}"
                               Label="Buscar transacciones"
                               Placeholder="Buscar por usuario"
-                             minValue="0"
-                             Step="1"
+                             Value="@Filter"    
                              Behavior="InputBehavior.OnInput"
                              LabelPlacement="@LabelPlacement.Outside"
                 />
@@ -29,7 +29,7 @@
 
             <SectionDivider Name="Transacciones de caja"/>
             <div class="w-full flex flex-col gap-3">
-                <button class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
+                <button @onclick="SetCreateRetirementViewAsync" class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
                     <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
                 </button>
                 
@@ -59,7 +59,7 @@
                     
                     
                 }
-                else if (!_hasMore && Filter != 0 && !_fetchingTransactions)
+                else if (!_hasMore && !string.IsNullOrEmpty(Filter) && !_fetchingTransactions)
                 {
                     <NoResultsFound/>
                 }
@@ -96,7 +96,7 @@
 @code{
     
     public bool _fetchingTransactions {get; set;} = false;
-    public int Filter { get; set; } = 0;
+    public string Filter { get; set; } = "";
     public List<TransactionResponse> Transactions { get; set; } = new();
     public CancellationTokenSource? _fetchCts {get; set;}
     public CancellationTokenSource? _inputCts {get; set;}
@@ -107,14 +107,35 @@
 
 @functions{
 
+    public async Task SetCreateRetirementViewAsync()
+    {
+        await RightBarContext.OpenCreateRetirementAsync();
+    }
     protected override async Task OnInitializedAsync()
     {
         await FetchGetTransactionsByFilterAsync();
+        RightBarContext.OnStateChanged += HandleTransactionCreated;
+        
     }
-    public async Task HandleOnInputChanged(int? value)
+
+    public void Dispose()
+    {
+        RightBarContext.OnStateChanged -= HandleTransactionCreated;
+    }
+
+    public async void HandleTransactionCreated(RightBarState state)
+    {
+        if (state.CreatedTransaction is not null)
+        {
+            Transactions.Insert(0, state.CreatedTransaction);
+            StateHasChanged();
+        }
+    }
+   
+    public async Task HandleOnInputChanged(string? value)
     {
         
-        Filter = value ?? 0;
+        Filter = value ?? "";
 
         if (_inputCts is not null)
         {
@@ -197,7 +218,7 @@
     {
         Skip = withSkip ? Transactions.Count() : 0,
         Take = 10,
-        UserId = Filter == 0 ? null : Filter
+        UserName = string.IsNullOrEmpty(Filter) ? null : Filter
         
     };
 

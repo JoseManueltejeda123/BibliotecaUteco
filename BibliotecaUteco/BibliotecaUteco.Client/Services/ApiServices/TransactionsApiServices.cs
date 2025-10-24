@@ -1,4 +1,5 @@
 using System.Web;
+using BibliotecaUteco.Client.Requests.Transactions.Actions;
 using BibliotecaUteco.Client.Requests.Transactions.Queries;
 using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
@@ -9,8 +10,8 @@ namespace BibliotecaUteco.Client.Services.ApiServices;
 public class TransactionsApiServices(BibliotecaHttpClient client) : ITransactionsApiServices
 {
     private const string TransactionsEndpoint = "/transactions";
-    
-    public async Task<ApiResult<List<TransactionResponse>>> GetByFilterAsync(
+
+    public async Task<ApiResponse<List<TransactionResponse>>> GetByFilterAsync(
         GetTransactionsByFilterRequest request,
         CancellationToken cancellationToken = default
     )
@@ -18,9 +19,9 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
         var query = HttpUtility.ParseQueryString(string.Empty);
 
 
-        if (request.UserId.HasValue)
+        if (!string.IsNullOrEmpty(request.UserName))
         {
-            query["userId"] = request.UserId.Value.ToString();
+            query["userName"] = request.UserName;
 
         }
         query["skip"] = request.Skip.ToString();
@@ -31,7 +32,22 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
         return await client.FetchGetAsync<List<TransactionResponse>>(
             TransactionsEndpoint + $"/by-filter?{queryString}",
             cancellationToken
-          
+
+        );
+    }
+
+    public async Task<ApiResponse<TransactionResponse>> RetireAsync(
+        CreateTransactionRetirementRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+       
+
+        return await client.FetchPostAsync<TransactionResponse>(
+            TransactionsEndpoint + $"/retirement",
+            request,
+            cancellationToken
+
         );
     }
 

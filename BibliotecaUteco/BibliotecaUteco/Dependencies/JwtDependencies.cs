@@ -81,8 +81,7 @@ public static class JwtDependencies
                             context.Response.StatusCode = 403;
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(
-                                ApiResult<object>.BuildFailure(
-                                    HttpStatus.Forbidden,
+                                new UnauthorizedApiResult(
                                     "No tienes permisos para acceder a este recurso"
                                 )
                             );
@@ -109,8 +108,7 @@ public static class JwtDependencies
                                 c.Response.ContentType = "application/json";
 
                                 await c.Response.WriteAsJsonAsync(
-                                    ApiResult<object>.BuildFailure(
-                                        HttpStatus.Unauthorized,
+                                    new UnauthorizedApiResult(
                                         "El token de autorización no ha podido ser detectado"
                                     )
                                 );
@@ -125,8 +123,7 @@ public static class JwtDependencies
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(
-                                ApiResult<object>.BuildFailure(
-                                    HttpStatus.Unauthorized,
+                                new UnauthorizedApiResult(
                                     "Su identidad no ha podido ser comprobada."
                                 )
                             );

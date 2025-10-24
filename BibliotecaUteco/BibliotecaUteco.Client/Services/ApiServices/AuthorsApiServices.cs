@@ -11,7 +11,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
     {
         private const string AuthorsEndpoint = "/authors";
 
-        public async Task<ApiResult<List<AuthorResponse>>> GetByNameAsync(
+        public async Task<ApiResponse<List<AuthorResponse>>> GetByNameAsync(
             GetAuthorsByNameRequest request,
             CancellationToken cancellationToken = default
         )
@@ -25,7 +25,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<AuthorResponse>> CreateAuthorAsync(
+        public async Task<ApiResponse<AuthorResponse>> CreateAuthorAsync(
             CreateAuthorRequest request,
             CancellationToken cancellationToken = default
         )
@@ -37,7 +37,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<AuthorResponse>> UpdateAsync(
+        public async Task<ApiResponse<AuthorResponse>> UpdateAsync(
             UpdateAuthorRequest request,
             CancellationToken cancellationToken = default
         )
@@ -49,7 +49,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<bool>> DeleteAsync(
+        public async Task<ApiResponse<bool>> DeleteAsync(
             UpdateAuthorRequest request,
             CancellationToken cancellationToken = default
         )

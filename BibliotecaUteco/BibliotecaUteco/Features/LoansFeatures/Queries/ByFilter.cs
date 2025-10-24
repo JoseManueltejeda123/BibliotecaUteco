@@ -100,11 +100,13 @@ internal class GetLoansByFilterEndpoint : IEndpoint
             )
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
-            .Produces<ApiResult<List<LoanResponse>>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<List<LoanResponse>>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Loan))
             .WithName(nameof(GetLoansByFilterEndpoint))
             .WithDescription("Obtiene préstamos filtrados por cédula, matrícula o estado");
@@ -131,6 +133,6 @@ public class GetLoansByFilterHandler(IBibliotecaUtecoDbContext context) : IComma
                 cancellationToken
             );
 
-        return ApiResult<List<LoanResponse>>.BuildSuccess(response.Select(l => l.ToResponse()).ToList());
+        return new SuccessApiResult<List<LoanResponse>>(response.Select(l => l.ToResponse()).ToList());
     }
 }

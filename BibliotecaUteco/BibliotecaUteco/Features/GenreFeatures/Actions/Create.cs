@@ -48,11 +48,9 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<CreateGenreCommand>(false, ApplicationContentTypes.ApplicationJson)
-                .Produces<ApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(CreateGenreEndpoint))
                 .WithDescription(
@@ -77,8 +75,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 )
             )
             {
-                return ApiResult<GenreResponse>.BuildFailure(
-                    HttpStatus.Conflict,
+                return new ConflictApiResult(
                     "Ya existe un género con ese nombre."
                 );
             }
@@ -93,13 +90,12 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 && genre is null
             )
             {
-                return ApiResult<GenreResponse>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "El genero no pudo ser encontrado"
                 );
             }
 
-            return ApiResult<GenreResponse>.BuildSuccess(genre.ToResponse());
+            return new SuccessApiResult<GenreResponse>(genre.ToResponse());
         }
     }
 }

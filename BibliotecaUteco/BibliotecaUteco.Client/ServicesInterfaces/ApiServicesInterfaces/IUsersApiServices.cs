@@ -6,20 +6,20 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface IUsersApiServices
 {
-    Task<ApiResult<JwtResponse>> LoginUserAsync(
+    Task<ApiResponse<JwtResponse>> LoginUserAsync(
         AuthenticateUserRequest request,
         CancellationToken cancellationToken = default
     );
-    Task<ApiResult<UserResponse>> CreateAsync(
+    Task<ApiResponse<UserResponse>> CreateAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<List<UserResponse>>> GetByFilterAsync(
+    Task<ApiResponse<List<UserResponse>>> GetByFilterAsync(
         GetUsersByFilterRequest request,
         CancellationToken cancellationToken = default
     );
-    Task<ApiResult<UserResponse>> UpdateAsync(
+    Task<ApiResponse<UserResponse>> UpdateAsync(
         UpdateUserRequest request,
         CancellationToken cancellationToken = default
     );

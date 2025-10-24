@@ -112,12 +112,10 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<UpdateReaderCommand>(false, ApplicationContentTypes.ApplicationJson)
-                .Produces<ApiResult<ReaderResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<ReaderResponse>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
+                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Reader))
                 .WithName(nameof(UpdateReaderEndpoint))
                 .WithDescription("Actualiza la información de un lector existente en el sistema");
@@ -131,26 +129,26 @@ public class UpdateReaderCommandHandler(IBibliotecaUtecoDbContext context) : ICo
     {
         if(await context.Readers.FirstOrDefaultAsync(x => x.Id == request.ReaderId, cancellationToken) is var reader && reader is null)
         {
-            return ApiResult<ReaderResponse>.BuildFailure(HttpStatus.NotFound, "No se encontró el lector especificado.");
+            return new NotFoundApiResult( "No se encontró el lector especificado.");
         }
 
         if (await context.Readers.AnyAsync(r => r.IdentityCardNumber == request.IdentityCardNumber  && r.Id != request.ReaderId, cancellationToken))
         {
-            return ApiResult<ReaderResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un lector con esa cédula.");
+            return new ConflictApiResult( "Ya existe un lector con esa cédula.");
         }
 
         if (!string.IsNullOrWhiteSpace(request.StudentLicence))
         {
             if (await context.Readers.AnyAsync(r => r.StudentLicence == request.StudentLicence && r.Id != request.ReaderId, cancellationToken))
             {
-                return ApiResult<ReaderResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un lector con esa matrícula.");
+                return new ConflictApiResult( "Ya existe un lector con esa matrícula.");
             }
         }
         
 
         if (await context.Readers.AnyAsync(r => r.PhoneNumber == request.PhoneNumber && r.Id != request.ReaderId, cancellationToken))
         {
-            return ApiResult<ReaderResponse>.BuildFailure(HttpStatus.Conflict, "Ya existe un lector con ese número de teléfono.");
+            return new ConflictApiResult( "Ya existe un lector con ese número de teléfono.");
         }
 
         reader.Update(request);       
@@ -160,10 +158,10 @@ public class UpdateReaderCommandHandler(IBibliotecaUtecoDbContext context) : ICo
         var updatedReader = await context.Readers.GetByIdAsync(request.ReaderId, cancellationToken);
         if (updatedReader is null)
         {
-            return ApiResult<ReaderResponse>.BuildFailure(HttpStatus.BadRequest, "Error al actualizar el lector.");
+            return new BadRequestApiResult( "Error al actualizar el lector.");
         }
 
-        return ApiResult<ReaderResponse>.BuildSuccess(updatedReader.ToResponse());
+        return new SuccessApiResult<ReaderResponse>(updatedReader.ToResponse());
     }
 }
 

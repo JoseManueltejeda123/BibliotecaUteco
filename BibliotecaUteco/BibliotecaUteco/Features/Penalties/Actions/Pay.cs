@@ -55,12 +55,14 @@ internal class PayPenaltyEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<PayPenaltyCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<PenaltyResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<PenaltyResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Penalty))
             .WithName(nameof(PayPenaltyEndpoint))
             .WithDescription("Registra el pago de una penalización");
@@ -78,24 +80,21 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
     {
         if(await context.Penalties.IgnoreAutoIncludes().AsSplitQuery().FirstOrDefaultAsync(p => p.Id == request.PenaltyId, cancellationToken) is var penalty && penalty is null)
         {
-            return ApiResult<PenaltyResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 $"No se encontró la penalización con ID {request.PenaltyId}"
             );
         }
 
         if (!penalty.IsDue)
         {
-            return ApiResult<PenaltyResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Esta penalización ya ha sido pagada"
             );
         }
 
         if (request.GivenAmount < penalty.TotalAmount)
         {
-            return ApiResult<PenaltyResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 $"El monto entregado (RD$ {request.GivenAmount:N2}) es insuficiente. El total a pagar es RD$ {penalty.TotalAmount:N2}"
             );
         }
@@ -113,8 +112,7 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
             if (transactionInsertion.Entity.Id == 0)
             {
                 await transaction.RollbackAsync(cancellationToken);
-                return ApiResult<PenaltyResponse>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "No se pudo crear la transacción de pago"
                 );
             }
@@ -122,7 +120,7 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
             if (!penalty.Pay(request.GivenAmount, transactionInsertion.Entity.Id))
             {
                 await transaction.RollbackAsync(cancellationToken);
-                return ApiResult<PenaltyResponse>.BuildFailure(HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "No pudimos marcar la penalización como paga");
             }
 
@@ -137,13 +135,12 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
 
             if (await context.Penalties.GetByIdAsync(penalty.Id) is var result && result is null)
             {
-                return ApiResult<PenaltyResponse>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "No se pudo recuperar la penalización actualizada"
                 );
             }
 
-            return ApiResult<PenaltyResponse>.BuildSuccess(result.ToResponse());
+            return new SuccessApiResult<PenaltyResponse>(result.ToResponse());
         }
         catch (Exception)
         {

@@ -6,20 +6,20 @@ namespace BibliotecaUteco.Client.Services.ApiServices;
 
 public interface IBooksApiServices
 {
-    Task<ApiResult<BookResponse>> CreateBookAsync(
+    Task<ApiResponse<BookResponse>> CreateBookAsync(
         CreateBookRequest request,
         CancellationToken cancellationToken = default
     );
-    Task<ApiResult<List<BookResponse>>> GetByFilterAsync(
+    Task<ApiResponse<List<BookResponse>>> GetByFilterAsync(
         GetBooksByFilterRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<bool>> DeleteBookAsync(
+    Task<ApiResponse<bool>> DeleteBookAsync(
         DeleteBookRequest request,
         CancellationToken cancellationToken = default
     );
-    Task<ApiResult<BookResponse>> UpdateBookAsync(
+    Task<ApiResponse<BookResponse>> UpdateBookAsync(
         UpdateBookRequest request,
         CancellationToken cancellationToken = default
     );

@@ -114,11 +114,12 @@ internal class UpdateUserEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<ApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(UpdateUserEndpoint))
             .WithDescription("Actualiza un nuevo usuario en el sistema");
@@ -142,8 +143,7 @@ public class UpdateUserCommandHandler(
             )
         )
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya hay un usuario con ese nombre de usuario"
             );
         }
@@ -155,8 +155,7 @@ public class UpdateUserCommandHandler(
             )
         )
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya hay un usuario con esa cédula"
             );
         }
@@ -167,16 +166,14 @@ public class UpdateUserCommandHandler(
 
         if (user is null)
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "No existe el usuario a actualizar"
             );
         }
 
         if (!user.Update(request))
         {
-            return ApiResult<bool>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "No hay cambios que aplicar"
             );
         }
@@ -189,8 +186,7 @@ public class UpdateUserCommandHandler(
                 && !deletionResult.Item1
             )
             {
-                return ApiResult<bool>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     $"No pudimos eliminar la foto de perfil: {deletionResult.Item2}"
                 );
             }
@@ -209,8 +205,7 @@ public class UpdateUserCommandHandler(
                 && !result.Item1
             )
             {
-                return ApiResult<bool>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     $"No pudimos subir la foto de perfil: {result.Item2}"
                 );
             }
@@ -221,6 +216,6 @@ public class UpdateUserCommandHandler(
         await context.SaveChangesAsync(cancellationToken);
         context.ChangeTracker.Clear();
 
-        return ApiResult<UserResponse>.BuildSuccess(user.ToResponse());
+        return new SuccessApiResult<UserResponse>(user.ToResponse());
     }
 }

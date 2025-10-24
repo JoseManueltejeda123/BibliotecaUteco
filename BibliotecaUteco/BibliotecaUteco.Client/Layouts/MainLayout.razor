@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
+@implements IAsyncDisposable
+
 <Toaster RichColors="@true" />
 <AuthorizeView>
     <NotAuthorized>
@@ -34,7 +36,7 @@
 
 @code{
 
-    public bool SideBarExpanded {get; set;} = true;
+    public bool SideBarExpanded {get; set;} = false;
 
     public async void HandelStateChanged(RightBarState state)
     {
@@ -55,3 +57,21 @@
 
 }
 
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("popoverZIndexManager.initialize");
+        }
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("popoverZIndexManager.dispose");
+        }
+        catch { /* El componente ya fue destruido */ }
+    }
+}

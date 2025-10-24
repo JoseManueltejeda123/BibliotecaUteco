@@ -12,7 +12,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
     {
         private const string GenresEndpoint = "/genres";
 
-        public async Task<ApiResult<List<GenreResponse>>> GetByNameAsync(
+        public async Task<ApiResponse<List<GenreResponse>>> GetByNameAsync(
             GetGenresByNameRequest request,
             CancellationToken cancellationToken = default
         )
@@ -26,7 +26,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<GenreResponse>> CreateAsync(
+        public async Task<ApiResponse<GenreResponse>> CreateAsync(
             CreateGenreRequest request,
             CancellationToken cancellationToken = default
         )
@@ -38,7 +38,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<GenreResponse>> UpdateAsync(
+        public async Task<ApiResponse<GenreResponse>> UpdateAsync(
             UpdateGenreRequest request,
             CancellationToken cancellationToken = default
         )
@@ -50,7 +50,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             );
         }
 
-        public async Task<ApiResult<bool>> DeleteAsync(
+        public async Task<ApiResponse<bool>> DeleteAsync(
             DeleteGenreRequest request,
             CancellationToken cancellationToken = default
         )

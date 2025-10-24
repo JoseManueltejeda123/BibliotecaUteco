@@ -1,0 +1,71 @@
+<div id="loaninvoice" style="width: 100%; gap: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+    <div style="width: 100%; display: flex; gap: 4px; align-items: center;">
+        <img src="https://th.bing.com/th/id/R.3648063d1e2e4d861787b0863e5304f3?rik=WdYucePNTFGtBg&pid=ImgRaw&r=0" style="width: 60px; height: 60px;"/>
+        <div style="display: flex; flex-direction: column; gap: 2px; justify-content: center">
+            <p style="font-size: 16px; font-weight: 500;" >UNIVERSIDAD TECNOLÓGICA DEL CIBAO ORIENTAL</p>
+            <p style="font-size: 14px; font-weight: 500;" >BIBLIOUTECO</p>
+        </div>
+        
+
+    </div>
+    
+    <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; " >RECIBO DE PRÉSTAMO</p>
+
+    <div style="width: 100%; display: flex; gap: 16px;" >
+        <div class="flex flex-col gap-1 w-fit">
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">PRÉSTAMO PARA: <span style="background-color: black; color: white; padding: 0 2px;" >JOSÉ MANUEL PEREZ</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ID LECTOR: <span style="background-color: black; color: white; padding: 0 2px;">02</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">CÉDULA DEL LECTOR: <span style="background-color: black; color: white; padding: 0 2px;">11111111111</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">MATRÍCULA: <span style="background-color: black; color: white; padding: 0 2px;">------</span></p>
+
+
+        </div>
+       
+        <div class="flex flex-col gap-1 w-fit">
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ID DEL PRÉSTAMO: <span style="background-color: black; color: white; padding: 0 2px;">12</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">FECHA DE CREACIÓN: <span style="background-color: black; color: white; padding: 0 2px;">12 OCT 2025</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">FECHA DE VENCIMIENTO: <span style="background-color: black; color: white; padding: 0 2px;">15 OCT 2025</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">LAPSO DE TIEMPO: <span style="background-color: black; color: white; padding: 0 2px;">3 DÍAS</span></p>
+        </div>
+    </div>
+
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 500; font-family: 'Inconsolata'" >LIBROS</span>
+        <hr style="border-bottom: 1px solid black; width: 100%;"/>
+
+    </div>
+    
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px;" >
+        <div style="display: flex; flex-direction: column;" >
+            <span style="background-color: black; color: white; padding: 0 2px; font-family: 'Inconsolata'; font-size: 14px; text-wrap: nowrap; font-weight: 500; " >1. HARRY POTTER Y LA PIEDRA FILOSOFAL</span>
+            <span style="font-family: 'Inconsolata'; font-size: 14px;">J. K. ROWLING</span>
+
+        </div>
+
+    </div>
+    
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 500; font-family: 'Inconsolata'" >Resumen</span>
+        <hr style="border-bottom: 1px solid black; width: 100%; "/>
+
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1px;" >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">CANTIDAD DE LIBROS: <span style="background-color: black; color: white; padding: 0 2px;">12 LIBROS</span></p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ESTADO DEL PRESTAMO: <span style="background-color: black; color: white; padding: 0 2px;">PENDIENTE</span></p>
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public EventCallback OnPrinted {get; set;}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+                await JsRuntime.InvokeVoidAsync("printElement", "loaninvoice");
+                await OnPrinted.InvokeAsync();
+
+        }
+
+    }
+}

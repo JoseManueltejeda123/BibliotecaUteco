@@ -42,13 +42,11 @@ namespace BibliotecaUteco.Features.GenreFeatures.Queries
                 .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
-                .Produces<ApiResult<List<GenreResponse>>>(
+                .Produces<SuccessApiResult<List<GenreResponse>>>(
                     200,
                     ApplicationContentTypes.ApplicationJson
                 )
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(GetGenresByNameEndpoint))
                 .WithDescription(
@@ -74,7 +72,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Queries
                 .Take(10)
                 .ToListAsync(cancellationToken);
 
-            return ApiResult<List<GenreResponse>>.BuildSuccess(
+            return new SuccessApiResult<List<GenreResponse>>(
                 genres.Select(g => g.ToResponse()).ToList()
             );
         }

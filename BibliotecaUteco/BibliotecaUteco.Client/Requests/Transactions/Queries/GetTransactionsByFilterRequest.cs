@@ -4,8 +4,8 @@ namespace BibliotecaUteco.Client.Requests.Transactions.Queries;
 
 public class GetTransactionsByFilterRequest
 {
-         [Range(0, int.MaxValue)]
-         public int? UserId { get; set; } = null;
+         [MaxLength(30, ErrorMessage = "El nombre de usuario no puede exceder los 30 caracteres.")]
+         public string? UserName { get; set; } = null;
          [Range(0, int.MaxValue)]
         public int Skip { get; set; } = 0;
         

@@ -80,10 +80,12 @@ internal class GetReaderByFilterEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<ApiResult<List<ReaderResponse>>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<List<ReaderResponse>>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Reader))
             .WithName(nameof(GetReaderByFilterEndpoint))
             .WithDescription("Busca lectores por cédula o matrícula");
@@ -112,7 +114,7 @@ public class GetReaderByFilterCommandHandler
             request.Take,
             cancellationToken
         );
-        return ApiResult<List<ReaderResponse>>.BuildSuccess(
+        return new SuccessApiResult<List<ReaderResponse>>(
             response.Select(reader => reader.ToResponse()).ToList()
         );
     }

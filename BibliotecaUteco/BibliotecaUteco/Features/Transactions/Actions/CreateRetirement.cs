@@ -46,10 +46,10 @@ public class CreateRetirmentTransactionEndpoint : IEndpoint
         .RequireCors()
         .DisableAntiforgery()
         .Accepts<CreateRetirementTransactionsCommand>(false, ApplicationContentTypes.ApplicationJson)
-        .Produces<ApiResult<TransactionResponse>>(200, ApplicationContentTypes.ApplicationJson)
+        .Produces<SuccessApiResult<TransactionResponse>>(200, ApplicationContentTypes.ApplicationJson)
         .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
         .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-        .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+                        .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .ProducesProblem(401, ApplicationContentTypes.ApplicationJson)
         .WithTags(nameof(Transaction))
         .WithName(nameof(CreateRetirmentTransactionEndpoint))
@@ -63,39 +63,41 @@ internal class CreateRetirementTransactinCommandHandler(IBibliotecaUtecoDbContex
     {
         if (await context.Transactions.SumAsync(x => x.Amount, cancellationToken: cancellationToken) < request.Amount)
         {
-            return ApiResult<TransactionResponse>.BuildFailure(HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "El monto es muy alto para el estado actual de caja");
         }
         
-        
-        
-        if(await context.Transactions.AnyAsync(t => (DateTime.UtcNow - t.CreatedAt).Days <= 15 && t.Amount < 0, cancellationToken))
-        {
-            return ApiResult<TransactionResponse>.BuildFailure(HttpStatus.BadRequest,
-                $"No se pueden realizar de retiro en este momento ya que se hizo uno hace menos de 15 dias");
-        }
-
         var hashedPassword = request.Password.Hash();
         if (!await context.Users.AnyAsync(u => u.Password == hashedPassword && u.Id == request.CurrentUserId, cancellationToken))
         {
-            return ApiResult<TransactionResponse>.BuildFailure(HttpStatus.NotFound, "Credenciales incorrectas");
+            return new NotFoundApiResult( "Credenciales incorrectas");
         }
-       var insertion = await context.Transactions.AddAsync(Transaction.Create(request.CurrentUserId, request.Amount * -1), cancellationToken);
+
+        /*if(await context.Transactions.AsNoTracking().IgnoreAutoIncludes().Where(t =>  t.Amount < 0).OrderByDescending(t => t.CreatedAt).FirstOrDefaultAsync(cancellationToken) is var lastTransaction && lastTransaction is not null)
+        {
+            if((DateTime.UtcNow - lastTransaction.CreatedAt).TotalDays < 15)
+            {
+                return new BadRequestApiResult(
+                    $"No se pueden realizar de retiro en este momento ya que se hizo uno hace menos de 15 dias");
+            }
+        }*/
+
+        var insertion = await context.Transactions.AddAsync(Transaction.Create(request.CurrentUserId, request.Amount * -1), cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
         context.ChangeTracker.Clear();
         if (insertion.Entity.Id == 0)
         {
-            return ApiResult<TransactionResponse>.BuildFailure(HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "No pudimos crear la transacción");
         }
         
         if(await context.Transactions.FirstOrDefaultAsync(t => t.Id == insertion.Entity.Id, cancellationToken) is var result && result is null)
         {
-            return ApiResult<TransactionResponse>.BuildFailure(HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "No pudimos encontrar la transaccion creada");
         }
 
-        return ApiResult<TransactionResponse>.BuildSuccess(result.ToResponse());
+        return new SuccessApiResult<TransactionResponse>(result.ToResponse());
 
     }
     

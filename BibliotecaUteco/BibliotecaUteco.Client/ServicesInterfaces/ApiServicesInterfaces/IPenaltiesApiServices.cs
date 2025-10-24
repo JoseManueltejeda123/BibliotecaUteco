@@ -6,12 +6,12 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface IPenaltiesApiServices
 {
-    Task<ApiResult<List<PenaltyResponse>>> GetByFilterAsync(
+    Task<ApiResponse<List<PenaltyResponse>>> GetByFilterAsync(
         GetPenaltiesByFilterRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<PenaltyResponse>> PayAsync(
+    Task<ApiResponse<PenaltyResponse>> PayAsync(
         PayPenaltyRequest request,
         CancellationToken cancellationToken = default
     );

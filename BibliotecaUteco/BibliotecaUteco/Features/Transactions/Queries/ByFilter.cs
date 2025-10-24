@@ -2,9 +2,8 @@ namespace BibliotecaUteco.Features.Transactions.Queries;
 
 public class GetTransactionsByFilterCommand : ICommand<IApiResult>
 {
-    [FromQuery(Name = "userId"), JsonPropertyName("userId"), Description("El ID del usuario que hizo la transacción"),
-     Range(0, int.MaxValue)]
-        public int? UserId { get; set; } = null;
+    [FromQuery(Name = "userName"), JsonPropertyName("userName"), Description("El nombre del usuario que hizo la transacción"),  MaxLength(20)]
+        public string? UserName { get; set; } = null;
     [FromQuery(Name = "skip"), JsonPropertyName("skip"), Description("Cantidad de transacciones a omitir"),
      Range(0, int.MaxValue)]
     public int? Skip { get; set; } = 0;
@@ -19,10 +18,10 @@ public class GetTransactionsByFilterCommandValidator : AbstractValidator<GetTran
     public GetTransactionsByFilterCommandValidator()
     {
        
-        RuleFor(x => x.UserId)
-            .GreaterThan(0)
-            .When(x => x.UserId.HasValue).WithMessage("El ID del usuario para filtrar las transacciones debe de ser mayor a cero. ");
-        
+        RuleFor(x => x.UserName)
+            .MaximumLength(30)
+            .When(x => !string.IsNullOrEmpty(x.UserName)).WithMessage("El nombre de usuario para filtrar las transacciones debe de ser mayor a cero. ");
+
         RuleFor(x => x.Skip)
             .GreaterThanOrEqualTo(0)
             .When(x => x.Skip.HasValue).WithMessage("La cantidad de transacciones a omitir debe de ser mayor o igual a 0 ");
@@ -52,10 +51,12 @@ public class GetTransactionsByFilterEndpoint : IEndpoint
             ).RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
             .RequireCors()
             .DisableAntiforgery()
-            .Produces<ApiResult<List<TransactionResponse>>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<List<TransactionResponse>>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Transaction))
             .WithName(nameof(GetTransactionsByFilterEndpoint))
             .WithDescription("Busca una lista de transacciones");
@@ -67,9 +68,9 @@ internal class GetTransactionsByFilterCommandHandler(IBibliotecaUtecoDbContext c
 {
     public async Task<IApiResult> HandleAsync(GetTransactionsByFilterCommand request, CancellationToken cancellationToken = default)
     {
-        var result = await context.Transactions.GetByFilterAsync(request.UserId, request.Skip ?? 0, request.Take ?? 0,
+        var result = await context.Transactions.GetByFilterAsync(request.UserName, request.Skip ?? 0, request.Take ?? 0,
             cancellationToken);
 
-        return ApiResult<List<TransactionResponse>>.BuildSuccess(result.Select(t => t.ToResponse()).ToList());
+        return new SuccessApiResult<List<TransactionResponse>>(result.Select(t => t.ToResponse()).ToList());
     }
 }

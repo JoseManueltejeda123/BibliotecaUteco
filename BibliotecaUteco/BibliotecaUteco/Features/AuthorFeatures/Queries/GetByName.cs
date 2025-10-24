@@ -44,13 +44,13 @@ namespace BibliotecaUteco.Features.AuthorFeatures.Queries
                 .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .DisableAntiforgery()
                 .RequireCors()
-                .Produces<ApiResult<List<AuthorResponse>>>(
+                .Produces<SuccessApiResult<List<AuthorResponse>>>(
                     200,
                     ApplicationContentTypes.ApplicationJson
                 )
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)              
+                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Author))
                 .WithName(nameof(GetAuthorsByNameEndpoint))
                 .WithDescription(
@@ -69,7 +69,7 @@ namespace BibliotecaUteco.Features.AuthorFeatures.Queries
         {
             var authors = await context.Authors.GetAuthorsByName(request.AuthorsName ?? "");
 
-            return ApiResult<List<AuthorResponse>>.BuildSuccess(
+            return new SuccessApiResult<List<AuthorResponse>>(
                 authors.Select(a => a.ToResponse()).ToList()
             );
         }

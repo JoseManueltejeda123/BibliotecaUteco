@@ -2,7 +2,7 @@ namespace BibliotecaUteco.Features.AuthorFeatures.Actions;
 
 public class DeleteAuthorCommand : ICommand<IApiResult>
 {
-    [Range(1, int.MaxValue), Required, FromBody, JsonPropertyName("authorId")]
+    [Range(1, int.MaxValue), Required, FromQuery(Name = "authorId"), JsonPropertyName("authorId")]
     [Description("El id del autor a eliminar")]
     public int AuthorId { get; set; }
 }
@@ -22,7 +22,7 @@ internal class DeleteAuthorEndpoint : IEndpoint
         app.MapDelete(
                 EndpointSettings.AuthorsEndpoint + "/delete",
                 async (
-                    [FromBody] DeleteAuthorCommand command,
+                    [AsParameters] DeleteAuthorCommand command,
                     ISender sender,
                     IEndpointWrapper<DeleteAuthorEndpoint> wrapper,
                     CancellationToken cancellationToken = default
@@ -37,13 +37,12 @@ internal class DeleteAuthorEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Accepts<DeleteAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<ConflictApiResult>(409, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Author))
             .WithName(nameof(DeleteAuthorEndpoint))
             .WithDescription("Elimina un autor. No se puede eliminar si tiene libros asociados");
@@ -62,6 +61,6 @@ public class DeleteAuthorCommandHandler(IBibliotecaUtecoDbContext context)
             .Authors.Where(a => a.Id == request.AuthorId)
             .ExecuteDeleteAsync(cancellationToken);
 
-        return ApiResult<bool>.BuildSuccess(rows >= 1);
+        return new SuccessApiResult<bool>(rows >= 1);
     }
 }

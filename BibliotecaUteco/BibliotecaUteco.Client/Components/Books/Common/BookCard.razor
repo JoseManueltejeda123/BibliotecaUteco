@@ -102,29 +102,6 @@
     </LumexCard>
 </Animate>
 
-@if(ShowDeleteBookConfirmationDialog)
-{
-    <div @onclick="SetDeleteBookConfirmationModal" class="absolute inset-0 w-full h-full z-[9999999] bg-white/60 flex justify-center items-center">
-        <div class="p-4 border-neutral-200 border flex w-[300px] flex-col gap-3 bg-white items-center rounded-lg">
-            <label class="text-md font-semibold text-center">Desea eliminar el libro @Book.Name?</label>
-            <p class="text-[13px] font-normal">Una vez eliminado el libro no se podrá deshacer. No se puede eliminar un libro que tiene un prestamo pendiente.</p>
-            <div class="w-full flex items-center justify-between gap-2">
-                <LumexButton @onclick="SetDeleteBookConfirmationModal">Cancelar</LumexButton>
-                <LumexButton  Disabled="@_deletingBook" Color="ThemeColor.Danger" Onclick="FetchDeleteBookAsync">
-                    @if(_deletingBook)
-                    {
-                        <LumexSpinner Size="Size.Small"/>
-                    }
-                    else
-                    {
-                        @("Si, eliminar libro")
-                    } 
-                </LumexButton>
-
-            </div>
-        </div>
-    </div>
-}
 
 
 
@@ -163,11 +140,26 @@
         StateHasChanged();
     }
 
-    public void SetDeleteBookConfirmationModal()
+    public async Task SetDeleteBookConfirmationModal()
     {
         if(_deletingBook) return;
-        ShowDeleteBookConfirmationDialog = !ShowDeleteBookConfirmationDialog;
+
+    
+
+        var confirmed = await DialogService.ShowAsync(
+            title: "Eliminar Libro",
+            body: $"¿Desea eliminar el libro {Book.Name}? Una vez eliminado no se podrá recuperar.",
+            acceptText: "Sí, eliminar libro",
+            cancelText: "Cancelar"
+            
+        );
+
+        if (confirmed)
+        {
+            await FetchDeleteBookAsync();
+        }
     }
+    
     public async Task SetBookToUpdate()
     {
         await RightBarContext.OpenUpdateBookAsync(Book);

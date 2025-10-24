@@ -84,6 +84,7 @@
         var result = await UsersApiServices.LoginUserAsync(AuthenticateUserRequest);
         if (result.IsSuccess && result.Data is not null)
         {
+            await JsRuntime.InvokeVoidAsync("console.log", result);
             await AuthStateProvider.UpdateAuthenticationStateAsync(result.Data.Token, RemindMe);
             NavManager.NavigateTo("/books");
             

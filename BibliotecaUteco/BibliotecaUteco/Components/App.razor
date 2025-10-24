@@ -58,6 +58,83 @@
             .catch(err => console.error("Error al copiar al portapapeles:", err));
     };
 
+    window.popoverZIndexManager = {
+    observer: null,
+    baseZIndex: 9999,
+    
+    initialize: function() {
+        this.adjustZIndexes();
+        
+        // Observer para detectar nuevos popovers
+        this.observer = new MutationObserver(() => {
+            this.adjustZIndexes();
+        });
+        
+        this.observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['data-popover', 'data-popover-overlay']
+        });
+    },
+    
+    adjustZIndexes: function() {
+        // Obtener todos los pares overlay-popover
+        const overlays = document.querySelectorAll('[data-popover-overlay]');
+        
+        overlays.forEach((overlay, index) => {
+            const popoverId = overlay.getAttribute('data-popover-overlay');
+            const popover = document.querySelector(`[data-popover="${popoverId}"]`);
+            
+            if (popover && overlay) {
+                const overlayZIndex = this.baseZIndex + (index * 2);
+                const popoverZIndex = overlayZIndex + 1;
+                
+                overlay.style.zIndex = overlayZIndex.toString();
+                popover.style.zIndex = popoverZIndex.toString();
+            }
+        });
+    },
+    
+    dispose: function() {
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
+    }
+};
+
+    window.printElement = (elementId) => {
+        const divContent = document.getElementById(elementId).innerHTML;
+        const printWindow = window.open('', '', 'height=600,width=800');
+
+        // Escribe el HTML inicial con el <head> incluyendo la fuente
+        printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print</title>
+            <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+            <style>
+                body {
+                    font-family: 'Geist', 'Inconsolata', sans-serif;
+                }
+            </style>
+        </head>
+        <body>
+            ${divContent}
+        </body>
+        </html>
+    `);
+
+        printWindow.document.close();
+
+        printWindow.onload = () => {
+            printWindow.focus();
+            printWindow.print();
+        };
+    };
+
+
 </script>
 </body>
 

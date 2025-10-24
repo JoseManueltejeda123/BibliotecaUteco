@@ -44,11 +44,11 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Produces<IApiResult>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+                .Produces<UnprocessableEntityApiResult>(422, ApplicationContentTypes.ApplicationJson)
+
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
+                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Book))
                 .WithName(nameof(DeleteBookEndpoint))
                 .WithDescription(
@@ -75,7 +75,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 
             if (book == null)
             {
-                return ApiResult<bool>.BuildFailure(HttpStatus.NotFound, "El libro no existe.");
+                return new NotFoundApiResult( "El libro no existe.");
             }
 
             if (
@@ -84,8 +84,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 )
             )
             {
-                return ApiResult<bool>.BuildFailure(
-                    HttpStatus.Conflict,
+                return new ConflictApiResult(
                     "No se puede eliminar el libro porque tiene préstamos activos. Espere a que sean devueltos."
                 );
             }
@@ -102,7 +101,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 }
             }
 
-            return ApiResult<bool>.BuildSuccess(deletedRows >= 1);
+            return new SuccessApiResult<bool>(deletedRows >= 1);
         }
     }
 }

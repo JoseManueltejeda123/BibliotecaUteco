@@ -18,6 +18,8 @@ public record RightBarState
     public PenaltyResponse? PenaltyToPay { get; init; }
     public PenaltyResponse? PayedPenalty { get; init; }
 
+    public TransactionResponse? CreatedTransaction { get; init; }
+
     public static RightBarState Empty => new();
 
     public RightBarState ClearData() =>
@@ -33,7 +35,8 @@ public record RightBarState
             UpdatedReader = null,
             ReaderToLoan = null,
             PenaltyToPay = null,
-            PayedPenalty = null
+            PayedPenalty = null,
+            CreatedTransaction = null
         };
 }
 
@@ -93,6 +96,9 @@ public class RightBarStore : IDisposable
     public Task OpenCreateBookAsync() =>
         UpdateStateAsync(s => s.ClearData() with { View = RightBarView.CreatingBook });
 
+    public Task OpenCreateRetirementAsync() =>
+        UpdateStateAsync(s => s.ClearData() with { View = RightBarView.CreateRetirement });
+
     //batched
     public Task OpenUpdateBookAsync(BookResponse book) =>
         UpdateStateAsync(s =>
@@ -136,6 +142,8 @@ public class RightBarStore : IDisposable
             }
         );
     
+    public Task SetCreatedTransaction(TransactionResponse transaction) =>
+        UpdateStateAsync(s => s with { CreatedTransaction = transaction});
      public Task SetReaderToLoan(ReaderResponse reader) =>
             UpdateStateAsync(s =>
                 s.ClearData() with
@@ -179,4 +187,6 @@ public enum RightBarView
     CreateLoan,
     PayPenalty,
     Authors,
+
+    CreateRetirement
 }

@@ -47,12 +47,14 @@ internal class MarkLoanAsReturnedEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<MarkLoanAsReturnedCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<LoanResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<LoanResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Loan))
             .WithName(nameof(MarkLoanAsReturnedEndpoint))
             .WithDescription("Marca un préstamo como entregado/devuelto");
@@ -75,16 +77,14 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
 
         if (loan is null)
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 $"No se encontró el préstamo con ID {request.LoanId}"
             );
         }
 
         if (loan.ReturnedDate is not null)
         {
-            return ApiResult<LoanResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "El préstamo ya ha sido marcado como devuelto"
             );
         }
@@ -99,8 +99,7 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
             if (!loan.ReturnedDate.HasValue)
             {
                 await transaction.RollbackAsync(cancellationToken);
-                return ApiResult<LoanResponse>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "No pudimos crear la penalización. El préstamo no se marcó como entregado"
                 );
             }
@@ -116,8 +115,7 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
                 if (penaltyInsertion.Entity.Id == 0)
                 {
                     await transaction.RollbackAsync(cancellationToken);
-                    return ApiResult<LoanResponse>.BuildFailure(
-                        HttpStatus.BadRequest,
+                    return new BadRequestApiResult(
                         "No pudimos crear la penalización. El préstamo no se marcó como entregado"
                     );
                 }
@@ -132,13 +130,12 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
             if (updatedLoan is null)
             {
                 
-                return ApiResult<LoanResponse>.BuildFailure(
-                    HttpStatus.BadRequest,
+                return new BadRequestApiResult(
                     "No se pudo recuperar el préstamo actualizado"
                 );
             }
 
-            return ApiResult<LoanResponse>.BuildSuccess(updatedLoan.ToResponse());
+            return new SuccessApiResult<LoanResponse>(updatedLoan.ToResponse());
         }
         catch (Exception)
         {

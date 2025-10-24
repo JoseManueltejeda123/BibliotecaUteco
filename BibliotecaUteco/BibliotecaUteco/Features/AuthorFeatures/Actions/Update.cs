@@ -50,12 +50,14 @@ internal class UpdateAuthorEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<UpdateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+
+            .Produces<ConflictApiResult>(409, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Author))
             .WithName(nameof(UpdateAuthorEndpoint))
             .WithDescription("Actualiza un autor existente y retorna el autor actualizado");
@@ -79,8 +81,7 @@ public class UpdateAuthorCommandHandler(IBibliotecaUtecoDbContext context)
             && author is null
         )
         {
-            return ApiResult<AuthorResponse>.BuildFailure(
-                HttpStatus.NotFound,
+            return new NotFoundApiResult(
                 "El autor no existe"
             );
         }
@@ -94,8 +95,7 @@ public class UpdateAuthorCommandHandler(IBibliotecaUtecoDbContext context)
             )
         )
         {
-            return ApiResult<AuthorResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya existe otro autor con ese nombre"
             );
         }
@@ -103,6 +103,6 @@ public class UpdateAuthorCommandHandler(IBibliotecaUtecoDbContext context)
         author.Update(request);
         await context.SaveChangesAsync(cancellationToken);
         context.ChangeTracker.Clear();
-        return ApiResult<AuthorResponse>.BuildSuccess(author.ToResponse());
+        return new SuccessApiResult<AuthorResponse>(author.ToResponse());
     }
 }

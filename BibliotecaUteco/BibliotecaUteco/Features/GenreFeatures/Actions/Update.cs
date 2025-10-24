@@ -55,11 +55,9 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<CreateGenreCommand>(false, ApplicationContentTypes.ApplicationJson)
-                .Produces<ApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(UpdateGenreEndpoint))
                 .WithDescription(
@@ -85,8 +83,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 )
             )
             {
-                return ApiResult<GenreResponse>.BuildFailure(
-                    HttpStatus.Conflict,
+                return new ConflictApiResult(
                     "Ya existe un género con ese nombre."
                 );
             }
@@ -98,8 +95,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
 
             if (genre is null)
             {
-                return ApiResult<GenreResponse>.BuildFailure(
-                    HttpStatus.NotFound,
+                return new NotFoundApiResult(
                     "No se encontro el genero literario"
                 );
             }
@@ -108,7 +104,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
             await context.SaveChangesAsync(cancellationToken);
             context.ChangeTracker.Clear();
 
-            return ApiResult<GenreResponse>.BuildSuccess(genre.ToResponse());
+            return new SuccessApiResult<GenreResponse>(genre.ToResponse());
         }
     }
 }

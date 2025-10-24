@@ -34,7 +34,6 @@
         <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Returned); }' Variant="@(FilterByState ==LoansState.Returned ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Entregados</LumexChip>
         <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Exceeded); }' Variant="@(FilterByState == LoansState.Exceeded ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Excedidos</LumexChip>
     </div>
-
     <SectionDivider Name="Préstamos"/>
 
     <div class="w-full flex flex-col gap-3">

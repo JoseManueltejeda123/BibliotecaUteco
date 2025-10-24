@@ -113,11 +113,12 @@ internal class CreateReaderEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<CreateReaderCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<ApiResult<ReaderResponse>>(200, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<ReaderResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
-            .ProducesProblem(403, ApplicationContentTypes.ApplicationJson)
+            .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Reader))
             .WithName(nameof(CreateReaderEndpoint))
             .WithDescription("Crea un nuevo lector en el sistema");
@@ -145,8 +146,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
             )
         )
         {
-            return ApiResult<ReaderResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya existe un lector registrado con esa cédula"
             );
         }
@@ -162,8 +162,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
                 )
             )
             {
-                return ApiResult<ReaderResponse>.BuildFailure(
-                    HttpStatus.Conflict,
+                return new ConflictApiResult(
                     "Ya existe un lector registrado con esa matrícula"
                 );
             }
@@ -176,8 +175,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
             )
         )
         {
-            return ApiResult<ReaderResponse>.BuildFailure(
-                HttpStatus.Conflict,
+            return new ConflictApiResult(
                 "Ya existe un lector registrado con ese número de teléfono"
             );
         }
@@ -187,8 +185,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
 
         if (insertion.Entity.Id == 0)
         {
-            return ApiResult<ReaderResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "Error al crear el lector"
             );
         }
@@ -202,12 +199,11 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
 
         if (createdReader == null)
         {
-            return ApiResult<ReaderResponse>.BuildFailure(
-                HttpStatus.BadRequest,
+            return new BadRequestApiResult(
                 "El lector no pudo ser encontrado tras su creación"
             );
         }
 
-        return ApiResult<ReaderResponse>.BuildSuccess(createdReader.ToResponse());
+        return new SuccessApiResult<ReaderResponse>(createdReader.ToResponse());
     }
 }

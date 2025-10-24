@@ -6,21 +6,21 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface IReadersApiServices
 {
-    Task<ApiResult<ReaderResponse>> CreateAsync(
+    Task<ApiResponse<ReaderResponse>> CreateAsync(
         CreateReaderRequest request,
         CancellationToken cancellationToken = default
     );
-    Task<ApiResult<List<ReaderResponse>>> GetByFilterAsync(
+    Task<ApiResponse<List<ReaderResponse>>> GetByFilterAsync(
         GetReadersByFilterRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<ReaderResponse>> UpdateAsync(
+    Task<ApiResponse<ReaderResponse>> UpdateAsync(
         UpdateReaderRequest request,
         CancellationToken cancellationToken = default
     );
 
-    Task<ApiResult<bool>> DeleteAsync(
+    Task<ApiResponse<bool>> DeleteAsync(
         DeleteReaderRequest request,
         CancellationToken cancellationToken = default
     );

@@ -94,13 +94,11 @@ namespace BibliotecaUteco.Features.BooksFeatures.Queries
                 .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
-                .Produces<ApiResult<List<GenreResponse>>>(
+                .Produces<SuccessApiResult<List<GenreResponse>>>(
                     200,
                     ApplicationContentTypes.ApplicationJson
                 )
-                .ProducesProblem(400, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(404, ApplicationContentTypes.ApplicationJson)
-                .ProducesProblem(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Book))
                 .WithName(nameof(GetBooksByFilterEndpoint))
                 .WithDescription(
@@ -125,7 +123,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Queries
                 request.Take
             );
 
-            return ApiResult<List<BookResponse>>.BuildSuccess(
+            return new SuccessApiResult<List<BookResponse>>(
                 books.Select(g => g.ToResponse()).ToList()
             );
         }

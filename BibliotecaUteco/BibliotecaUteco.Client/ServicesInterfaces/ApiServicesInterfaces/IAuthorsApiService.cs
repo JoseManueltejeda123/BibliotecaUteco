@@ -6,20 +6,20 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces
 {
     public interface IAuthorsApiServices
     {
-        Task<ApiResult<List<AuthorResponse>>> GetByNameAsync(
+        Task<ApiResponse<List<AuthorResponse>>> GetByNameAsync(
             GetAuthorsByNameRequest request,
             CancellationToken cancellationToken = default
         );
-        Task<ApiResult<AuthorResponse>> CreateAuthorAsync(
+        Task<ApiResponse<AuthorResponse>> CreateAuthorAsync(
             CreateAuthorRequest request,
             CancellationToken cancellationToken = default
         );
 
-        Task<ApiResult<AuthorResponse>> UpdateAsync(
+        Task<ApiResponse<AuthorResponse>> UpdateAsync(
             UpdateAuthorRequest request,
             CancellationToken cancellationToken = default
         );
-        Task<ApiResult<bool>> DeleteAsync(
+        Task<ApiResponse<bool>> DeleteAsync(
             UpdateAuthorRequest request,
             CancellationToken cancellationToken = default
         );
