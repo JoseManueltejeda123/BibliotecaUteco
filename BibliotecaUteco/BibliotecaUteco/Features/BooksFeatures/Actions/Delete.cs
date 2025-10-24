@@ -80,12 +80,12 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 
             if (
                 await context.BookLoans.AnyAsync(b =>
-                    b.BookId == request.BookId && b.Loan.ReturnedDate == null
+                    b.BookId == request.BookId
                 )
             )
             {
                 return new ConflictApiResult(
-                    "No se puede eliminar el libro porque tiene préstamos activos. Espere a que sean devueltos."
+                    "No se puede eliminar el libro porque tiene préstamos. Si quire inhabilitarlos establezca su stock a 0."
                 );
             }
 

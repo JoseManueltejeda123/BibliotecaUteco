@@ -104,34 +104,44 @@
     }
 };
 
-    window.printElement = (elementId) => {
-        const divContent = document.getElementById(elementId).innerHTML;
-        const printWindow = window.open('', '', 'height=600,width=800');
+    window.printElement = (docName, divId) => {
+        
+        try{
+            const divContent = document.getElementById(divId).innerHTML;
+            const printWindow = window.open('', '', 'height=600,width=800');
 
-        // Escribe el HTML inicial con el <head> incluyendo la fuente
-        printWindow.document.write(`
+            // Escribe el HTML inicial con el <head> incluyendo la fuente
+            printWindow.document.write(`
         <html>
         <head>
-            <title>Print</title>
+            <title>${docName}</title>
             <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
             <style>
                 body {
                     font-family: 'Geist', 'Inconsolata', sans-serif;
+
                 }
             </style>
         </head>
-        <body>
+        <body class="bg-black">
             ${divContent}
         </body>
         </html>
     `);
 
-        printWindow.document.close();
+            printWindow.document.close();
 
-        printWindow.onload = () => {
-            printWindow.focus();
-            printWindow.print();
-        };
+            printWindow.onload = () => {
+                printWindow.document.title = docName;
+                printWindow.focus();
+                printWindow.print();
+            };
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+        
     };
 
 
@@ -139,3 +149,7 @@
 </body>
 
 </html>
+
+@code{
+
+}

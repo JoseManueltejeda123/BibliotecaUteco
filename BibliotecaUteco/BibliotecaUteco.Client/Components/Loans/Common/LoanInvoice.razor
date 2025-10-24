@@ -1,68 +1,137 @@
+
+
 <div id="loaninvoice" style="width: 100%; gap: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
-    <div style="width: 100%; display: flex; gap: 4px; align-items: center;">
-        <img src="https://th.bing.com/th/id/R.3648063d1e2e4d861787b0863e5304f3?rik=WdYucePNTFGtBg&pid=ImgRaw&r=0" style="width: 60px; height: 60px;"/>
-        <div style="display: flex; flex-direction: column; gap: 2px; justify-content: center">
-            <p style="font-size: 16px; font-weight: 500;" >UNIVERSIDAD TECNOLÓGICA DEL CIBAO ORIENTAL</p>
-            <p style="font-size: 14px; font-weight: 500;" >BIBLIOUTECO</p>
-        </div>
-        
-
+    <div style="width: 100%; display: flex; gap: 4px; align-items: center; justify-content: space-between">
+        <p style="font-family: 'Inconsolata'; font-size: 16px; font-weight: 600;">TICKET DE PRÉSTAMO</p>
+        <img src="https://uteco.edu.do/wp-content/uploads/2021/04/Logo-Pag.jpg" style="width: 150px; object-fit: contain; height: 50px;"/>
     </div>
-    
-    <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; " >RECIBO DE PRÉSTAMO</p>
-
-    <div style="width: 100%; display: flex; gap: 16px;" >
-        <div class="flex flex-col gap-1 w-fit">
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">PRÉSTAMO PARA: <span style="background-color: black; color: white; padding: 0 2px;" >JOSÉ MANUEL PEREZ</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ID LECTOR: <span style="background-color: black; color: white; padding: 0 2px;">02</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">CÉDULA DEL LECTOR: <span style="background-color: black; color: white; padding: 0 2px;">11111111111</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">MATRÍCULA: <span style="background-color: black; color: white; padding: 0 2px;">------</span></p>
 
 
+    <div style="width: 100%; display: flex; gap: 16px; justify-content: space-between; margin-top: 50px;" >
+        <div >
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">PRÉSTAMO PARA: <span style=" padding: 0 2px; color: black;" >@Loan.Reader.FullName.ToUpper()</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">ID LECTOR: <span style=" padding: 0 2px;color: black;">@Loan.ReaderId</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CÉDULA DEL LECTOR: <span style="padding: 0 2px;color: black;">
+                
+                @if (!string.IsNullOrEmpty(Loan.Reader.IdentityCardNumber))
+                    {
+                    @Loan.Reader.IdentityCardNumber
+                    }
+                    else
+                    {
+                    @("------")
+                    }
+            </span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;">MATRÍCULA: <span style=" padding: 0 2px; color: black;">
+                @if (!string.IsNullOrEmpty(Loan.Reader.StudentLicence))
+                    {
+                    @Loan.Reader.StudentLicence
+                    }
+                    else
+                    {
+                    @("------")
+                    }
+            </span></p>
         </div>
-       
-        <div class="flex flex-col gap-1 w-fit">
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ID DEL PRÉSTAMO: <span style="background-color: black; color: white; padding: 0 2px;">12</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">FECHA DE CREACIÓN: <span style="background-color: black; color: white; padding: 0 2px;">12 OCT 2025</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">FECHA DE VENCIMIENTO: <span style="background-color: black; color: white; padding: 0 2px;">15 OCT 2025</span></p>
-            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">LAPSO DE TIEMPO: <span style="background-color: black; color: white; padding: 0 2px;">3 DÍAS</span></p>
+
+        <div >
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">ID DEL PRÉSTAMO: <span style=" padding: 0 2px; color: black;">@Loan.Id</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">FECHA DE CREACIÓN: <span style=" padding: 0 2px; color: black;">@Loan.CreatedAtLocalFormatted</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">FECHA DE VENCIMIENTO: <span style=" padding: 0 2px; color: black;">@Loan.DueDateLocalFormatted</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">LAPSO DE TIEMPO: <span style=" padding: 0 2px; color: black;">@Loan.MaxLoanDays DÍAS</span></p>
         </div>
     </div>
 
     <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
-        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 500; font-family: 'Inconsolata'" >LIBROS</span>
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'" >LIBROS</span>
         <hr style="border-bottom: 1px solid black; width: 100%;"/>
 
     </div>
-    
-    <div style="width: 100%; display: flex; align-items: center; gap: 2px;" >
-        <div style="display: flex; flex-direction: column;" >
-            <span style="background-color: black; color: white; padding: 0 2px; font-family: 'Inconsolata'; font-size: 14px; text-wrap: nowrap; font-weight: 500; " >1. HARRY POTTER Y LA PIEDRA FILOSOFAL</span>
-            <span style="font-family: 'Inconsolata'; font-size: 14px;">J. K. ROWLING</span>
+
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px;">
+
+        @foreach(var book in Loan.Books)
+        {
+        <div style="display: flex; flex-direction: column;">
+            <span style="padding: 0 2px; font-family: 'Inconsolata'; font-size: 14px; text-wrap: nowrap; font-weight: 600; color: black;">@(Loan.Books.IndexOf(book) + 1) @book.Name.ToUpper()</span>
+            <span style="font-family: 'Inconsolata'; font-size: 14px; color: dimgray; ">
+                    
+                    @if (book.Authors.Any())
+                {
+                @(book.Authors.FirstOrDefault().Author.FullName.ToUpper())
+
+                }
+                </span>
+            <span style="font-family: 'Inconsolata'; opacity: 0.5; font-size: 14px; ">
+                    
+                   @if (book.Authors.Count >= 2)
+                {
+                @(book.Authors.Count() - 1) @(" MÁS")
+                }
+                </span>
 
         </div>
+        }
+
 
     </div>
-    
+
     <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
-        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 500; font-family: 'Inconsolata'" >Resumen</span>
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'" >RESUMEN</span>
         <hr style="border-bottom: 1px solid black; width: 100%; "/>
 
     </div>
-    <div style="display: flex; flex-direction: column; gap: 1px;" >
-        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">CANTIDAD DE LIBROS: <span style="background-color: black; color: white; padding: 0 2px;">12 LIBROS</span></p>
-        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">ESTADO DEL PRESTAMO: <span style="background-color: black; color: white; padding: 0 2px;">PENDIENTE</span></p>
+    <div >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CANTIDAD DE LIBROS: <span style="color: black; padding: 0 2px;">@Loan.Books.Count() LIBROS</span></p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600;color: dimgray;  ">ESTADO DEL PRESTAMO: <span style="color: black; padding: 0 2px;">
+            @if(Loan.ReturnedDate is not null)
+                {
+                @("DEVUELTO")
+                }
+                else
+                {
+                if (Loan.IsExceeded)
+                {
+                    @("EXCEDIDO")
+
+                }
+                else
+                {
+                @("PENDIENTE")
+                }
+
+                }
+        </span></p>
+        @if (Loan.ReturnedDate is not null)
+        {
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">FECHA DE RETORNO: <span style="color: black; padding: 0 2px;">@Loan.ReturnedDateLocalFormatted</span></p>
+
+        if(Loan.HasPenalty)
+        {
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600;color: dimgray;  ">TIENE PENALIZACIÓN: <span style="color: black; padding: 0 2px;">SI</span></p>
+
+        }
+        }
+    </div>
+
+    <div style="width: 100%; gap: 0 !important; display: flex; flex-direction: column; justify-content: center; opacity: 0.7; margin-top: 200px; align-items: center;" >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; ">GUARDA ESTE COMPROBANTE PARA PODER HACER RECLAMOS</p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">COTUÍ, SÁNCHEZ RAMÍREZ, REP. DOM. (43000) </p>
     </div>
 </div>
+
+
 @code {
 
     [Parameter]
     public EventCallback OnPrinted {get; set;}
+
+    [Parameter] public LoanResponse Loan { get; set; } = new();
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-                await JsRuntime.InvokeVoidAsync("printElement", "loaninvoice");
+                await JsRuntime.InvokeVoidAsync("printElement",  $"prestamo_{Loan.Id.ToString()}", "loaninvoice");
                 await OnPrinted.InvokeAsync();
 
         }

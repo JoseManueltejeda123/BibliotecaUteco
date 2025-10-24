@@ -1,0 +1,111 @@
+
+
+<div id="penaltyinvoice" style="width: 100%; gap: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+    <div style="width: 100%; display: flex; gap: 4px; align-items: center; justify-content: space-between">
+        <p style="font-family: 'Inconsolata'; font-size: 16px; font-weight: 600;">FACTURA DE PAGO DE PENALIZACIÓN</p>
+        <img src="https://uteco.edu.do/wp-content/uploads/2021/04/Logo-Pag.jpg" style="width: 150px; object-fit: contain; height: 50px;"/>
+    </div>
+
+
+    <div style="width: 100%; display: flex; gap: 16px; justify-content: space-between; margin-top: 50px;" >
+        <div >
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">PENALIZACIÓN PARA: <span style=" padding: 0 2px; color: black;" >@Penalty.ReaderName.ToUpper()</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">ID LECTOR: <span style=" padding: 0 2px;color: black;">@Penalty.ReaderId</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CÉDULA DEL LECTOR: <span style="padding: 0 2px;color: black;">
+                
+                @if (!string.IsNullOrEmpty(Penalty.ReaderIdentityCardNumber))
+                    {
+                    @Penalty.ReaderIdentityCardNumber
+                    }
+                    else
+                    {
+                    @("------")
+                    }
+            </span></p>
+          
+        </div>
+
+        <div >
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">ID DEL PRÉSTAMO: <span style=" padding: 0 2px; color: black;">@Penalty.LoanId</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">ID DEL PENALIZACIÓN: <span style=" padding: 0 2px; color: black;">@Penalty.Id</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">FECHA DE LA PENALIZACIÓN: <span style=" padding: 0 2px; color: black;">@Penalty.CreatedAtLocalFormatted</span></p>
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">ID TRANSACCIÓN: <span style="color: black; padding: 0 2px;">@Penalty.TransactionId</span></p>
+
+        </div>
+    </div>
+
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'" >DETALLES DE COBRO</span>
+        <hr style="border-bottom: 1px solid black; width: 100%;"/>
+
+    </div>
+
+    <div >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">DÍAS DE EXCESO: <span style=" padding: 0 2px; color: black;">@Penalty.OverdueDays</span></p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">TAZA DE COBRO POR DIA DE EXCESO: <span style=" padding: 0 2px; color: black;">RD$ @Penalty._dailyFineRate</span></p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">TOTAL A COBRAR: <span style=" padding: 0 2px; color: black;">RD$ @Penalty._totalAmount</span></p>
+    </div>
+
+    
+    @if(!Penalty.IsDue)
+    {
+        <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+            <span style="font-size: 14px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'" >DETALLES DE PAGO</span>
+            <hr style="border-bottom: 1px solid black; width: 100%; "/>
+
+        </div>
+            <div >
+                <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">MONTO DADO: <span style=" padding: 0 2px; color: black;">RD$ @Penalty._givenAmount</span></p>
+                <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">MONTO DEVUELTO: <span style=" padding: 0 2px; color: black;">RD$ @Penalty._returnedAmount</span></p>
+                <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;  ">FECHA DEL PAGO: <span style=" padding: 0 2px; color: black;">@Penalty.UpdatedAtLocalFormatted</span></p>
+            </div>
+    }
+    
+    
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 14px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'" >DETALLES EXTRA</span>
+        <hr style="border-bottom: 1px solid black; width: 100%; "/>
+
+    </div>
+    <div >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600;color: dimgray;  ">ESTADO DEL PRESTAMO: <span style="color: black; padding: 0 2px;">
+                @if(Penalty.IsDue)
+                {
+                    @("DEBIDO")
+                }
+                else
+                {
+                    @("PAGO")
+
+                }
+
+                
+        </span></p>
+       
+        
+    </div>
+
+    <div style="width: 100%; gap: 0 !important; display: flex; flex-direction: column; justify-content: center; opacity: 0.7; margin-top: 200px; align-items: center;" >
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; ">GUARDA ESTE COMPROBANTE PARA PODER HACER RECLAMOS</p>
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 500; ">COTUÍ, SÁNCHEZ RAMÍREZ, REP. DOM. (43000) </p>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback OnPrinted {get; set;}
+
+    [Parameter] public PenaltyResponse Penalty { get; set; } = new();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+                await JsRuntime.InvokeVoidAsync("printElement", $"penalizacion",  "penaltyinvoice");
+                await OnPrinted.InvokeAsync();
+
+        }
+
+    }
+}

@@ -775,14 +775,6 @@
     width: 40px;
     height: 40px;
   }
-  .size-\[60px\] {
-    width: 60px;
-    height: 60px;
-  }
-  .size-\[70px\] {
-    width: 70px;
-    height: 70px;
-  }
   .size-\[120px\] {
     width: 120px;
     height: 120px;
@@ -973,9 +965,6 @@
   .w-14 {
     width: calc(var(--spacing) * 14);
   }
-  .w-\[1px\] {
-    width: 1px;
-  }
   .w-\[20px\] {
     width: 20px;
   }
@@ -1026,9 +1015,6 @@
   }
   .w-\[calc\(100\%_-_--spacing\(6\)\)\] {
     width: calc(100% - calc(var(--spacing) * 6));
-  }
-  .w-fit {
-    width: fit-content;
   }
   .w-full {
     width: 100%;
@@ -1392,10 +1378,6 @@
     border-top-left-radius: var(--lumex-radius-small);
     border-top-right-radius: var(--lumex-radius-small);
   }
-  .rounded-r-xl {
-    border-top-right-radius: var(--radius-xl);
-    border-bottom-right-radius: var(--radius-xl);
-  }
   .rounded-b-large {
     border-bottom-right-radius: var(--lumex-radius-large);
     border-bottom-left-radius: var(--lumex-radius-large);
@@ -1435,10 +1417,6 @@
   .border-\[4px\] {
     border-style: var(--tw-border-style);
     border-width: 4px;
-  }
-  .border-r {
-    border-right-style: var(--tw-border-style);
-    border-right-width: 1px;
   }
   .border-b {
     border-bottom-style: var(--tw-border-style);
@@ -1746,9 +1724,6 @@
   }
   .bg-neutral-300 {
     background-color: var(--color-neutral-300);
-  }
-  .bg-neutral-900 {
-    background-color: var(--color-neutral-900);
   }
   .bg-neutral-950 {
     background-color: var(--color-neutral-950);
@@ -2111,9 +2086,6 @@
   }
   .text-\[16px\] {
     font-size: 16px;
-  }
-  .text-\[18px\] {
-    font-size: 18px;
   }
   .text-\[20px\] {
     font-size: 20px;
