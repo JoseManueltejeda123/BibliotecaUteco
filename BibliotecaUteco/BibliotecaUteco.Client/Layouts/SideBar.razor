@@ -22,22 +22,56 @@
         {   <div class="w-full flex items-center gap-3">
             <AuthorizeView>
                 <Authorized >
+                    <LumexDropdown  ShowArrow="true" Placement="PopoverPlacement.Bottom"  >
+                       <LumexDropdownTrigger >
+                           @if (!string.IsNullOrEmpty(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value))
+                           {
+                               <LumexAvatar Radius="@Radius.Full"
+                                            Color="ThemeColor.Default"
+                                            Size="Size.Small"
+                                            Bordered="@true"
+                                            Name="@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? string.Empty)"
+                                            Src="@(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? string.Empty)"/>
 
-                    @if (!string.IsNullOrEmpty(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value))
-                    {
-                    <LumexAvatar Radius="@Radius.Full"
-                                 Color="ThemeColor.Default"
-                                 Size="Size.Small"
-                                 Bordered="@true"
-                                 Name="@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? string.Empty)"
-                                 Src="@(context.User?.FindFirst(JwtRegisteredClaimNames.Picture)?.Value ?? string.Empty)"/>
+                           }
+                           else
+                           {
+                               <img class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={context.User?.FindFirst(JwtRegisteredClaimNames.Nickname)?.Value}") />
 
-                    }
-                    else
-                    {
-                    <img class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={context.User?.FindFirst(JwtRegisteredClaimNames.Nickname)?.Value}") />
+                           }                       </LumexDropdownTrigger>
+                       <LumexDropdownMenu>
+                           <LumexDropdownItem Disabled="true" Id="info">
+                               <StartContent>
+                                   <InfoFilledIcon Size="18px"/>
+                               </StartContent>
+                               <ChildContent>
+                                   <div class="w-full">
+                                       <p class="text-[13px] font-semibold">@context.User?.FindFirst(JwtRegisteredClaimNames.Nickname)?.Value</p>
+                                       <p class="text-xs ">@context.User?.FindFirst("role")?.Value</p>
+                                   </div>
+                               </ChildContent>
 
-                    }
+                           </LumexDropdownItem>
+
+                           <LumexDropdownItem Disabled="true" Id="Divider">
+                               <LumexDivider/>
+                           </LumexDropdownItem>
+                           <LumexDropdownItem @onclick="SetUpdateUserView" Id="update">
+                               <StartContent>
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                               </StartContent>
+                               <ChildContent>Actualizar datos</ChildContent>
+                           </LumexDropdownItem>
+                           <LumexDropdownItem OnClick="LogoutAsync" Id="logout">
+                               <StartContent>
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                               </StartContent>
+                               <ChildContent>Cerrar Sesión</ChildContent>
+                           </LumexDropdownItem>
+                  
+                   </LumexDropdownMenu>
+               </LumexDropdown>
+                    
 
                     <div class="flex flex-col ">
                         <label class="text-sm font-semibold">@(context.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value ?? "Invitado")</label>
@@ -139,14 +173,7 @@
         </Authorized>
     </AuthorizeView>
     
-    <SideBarButton   Name="Cerrar Sesión" OnClick="async ()=> {await LogoutAsync();}" IsExpanded="SideBarExpanded">
-        <Icon>
-            <LumexTooltip Size="Size.Small" Content=@("Cerrar sesión") ShowArrow="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
-
-            </LumexTooltip>
-        </Icon>
-    </SideBarButton>
+  
     
     
 </aside>
@@ -156,6 +183,8 @@
 
 @code {
 
+        [Parameter]
+        public bool _fetchingUser {get; set;} = false;
     
     [Parameter]
     public bool SideBarExpanded { get; set; } = true;
@@ -187,6 +216,30 @@
 
         await RightBarContext.CloseAsync();
         await AuthStateProvider.UpdateAuthenticationStateAsync(null);
+    }
+
+    public async Task SetUpdateUserView()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity is not null && !authState.User.Identity.IsAuthenticated) return;
+        
+        var userIdString = authState.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? string.Empty;
+        var parsing = int.TryParse(userIdString, out var userId);
+        
+        if(!parsing) return;
+           _fetchingUser = true;
+           StateHasChanged();
+           var result = await UsersApiServices.GetByIdAsync(new(){UserId = userId});
+
+           if (result.IsSuccessful())
+           {
+                  await RightBarContext.OpenUpdateUserAsync(result.Data);
+                    
+           }
+    _fetchingUser = false;
+    StateHasChanged();
+           
     }
 
    

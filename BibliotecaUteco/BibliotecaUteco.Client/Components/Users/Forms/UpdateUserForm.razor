@@ -1,4 +1,5 @@
 @using BibliotecaUteco.Client.Utilities
+@implements IDisposable
 <EditForm  Model="UpdateUserModel"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
@@ -91,11 +92,13 @@
                 {
                     <SectionDivider Name="Opcional"/>
                     <div class="flex flex-col ">
-                        <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.CurrentPassword" Label="Su contraseña actual" Description="Introdzca la contraseña actual" PlaceHolder="*******"></LumexTextbox>
+                        <LumexTextbox AdditionalAttributes='@(new Dictionary<string, object>
+                                      { { "autocomplete", "false" }})' Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.CurrentPassword" Label="Su contraseña actual" Description="Introdzca la contraseña actual" PlaceHolder="*******"></LumexTextbox>
                         <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.CurrentPassword)"/></span>
                     </div>
                     <div class="flex flex-col ">
-                        <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.NewPassword" Label="Su contraseña nueva" Description="Introdzca la contraseña nueva" PlaceHolder="*******"></LumexTextbox>
+                        <LumexTextbox AdditionalAttributes='@(new Dictionary<string, object>
+                                                                { { "autocomplete", "false" }})'   Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.NewPassword" Label="Su contraseña nueva" Description="Introdzca la contraseña nueva" PlaceHolder="*******"></LumexTextbox>
                         <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.NewPassword)"/></span>
                     </div>
                 }
@@ -126,12 +129,22 @@
     private InputFile? fileInput = null;
     public bool ShowPassword { get; set; } = false;
     public string? _prevProfilePicture {get; set;} = null;
-
+    
 
 
 }
 
 @functions{
+    
+    public async void HandleUpdateUserChanged(RightBarState state)
+    {
+        if (state.UserToUpdate is not null && !_updatingUser && state.UserToUpdate.Id != UpdateUserModel.UserId)
+        {
+            ParseUserToUpdate(state.UserToUpdate);
+            StateHasChanged();
+
+        }
+    }
 
     public void ParseUserToUpdate(UserResponse user)
     {
@@ -149,10 +162,16 @@
         {
 
             ParseUserToUpdate(RightBarContext.State.UserToUpdate);
+            RightBarContext.OnStateChanged += HandleUpdateUserChanged;
 
         }
         StateHasChanged();
        
+    }
+
+    public void Dispose()
+    {
+        RightBarContext.OnStateChanged -= HandleUpdateUserChanged;
     }
 
     public async Task FetchUpdateUserAsync()

@@ -33,4 +33,27 @@ public static class UserDbSetActions
             })
             .ToListAsync(token);
     }
+    
+    public static async Task<User?> GetByIdAsync(
+        this DbSet<User> dbSet,
+        int userId,
+        CancellationToken token = default
+    )
+    {
+        return await dbSet.Where(u => u.Id == userId)
+            .Select(b => new User()
+            {
+                Id = b.Id,
+                FullName = b.FullName,
+                CreatedAt = b.CreatedAt,
+                UpdatedAt = b.UpdatedAt,
+                Username = b.Username,
+                SexId = b.SexId,
+                RoleId = b.RoleId,
+                IdentityCardNumber = b.IdentityCardNumber,
+                ProfilePictureUrl = b.ProfilePictureUrl,
+                Role = b.Role,
+            })
+            .FirstOrDefaultAsync(token);
+    }
 }

@@ -5,7 +5,7 @@ namespace BibliotecaUteco.Client.Requests.Users.Actions;
 public class ResetPasswordRequest
 {
     
-    public string UserId { get; set; } = "";
+    public int UserId { get; set; } 
     
  
 }

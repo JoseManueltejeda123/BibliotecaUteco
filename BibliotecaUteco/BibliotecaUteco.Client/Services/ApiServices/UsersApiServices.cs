@@ -51,16 +51,26 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         );
     }
 
+    public async Task<ApiResponse<UserResponse>> GetByIdAsync(
+        GetUserByIdRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = HttpUtility.ParseQueryString(string.Empty);
+
+        query["userId"] = request.UserId.ToString();
+        string queryString = query?.ToString() ?? "";
+        return await client.FetchGetAsync<UserResponse>(
+            UserEndpoint + $"/by-id?{queryString}",
+            cancellationToken
+        );
+    }
     public async Task<ApiResponse<UserResponse>> CreateAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken = default
     )
-    {
-       
-            
-            return await client.FetchPostAsync<UserResponse>(UserEndpoint, request.ToMultipartFormData(), cancellationToken);
-        
-       
+    { 
+        return await client.FetchPostAsync<UserResponse>(UserEndpoint, request.ToMultipartFormData(), cancellationToken);
     }
 
     public async Task<ApiResponse<UserResponse>> UpdateAsync(

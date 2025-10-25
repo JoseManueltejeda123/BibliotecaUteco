@@ -1,26 +1,19 @@
 namespace BibliotecaUteco.Features.UserFeatures.Actions;
-public class ResetPasswordCommand : ICommand<IApiResult>
+public class ResetPasswordCommand : CommandWithUserCredentials, ICommand<IApiResult>
 {
-    [FromBody, JsonPropertyName("username"), Required, MaxLength(15), MinLength(5)]
-    [Description("Nombre de usuario")]
-    [RegularExpression(@"^[a-zA-Z0-9._]+$")]
-    public string Username { get; set; } = null!;
+    [FromBody, JsonPropertyName("userId"), Required, Range(1, int.MaxValue)]
+    [Description("Id de usuario")]
+    public int UserId { get; set; }
 }
 
 public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
 {
     public ResetPasswordCommandValidator()
     {
-        RuleFor(x => x.Username)
-            .NotEmpty()
-            .WithMessage("El nombre de usuario es requerido")
-            .MinimumLength(5)
-            .WithMessage("El nombre de usuario debe tener al menos 5 caracteres")
-            .MaximumLength(15)
-            .WithMessage("El nombre de usuario no puede superar los 15 caracteres")
-            .Matches(@"^[a-zA-Z0-9._]+$")
+        RuleFor(x => x.UserId)
+            .GreaterThan(0)
             .WithMessage(
-                "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos"
+                "El Id del usuario debe de ser mayor a 0"
             );
     }
 }
@@ -29,23 +22,25 @@ internal class ResetPasswordEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost(
-                $"{EndpointSettings.UsersEndpoint}/reset-password",
+        app.MapPut(
+                EndpointSettings.UsersEndpoint + "/reset-password",
                 async (
                     [FromBody] ResetPasswordCommand command,
                     ISender sender,
+                    HttpContext context,
                     IEndpointWrapper<ResetPasswordEndpoint> wrapper,
                     CancellationToken cancellationToken = default
                 ) =>
                 {
                     return await wrapper.ExecuteAsync<IApiResult>(async () =>
-                    {
+                    {   command.SetCurrentUserId(UserIdentityUtility.GetUserIdFromClaims(context.User));
                         return await sender.SendAndValidateAsync(command, cancellationToken);
                     });
                 }
             )
             .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
             .RequireCors(CorsPolicies.DefaultPolicy)
+            .Accepts<ResetPasswordCommand>(false, ApplicationContentTypes.ApplicationJson)
             .Produces<SuccessApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
@@ -66,9 +61,14 @@ public class ResetPasswordCommandHandler(
         CancellationToken cancellationToken = default
     )
     {
+        if(request.CurrentUserId == request.UserId)
+        {
+            return new ForbiddenApiResult("No puedes restablecer tu propia contraseña de esta manera. Actualiza tus credenciales directamente");
+        }
+            
         var user = await context
             .Users
-            .FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
 
         if (user == null)
         {
