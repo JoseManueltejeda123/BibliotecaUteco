@@ -13,6 +13,17 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
 {
     private const string UserEndpoint = "/users";
 
+    public async Task<ApiResponse<bool>> ResetPasswordAsync(
+        ResetPasswordRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await client.FetchPutAsync<bool>(
+            UserEndpoint + "/reset-password",
+            request,
+            cancellationToken
+        );
+    }
     public async Task<ApiResponse<JwtResponse>> LoginUserAsync(
         AuthenticateUserRequest request,
         CancellationToken cancellationToken = default

@@ -5,28 +5,37 @@ using BibliotecaUteco.Services;
 
 namespace BibliotecaUteco.Features.UserFeatures.Actions
 {
-    public class UpdateUserCommand : ICommand<IApiResult>
+    public class UpdateUserCommand : CommandWithUserCredentials, ICommand<IApiResult>
     {
-        [FromBody, JsonPropertyName("userId"), Required, Range(1, int.MaxValue)]
+        [FromForm(Name = "userId"), JsonPropertyName("userId"), Required, Range(1, int.MaxValue)]
         [Description("Id del usuario a actualizar")]
         public int UserId { get; set; }
 
-        [FromBody, JsonPropertyName("fullName"), Required, MaxLength(50), MinLength(5)]
+        [FromForm(Name = "fullName"), JsonPropertyName("fullName"), Required, MaxLength(50), MinLength(5)]
         [Description("Nombre completo del usuario")]
         public string FullName { get; set; } = null!;
 
-        [FromBody, JsonPropertyName("username"), Required, MaxLength(15), MinLength(5)]
+        [FromForm(Name = "userName"), JsonPropertyName("username"), Required, MaxLength(15), MinLength(5)]
         [Description("Nombre de usuario (solo letras, números, . y _)")]
         [RegularExpression(@"^[a-zA-Z0-9._]+$")]
         public string Username { get; set; } = null!;
 
-        [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
+        [FromForm(Name = "identityCardNumber"), JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
         [Description("Cédula (11 dígitos)")]
         public string IdentityCardNumber { get; set; } = null!;
+        
+        [FromForm(Name = "currentPassword"), JsonPropertyName("currentPassword"), MaxLength(30), MinLength(8)]
+        [Description("Contraseña actual (mínimo 8 caracteres)"), ]
+        public string? CurrentPassword { get; set; } 
+        
+        [FromForm(Name = "newPassword"), JsonPropertyName("newPassword"), MaxLength(30), MinLength(8)]
+        [Description("Contraseña actual (mínimo 8 caracteres)"), ]
+        public string? NewPassword { get; set; }
 
-        [FromBody, JsonPropertyName("sexId"), Required, Range(1, 2)]
+        [FromForm(Name = "sexId"), JsonPropertyName("sexId"), Required, Range(1, 2)]
         [Description("ID del sexo")]
         public int SexId { get; set; }
+        
 
         [FromForm(Name = "profilePictureFile"), JsonPropertyName("profilePictureFile")]
         [Description("Foto de perfil (opcional)")]
@@ -66,6 +75,31 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
                 "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos"
             );
 
+        RuleFor(x => x.CurrentPassword)
+            .NotEmpty()
+            .WithMessage("La contraseña actual es requerida")
+            .MaximumLength(30)
+            .WithMessage("La contraseña actual debe de tener maximo 30 caracteres")
+            .MinimumLength(8)
+            .WithMessage("La contraseña actual debe tener al menos 8 caracteres")
+            .When(x => !string.IsNullOrEmpty(x.CurrentPassword));
+           
+             RuleFor(x => x.NewPassword)
+                    .NotEmpty()
+                    .WithMessage("La contraseña nueva es requerida")
+                    .MaximumLength(30)
+                    .WithMessage("La contraseña nueva debe de tener maximo 30 caracteres")
+                    .MinimumLength(8)
+                    .WithMessage("La contraseña nueva debe tener al menos 8 caracteres")
+                    .Matches(@"[A-Z]")
+                    .WithMessage("La contraseña nueva debe contener al menos una mayúscula")
+                    .Matches(@"[a-z]")
+                    .WithMessage("La contraseña nueva debe contener al menos una minúscula")
+                    .Matches(@"[0-9]")
+                    .WithMessage("La contraseña nueva debe contener al menos un número")
+                    .When(x => !string.IsNullOrEmpty(x.CurrentPassword));
+
+             
         RuleFor(x => x.IdentityCardNumber)
             .NotEmpty()
             .WithMessage("La cédula es requerida")
@@ -100,6 +134,7 @@ internal class UpdateUserEndpoint : IEndpoint
                 EndpointSettings.UsersEndpoint,
                 async (
                     [FromForm] UpdateUserCommand command,
+                    HttpContext context,
                     ISender sender,
                     IEndpointWrapper<UpdateUserEndpoint> wrapper,
                     CancellationToken cancellationToken = default
@@ -107,11 +142,12 @@ internal class UpdateUserEndpoint : IEndpoint
                 {
                     return await wrapper.ExecuteAsync<IApiResult>(async () =>
                     {
+                        command.SetCurrentUserId(UserIdentityUtility.GetUserIdFromClaims(context.User));
                         return await sender.SendAndValidateAsync(command, cancellationToken);
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
@@ -136,6 +172,7 @@ public class UpdateUserCommandHandler(
         CancellationToken cancellationToken = default
     )
     {
+        
         if (
             await context.Users.AnyAsync(
                 u => u.Username == request.Username && u.Id != request.UserId,
@@ -171,12 +208,26 @@ public class UpdateUserCommandHandler(
             );
         }
 
+        if(!string.IsNullOrEmpty(request.CurrentPassword))
+        {
+            var currentHashed = request.CurrentPassword.Hash();
+            
+            if(user.Password != currentHashed)
+            {
+                return new BadRequestApiResult("La contraseña actual no coinciden");
+            }
+        }
+       
+        
         if (!user.Update(request))
         {
             return new BadRequestApiResult(
                 "No hay cambios que aplicar"
             );
         }
+
+
+      
 
         if (request.RemoveProfilePicture && !string.IsNullOrEmpty(user.ProfilePictureUrl))
         {

@@ -1,5 +1,5 @@
 @using BibliotecaUteco.Client.Utilities
-<EditForm Model="UpdateUserModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm  Model="UpdateUserModel"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
         <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
@@ -85,7 +85,22 @@
             </LumexSelectItem>
             
         </LumexSelect>
-       
+        <AuthorizeView >
+            <Authorized Context="password">
+                @if (!string.IsNullOrEmpty(password.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value) && UpdateUserModel.UserId.ToString() == password.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value)
+                {
+                    <SectionDivider Name="Opcional"/>
+                    <div class="flex flex-col ">
+                        <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.CurrentPassword" Label="Su contraseña actual" Description="Introdzca la contraseña actual" PlaceHolder="*******"></LumexTextbox>
+                        <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.CurrentPassword)"/></span>
+                    </div>
+                    <div class="flex flex-col ">
+                        <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_updatingUser" Required="false" Type="InputType.Password" @bind-Value="@UpdateUserModel.NewPassword" Label="Su contraseña nueva" Description="Introdzca la contraseña nueva" PlaceHolder="*******"></LumexTextbox>
+                        <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateUserModel.NewPassword)"/></span>
+                    </div>
+                }
+            </Authorized>
+        </AuthorizeView>
         <SectionDivider/>
         @if (_updatingUser)
         {
@@ -93,7 +108,7 @@
         }
         else
         {
-            <LumexButton Color="ThemeColor.Primary" OnClick="FetchUpdateUserAsync" Disabled="@(!context.Validate() || _updatingUser)">Crear Usuario</LumexButton>
+            <LumexButton Color="ThemeColor.Primary" OnClick="FetchUpdateUserAsync" Disabled="@(!context.Validate() || _updatingUser)">Guardar Cambios</LumexButton>
 
         }
         

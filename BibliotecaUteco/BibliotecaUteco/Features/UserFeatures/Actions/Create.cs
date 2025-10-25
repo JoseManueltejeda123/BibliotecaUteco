@@ -14,8 +14,8 @@ public class CreateUserCommand : ICommand<IApiResult>
     [RegularExpression(@"^[a-zA-Z0-9._]+$")]
     public string Username { get; set; } = null!;
 
-    [FromBody, JsonPropertyName("password"), Required, MinLength(8)]
-    [Description("Contraseña (mínimo 8 caracteres)")]
+    [FromBody, JsonPropertyName("password"), Required, MaxLength(30), MinLength(8)]
+    [Description("Contraseña (mínimo 8 caracteres)"), ]
     public string Password { get; set; } = null!;
 
     [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
@@ -62,6 +62,8 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("La contraseña es requerida")
+            .MaximumLength(30)
+            .WithMessage("La contraseña debe de tener maximo 30 caracteres")
             .MinimumLength(8)
             .WithMessage("La contraseña debe tener al menos 8 caracteres")
             .Matches(@"[A-Z]")

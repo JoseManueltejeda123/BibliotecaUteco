@@ -1,13 +1,7 @@
-<div class="w-full rounded-xl bg-neutral-50 border border-neutral-100">
+<div class="w-full rounded-xl bg-neutral-50 border border-neutral-100 ">
     <ul>
-        @foreach (var user in Users)
-        {
-            <UserCard User="user" @key="user.Id"/>
-            @if(user != Users.Last())
-            {
-                <LumexDivider/>
-            }
-        }
+       
+       
     </ul>
 </div>
 
@@ -17,5 +11,7 @@
     
     [Parameter]
     public List<UserResponse> Users {get; set;} = new();
+    
+   
 
 }

@@ -6,6 +6,10 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface IUsersApiServices
 {
+    Task<ApiResponse<bool>> ResetPasswordAsync(
+        ResetPasswordRequest request,
+        CancellationToken cancellationToken = default
+    );
     Task<ApiResponse<JwtResponse>> LoginUserAsync(
         AuthenticateUserRequest request,
         CancellationToken cancellationToken = default

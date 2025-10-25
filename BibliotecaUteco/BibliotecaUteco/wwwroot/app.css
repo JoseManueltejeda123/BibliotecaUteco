@@ -64,13 +64,16 @@ input{
     @apply bg-inherit
 }
 
+textarea{
+    @apply bg-neutral-100 border border-neutral-200 rounded-3xl
+}
 div[data-slot="input-wrapper"]{
-    @apply bg-neutral-100 border border-neutral-200 rounded-xl
+    @apply bg-neutral-100 border border-neutral-200 rounded-3xl
 
 }
 
 button[data-slot="trigger"]{
-    @apply bg-neutral-100 border border-neutral-200 rounded-xl
+    @apply bg-neutral-100 border border-neutral-200 rounded-3xl
 
 }
 

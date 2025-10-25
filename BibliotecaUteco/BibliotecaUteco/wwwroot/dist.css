@@ -121,6 +121,7 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
+    --radius-3xl: 1.5rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --animate-spin: spin 1s linear infinite;
     --blur-md: 12px;
@@ -6165,15 +6166,22 @@ input[type="search"]::-webkit-search-cancel-button {
 input {
   background-color: inherit;
 }
+textarea {
+  border-radius: var(--radius-3xl);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-neutral-200);
+  background-color: var(--color-neutral-100);
+}
 div[data-slot="input-wrapper"] {
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-3xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
   border-color: var(--color-neutral-200);
   background-color: var(--color-neutral-100);
 }
 button[data-slot="trigger"] {
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-3xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
   border-color: var(--color-neutral-200);

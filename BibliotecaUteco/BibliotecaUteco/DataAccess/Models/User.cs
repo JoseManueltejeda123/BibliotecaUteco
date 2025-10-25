@@ -76,6 +76,19 @@ public class User : BaseEntity
             SexId = command.SexId;
             hasBeenUpdated = true;
         }
+        
+        if (!string.IsNullOrEmpty(command.CurrentPassword) && !string.IsNullOrEmpty(command.NewPassword) && Id == command.CurrentUserId)
+        {
+            var currentPasswordHashed = command.CurrentPassword.Hash(); 
+            var newPasswordHashed = command.NewPassword.Hash();
+
+            if (Password == currentPasswordHashed && Password != newPasswordHashed)
+            {
+                Password = newPasswordHashed;
+                hasBeenUpdated=true;
+                
+            }
+        }
 
         if (hasBeenUpdated)
         {
