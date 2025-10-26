@@ -1,7 +1,7 @@
 @if (ShowInvoice)
 {
         <div class="w-full hidden">
-            <PenalizationInvoice OnPrinted="async () => { await ShowInvoice = false; await RightBarContext.CloseAsync(); }" Penalty="_penaltyToInvoice"/>
+            <PenalizationInvoice OnPrinted=" () => {  ShowInvoice = false;}" Penalty="_penaltyToInvoice"/>
         </div>
 }
 
