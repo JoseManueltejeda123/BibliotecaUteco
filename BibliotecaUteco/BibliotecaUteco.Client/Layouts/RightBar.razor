@@ -1,6 +1,6 @@
 @implements  IDisposable
 
-<aside class=@($"fixed bg-white overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full w-[350px]   flex flex-col items-center  border-l border-neutral-300")>
+<aside class=@($" fixed bg-white transition-all overflow-x-hidden max-md:z-50  right-0  h-screen max-h-[100vh]  overflow-y-auto  h-full {(RightBarContext.State.View != RightBarView.Default ? "w-[350px]" : "w-[0px]")}   flex flex-col items-center  border-l border-neutral-300")>
     <div class="w-full flex sticky top-0  bg-neutral-100/50 px-3 py-2 backdrop-blur-md gap-2 font-semibold   z-[100] items-center">
         
         <button @onclick="CloseAsync" >

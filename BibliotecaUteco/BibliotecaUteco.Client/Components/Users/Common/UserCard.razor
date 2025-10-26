@@ -71,7 +71,7 @@
     
     
     [Parameter] public UserResponse User { get; set; } = new();
-    public LumexDropdown dropdownRef;
+    public LumexDropdown? dropdownRef;
     public bool _resetingPassword {get; set;} = false;
 
 
@@ -124,6 +124,7 @@
     
     public async Task HideDropdown()
     {
+        if (dropdownRef is null) return;
         dropdownRef.Open = false;
         StateHasChanged();
         await Task.Delay(20);

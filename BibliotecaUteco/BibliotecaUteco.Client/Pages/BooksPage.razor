@@ -9,28 +9,37 @@
             <div class="flex w-full items-center gap-2 justify-between">
                 <h2 class="text-3xl font-semibold">Libros</h2>
 
-                <div class="flex items-center gap-4 ">
+               
+                
+
+                 <div class=" flex gap-3 items-center">
                     <GenresDropdown>
-                        <LumexTooltip ShowArrow="true" Size="Size.Small" Content=@("Géneros literarios")>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag-icon lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                        </LumexTooltip>
+                        <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+                            <EndContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag-icon lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                            </EndContent>
+                            <ChildContent>Géneros</ChildContent>
+                        </LumexChip>
                     </GenresDropdown>
                     <AuthorsDropdown>
                         
-                        <LumexTooltip ShowArrow="true" Size="Size.Small" Content=@("Autores")>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-tool-icon lucide-pen-tool"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg>
-
-                        </LumexTooltip>
+                        <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+                            <EndContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-tool-icon lucide-pen-tool"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg>
+                            </EndContent>
+                            <ChildContent>Autores</ChildContent>
+                        </LumexChip>
+                    
                     </AuthorsDropdown>
-                  
-                   
                 </div>
             </div>
-
+           
+            
             <EditForm Model="Filter" OnValidSubmit="FetchGetBooksOnSearchAsync"  class="flex w-full gap-2 items-center text-black">
                 <DataAnnotationsValidator/>
                 <div class="w-full flex flex-col gap-1">
                     <LumexTextbox Type="@InputType.Search"
+                                 StartContent="@_filterContainer"
                                   Label="Buscar libro"
                                   Behavior="InputBehavior.OnInput"
                                   Clearable="true"
@@ -39,7 +48,7 @@
                                   Required="false"
                                   Disabled="@(_searchingBooks)"
                                   Value="@Filter.Filter"
-                                  Placeholder="Ej. Canción de hielo y fuego"
+                                  Placeholder=@(filterPlaceholder)
                                   maxLenght="50"
                                   LabelPlacement="@LabelPlacement.Outside">
                        
@@ -48,23 +57,52 @@
                    
                     <p class="text-[13px]">Seleciona un filtro de abajo para activar la búsqueda.</p>
                 </div>
+                <LumexDropdown  ShowArrow="true" >
+                    <LumexDropdownTrigger>
+                        <button type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700 hover:text-green-700 transition-all lucide lucide-list-filter-plus-icon lucide-list-filter-plus"><path d="M12 5H2"/><path d="M6 12h12"/><path d="M9 19h6"/><path d="M16 5h6"/><path d="M19 8V2"/></svg>
+                        </button>
+                    </LumexDropdownTrigger>
+                    <LumexDropdownMenu>
+                        <LumexDropdownItem OnClick="()=> SetFilterBy(BookFilterType.Name)" Id="by-name" class=@($" {(FilterBy == BookFilterType.Name ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-album-icon lucide-album"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><polyline points="11 3 11 11 14 8 17 11 17 3"/></svg>
+                            </StartContent>
+                            <ChildContent>
+                                <p class="text-[13px] font-normal">Filtrar por nombre</p>
+                            </ChildContent> 
+                        </LumexDropdownItem>
+                        <LumexDropdownItem  OnClick="()=> SetFilterBy(BookFilterType.Author)" Id="by-author" class=@($" {(FilterBy == BookFilterType.Author ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-tool-icon lucide-pen-tool"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg>
+                                </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Filtrar por autor</p>
+                            </ChildContent> 
+                        </LumexDropdownItem>
+                        <LumexDropdownItem  OnClick="()=> SetFilterBy(BookFilterType.Genre)" Id="by-genre" class=@($" {(FilterBy == BookFilterType.Genre ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag-icon lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                            </StartContent>
+                            <ChildContent>
+                                <p class="text-[13px] font-normal">Filtrar por genero</p>
+                            </ChildContent> 
+                        </LumexDropdownItem>
+                    </LumexDropdownMenu>
+                </LumexDropdown>
                
             </EditForm>
-            <div class="mb-3">
-                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(BookFilterType.Name); }' Variant="@(FilterBy == BookFilterType.Name ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Nombre</LumexChip>
-                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => {await SetFilterBy(BookFilterType.Author); }' Variant="@(FilterBy == BookFilterType.Author ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Autor</LumexChip>
-                <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => {await SetFilterBy(BookFilterType.Genre); }' Variant="@(FilterBy == BookFilterType.Genre ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Género</LumexChip>
-
-            </div>
+             <LumexChip Class="cursor-pointer p-2" Size="Size.Medium" @onclick='ShowCreateBookForm' Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+                    <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>                    
+                    </EndContent>
+                    <ChildContent>Crear libro</ChildContent>
+                </LumexChip>
             <SectionDivider Name="Libros"/>
-            <div class="grid max-sm:grid-cols-2 max-md:grid-cols-3 @@md:grid-cols-3 grid-cols-6 gap-7">
+            <div class="grid max-sm:grid-cols-2 max-md:grid-cols-3 @@md:grid-cols-3 grid-cols-6 gap-8">
                
-                <button @onclick="ShowCreateBookForm" class="border-dotted border-[3px] border-green-600 aspect-[2/3] w-full rounded-xl hover:bg-green-100/30 transition-all flex flex-col justify-center items-center gap-2 cursor-pointer ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide text-green-700 lucide-book-plus-icon lucide-book-plus"><path d="M12 7v6"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M9 10h6"/></svg>
-                    <p class="text-xs text-green-700">Agregar Libro</p>
-                </button>
-                  
-               
+              
                 @foreach (var book in Books)
                 {
                     <BookCard OnBookDeleted="()=>{HandleOnBookDeleted(book);}" Book="@book" Index="Books.IndexOf(book)"/>
@@ -81,9 +119,14 @@
                     Obtener Más
                 </LumexButton>
             }
-            else if(!_hasMore && !string.IsNullOrEmpty(_prevFilter))
+            else if(!Books.Any() && !_searchingBooks)
             {
-                <NoResultsFound />
+                <div class="flex justify-center w-full items-center mt-4 flex-col" >
+                    <p class="text-sm ">No hay más resultados</p>
+                    <p class="text-xs ">Intenta buscar otra vez y ajusta los filtros para mejores resultados</p>
+
+                </div>
+                
             }
 
     
@@ -129,6 +172,7 @@
             Books.Insert(0, book);
           
         }
+        await InvokeAsync(StateHasChanged);
     }
     
     public async Task HandleOnChange(bool contextIsValid, string? value)
@@ -207,7 +251,7 @@
             Books.AddRange(result.Data);
         }
 
-        if (!result.IsSuccessful() || result.Data.Count < 12)
+        if (!result.IsSuccessful() || result.Data.Count() < 12)
         {
             _hasMore = false;
         }
@@ -234,7 +278,7 @@
             Books = result.Data;
         }
 
-        if (!result.IsSuccessful() || result.Data.Count < 12)
+        if (!result.IsSuccessful() || result.Data.Count() < 12)
         {
             _hasMore = false;
         }
@@ -257,7 +301,8 @@
 }
 
 @code{
-    
+
+    public RenderFragment _filterContainer => @<p class="text-[13px] animate-pulse font-semibold text-violet-700 mt-[2px] text-nowrap">Por @filterTranslated</p>;
     public bool _hasMore { get; set; } = true;
     private CancellationTokenSource? cts;
     private CancellationTokenSource? _searchCts;
@@ -267,6 +312,21 @@
     public BookFilterType FilterBy {get; set;} = BookFilterType.Name;
     public GetBooksByFilterRequest GetBooksByFilterModel {get; set;} = new();
     public List<BookResponse> Books { get; set; } = new();
+
+    public string filterPlaceholder => FilterBy switch
+    {
+        BookFilterType.Name => "Ej. Canción de hielo y fuego",
+        BookFilterType.Author => "Ej. George R. R. Martin",
+        BookFilterType.Genre => "Ej. Fantasía",
+        _ => "Ej. Canción de hielo y fuego"
+    };
+    public string filterTranslated => FilterBy switch
+    {
+        BookFilterType.Name => "nombre",
+        BookFilterType.Author => "autor",
+        BookFilterType.Genre => "género",
+        _ => "todo"
+    };
     public enum BookFilterType
     {
         Author, 

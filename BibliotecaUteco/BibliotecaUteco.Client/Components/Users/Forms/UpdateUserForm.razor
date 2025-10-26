@@ -141,7 +141,7 @@
         if (state.UserToUpdate is not null && !_updatingUser && state.UserToUpdate.Id != UpdateUserModel.UserId)
         {
             ParseUserToUpdate(state.UserToUpdate);
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
 
         }
     }

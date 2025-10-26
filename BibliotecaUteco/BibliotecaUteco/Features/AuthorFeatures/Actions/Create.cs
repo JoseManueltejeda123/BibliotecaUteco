@@ -98,6 +98,6 @@ public class AuthenticateUserCommandHandler(IBibliotecaUtecoDbContext context)
                 "No pudimos obtener el autor recien creado"
             );
 
-        return new SuccessApiResult<AuthorResponse>(authors.FirstOrDefault()?.ToResponse());
+        return new SuccessApiResult<AuthorResponse>(authors.FirstOrDefault()?.ToResponse() ?? new());
     }
 }

@@ -96,7 +96,7 @@ else if(!HideActions)
 
     public ThemeColor RandomColor { get; set; } = ThemeColor.Default;
     
-    public LumexDropdown dropdownRef {get; set;}
+    public LumexDropdown? dropdownRef {get; set;}
 
 }
 
@@ -126,6 +126,7 @@ else if(!HideActions)
     }
     public async Task HideDropdown()
     {
+        if (dropdownRef is null) return;
         dropdownRef.Open = false;
         StateHasChanged();
         await Task.Delay(20);

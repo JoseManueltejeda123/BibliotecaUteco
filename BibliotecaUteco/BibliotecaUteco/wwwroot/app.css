@@ -100,7 +100,7 @@ div[data-slot="input-wrapper"]{
 
 :root, .light {
     
-    --lumex-primary: #3aa141;
+    --lumex-primary: var(--color-green-700);
     
 }
 #blazor-error-ui {

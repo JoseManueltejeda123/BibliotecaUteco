@@ -149,8 +149,8 @@
         if(index < 0) return;
 
         Penalties[index] = state.PayedPenalty;
-        
-        StateHasChanged();
+
+        await InvokeAsync(StateHasChanged);
     }
 
     public async Task FetchPenaltiesAsync()

@@ -71,7 +71,7 @@
     [Parameter] public bool ShowActions {get; set;} = true;
     
     [Parameter] public int Index {get; set;} = 0;
-    public LumexDropdown dropdownRef {get; set;}
+    public LumexDropdown? dropdownRef {get; set;}
 
 }
 
@@ -106,6 +106,7 @@
 
     public async Task HideDropdown()
     {
+        if (dropdownRef is null) return;
         dropdownRef.Open = false;
         StateHasChanged();
         await Task.Delay(20);

@@ -128,7 +128,7 @@
         if (state.CreatedTransaction is not null)
         {
             Transactions.Insert(0, state.CreatedTransaction);
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
     }
    
