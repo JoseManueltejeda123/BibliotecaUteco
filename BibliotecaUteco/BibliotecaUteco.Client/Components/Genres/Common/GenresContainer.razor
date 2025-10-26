@@ -1,12 +1,12 @@
-
-<div class="flex flex-col p-2 gap-2 w-[300px] max-h-[400px] overflow-y-auto ">
+﻿
+<div class="flex max-h-[400px] w-[300px] flex-col gap-2 overflow-y-auto p-2">
     
     @if (ShowCreateGenreModal)
     {
 
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView>
             <Authorized>
-                <div class="w-full flex items-center justify-between mb-4">
+                <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Crear Género</label>
                     <IconButton Small="true" OnClick="() => { ShowCreateGenreModal = false; }" TooltipText="Cancelar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -21,9 +21,9 @@
     }
     else if(ShowUpdateGenreModal && GenreToUpdate is not null)
     {
-         <AuthorizeView Roles="Admin">
+         <AuthorizeView>
             <Authorized>
-                <div class="w-full flex items-center justify-between mb-4">
+                <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Actualizar Género</label>
                     <IconButton Small="true" OnClick="()=>{ShowUpdateGenreModal = false; GenreToUpdate = null;}" TooltipText="Cancelar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -35,9 +35,9 @@
     }
     else
     {
-        <div class="w-full gap-3 flex flex-col ">
-            <label class="text-[15px] font-semibold ">Administrar géneros</label>
-            <EditForm class="w-full flex items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
+        <div class="flex w-full flex-col gap-3">
+            <label class="font-semibold text-[15px]">Administrar géneros</label>
+            <EditForm class="flex w-full items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
                 <DataAnnotationsValidator></DataAnnotationsValidator>
                 <LumexTextbox Type="@InputType.Search"
                               Label="Buscar género"
@@ -62,7 +62,7 @@
            
    
 
-     <div class="w-full  flex flex-wrap gap-2 mt-3 items-center">
+     <div class="mt-3 flex w-full flex-wrap items-center gap-2">
         
          @if(_fetchingGenres){
 
@@ -72,7 +72,7 @@
          {
            
                      <div @onclick="() => {ShowCreateGenreModal = true; }">
-                         <LumexChip Class="border-dashed cursor-pointer !py-1 transition-all hover:bg-green-50 " Variant="ChipVariant.Outlined" Color="ThemeColor.Primary">
+                         <LumexChip Class="cursor-pointer border-dashed !py-1 transition-all hover:bg-green-50" Variant="ChipVariant.Outlined" Color="ThemeColor.Primary">
                              Crear Género
                          </LumexChip>
                      </div>

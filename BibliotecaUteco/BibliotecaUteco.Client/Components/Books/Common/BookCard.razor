@@ -1,13 +1,13 @@
-
+﻿
 
 <Animate  Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(Index * 300)" >
-    <LumexCard   Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer group">
+    <LumexCard   Class="group group aspect-[2/3] w-full cursor-pointer transition-all hover:scale-105">
        <AuthorizeView>
            <Authorized>
                 <LumexDropdown ShowArrow="true"  >
                 <LumexDropdownTrigger>
-                    <LumexButton Size="Size.Small" IconOnly="true" Radius="Radius.Full" Class="absolute right-[10px] top-[10px] bg-green-700/50 backdrop-blur-xl invisible group-hover:visible text-white !p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[16px] lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    <LumexButton Size="Size.Small" IconOnly="true" Radius="Radius.Full" Class="invisible absolute top-[10px] right-[10px] bg-green-700/50 !p-1 text-white backdrop-blur-xl group-hover:visible">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis !size-[16px]"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                     </LumexButton>
                 </LumexDropdownTrigger>
                 <LumexDropdownMenu  >
@@ -16,20 +16,20 @@
 
                     <LumexDropdownItem OnClick="SetBookToUpdate" Id="EditarLibro" >
                         <StartContent>
-                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-book-image-icon lucide-book-image"><path d="m20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="10" cy="8" r="2"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-image-icon lucide-book-image !size-[18px]"><path d="m20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="10" cy="8" r="2"/></svg>
                         </StartContent>
                         <ChildContent>Editar Libro</ChildContent>
                     </LumexDropdownItem>
                     
                 <LumexDropdownItem OnClick="SetBookDetails"  Id="VerDetalles">
                     <StartContent>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-badge-info-icon lucide-badge-info"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg> </StartContent>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-info-icon lucide-badge-info !size-[18px]"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg> </StartContent>
                     <ChildContent>Ver detalles</ChildContent>
                 </LumexDropdownItem>
                 <LumexDropdownItem Disabled="@(string.IsNullOrEmpty(Book.CoverUrl))"  OnClick="ViewBookCover"  Id="BookCover">
                     <StartContent>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-icon lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>            
-                        <StartContent/>      
+                        </StartContent>      
                           <ChildContent>Ver Portada</ChildContent>
                 </LumexDropdownItem>
                 
@@ -59,22 +59,22 @@
         @if (string.IsNullOrEmpty(Book.CoverUrl))
         {
             <div
-                class="object-contain w-full h-full bg-neutral-950 ">
+                class="h-full w-full bg-neutral-950 object-contain">
 
             </div>
         }
         else
         {
             <img src="@Book.CoverUrl"
-                 class="object-cover w-full h-full brightness-75 "
+                 class="h-full w-full object-cover brightness-75"
 
                  alt="Card background"/>
         }
 
-        <LumexCardFooter Blurred="@true" Class="absolute z-10 bottom-0 bg-orange-100/30">
-            <div class="flex flex-col flex-grow gap-1 text-small   text-white">
-                <p class="font-semibold line-clamp-1 ">@Book.Name</p>
-                <p class="font-medium line-clamp-1 text-xs">
+        <LumexCardFooter Blurred="@true" Class="absolute bottom-0 z-10 bg-orange-100/30">
+            <div class="text-small flex flex-grow flex-col gap-1 text-white">
+                <p class="line-clamp-1 font-semibold">@Book.Name</p>
+                <p class="line-clamp-1 text-xs font-medium">
 
 
                     @if (Book.Authors.Any())
@@ -87,17 +87,17 @@
                 @if (Book.Authors.Count() >= 2)
                 {
 
-                    <p class="font-medium line-clamp-1 text-xs">@($"{Book.Authors.Count() - 1} mas")</p>
+                    <p class="line-clamp-1 text-xs font-medium">@($"{Book.Authors.Count() - 1} mas")</p>
                 }
 
                 @if (Book.AvailableAmount >= 1)
                 {
-                    <p class="text-blue-500 text-xs ">@Book.AvailableAmount disponibles</p>
+                    <p class="text-xs text-blue-500">@Book.AvailableAmount disponibles</p>
                 }
                 else
                 {
 
-                    <p class="text-red-500 text-xs">No disponibles</p>
+                    <p class="text-xs text-red-500">No disponibles</p>
 
                 }
 
