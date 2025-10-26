@@ -75,9 +75,9 @@
                 }
 
             </div>
-            @if (_hasMore)
+            @if (_hasMore && !_fetchingBooks)
             {
-                <LumexButton Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary" >
+                <LumexButton OnClick="FetchGetMoreBooks" Variant="Variant.Light" Class="mt-4" Color="ThemeColor.Primary" >
                     Obtener Más
                 </LumexButton>
             }
@@ -108,7 +108,7 @@
     }
     protected override async Task OnInitializedAsync(){
 
-        await FetchGetMoreBooks();
+        await FetchGetBooksOnSearchAsync();
     }
     protected override void OnInitialized()
     {
@@ -193,9 +193,14 @@
     {
         if (!_hasMore) return;
 
+        if(_searchCts is not null)
+            await _searchCts.CancelAsync();
+        
+        _searchCts = new();
+
         _searchingBooks = true;
         StateHasChanged();
-        var result = await BooksApiServices.GetByFilterAsync(BuildQuery(true));
+        var result = await BooksApiServices.GetByFilterAsync(BuildQuery(true), _searchCts.Token);
         
         if (result.IsSuccessful())
         {
@@ -213,12 +218,16 @@
 
     public async Task FetchGetBooksOnSearchAsync()
     {
+        if(_searchCts is not null)
+            await _searchCts.CancelAsync();
+        
+        _searchCts = new();
         Books.Clear();
         _hasMore = true;
         _searchingBooks = true;
         StateHasChanged();
         var request = BuildQuery(false);
-        var result = await BooksApiServices.GetByFilterAsync(request);
+        var result = await BooksApiServices.GetByFilterAsync(request, _searchCts.Token);
 
         if (result.IsSuccessful())
         {
@@ -251,6 +260,7 @@
     
     public bool _hasMore { get; set; } = true;
     private CancellationTokenSource? cts;
+    private CancellationTokenSource? _searchCts;
     public bool _searchingBooks { get; set; } = false;
     public FormFilter Filter { get; set; } = new();
     public string _prevFilter { get; set; } = "";
