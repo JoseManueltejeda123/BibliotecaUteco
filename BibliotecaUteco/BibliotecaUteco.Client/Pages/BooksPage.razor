@@ -207,7 +207,7 @@
             Books.AddRange(result.Data);
         }
 
-        if (!result.IsSuccessful() || result.Data.Count < 10)
+        if (!result.IsSuccessful() || result.Data.Count < 12)
         {
             _hasMore = false;
         }
@@ -234,7 +234,7 @@
             Books = result.Data;
         }
 
-        if (!result.IsSuccessful() || result.Data.Count < 10)
+        if (!result.IsSuccessful() || result.Data.Count < 12)
         {
             _hasMore = false;
         }
@@ -249,7 +249,7 @@
         BookName = FilterBy == BookFilterType.Name ? Filter.Filter : null,
         GenreName = FilterBy == BookFilterType.Genre ? Filter.Filter : null,
         AuthorName = FilterBy == BookFilterType.Author ? Filter.Filter : null,
-        Take = 10,
+        Take = 12,
         Skip = withSkip  ? Books.Count : 0
 
 

@@ -22,5 +22,7 @@ namespace BibliotecaUteco.Client.Responses
         public int AvailableAmount { get; set; }
 
         public int ActiveLoansCount { get; set; }
+        
+            public int LoansCount { get; set; }
     }
 }

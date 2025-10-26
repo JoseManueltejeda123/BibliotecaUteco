@@ -76,14 +76,14 @@ public class DeleteReaderCommandHandler(IBibliotecaUtecoDbContext context) : ICo
         if (await context.Loans.AnyAsync(r => r.ReaderId == request.ReaderId, cancellationToken))
         {
             return new BadRequestApiResult(
-                "Este usuario tiene prestamos activos."
+                "Los lectores con prestamos activos o inactivos no pueden ser eliminados."
             );
         }
 
         if (await context.Loans.AnyAsync(r => r.ReaderId == request.ReaderId && r.Penalty != null && r.Penalty.IsDue, cancellationToken))
         {
             return new BadRequestApiResult(
-                "Este usuario tiene una penalizacion sin pagar"
+                "Este lector tiene una penalizacion sin pagar"
             );
         }
 

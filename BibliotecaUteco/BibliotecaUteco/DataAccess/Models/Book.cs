@@ -32,6 +32,9 @@ public class Book : BaseEntity
     [NotMapped]
     public int ActiveLoansCount { get; set; }
 
+    [NotMapped]
+    public int LoansCount { get; set; }
+
     public static Book Create(CreateBookCommand command) =>
         new()
         {
@@ -90,5 +93,6 @@ public class Book : BaseEntity
             Stock = Stock,
             AvailableAmount = AvailableAmount,
             ActiveLoansCount = ActiveLoansCount,
+    LoansCount =LoansCount
         };
 }

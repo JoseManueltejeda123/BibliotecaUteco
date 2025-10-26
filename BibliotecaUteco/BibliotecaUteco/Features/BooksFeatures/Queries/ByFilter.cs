@@ -28,7 +28,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Queries
 
         [
             JsonPropertyName("take"),
-            Range(1, 10),
+            Range(1, 12),
             FromQuery(Name = "take"),
             Description("Cantidad de libros a tomar")
         ]
@@ -63,8 +63,8 @@ namespace BibliotecaUteco.Features.BooksFeatures.Queries
                 .When(x => !string.IsNullOrEmpty(x.AuthorName));
 
             RuleFor(x => x.Take)
-                .InclusiveBetween(1, 10)
-                .WithMessage("La cantidad de libros a tomar debe estar entre 1 y 10");
+                .InclusiveBetween(1, 12)
+                .WithMessage("La cantidad de libros a tomar debe estar entre 1 y 12");
 
             RuleFor(x => x.Skip)
                 .GreaterThanOrEqualTo(0)
