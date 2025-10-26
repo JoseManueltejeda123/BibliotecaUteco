@@ -39,9 +39,11 @@ public class GetLoansByFilterValidator : AbstractValidator<GetLoansByFilter>
             () =>
             {
                 RuleFor(x => x.IdentityCardNumber)
-                    .Length(11)
-                    .WithMessage("La cédula debe tener exactamente 11 dígitos")
-                    .Matches(@"^\d{11}$")
+                    .MinimumLength(1)
+                    .WithMessage("La cédula debe tener al menos 1 dígito")
+                    .MaximumLength(11)
+                    .WithMessage("La cédula no puede superar los 11 dígitos")
+                    .Matches(@"^[0-9]+$")
                     .WithMessage("La cédula solo puede contener números");
             }
         );
@@ -51,8 +53,8 @@ public class GetLoansByFilterValidator : AbstractValidator<GetLoansByFilter>
             () =>
             {
                 RuleFor(x => x.StudentLicence)
-                    .MinimumLength(3)
-                    .WithMessage("La matrícula debe tener al menos 3 caracteres")
+                    .MinimumLength(1)
+                    .WithMessage("La matrícula debe tener al menos 1 carácter")
                     .MaximumLength(9)
                     .WithMessage("La matrícula no puede superar los 9 caracteres")
                     .Matches(@"^[0-9\-]+$")

@@ -12,13 +12,13 @@
 
         </div>
         <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8091234456"></LumexTextbox>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.PhoneNumber)"/></span>
 
 
         </div>
         <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. Pueblo Nuevo, Cotuí"></LumexTextbox>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.Address)"/></span>
         </div>
         
@@ -27,7 +27,7 @@
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.IdentityCardNumber)"/></span>
         </div>
         <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 2020-0001"></LumexTextbox>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
             <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.StudentLicence)"/></span>
         </div>
         <LumexRadioGroup Size="Size.Small" @bind-Value="UpdateReaderModel.SexId"  Label="Seleccione su sexo" TValue="int">

@@ -208,26 +208,19 @@ public class UpdateUserCommandHandler(
             );
         }
 
-        if(!string.IsNullOrEmpty(request.CurrentPassword))
+        if (!string.IsNullOrEmpty(request.CurrentPassword))
         {
             var currentHashed = request.CurrentPassword.Hash();
-            
-            if(user.Password != currentHashed)
+
+            if (user.Password != currentHashed)
             {
                 return new BadRequestApiResult("La contraseña actual no coinciden");
             }
         }
        
-        
-        if (!user.Update(request))
-        {
-            return new BadRequestApiResult(
-                "No hay cambios que aplicar"
-            );
-        }
 
 
-      
+        user.Update(request);
 
         if (request.RemoveProfilePicture && !string.IsNullOrEmpty(user.ProfilePictureUrl))
         {

@@ -17,7 +17,7 @@
             @if (!string.IsNullOrEmpty(ProfilePicturePreview) && UpdateUserModel.ProfilePictureFile is not null)
             {
                 <div class="w-full flex flex-col items-center">
-                    <img  class="w-[50%] aspect-[2/3] object-cover rounded-sm" src="@_prevProfilePicture ?? ProfilePicturePreview " />
+                    <img  class="w-[50%] aspect-[2/3] object-cover rounded-sm" src="@ProfilePicturePreview" />
 
                 </div>
             }
