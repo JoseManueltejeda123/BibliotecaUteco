@@ -1,7 +1,7 @@
 
 
-<Animate Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(Index * 300)" >
-    <LumexCard Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer group">
+<Animate  Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(Index * 300)" >
+    <LumexCard   Class="w-full aspect-[2/3] group hover:scale-105 transition-all cursor-pointer group">
        <AuthorizeView>
            <Authorized>
                 <LumexDropdown ShowArrow="true"  >
@@ -25,6 +25,12 @@
                     <StartContent>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="!size-[18px] lucide lucide-badge-info-icon lucide-badge-info"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg> </StartContent>
                     <ChildContent>Ver detalles</ChildContent>
+                </LumexDropdownItem>
+                <LumexDropdownItem Disabled="@(string.IsNullOrEmpty(Book.CoverUrl))"  OnClick="ViewBookCover"  Id="BookCover">
+                    <StartContent>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-icon lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>            
+                        <StartContent/>      
+                          <ChildContent>Ver Portada</ChildContent>
                 </LumexDropdownItem>
                 
               
@@ -121,6 +127,11 @@
 
     [Parameter] public EventCallback OnBookDeleted {get; set;}
 
+    public async Task ViewBookCover()
+    {
+        await LightBoxService.ShowAsync(Book.Name, Book.CoverUrl);
+        
+    }
 
     public async Task FetchDeleteBookAsync()
     {

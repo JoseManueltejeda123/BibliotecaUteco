@@ -56,14 +56,12 @@
     </div>
     <SectionDivider Name="Autores"/>
 
-     <AuthorizeView Roles="Admin">
-        <Authorized>
+    
             <button @onclick="() => {ShowCreateAuthorModal = true; }" disabled="@_fetchingAuthors" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-1 items-center justify-center gap-3 cursor-pointer">
                 <p class="text-sm text-green-600">Crear Autor</p>
 
             </button>
-        </Authorized>
-    </AuthorizeView>
+      
    
 
 

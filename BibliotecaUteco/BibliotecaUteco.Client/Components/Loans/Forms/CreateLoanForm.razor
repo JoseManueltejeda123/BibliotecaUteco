@@ -1,4 +1,10 @@
 @using System.Globalization
+@if(ShowInvoice)
+{
+    <div class="hidden">
+        <LoanInvoice Loan="_loanToInvoice" OnPrinted="() => { ShowInvoice = false; }"/>
+    </div>
+}
 <EditForm Model="CreateLoanModel"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
@@ -102,6 +108,8 @@
 
 
 @code{
+     public LoanResponse _loanToInvoice {get; set;} = new();
+    public bool ShowInvoice {get; set;} = false;
     public bool _creatingLoan {get; set;} = false;
     public bool _searchingBooks { get; set; } = false;
     public ReaderResponse Reader { get; set; } = new();
@@ -229,6 +237,8 @@
         {
             Toast.Show("Prestamo creado con exito");
             await RightBarContext.CloseAsync();
+            _loanToInvoice = result.Data;
+            ShowInvoice = true;
 
         }
             _creatingLoan = false;

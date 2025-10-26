@@ -1,3 +1,10 @@
+@if (ShowInvoice)
+{
+        <div class="w-full hidden">
+            <PenalizationInvoice OnPrinted="() => {ShowInvoice = false; }" Penalty="_penaltyToInvoice"/>
+        </div>
+}
+
 <EditForm Model="PayPenaltyModel"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
@@ -102,6 +109,8 @@
 </EditForm>
 
 @code {
+    public PenaltyResponse _penaltyToInvoice {get; set;} = new();
+    public bool ShowInvoice {get; set;} = false;
     public PayPenaltyRequest PayPenaltyModel {get; set;} = new();
     public bool _payingPenalty { get; set; } = false;
     public PenaltyResponse Penalty { get; set; } = new();
@@ -147,9 +156,11 @@
 
         if (result.IsSuccessful())
         {
-                Toast.Success("Pago registrado con éxito.");
-                await RightBarContext.SetPayedPenaltyAsync(result.Data);
-                await RightBarContext.CloseAsync();
+            Toast.Success("Pago registrado con éxito.");
+            await RightBarContext.SetPayedPenaltyAsync(result.Data);
+            await RightBarContext.CloseAsync();
+            _penaltyToInvoice = result.Data;
+            ShowInvoice = true;
         }
         _payingPenalty = false;
         StateHasChanged();

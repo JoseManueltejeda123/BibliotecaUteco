@@ -21,4 +21,6 @@ builder.Services.AddSonner();
 builder.Services.AddLumexServices();
 builder.Services.AddClientServices(builder);
 builder.Services.AddSingleton<IDialogService, DialogService>();
+builder.Services.AddSingleton<ILightBoxService, LightBoxService>();
+
 await builder.Build().RunAsync();

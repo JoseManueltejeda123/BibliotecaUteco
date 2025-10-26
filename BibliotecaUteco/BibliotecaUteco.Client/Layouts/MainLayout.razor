@@ -12,6 +12,7 @@
 
 <div class="relative flex w-full h-screen">
     <DialogHost/>
+    <LightBoxHost/>
     <SideBar OnSideBarExpandedChanged="(e)=> SideBarExpanded = e" SideBarExpanded="SideBarExpanded"/>
     
     <main class=@($"flex-1 ml-[250px] max-md:ml-[75px] {(RightBarContext.State.View != RightBarView.Default ? "mr-[350px] max-md:mr-[0px]" : "")}  {(!SideBarExpanded ? " !ml-[75px] " : "" )}")>

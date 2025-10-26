@@ -35,11 +35,31 @@
             }
         </div>
         <SectionDivider Name="Mas detalles"/>
-        <div class="flex flex-col gap-2 text-[13px] ">
-            
-            <p><strong>Disponibles: </strong>@Book.AvailableAmount Copias</p>
-            <p><strong>Activo en: </strong>@Book.ActiveLoansCount Prestamos</p>
-        </div>
+
+        <div class="w-full flex flex-col  gap-2">
+            <div class="flex items-center gap-2 w-full">
+                <div class="w-[100%] max-md:w-full h-[15px] bg-violet-300 border-violet-300 border rounded-full overflow-hidden">
+                    <div class="h-full py-1 px-2 text-center text-xs text-white bg-violet-500 rounded-full transition-all duration-500"
+                            style="width:@Progress">
+
+                    </div>
+                </div>
+                <span class="text-sm font-semibold text-violet-700">@Progress</span>
+            </div>
+            <div class="flex items-center gap-4 ">
+                <div class="flex items-center gap-2">
+                    <div class="rounded-full size-2 bg-violet-300">
+                        
+                    </div>
+                    <p class="text-xs">@Book.Stock en stock</p>
+                    <div class="rounded-full size-2 bg-violet-500">
+                        
+                    </div>
+                    <p class="text-xs">@Book.AvailableAmount disponibles</p>
+                </div>
+            </div>
+       </div>
+       
     </div>
     </div>
     
@@ -47,6 +67,8 @@
     
 
 @code {
+    string Progress => $"{(Book.Stock == 0 ? 0 : (Book.AvailableAmount * 100 / Book.Stock))}%";
+
     public BookResponse Book { get; set; } = new();
 
     protected override void OnInitialized()

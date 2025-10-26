@@ -1,0 +1,31 @@
+@implements IDisposable
+@if (LightBoxService.IsOpen)
+{
+        <div @onclick="@(LightBoxService.Cancel)" class="fixed inset-0 z-[99999] bg-white/60 backdrop-blur-sm flex justify-center items-center">
+            <Animate Animation="Animations.ZoomIn" Delay="@TimeSpan.FromMilliseconds(100)">
+                <div class=" gap-3  flex flex-col items-center justify-center  ">
+                    
+                    <img src="@LightBoxService.PhotoUrl" alt="@LightBoxService.PhotoTitle" class="rounded-lg h-[400px] aspect-[2/3] object-contain" />
+                    <div class="p-4">
+                        <button @onclick="@(LightBoxService.Cancel)" class="px-3 bg-red-600/90 cursor-pointer  backdrop-blur-xl rounded-lg py-1">
+                            <p class="text-[13px] text-white font-semibold">Cerrar Vista</p>
+                        </button>
+                    </div>
+                </div>
+            </Animate>
+           
+        </div>
+
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        LightBoxService.OnLightBoxChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        LightBoxService.OnLightBoxChanged -= StateHasChanged;
+    }
+}
