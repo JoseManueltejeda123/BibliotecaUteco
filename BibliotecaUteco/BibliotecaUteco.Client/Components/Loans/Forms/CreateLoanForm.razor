@@ -2,7 +2,7 @@
 @if(ShowInvoice)
 {
     <div class="hidden">
-        <LoanInvoice Loan="_loanToInvoice" OnPrinted="async () => { await ShowInvoice = false; await RightBarContext.CloseAsync(); }"/>
+        <LoanInvoice Loan="_loanToInvoice" OnPrinted=" () => {  ShowInvoice = false;  }"/>
     </div>
 }
 <EditForm Model="CreateLoanModel"  class="flex w-full absolute flex-col justify-center">
