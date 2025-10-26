@@ -2,7 +2,7 @@
 @if(ShowInvoice)
 {
     <div class="hidden">
-        <LoanInvoice Loan="_loanToInvoice" OnPrinted="() => { ShowInvoice = false; }"/>
+        <LoanInvoice Loan="_loanToInvoice" OnPrinted="async () => { await ShowInvoice = false; await RightBarContext.CloseAsync(); }"/>
     </div>
 }
 <EditForm Model="CreateLoanModel"  class="flex w-full absolute flex-col justify-center">
@@ -236,7 +236,7 @@
         if (result.IsSuccessful())
         {
             Toast.Show("Prestamo creado con exito");
-            await RightBarContext.CloseAsync();
+             CreateLoanModel = new();
             _loanToInvoice = result.Data;
             ShowInvoice = true;
 
