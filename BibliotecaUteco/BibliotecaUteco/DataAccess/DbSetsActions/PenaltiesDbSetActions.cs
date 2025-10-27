@@ -46,6 +46,8 @@ public static class PenaltiesDbSetActions
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
                 ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
+                ReaderStudentLicence = p.Loan.Reader.StudentLicence ,
+
             })
             .ToListAsync(cancellationToken);
     }
@@ -73,6 +75,8 @@ public static class PenaltiesDbSetActions
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
                 ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
+                ReaderStudentLicence = p.Loan.Reader.StudentLicence ,
+
             })
             .FirstOrDefaultAsync(cancellationToken);
     }

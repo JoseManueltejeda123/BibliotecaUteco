@@ -20,7 +20,13 @@
         <div class="flex w-full  justify-between">
             <div>
                 <p class="text-[15px]">Multa para <strong>@Penalty.ReaderName</strong></p>
-                <label class="text-[13px] opacity-80 font-normal">Id Prestamo: @Penalty.LoanId</label>
+                <div class="text-sm font-medium mt-1 inconsolata flex max-md:flex-col  gap-2">
+                    <span class=" inconsolata">ID Préstamo: <span class="bg-black px-2 text-white">@Penalty.Id</span></span>
+
+                    <span class=" inconsolata">Cédula: <span class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderIdentityCardNumber) ? "------" : Penalty.ReaderIdentityCardNumber)</span></span>
+                    <span class=" inconsolata">Matrícula: <span class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderStudentLicence) ? "------" : Penalty.ReaderStudentLicence)</span></span>
+
+                </div>
             </div>
             
             
