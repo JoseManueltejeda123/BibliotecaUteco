@@ -25,11 +25,26 @@
                 />
             
             </div>
+            <div>
+              @if(Summary is not null)
+                {
+                    <label class="text-sm font-normal">Estado de caja</label>
+                    <p class="@($"text-[28px] font-semibold { (Summary.CashBoxState < 0 ? "text-red-600" : "text-green-600") }")">RD$ @(Summary.CashBoxState?.ToString("F2"))</p>
 
+                    @if((Summary._lastRetirementDate - DateTime.Now).Days <= 15)
+                    {
+                        <p class="text-xs mt-2 font-semibold opacity-80">No se podrán hacer retiros hasta @Summary._lastRetirementDate.AddDays(15).ToString("dd MMMM yyyy hh:mm tt")</p>
+                    }
+                    
+                }
+            </div>
 
             <SectionDivider Name="Transacciones de caja"/>
+
+           
+
             <div class="w-full flex flex-col gap-3">
-                <button @onclick="SetCreateRetirementViewAsync" class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
+                <button disabled="@((Summary._lastRetirementDate - DateTime.Now).Days <= 15)" @onclick="SetCreateRetirementViewAsync" class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
                     <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
                 </button>
                 
@@ -102,11 +117,23 @@
     public CancellationTokenSource? _inputCts {get; set;}
     public bool _hasMore {get; set;} = true;
 
+    public CashBoxSummaryResponse? Summary {get; set;} = null;
+
 
 }
 
 @functions{
 
+
+    public async Task FetchGetSummaryAsync()
+    {
+        var result = await TransactionsApiServices.GetSummaryAsync();
+
+        if(result.IsSuccessful())
+        {
+            Summary = result.Data;
+        };
+    }
     public async Task SetCreateRetirementViewAsync()
     {
         await RightBarContext.OpenCreateRetirementAsync();
@@ -114,6 +141,7 @@
     protected override async Task OnInitializedAsync()
     {
         await FetchGetTransactionsByFilterAsync();
+        await FetchGetSummaryAsync();
         RightBarContext.OnStateChanged += HandleTransactionCreated;
         
     }

@@ -15,4 +15,8 @@ public interface ITransactionsApiServices
         CreateTransactionRetirementRequest request,
         CancellationToken cancellationToken = default
     );
+
+    Task<ApiResponse<CashBoxSummaryResponse>> GetSummaryAsync(
+        CancellationToken cancellationToken = default
+    );
 }
