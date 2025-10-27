@@ -152,7 +152,7 @@
         }
         else
         {
-            <LumexButton Class="w-full mt-[20px]" Onclick="FetchCreateBookAsync" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
+            <LumexButton Class="w-full mt-[20px]" Onclick="FetchUpdateBookAsync" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
 
         }
     </div>
@@ -191,6 +191,7 @@
     public bool IsOpen {get; set;} = false;
     public string? BookCoverPrview { get; set; } = null;
 
+    public CancellationTokenSource? _cts;
    
     private InputFile? fileInput = null;
     
@@ -260,14 +261,21 @@
     }
 
 
-    public async Task FetchCreateBookAsync()
+    public async Task FetchUpdateBookAsync()
     {
 
         _updatingBook = true;
+
+        if(_cts is not null)
+        {
+           await  _cts.CancelAsync();
+        }
+
+        _cts = new();
         StateHasChanged();
        
         UpdateBookModel.RemoveCover = string.IsNullOrEmpty(_prevBookCover) && UpdateBookModel.CoverFile is null;
-        var result = await BooksApiServices.UpdateBookAsync(UpdateBookModel);
+        var result = await BooksApiServices.UpdateBookAsync(UpdateBookModel, _cts.Token);
 
         if (result.IsSuccessful())
         {   

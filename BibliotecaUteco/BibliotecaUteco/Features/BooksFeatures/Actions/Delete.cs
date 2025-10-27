@@ -89,6 +89,8 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 );
             }
 
+            
+
             var deletedRows = await context
                 .Books.Where(b => b.Id == request.BookId)
                 .ExecuteDeleteAsync(cancellationToken);

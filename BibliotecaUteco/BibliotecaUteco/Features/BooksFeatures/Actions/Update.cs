@@ -223,8 +223,13 @@ public class UpdateBookCommandHandler(
         {
             if (!string.IsNullOrEmpty(bookToUpdate.CoverUrl))
             {
+
+                var oldCoverUrl = bookToUpdate.CoverUrl;
+                bookToUpdate.CoverUrl = null;
+
+                await context.SaveChangesAsync(cancellationToken);
                 if (
-                    fileUploadService.DeleteFile(bookToUpdate.CoverUrl, EnvFolders.BookCovers)
+                    fileUploadService.DeleteFile(oldCoverUrl, EnvFolders.BookCovers)
                         is var result
                     && !result.Item1
                 )
@@ -234,7 +239,6 @@ public class UpdateBookCommandHandler(
                     );
                 }
 
-                bookToUpdate.CoverUrl = null;
             }
         }
 

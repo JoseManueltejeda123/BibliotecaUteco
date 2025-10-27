@@ -224,8 +224,12 @@ public class UpdateUserCommandHandler(
 
         if (request.RemoveProfilePicture && !string.IsNullOrEmpty(user.ProfilePictureUrl))
         {
+            var oldPfp =  user.ProfilePictureUrl;
+
+             user.ProfilePictureUrl = null;
+            await context.SaveChangesAsync(cancellationToken);
             if (
-                fileUploadService.DeleteFile(user.ProfilePictureUrl, EnvFolders.UserPictures)
+                fileUploadService.DeleteFile(oldPfp, EnvFolders.UserPictures)
                     is var deletionResult
                 && !deletionResult.Item1
             )
@@ -235,7 +239,7 @@ public class UpdateUserCommandHandler(
                 );
             }
 
-            user.ProfilePictureUrl = null;
+           
         }
         else if (request.ProfilePictureFile is not null)
         {

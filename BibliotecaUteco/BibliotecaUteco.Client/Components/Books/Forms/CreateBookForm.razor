@@ -35,24 +35,25 @@
     }
     <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
     
-    <div class="flex flex-col gap-2 px-3 py-3">
-         <div class="flex flex-col gap-3 w-full mt-2" >
+    <div class="flex flex-col gap-2 px-2 py-3">
         <LumexTextbox Type="@InputType.Text"
                       Behavior="InputBehavior.OnInput"
                       @bind-Value="@CreateBookModel.Name"
                       Label="Nombre del libro"
+                      maxlength="50"
+                      minlength="3"
                       Placeholder="Ej. 100 años de soledad"
                       EndContent="@_titleIcon"
+                      Description="Máximo 50 caracteres. Mínimo 3."
+                      ErrorMessage="@(context.GetValidationMessages(() => CreateBookModel.Name).FirstOrDefault())"
                       LabelPlacement="@LabelPlacement.Inside"
                       Required="true"
         />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Name)"/></span>
 
-    </div>
-    <div class="flex flex-col gap-3 w-full">
-        <label for="book synopsis" class="text-sm">Synopsis o descripción</label>
+    <div class="flex flex-col gap-3 w-full bg-neutral-100 rounded-lg p-2">
+        <label for="book synopsis" class="text-[13px]">Synopsis o descripción</label>
         <textarea 
-                        class="bg-neutral-200/50 max-w-full rounded-lg p-2 text-sm outline-none resize-none  min-h-[6rem]"
+                        class="bg-transparent form-input max-w-full  text-sm outline-none resize-none  min-h-[6rem]"
                         name="book synopsis"
                         @bind="@CreateBookModel.Synopsis"
                         placeholder="Una breve descripcion de la historia o de que trata el libro"
@@ -60,23 +61,21 @@
                         maxlength="500"
 
                         minlength="10"></textarea>
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Synopsis)"/></span>
+        <span class="text-xs text-red-500"><ValidationMessage For="@(() => CreateBookModel.Synopsis)"/></span>
 
     </div>
-    <div class="flex flex-col gap-3 w-full">
         <LumexNumbox TValue="@int"
                      Label="Copias a disponibilidad"
                      @bind-Value="CreateBookModel.Stock"
                     Behavior="InputBehavior.OnInput"
                      LabelPlacement="LabelPlacement.Inside"
                      Placeholder="Cantidad de copias"
-                     Class="max-w-xs"
+                    ErrorMessage="@(context.GetValidationMessages(() => CreateBookModel.Stock).FirstOrDefault())"
+                     
                      min="1"
                      max="@int.MaxValue"
                      step="1" />
-        <span class="text-xs text-red-700"><ValidationMessage For="@(() => CreateBookModel.Stock)"/></span>
 
-    </div>
     <SectionDivider Name="Generos literarios"/>
     <div class="flex flex-col gap-3 w-full">
         <p class="text-xs">Máximo 5 generos y literarios minimo 1.</p>
@@ -87,7 +86,7 @@
             @if (CreateBookModel.Genres.Count < 5)
             {
                 <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
-                    <LumexChip Variant="ChipVariant.Outlined">Agregar Genero</LumexChip>
+                    <LumexChip >Agregar Genero</LumexChip>
                 </GenresDropdown>
             }
             @foreach (var genre in CreateBookModel.Genres)
@@ -112,9 +111,8 @@
             @if (CreateBookModel.Authors.Count < 10)
             {
                 <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
-                    <button type="button"  class="hover:bg-green-50 cursor-pointer w-full rounded-lg border-dashed border-2 border-green-700 flex flex-col items-center justify-center gap-2 p-2">
-                        <label class="text-sm text-green-700">Agregar Autor</label>
-                    </button>
+                    <LumexButton Size="Size.Small" Class="w-[334px]" Color="ThemeColor.Primary" Variant="Variant.Flat">Agregar Autor</LumexButton>
+                  
                 </AuthorsDropdown>
             }
             @foreach (var author in CreateBookModel.Authors)
@@ -163,7 +161,7 @@
 
 
     public bool _creatingBook {get; set;} = false;
-    public RenderFragment _titleIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-300 lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>;
+    public RenderFragment _titleIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=" lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>;
     public CreateBookRequest CreateBookModel {get; set;} = new();
 
 
