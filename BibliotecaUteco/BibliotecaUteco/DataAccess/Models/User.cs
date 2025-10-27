@@ -46,7 +46,7 @@ public class User : BaseEntity
             Password = request.Password,
             IdentityCardNumber = request.IdentityCardNumber,
             RoleId = request.RoleId,
-            SexId = request.SexId
+            SexId = request.SexId,
         };
 
     public bool Update(UpdateUserCommand command)
@@ -76,17 +76,20 @@ public class User : BaseEntity
             SexId = command.SexId;
             hasBeenUpdated = true;
         }
-        
-        if (!string.IsNullOrEmpty(command.CurrentPassword) && !string.IsNullOrEmpty(command.NewPassword) && Id == command.CurrentUserId)
+
+        if (
+            !string.IsNullOrEmpty(command.CurrentPassword)
+            && !string.IsNullOrEmpty(command.NewPassword)
+            && Id == command.CurrentUserId
+        )
         {
-            var currentPasswordHashed = command.CurrentPassword.Hash(); 
+            var currentPasswordHashed = command.CurrentPassword.Hash();
             var newPasswordHashed = command.NewPassword.Hash();
 
             if (Password == currentPasswordHashed && Password != newPasswordHashed)
             {
                 Password = newPasswordHashed;
-                hasBeenUpdated=true;
-                
+                hasBeenUpdated = true;
             }
         }
 
@@ -109,8 +112,8 @@ public class User : BaseEntity
             IdentityCardNumber = IdentityCardNumber,
             ProfilePictureUrl = ProfilePictureUrl ?? "",
             Role = RoleParser.ParseRole(RoleId),
-            Sex= SexParser.ParseSex(SexId ?? 1),
-            RoleId = RoleId, 
+            Sex = SexParser.ParseSex(SexId ?? 1),
+            RoleId = RoleId,
             SexId = SexId ?? 1,
         };
 }

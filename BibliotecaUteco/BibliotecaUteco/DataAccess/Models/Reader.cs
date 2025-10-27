@@ -31,7 +31,7 @@ public class Reader : BaseEntity
 
     [NotMapped]
     public int LoansCount { get; set; } = 0;
-    
+
     [NotMapped]
     public int ReturnedLoans { get; set; } = 0;
 
@@ -95,7 +95,6 @@ public class Reader : BaseEntity
 
         return hasBeenUpdated;
     }
-
 
     public static Reader Create(CreateReaderCommand request) =>
         new()

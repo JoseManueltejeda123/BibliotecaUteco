@@ -15,7 +15,7 @@ public class CreateUserCommand : ICommand<IApiResult>
     public string Username { get; set; } = null!;
 
     [FromBody, JsonPropertyName("password"), Required, MaxLength(30), MinLength(8)]
-    [Description("Contraseña (mínimo 8 caracteres)"), ]
+    [Description("Contraseña (mínimo 8 caracteres)")]
     public string Password { get; set; } = null!;
 
     [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
@@ -125,10 +125,9 @@ internal class CreateUserEndpoint : IEndpoint
             .DisableAntiforgery()
             .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
-                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(CreateUserEndpoint))
             .WithDescription("Crea un nuevo usuario en el sistema");
@@ -147,9 +146,7 @@ public class CreateUserCommandHandler(
     {
         if (await context.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
-            return new ConflictApiResult(
-                "El nombre de usuario ya existe"
-            );
+            return new ConflictApiResult("El nombre de usuario ya existe");
         }
 
         if (
@@ -159,16 +156,12 @@ public class CreateUserCommandHandler(
             )
         )
         {
-            return new ConflictApiResult(
-                "La cédula ya está registrada"
-            );
+            return new ConflictApiResult("La cédula ya está registrada");
         }
 
         if (!await context.Roles.AnyAsync(r => r.Id == request.RoleId, cancellationToken))
         {
-            return new BadRequestApiResult(
-                "El rol especificado no existe"
-            );
+            return new BadRequestApiResult("El rol especificado no existe");
         }
 
         var hashed = request.Password.Hash();
@@ -189,7 +182,7 @@ public class CreateUserCommandHandler(
                 && !result.Item1
             )
             {
-                return new BadRequestApiResult( result.Item2);
+                return new BadRequestApiResult(result.Item2);
             }
 
             insertion.Entity.ProfilePictureUrl = result.Item2;
@@ -204,9 +197,7 @@ public class CreateUserCommandHandler(
 
         if (createdUser == null)
         {
-            return new BadRequestApiResult(
-                "Error al crear el usuario"
-            );
+            return new BadRequestApiResult("Error al crear el usuario");
         }
 
         return new SuccessApiResult<UserResponse>(createdUser.ToResponse());

@@ -2,8 +2,7 @@ using BibliotecaUteco.Utilities;
 
 namespace BibliotecaUteco.Features.LoansFeatures.Actions;
 
-
-public class MarkLoanAsReturnedCommand: CommandWithUserCredentials, ICommand<IApiResult>
+public class MarkLoanAsReturnedCommand : CommandWithUserCredentials, ICommand<IApiResult>
 {
     [FromBody, JsonPropertyName("loanId"), Required, Range(1, int.MaxValue)]
     [Description("ID del préstamo")]
@@ -49,12 +48,10 @@ internal class MarkLoanAsReturnedEndpoint : IEndpoint
             .Accepts<MarkLoanAsReturnedCommand>(false, ApplicationContentTypes.ApplicationJson)
             .Produces<SuccessApiResult<LoanResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
-                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Loan))
             .WithName(nameof(MarkLoanAsReturnedEndpoint))
             .WithDescription("Marca un préstamo como entregado/devuelto");
@@ -70,26 +67,24 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-        var loan = await context.Loans
-            .IgnoreAutoIncludes()
+        var loan = await context
+            .Loans.IgnoreAutoIncludes()
             .AsSplitQuery()
             .FirstOrDefaultAsync(l => l.Id == request.LoanId, cancellationToken);
 
         if (loan is null)
         {
-            return new NotFoundApiResult(
-                $"No se encontró el préstamo con ID {request.LoanId}"
-            );
+            return new NotFoundApiResult($"No se encontró el préstamo con ID {request.LoanId}");
         }
 
         if (loan.ReturnedDate is not null)
         {
-            return new ConflictApiResult(
-                "El préstamo ya ha sido marcado como devuelto"
-            );
+            return new ConflictApiResult("El préstamo ya ha sido marcado como devuelto");
         }
 
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        await using var transaction = await context.Database.BeginTransactionAsync(
+            cancellationToken
+        );
 
         try
         {
@@ -103,8 +98,11 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
                     "No pudimos crear la penalización. El préstamo no se marcó como entregado"
                 );
             }
-            
-            if (loan.ReturnedDate.Value > loan.DueDate && (loan.ReturnedDate.Value - loan.DueDate).Days >= 1)
+
+            if (
+                loan.ReturnedDate.Value > loan.DueDate
+                && (loan.ReturnedDate.Value - loan.DueDate).Days >= 1
+            )
             {
                 var penaltyInsertion = await context.Penalties.AddAsync(
                     Penalty.Create(loan),
@@ -129,10 +127,7 @@ public class MarkLoanAsReturnedCommandHandler(IBibliotecaUtecoDbContext context)
 
             if (updatedLoan is null)
             {
-                
-                return new BadRequestApiResult(
-                    "No se pudo recuperar el préstamo actualizado"
-                );
+                return new BadRequestApiResult("No se pudo recuperar el préstamo actualizado");
             }
 
             return new SuccessApiResult<LoanResponse>(updatedLoan.ToResponse());

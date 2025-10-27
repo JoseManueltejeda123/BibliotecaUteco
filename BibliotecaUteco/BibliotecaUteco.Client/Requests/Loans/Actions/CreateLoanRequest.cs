@@ -6,7 +6,7 @@ public class CreateLoanRequest
 {
     [Range(1, int.MaxValue), Required]
     public int ReaderId { get; set; }
-    
+
     [MinLength(1), MaxLength(10), Required]
     public List<int> BookIds { get; set; } = new();
 

@@ -32,17 +32,22 @@ public class Penalty : BaseEntity
     [Column("IdTransaccion")]
     public int? TransactionId { get; set; }
 
-    [NotMapped] public int ReaderId { get; set; } 
-    [NotMapped] public string ReaderIdentityCardNumber{ get; set; }  = "";
-    [NotMapped] public string ReaderName { get; set; } = "";
+    [NotMapped]
+    public int ReaderId { get; set; }
 
+    [NotMapped]
+    public string ReaderIdentityCardNumber { get; set; } = "";
 
+    [NotMapped]
+    public string ReaderName { get; set; } = "";
 
     public bool Pay(double givenAmount, int transactionId)
     {
-        if (givenAmount < TotalAmount) return false;
-        if(transactionId == 0) return false;
-        
+        if (givenAmount < TotalAmount)
+            return false;
+        if (transactionId == 0)
+            return false;
+
         GivenAmount = givenAmount;
         ReturnedAmount = GivenAmount - TotalAmount;
         TransactionId = transactionId;
@@ -50,12 +55,10 @@ public class Penalty : BaseEntity
         UpdatedAt = DateTime.UtcNow;
 
         return true;
-
     }
-    
+
     public static Penalty Create(Loan loan)
     {
-        
         var overdueDays = (DateTime.UtcNow.Date - loan.DueDate.Date).Days;
         var totalAmount = overdueDays * LoanSettings.DailyFineRate;
 
@@ -69,25 +72,25 @@ public class Penalty : BaseEntity
             TotalAmount = totalAmount,
             ReturnedAmount = 0,
             GivenAmount = 0,
-       
         };
     }
 
-    public PenaltyResponse ToResponse() => new()
-    {
-        Id = Id,
-        CreatedAt = CreatedAt,
-        UpdatedAt = UpdatedAt,
-        OverdueDays = OverdueDays,
-        LoanId = LoanId,
-        IsDue = IsDue,
-        DailyFineRate = DailyFineRate,
-        TotalAmount = TotalAmount,
-        ReturnedAmount = ReturnedAmount,
-        GivenAmount = GivenAmount,
-        TransactionId = TransactionId,
-        ReaderId = ReaderId,
-        ReaderIdentityCardNumber = ReaderIdentityCardNumber ?? "",
-        ReaderName = ReaderName ?? ""
-    };
+    public PenaltyResponse ToResponse() =>
+        new()
+        {
+            Id = Id,
+            CreatedAt = CreatedAt,
+            UpdatedAt = UpdatedAt,
+            OverdueDays = OverdueDays,
+            LoanId = LoanId,
+            IsDue = IsDue,
+            DailyFineRate = DailyFineRate,
+            TotalAmount = TotalAmount,
+            ReturnedAmount = ReturnedAmount,
+            GivenAmount = GivenAmount,
+            TransactionId = TransactionId,
+            ReaderId = ReaderId,
+            ReaderIdentityCardNumber = ReaderIdentityCardNumber ?? "",
+            ReaderName = ReaderName ?? "",
+        };
 }

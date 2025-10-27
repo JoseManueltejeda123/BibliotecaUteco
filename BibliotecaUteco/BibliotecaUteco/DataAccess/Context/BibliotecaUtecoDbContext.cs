@@ -87,7 +87,7 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                         Password = new string("Manuel.Lopez1").Hash(),
                         IdentityCardNumber = "00212345678",
                         RoleId = 2,
-                        
+
                         SexId = 1,
                     },
                 }
@@ -264,7 +264,6 @@ public class BibliotecaUtecoDbContext(DbContextOptions<BibliotecaUtecoDbContext>
                 .WithOne(l => l.Loan)
                 .HasForeignKey(l => l.LoanId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
         });
         modelBuilder.Entity<Transaction>(x =>
         {

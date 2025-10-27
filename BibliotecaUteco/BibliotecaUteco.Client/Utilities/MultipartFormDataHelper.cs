@@ -10,7 +10,10 @@ public static class MultipartFormDataHelper
     /// <summary>
     /// Convierte un objeto en MultipartFormDataContent automáticamente
     /// </summary>
-    public static MultipartFormDataContent ToMultipartFormData(this object obj, long? maxFileSize = null)
+    public static MultipartFormDataContent ToMultipartFormData(
+        this object obj,
+        long? maxFileSize = null
+    )
     {
         var form = new MultipartFormDataContent();
         var properties = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -18,7 +21,8 @@ public static class MultipartFormDataHelper
         foreach (var prop in properties)
         {
             var value = prop.GetValue(obj);
-            if (value is null) continue;
+            if (value is null)
+                continue;
 
             var fieldName = ToCamelCase(prop.Name);
 
@@ -46,9 +50,10 @@ public static class MultipartFormDataHelper
     /// Agrega un valor simple al formulario
     /// </summary>
     public static MultipartFormDataContent AddValue(
-        this MultipartFormDataContent form, 
-        string name, 
-        object? value)
+        this MultipartFormDataContent form,
+        string name,
+        object? value
+    )
     {
         if (value is not null)
         {
@@ -64,9 +69,11 @@ public static class MultipartFormDataHelper
         this MultipartFormDataContent form,
         IBrowserFile? file,
         string fieldName,
-        long? maxFileSize = null)
+        long? maxFileSize = null
+    )
     {
-        if (file is null) return form;
+        if (file is null)
+            return form;
 
         var stream = file.OpenReadStream(maxAllowedSize: maxFileSize ?? FilesSettings.MaxFileSize);
         var fileContent = new StreamContent(stream);
@@ -83,7 +90,8 @@ public static class MultipartFormDataHelper
         this MultipartFormDataContent form,
         IEnumerable<IBrowserFile> files,
         string fieldName,
-        long? maxFileSize = null)
+        long? maxFileSize = null
+    )
     {
         foreach (var file in files)
         {

@@ -30,17 +30,15 @@ public class PdfService
     {
         var doc = new HtmlToPdfDocument()
         {
-            GlobalSettings = {
-                PaperSize = PaperKind.A4,
-                Orientation = Orientation.Portrait
-            },
-            Objects = {
+            GlobalSettings = { PaperSize = PaperKind.A4, Orientation = Orientation.Portrait },
+            Objects =
+            {
                 new ObjectSettings()
                 {
                     HtmlContent = html,
-                    WebSettings = { DefaultEncoding = "utf-8" }
-                }
-            }
+                    WebSettings = { DefaultEncoding = "utf-8" },
+                },
+            },
         };
 
         return _converter.Convert(doc);

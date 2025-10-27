@@ -3,7 +3,6 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm run build:css" />
@@ -27,7 +26,10 @@
     <PackageReference Include="Razor.Templating.Core" Version="2.1.0" />
     <PackageReference Include="RazorLight" Version="2.3.1" />
     <ProjectReference Include="..\BibliotecaUteco.Client\BibliotecaUteco.Client.csproj" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
+    <PackageReference
+      Include="Microsoft.AspNetCore.Components.WebAssembly.Server"
+      Version="9.0.7"
+    />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />

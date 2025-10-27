@@ -8,7 +8,10 @@ namespace BibliotecaUteco.Client.Requests.Readers.Actions
 {
     public class DeleteReaderRequest
     {
-        [Range(1, int.MaxValue, ErrorMessage="El ID debe de ser mayor a 1"), Required(ErrorMessage = "El ID del usuario a eliminar es obligatorio")]
-        public int ReaderId {get; set;}
+        [
+            Range(1, int.MaxValue, ErrorMessage = "El ID debe de ser mayor a 1"),
+            Required(ErrorMessage = "El ID del usuario a eliminar es obligatorio")
+        ]
+        public int ReaderId { get; set; }
     }
 }

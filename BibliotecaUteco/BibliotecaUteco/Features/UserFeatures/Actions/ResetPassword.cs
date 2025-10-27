@@ -1,4 +1,5 @@
 namespace BibliotecaUteco.Features.UserFeatures.Actions;
+
 public class ResetPasswordCommand : CommandWithUserCredentials, ICommand<IApiResult>
 {
     [FromBody, JsonPropertyName("userId"), Required, Range(1, int.MaxValue)]
@@ -12,9 +13,7 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
     {
         RuleFor(x => x.UserId)
             .GreaterThan(0)
-            .WithMessage(
-                "El Id del usuario debe de ser mayor a 0"
-            );
+            .WithMessage("El Id del usuario debe de ser mayor a 0");
     }
 }
 
@@ -33,7 +32,10 @@ internal class ResetPasswordEndpoint : IEndpoint
                 ) =>
                 {
                     return await wrapper.ExecuteAsync<IApiResult>(async () =>
-                    {   command.SetCurrentUserId(UserIdentityUtility.GetUserIdFromClaims(context.User));
+                    {
+                        command.SetCurrentUserId(
+                            UserIdentityUtility.GetUserIdFromClaims(context.User)
+                        );
                         return await sender.SendAndValidateAsync(command, cancellationToken);
                     });
                 }
@@ -52,23 +54,25 @@ internal class ResetPasswordEndpoint : IEndpoint
     }
 }
 
-public class ResetPasswordCommandHandler(
-    IBibliotecaUtecoDbContext context
-) : ICommandHandler<ResetPasswordCommand, IApiResult>
+public class ResetPasswordCommandHandler(IBibliotecaUtecoDbContext context)
+    : ICommandHandler<ResetPasswordCommand, IApiResult>
 {
     public async Task<IApiResult> HandleAsync(
         ResetPasswordCommand request,
         CancellationToken cancellationToken = default
     )
     {
-        if(request.CurrentUserId == request.UserId)
+        if (request.CurrentUserId == request.UserId)
         {
-            return new ForbiddenApiResult("No puedes restablecer tu propia contraseña de esta manera. Actualiza tus credenciales directamente");
+            return new ForbiddenApiResult(
+                "No puedes restablecer tu propia contraseña de esta manera. Actualiza tus credenciales directamente"
+            );
         }
-            
-        var user = await context
-            .Users
-            .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
+
+        var user = await context.Users.FirstOrDefaultAsync(
+            u => u.Id == request.UserId,
+            cancellationToken
+        );
 
         if (user == null)
         {
@@ -77,7 +81,9 @@ public class ResetPasswordCommandHandler(
 
         if (user.RoleId == 1)
         {
-            return new ForbiddenApiResult("No tienes permitido resetear la contraseña de un administrador");
+            return new ForbiddenApiResult(
+                "No tienes permitido resetear la contraseña de un administrador"
+            );
         }
 
         var resetedPassword = new string("Uteco.2025").Hash();
@@ -85,7 +91,6 @@ public class ResetPasswordCommandHandler(
         await context.SaveChangesAsync(cancellationToken);
 
         context.ChangeTracker.Clear();
-
 
         return new SuccessApiResult<bool>(true);
     }

@@ -16,29 +16,20 @@ public class EndpointWrapper<TEndpoint>(ILogger<TEndpoint> logger) : IEndpointWr
             logger.LogInformation(
                 $"La llamada al endpoint: {typeof(TEndpoint).Name} falló por que la request tiene campos inválidos"
             );
-            return BuildResult(
-                new UnprocessableEntityApiResult(
-                    "Peticion invalida",
-                    ex.Errors
-                )
-            );
+            return BuildResult(new UnprocessableEntityApiResult("Peticion invalida", ex.Errors));
         }
         catch (Exception ex)
         {
             logger.LogInformation(
                 $"La llamada al endpoint: {typeof(TEndpoint).Name} falló: ${ex.InnerException?.Message ?? ex.Message}"
             );
-            return BuildResult(
-              new InternalServerErrorApiResult(
-                    "Error en el servidor"
-                )
-            );
+            return BuildResult(new InternalServerErrorApiResult("Error en el servidor"));
         }
     }
 
     private IResult BuildResult(IApiResult apiResult)
     {
-        return  apiResult.Status switch
+        return apiResult.Status switch
         {
             HttpStatus.BadRequest => Results.BadRequest(apiResult),
             HttpStatus.NotFound => Results.NotFound(apiResult),

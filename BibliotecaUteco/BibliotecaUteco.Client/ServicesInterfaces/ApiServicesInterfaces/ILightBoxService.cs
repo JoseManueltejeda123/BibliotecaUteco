@@ -11,5 +11,4 @@ namespace BibliotecaUteco.Client.Services.ApiServicesInterfaces
         void Cancel();
         Task ShowAsync(string title, string? photoUrl = null);
     }
-
 }

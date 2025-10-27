@@ -11,31 +11,58 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
         [Description("Id del usuario a actualizar")]
         public int UserId { get; set; }
 
-        [FromForm(Name = "fullName"), JsonPropertyName("fullName"), Required, MaxLength(50), MinLength(5)]
+        [
+            FromForm(Name = "fullName"),
+            JsonPropertyName("fullName"),
+            Required,
+            MaxLength(50),
+            MinLength(5)
+        ]
         [Description("Nombre completo del usuario")]
         public string FullName { get; set; } = null!;
 
-        [FromForm(Name = "userName"), JsonPropertyName("username"), Required, MaxLength(15), MinLength(5)]
+        [
+            FromForm(Name = "userName"),
+            JsonPropertyName("username"),
+            Required,
+            MaxLength(15),
+            MinLength(5)
+        ]
         [Description("Nombre de usuario (solo letras, números, . y _)")]
         [RegularExpression(@"^[a-zA-Z0-9._]+$")]
         public string Username { get; set; } = null!;
 
-        [FromForm(Name = "identityCardNumber"), JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
+        [
+            FromForm(Name = "identityCardNumber"),
+            JsonPropertyName("identityCardNumber"),
+            Required,
+            MaxLength(11),
+            MinLength(11)
+        ]
         [Description("Cédula (11 dígitos)")]
         public string IdentityCardNumber { get; set; } = null!;
-        
-        [FromForm(Name = "currentPassword"), JsonPropertyName("currentPassword"), MaxLength(30), MinLength(8)]
-        [Description("Contraseña actual (mínimo 8 caracteres)"), ]
-        public string? CurrentPassword { get; set; } 
-        
-        [FromForm(Name = "newPassword"), JsonPropertyName("newPassword"), MaxLength(30), MinLength(8)]
-        [Description("Contraseña actual (mínimo 8 caracteres)"), ]
+
+        [
+            FromForm(Name = "currentPassword"),
+            JsonPropertyName("currentPassword"),
+            MaxLength(30),
+            MinLength(8)
+        ]
+        [Description("Contraseña actual (mínimo 8 caracteres)")]
+        public string? CurrentPassword { get; set; }
+
+        [
+            FromForm(Name = "newPassword"),
+            JsonPropertyName("newPassword"),
+            MaxLength(30),
+            MinLength(8)
+        ]
+        [Description("Contraseña actual (mínimo 8 caracteres)")]
         public string? NewPassword { get; set; }
 
         [FromForm(Name = "sexId"), JsonPropertyName("sexId"), Required, Range(1, 2)]
         [Description("ID del sexo")]
         public int SexId { get; set; }
-        
 
         [FromForm(Name = "profilePictureFile"), JsonPropertyName("profilePictureFile")]
         [Description("Foto de perfil (opcional)")]
@@ -83,23 +110,22 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
             .MinimumLength(8)
             .WithMessage("La contraseña actual debe tener al menos 8 caracteres")
             .When(x => !string.IsNullOrEmpty(x.CurrentPassword));
-           
-             RuleFor(x => x.NewPassword)
-                    .NotEmpty()
-                    .WithMessage("La contraseña nueva es requerida")
-                    .MaximumLength(30)
-                    .WithMessage("La contraseña nueva debe de tener maximo 30 caracteres")
-                    .MinimumLength(8)
-                    .WithMessage("La contraseña nueva debe tener al menos 8 caracteres")
-                    .Matches(@"[A-Z]")
-                    .WithMessage("La contraseña nueva debe contener al menos una mayúscula")
-                    .Matches(@"[a-z]")
-                    .WithMessage("La contraseña nueva debe contener al menos una minúscula")
-                    .Matches(@"[0-9]")
-                    .WithMessage("La contraseña nueva debe contener al menos un número")
-                    .When(x => !string.IsNullOrEmpty(x.CurrentPassword));
 
-             
+        RuleFor(x => x.NewPassword)
+            .NotEmpty()
+            .WithMessage("La contraseña nueva es requerida")
+            .MaximumLength(30)
+            .WithMessage("La contraseña nueva debe de tener maximo 30 caracteres")
+            .MinimumLength(8)
+            .WithMessage("La contraseña nueva debe tener al menos 8 caracteres")
+            .Matches(@"[A-Z]")
+            .WithMessage("La contraseña nueva debe contener al menos una mayúscula")
+            .Matches(@"[a-z]")
+            .WithMessage("La contraseña nueva debe contener al menos una minúscula")
+            .Matches(@"[0-9]")
+            .WithMessage("La contraseña nueva debe contener al menos un número")
+            .When(x => !string.IsNullOrEmpty(x.CurrentPassword));
+
         RuleFor(x => x.IdentityCardNumber)
             .NotEmpty()
             .WithMessage("La cédula es requerida")
@@ -142,7 +168,9 @@ internal class UpdateUserEndpoint : IEndpoint
                 {
                     return await wrapper.ExecuteAsync<IApiResult>(async () =>
                     {
-                        command.SetCurrentUserId(UserIdentityUtility.GetUserIdFromClaims(context.User));
+                        command.SetCurrentUserId(
+                            UserIdentityUtility.GetUserIdFromClaims(context.User)
+                        );
                         return await sender.SendAndValidateAsync(command, cancellationToken);
                     });
                 }
@@ -152,10 +180,9 @@ internal class UpdateUserEndpoint : IEndpoint
             .DisableAntiforgery()
             .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
-                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(UpdateUserEndpoint))
             .WithDescription("Actualiza un nuevo usuario en el sistema");
@@ -172,7 +199,6 @@ public class UpdateUserCommandHandler(
         CancellationToken cancellationToken = default
     )
     {
-        
         if (
             await context.Users.AnyAsync(
                 u => u.Username == request.Username && u.Id != request.UserId,
@@ -180,9 +206,7 @@ public class UpdateUserCommandHandler(
             )
         )
         {
-            return new ConflictApiResult(
-                "Ya hay un usuario con ese nombre de usuario"
-            );
+            return new ConflictApiResult("Ya hay un usuario con ese nombre de usuario");
         }
 
         if (
@@ -192,9 +216,7 @@ public class UpdateUserCommandHandler(
             )
         )
         {
-            return new ConflictApiResult(
-                "Ya hay un usuario con esa cédula"
-            );
+            return new ConflictApiResult("Ya hay un usuario con esa cédula");
         }
         var user = await context.Users.FirstOrDefaultAsync(
             u => u.Id == request.UserId,
@@ -203,9 +225,7 @@ public class UpdateUserCommandHandler(
 
         if (user is null)
         {
-            return new NotFoundApiResult(
-                "No existe el usuario a actualizar"
-            );
+            return new NotFoundApiResult("No existe el usuario a actualizar");
         }
 
         if (!string.IsNullOrEmpty(request.CurrentPassword))
@@ -217,20 +237,17 @@ public class UpdateUserCommandHandler(
                 return new BadRequestApiResult("La contraseña actual no coinciden");
             }
         }
-       
-
 
         user.Update(request);
 
         if (request.RemoveProfilePicture && !string.IsNullOrEmpty(user.ProfilePictureUrl))
         {
-            var oldPfp =  user.ProfilePictureUrl;
+            var oldPfp = user.ProfilePictureUrl;
 
-             user.ProfilePictureUrl = null;
+            user.ProfilePictureUrl = null;
             await context.SaveChangesAsync(cancellationToken);
             if (
-                fileUploadService.DeleteFile(oldPfp, EnvFolders.UserPictures)
-                    is var deletionResult
+                fileUploadService.DeleteFile(oldPfp, EnvFolders.UserPictures) is var deletionResult
                 && !deletionResult.Item1
             )
             {
@@ -238,8 +255,6 @@ public class UpdateUserCommandHandler(
                     $"No pudimos eliminar la foto de perfil: {deletionResult.Item2}"
                 );
             }
-
-           
         }
         else if (request.ProfilePictureFile is not null)
         {

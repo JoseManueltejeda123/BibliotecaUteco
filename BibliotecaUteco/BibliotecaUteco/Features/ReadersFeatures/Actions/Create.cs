@@ -39,7 +39,6 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
             .MaximumLength(50)
             .WithMessage("El nombre no puede superar los 50 caracteres");
 
-
         RuleFor(x => x.Address)
             .NotEmpty()
             .WithMessage("La dirección es obligatoria")
@@ -47,9 +46,6 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
             .WithMessage("La dirección debe tener al menos 10 caracteres")
             .MaximumLength(100)
             .WithMessage("La dirección no puede superar los 100 caracteres");
-            
-
-
 
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
@@ -82,9 +78,7 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
                     .MaximumLength(9)
                     .WithMessage("La matrícula no puede superar los 9 caracteres")
                     .Matches(@"^[0-9\-]+$")
-                    .WithMessage(
-                        "La matrícula solo puede contener letras  números y guiones"
-                    );
+                    .WithMessage("La matrícula solo puede contener letras  números y guiones");
             }
         );
     }
@@ -113,12 +107,14 @@ internal class CreateReaderEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<CreateReaderCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<SuccessApiResult<ReaderResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<ReaderResponse>>(
+                200,
+                ApplicationContentTypes.ApplicationJson
+            )
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
-                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Reader))
             .WithName(nameof(CreateReaderEndpoint))
             .WithDescription("Crea un nuevo lector en el sistema");
@@ -146,9 +142,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
             )
         )
         {
-            return new ConflictApiResult(
-                "Ya existe un lector registrado con esa cédula"
-            );
+            return new ConflictApiResult("Ya existe un lector registrado con esa cédula");
         }
 
         if (!string.IsNullOrWhiteSpace(request.StudentLicence))
@@ -162,9 +156,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
                 )
             )
             {
-                return new ConflictApiResult(
-                    "Ya existe un lector registrado con esa matrícula"
-                );
+                return new ConflictApiResult("Ya existe un lector registrado con esa matrícula");
             }
         }
 
@@ -185,9 +177,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
 
         if (insertion.Entity.Id == 0)
         {
-            return new BadRequestApiResult(
-                "Error al crear el lector"
-            );
+            return new BadRequestApiResult("Error al crear el lector");
         }
 
         _context.ChangeTracker.Clear();
@@ -199,9 +189,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
 
         if (createdReader == null)
         {
-            return new BadRequestApiResult(
-                "El lector no pudo ser encontrado tras su creación"
-            );
+            return new BadRequestApiResult("El lector no pudo ser encontrado tras su creación");
         }
 
         return new SuccessApiResult<ReaderResponse>(createdReader.ToResponse());

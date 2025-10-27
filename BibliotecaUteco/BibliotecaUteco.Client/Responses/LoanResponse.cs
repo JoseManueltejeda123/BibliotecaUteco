@@ -8,18 +8,26 @@ public class LoanResponse : BaseResponse
     public DateTime? ReturnedDate { get; set; } = null;
 
     public DateTime DueDateLocal => DueDate.ToLocalTime();
-    public string DueDateLocalFormatted => DueDateLocal.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES"));
+    public string DueDateLocalFormatted =>
+        DueDateLocal.ToString(
+            "dd MMM yyyy hh:mm tt",
+            new System.Globalization.CultureInfo("es-ES")
+        );
     public DateTime? ReturnedDateLocal => ReturnedDate?.ToLocalTime();
-    public string? ReturnedDateLocalFormatted => ReturnedDateLocal?.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES")) ;
+    public string? ReturnedDateLocalFormatted =>
+        ReturnedDateLocal?.ToString(
+            "dd MMM yyyy hh:mm tt",
+            new System.Globalization.CultureInfo("es-ES")
+        );
 
     public ReaderResponse Reader { get; set; } = null!;
 
     public List<BookResponse> Books { get; set; } = new();
 
     public int ReaderId { get; set; }
-    
+
     public bool HasPenalty { get; set; }
-    
+
     public int BookCount { get; set; }
     public int ExceededBy { get; set; }
 

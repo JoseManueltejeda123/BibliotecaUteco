@@ -136,17 +136,23 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
-                .Produces<SuccessApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<BookResponse>>(
+                    200,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-                .Produces<UnprocessableEntityApiResult>(422, ApplicationContentTypes.ApplicationJson)
-
-                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<UnprocessableEntityApiResult>(
+                    422,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Book))
                 .WithName(nameof(CreateBookEndpoint))
-                .WithDescription(
-                    $"Crea un nuevo libro y retorna un {nameof(IApiResult)} con el libro creado"
-                );
+                .WithDescription($"Crea un nuevo libro y retorna el libro creado");
         }
     }
 
@@ -173,26 +179,20 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 )
             )
             {
-                return new ConflictApiResult(
-                    "Ya existe un libro con ese nombre."
-                );
+                return new ConflictApiResult("Ya existe un libro con ese nombre.");
             }
 
             if (request.AuthorIds.Any())
             {
                 if (!await context.Authors.AnyAsync(a => request.AuthorIds.Contains(a.Id)))
                 {
-                    return new BadRequestApiResult(
-                        "Uno o más autores no existen."
-                    );
+                    return new BadRequestApiResult("Uno o más autores no existen.");
                 }
             }
 
             if (!await context.Genres.AnyAsync(a => request.GenreIds.Contains(a.Id)))
             {
-                return new BadRequestApiResult(
-                    "Uno o más generos literarios no existen."
-                );
+                return new BadRequestApiResult("Uno o más generos literarios no existen.");
             }
 
             var insertion = await context.Books.AddAsync(Book.Create(request), cancellationToken);
@@ -217,9 +217,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                     }
                     else
                     {
-                        return new UnprocessableEntityApiResult(
-                            result.Item2
-                        );
+                        return new UnprocessableEntityApiResult(result.Item2);
                     }
                 }
             }
@@ -230,9 +228,7 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 
             if (books.FirstOrDefault() is var book && book is null)
             {
-                return new BadRequestApiResult(
-                    "El libro no pudo ser encontrado tras su creación."
-                );
+                return new BadRequestApiResult("El libro no pudo ser encontrado tras su creación.");
             }
 
             return new SuccessApiResult<BookResponse>(book.ToResponse());

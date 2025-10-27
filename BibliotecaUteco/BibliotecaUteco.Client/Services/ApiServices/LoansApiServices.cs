@@ -16,13 +16,9 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
         CancellationToken cancellationToken = default
     )
     {
-        return await client.FetchPostAsync<LoanResponse>(
-            LoansEndpoint,
-            request,
-            cancellationToken
-        );
+        return await client.FetchPostAsync<LoanResponse>(LoansEndpoint, request, cancellationToken);
     }
-    
+
     public async Task<ApiResponse<LoanResponse>> MarkAsReturnedAsync(
         MarkLoanAsReturnedRequest request,
         CancellationToken cancellationToken = default
@@ -34,7 +30,7 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
             cancellationToken
         );
     }
-    
+
     public async Task<ApiResponse<List<LoanResponse>>> GetByFilterAsync(
         GetLoansByFilterRequest request,
         CancellationToken cancellationToken = default
@@ -48,7 +44,7 @@ public class LoansApiServices(BibliotecaHttpClient client) : ILoansApiServices
         query["skip"] = request.Skip.ToString();
         query["IdentityCardNumber"] = request.IdentityCardNumber;
         query["studentLicence"] = request.StudentLicence;
-        
+
         string queryString = query.ToString() ?? "";
         return await client.FetchGetAsync<List<LoanResponse>>(
             LoansEndpoint + $"/by-filter?{queryString}",

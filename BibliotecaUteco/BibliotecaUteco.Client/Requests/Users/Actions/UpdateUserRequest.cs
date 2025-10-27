@@ -28,19 +28,15 @@ public class UpdateUserRequest
     [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
     public string IdentityCardNumber { get; set; } = null!;
 
-
-
     [MaxLength(30, ErrorMessage = "La contraseña actual no puede tener más de 30 caracteres.")]
-    public string? CurrentPassword { get; set; } 
-
+    public string? CurrentPassword { get; set; }
 
     [MaxLength(30, ErrorMessage = "La contraseña nueva no puede tener más de 30 caracteres.")]
-    public string? NewPassword { get; set; } 
-    
-    [Range(1, 2)] 
+    public string? NewPassword { get; set; }
+
+    [Range(1, 2)]
     public int SexId => (int)_sex;
 
-   
     public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
 
     [Required]

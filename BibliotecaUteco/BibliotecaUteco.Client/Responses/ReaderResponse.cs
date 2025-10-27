@@ -19,10 +19,11 @@ public class ReaderResponse : BaseResponse
     public DateTime? LastLoanDate { get; set; }
     public bool LastLoanIsActive { get; set; }
     public int SexId { get; set; }
-    public ApplicationSexes Sex {get; set;} 
-        public int ReturnedLoansCount { get; set; } = 0;
+    public ApplicationSexes Sex { get; set; }
+    public int ReturnedLoansCount { get; set; } = 0;
 
-
-    public string FormattedPhoneNumber => !string.IsNullOrEmpty(PhoneNumber) ?
-        Regex.Replace(PhoneNumber, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3") : "";
+    public string FormattedPhoneNumber =>
+        !string.IsNullOrEmpty(PhoneNumber)
+            ? Regex.Replace(PhoneNumber, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3")
+            : "";
 }

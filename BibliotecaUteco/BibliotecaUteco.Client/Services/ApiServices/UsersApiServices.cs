@@ -24,6 +24,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             cancellationToken
         );
     }
+
     public async Task<ApiResponse<JwtResponse>> LoginUserAsync(
         AuthenticateUserRequest request,
         CancellationToken cancellationToken = default
@@ -65,12 +66,17 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             cancellationToken
         );
     }
+
     public async Task<ApiResponse<UserResponse>> CreateAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken = default
     )
-    { 
-        return await client.FetchPostAsync<UserResponse>(UserEndpoint, request.ToMultipartFormData(), cancellationToken);
+    {
+        return await client.FetchPostAsync<UserResponse>(
+            UserEndpoint,
+            request.ToMultipartFormData(),
+            cancellationToken
+        );
     }
 
     public async Task<ApiResponse<UserResponse>> UpdateAsync(
@@ -78,9 +84,10 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-       
-            
-        return await client.FetchPutAsync<UserResponse>(UserEndpoint, request.ToMultipartFormData(), cancellationToken);
-        
+        return await client.FetchPutAsync<UserResponse>(
+            UserEndpoint,
+            request.ToMultipartFormData(),
+            cancellationToken
+        );
     }
 }

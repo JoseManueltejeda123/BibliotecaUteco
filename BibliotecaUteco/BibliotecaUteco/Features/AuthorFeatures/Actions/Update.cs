@@ -50,11 +50,12 @@ internal class UpdateAuthorEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<UpdateAuthorCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<SuccessApiResult<AuthorResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<AuthorResponse>>(
+                200,
+                ApplicationContentTypes.ApplicationJson
+            )
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .Produces<ConflictApiResult>(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
@@ -81,9 +82,7 @@ public class UpdateAuthorCommandHandler(IBibliotecaUtecoDbContext context)
             && author is null
         )
         {
-            return new NotFoundApiResult(
-                "El autor no existe"
-            );
+            return new NotFoundApiResult("El autor no existe");
         }
 
         var normalizedName = request.FullName.NormalizeField();
@@ -95,9 +94,7 @@ public class UpdateAuthorCommandHandler(IBibliotecaUtecoDbContext context)
             )
         )
         {
-            return new ConflictApiResult(
-                "Ya existe otro autor con ese nombre"
-            );
+            return new ConflictApiResult("Ya existe otro autor con ese nombre");
         }
 
         author.Update(request);

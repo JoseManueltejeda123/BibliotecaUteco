@@ -6,12 +6,10 @@ public static class RoleParser
     {
         return roleId switch
         {
-             1 => ApplicationRoles.Admin,
-            _ => ApplicationRoles.Bibliotecario
+            1 => ApplicationRoles.Admin,
+            _ => ApplicationRoles.Bibliotecario,
         };
     }
-    
-    
 }
 
 public enum ApplicationRoles

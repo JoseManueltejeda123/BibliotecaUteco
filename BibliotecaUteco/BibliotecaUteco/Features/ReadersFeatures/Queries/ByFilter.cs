@@ -80,11 +80,12 @@ internal class GetReaderByFilterEndpoint : IEndpoint
             .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
-            .Produces<SuccessApiResult<List<ReaderResponse>>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<List<ReaderResponse>>>(
+                200,
+                ApplicationContentTypes.ApplicationJson
+            )
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Reader))
             .WithName(nameof(GetReaderByFilterEndpoint))

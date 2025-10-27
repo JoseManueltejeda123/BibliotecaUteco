@@ -12,7 +12,6 @@ public interface IApiResult
     public HttpStatus Status { get; set; }
 }
 
-
 public class ApiResponse<T> : IApiResult
 {
     public T? Data { get; set; } = default;
@@ -25,11 +24,7 @@ public class ApiResponse<T> : IApiResult
 
     [MemberNotNullWhen(true, nameof(Data))]
     public bool IsSuccessful() => Data is not null && IsSuccess;
-    
 }
-
-
-
 
 public enum HttpStatus
 {

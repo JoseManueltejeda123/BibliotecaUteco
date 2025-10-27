@@ -33,14 +33,15 @@ public static class UserDbSetActions
             })
             .ToListAsync(token);
     }
-    
+
     public static async Task<User?> GetByIdAsync(
         this DbSet<User> dbSet,
         int userId,
         CancellationToken token = default
     )
     {
-        return await dbSet.Where(u => u.Id == userId)
+        return await dbSet
+            .Where(u => u.Id == userId)
             .Select(b => new User()
             {
                 Id = b.Id,

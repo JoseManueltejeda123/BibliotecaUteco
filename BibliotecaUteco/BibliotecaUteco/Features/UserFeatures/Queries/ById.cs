@@ -4,16 +4,14 @@ public class GetUserByIdCommand : ICommand<IApiResult>
 {
     [FromQuery(Name = "userId"), JsonPropertyName("userId"), Range(1, int.MaxValue)]
     [Description("Id de usuario a buscar")]
-    public  int UserId { get; set; }
+    public int UserId { get; set; }
 }
 
 public class GetUserByIdCommandValidator : AbstractValidator<GetUserByIdCommand>
 {
     public GetUserByIdCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .GreaterThan(0)
-            .WithMessage("El id de usuario debe de ser mayor a 0");
+        RuleFor(x => x.UserId).GreaterThan(0).WithMessage("El id de usuario debe de ser mayor a 0");
     }
 }
 
@@ -56,15 +54,14 @@ public class GetUserByIdCommandHandler(IBibliotecaUtecoDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-
-        if(await context.Users.GetByIdAsync(request.UserId, cancellationToken) is var user && user is null)
+        if (
+            await context.Users.GetByIdAsync(request.UserId, cancellationToken) is var user
+            && user is null
+        )
         {
             return new NotFoundApiResult("Usuario no encontrado");
         }
-        
 
-        return new SuccessApiResult<UserResponse>(
-            user.ToResponse()
-        );
+        return new SuccessApiResult<UserResponse>(user.ToResponse());
     }
 }

@@ -46,7 +46,12 @@ namespace BibliotecaUteco.Features.GenreFeatures.Queries
                     200,
                     ApplicationContentTypes.ApplicationJson
                 )
-                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .WithTags(nameof(Genre))
                 .WithName(nameof(GetGenresByNameEndpoint))
                 .WithDescription(

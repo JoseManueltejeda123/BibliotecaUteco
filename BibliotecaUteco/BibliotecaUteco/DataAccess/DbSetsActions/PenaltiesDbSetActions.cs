@@ -2,12 +2,16 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions;
 
 public static class PenaltiesDbSetActions
 {
-    public static async Task<List<Penalty>> GetByFilterAsync(this DbSet<Penalty> set, bool? isDue = null, int? loanId = null, int skip = 0, int take = 10, CancellationToken cancellationToken = default )
+    public static async Task<List<Penalty>> GetByFilterAsync(
+        this DbSet<Penalty> set,
+        bool? isDue = null,
+        int? loanId = null,
+        int skip = 0,
+        int take = 10,
+        CancellationToken cancellationToken = default
+    )
     {
-        var query = set
-            .AsNoTracking()
-            .AsSplitQuery()
-            .AsQueryable();
+        var query = set.AsNoTracking().AsSplitQuery().AsQueryable();
 
         // Filtrar por estado de deuda
         if (isDue.HasValue)
@@ -21,10 +25,7 @@ public static class PenaltiesDbSetActions
             query = query.Where(p => p.LoanId == loanId.Value);
         }
 
-        
-
         query = query.OrderByDescending(p => p.CreatedAt);
-
 
         return await query
             .Skip(skip)
@@ -45,17 +46,16 @@ public static class PenaltiesDbSetActions
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
                 ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
-                
-               
             })
             .ToListAsync(cancellationToken);
-
     }
-    
-    public static async Task<Penalty?> GetByIdAsync(this DbSet<Penalty> set, int penaltyId, CancellationToken cancellationToken = default )
-    {
-     
 
+    public static async Task<Penalty?> GetByIdAsync(
+        this DbSet<Penalty> set,
+        int penaltyId,
+        CancellationToken cancellationToken = default
+    )
+    {
         return await set.Where(p => p.Id == penaltyId)
             .Select(p => new Penalty
             {
@@ -73,10 +73,7 @@ public static class PenaltiesDbSetActions
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
                 ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
-                
-               
             })
             .FirstOrDefaultAsync(cancellationToken);
-
     }
 }

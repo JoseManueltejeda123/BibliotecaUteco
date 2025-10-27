@@ -33,11 +33,8 @@ public class CreateUserRequest
     [Required(ErrorMessage = "El rol es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un rol válido.")]
     public int RoleId => (int)_role;
-    
-    
-    
 
-    [Range(1, 2)] 
+    [Range(1, 2)]
     public int SexId => (int)_sex;
 
     public ApplicationRoles _role { get; set; } = ApplicationRoles.Bibliotecario;

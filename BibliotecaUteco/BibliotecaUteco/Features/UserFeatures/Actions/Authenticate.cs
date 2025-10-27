@@ -72,9 +72,7 @@ internal class AuthenticateUserEndpoint : IEndpoint
             .Accepts<AuthenticateUserCommand>(false, ApplicationContentTypes.ApplicationJson)
             .Produces<SuccessApiResult<JwtResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(AuthenticateUserEndpoint))
@@ -104,18 +102,14 @@ public class AuthenticateUserCommandHandler(
             && user is null
         )
         {
-            return new NotFoundApiResult(
-                "Credenciales incorrectas"
-            );
+            return new NotFoundApiResult("Credenciales incorrectas");
         }
 
         var token = jwtBuilder.GenerateToken(user.ToResponse());
 
         if (token is null)
         {
-            return new BadRequestApiResult(
-                "Credenciales incorrectas"
-            );
+            return new BadRequestApiResult("Credenciales incorrectas");
         }
 
         return new SuccessApiResult<JwtResponse>(token);

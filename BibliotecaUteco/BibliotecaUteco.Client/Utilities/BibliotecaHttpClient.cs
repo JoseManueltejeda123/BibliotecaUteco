@@ -19,7 +19,7 @@ public class BibliotecaHttpClient(
 )
 {
     public string Prefix { get; set; } = "api/v1";
-    
+
     private async Task AttachTokenAsync()
     {
         var token = await localStorageService.GetTokenAsync();
@@ -52,32 +52,26 @@ public class BibliotecaHttpClient(
         CancellationToken cancellationToken = default
     )
     {
-         ApiResponse<TResult> failure = new ApiResponse<TResult>()
-                    {
-                        Data = default,
-                        IsSuccess = false,
-                        Messages = ["Tuvimos un problema al hacer esta peticion"],
-                        Status = HttpStatus.BadRequest
-                            
-                    }; 
+        ApiResponse<TResult> failure = new ApiResponse<TResult>()
+        {
+            Data = default,
+            IsSuccess = false,
+            Messages = ["Tuvimos un problema al hacer esta peticion"],
+            Status = HttpStatus.BadRequest,
+        };
         try
         {
-           
-            
             var jsonContent = await response.Content.ReadAsStringAsync(cancellationToken);
-            
 
             var apiResult = JsonSerializer.Deserialize<ApiResponse<TResult>>(
                 jsonContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
             );
-            
+
             if (apiResult is null)
             {
-               
                 ShowErrorToast("El servidor retornó una respuesta vacía");
                 return failure;
-
             }
 
             if (!response.IsSuccessStatusCode)
@@ -106,28 +100,47 @@ public class BibliotecaHttpClient(
     public async Task<ApiResponse<TResult>> FetchGetAsync<TResult>(
         string route,
         CancellationToken cancellationToken = default
-    )=> await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.GET, route, token: cancellationToken), cancellationToken);
+    ) =>
+        await ProcessResult<TResult>(
+            await CallAsync<TResult>(HttpMethod.GET, route, token: cancellationToken),
+            cancellationToken
+        );
 
     public async Task<ApiResponse<TResult>> FetchPostAsync<TResult>(
         string route,
         object data,
         CancellationToken cancellationToken = default
-    )=>  await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.POST, route, data, cancellationToken), cancellationToken);
-    
+    ) =>
+        await ProcessResult<TResult>(
+            await CallAsync<TResult>(HttpMethod.POST, route, data, cancellationToken),
+            cancellationToken
+        );
 
     public async Task<ApiResponse<TResult>> FetchPutAsync<TResult>(
         string route,
         object data,
         CancellationToken cancellationToken = default
-    )=>  await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.PUT, route, data, cancellationToken), cancellationToken);
+    ) =>
+        await ProcessResult<TResult>(
+            await CallAsync<TResult>(HttpMethod.PUT, route, data, cancellationToken),
+            cancellationToken
+        );
 
     public async Task<ApiResponse<TResult>> FetchDeleteAsync<TResult>(
         string route,
         CancellationToken cancellationToken = default
-    ) => await ProcessResult<TResult>(await CallAsync<TResult>(HttpMethod.DELETE, route, token: cancellationToken), cancellationToken);
-    
-    
-    public async Task<HttpResponseMessage> CallAsync<TResponse>(HttpMethod method, string route, object? body = null, CancellationToken token = default)
+    ) =>
+        await ProcessResult<TResult>(
+            await CallAsync<TResult>(HttpMethod.DELETE, route, token: cancellationToken),
+            cancellationToken
+        );
+
+    public async Task<HttpResponseMessage> CallAsync<TResponse>(
+        HttpMethod method,
+        string route,
+        object? body = null,
+        CancellationToken token = default
+    )
     {
         try
         {
@@ -142,8 +155,7 @@ public class BibliotecaHttpClient(
                 HttpMethod.PUT => body is MultipartFormDataContent multipart
                     ? await client.PutAsync(Prefix + route, multipart, token)
                     : await client.PutAsJsonAsync(Prefix + route, body, token),
-                _ => throw new NotImplementedException("No existe el metodo pedido")
-
+                _ => throw new NotImplementedException("No existe el metodo pedido"),
             };
         }
         catch (Exception ex)
@@ -153,26 +165,23 @@ public class BibliotecaHttpClient(
                 IsSuccess = false,
                 Messages = [ex.InnerException?.Message ?? ex.Message],
                 Status = HttpStatus.BadRequest,
-                Data = default
+                Data = default,
             };
 
             var json = JsonSerializer.Serialize(apiResponse);
-    
+
             return new HttpResponseMessage(HttpStatusCode.BadRequest)
             {
-                Content = new StringContent(json, Encoding.UTF8, "application/json")
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
             };
         }
-
     }
 }
-
-
 
 public enum HttpMethod
 {
     GET,
     PUT,
     POST,
-    DELETE
+    DELETE,
 }

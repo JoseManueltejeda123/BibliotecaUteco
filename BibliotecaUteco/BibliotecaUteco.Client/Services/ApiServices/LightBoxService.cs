@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
+
 namespace BibliotecaUteco.Client.Services.ApiServices
 {
-
     public class LightBoxService : ILightBoxService
     {
         public event Action? OnLightBoxChanged;
@@ -16,10 +16,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
 
         private TaskCompletionSource? _tcs;
 
-        public Task ShowAsync(
-            string title,
-            string? photoUrl = null
-        )
+        public Task ShowAsync(string title, string? photoUrl = null)
         {
             PhotoTitle = title;
             PhotoUrl = photoUrl;
@@ -28,8 +25,6 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             _tcs = new TaskCompletionSource();
             return _tcs.Task;
         }
-
-
 
         public void Cancel()
         {
@@ -46,5 +41,4 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             _tcs?.TrySetResult();
         }
     }
-
 }

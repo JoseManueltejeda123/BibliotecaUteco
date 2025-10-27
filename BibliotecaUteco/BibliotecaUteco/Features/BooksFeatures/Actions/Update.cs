@@ -152,9 +152,7 @@ internal class UpdateBookEndpoint : IEndpoint
             .DisableAntiforgery()
             .Produces<SuccessApiResult<BookResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Book))
             .WithName(nameof(UpdateBookEndpoint))
@@ -186,9 +184,7 @@ public class UpdateBookCommandHandler(
             )
         )
         {
-            return new ConflictApiResult(
-                "Ya existe un libro diferente con este mismo nombre"
-            );
+            return new ConflictApiResult("Ya existe un libro diferente con este mismo nombre");
         }
 
         var bookToUpdate = await context
@@ -197,9 +193,7 @@ public class UpdateBookCommandHandler(
 
         if (bookToUpdate is null)
         {
-            return new NotFoundApiResult(
-                "No pudimos encotrar el libro a actualizar"
-            );
+            return new NotFoundApiResult("No pudimos encotrar el libro a actualizar");
         }
 
         if (request.CoverFile is not null)
@@ -214,7 +208,7 @@ public class UpdateBookCommandHandler(
                 && !result.Item1
             )
             {
-                return new BadRequestApiResult( result.Item2);
+                return new BadRequestApiResult(result.Item2);
             }
 
             bookToUpdate.CoverUrl = result.Item2;
@@ -223,22 +217,17 @@ public class UpdateBookCommandHandler(
         {
             if (!string.IsNullOrEmpty(bookToUpdate.CoverUrl))
             {
-
                 var oldCoverUrl = bookToUpdate.CoverUrl;
                 bookToUpdate.CoverUrl = null;
 
                 await context.SaveChangesAsync(cancellationToken);
                 if (
-                    fileUploadService.DeleteFile(oldCoverUrl, EnvFolders.BookCovers)
-                        is var result
+                    fileUploadService.DeleteFile(oldCoverUrl, EnvFolders.BookCovers) is var result
                     && !result.Item1
                 )
                 {
-                    return new BadRequestApiResult(
-                        result.Item2
-                    );
+                    return new BadRequestApiResult(result.Item2);
                 }
-
             }
         }
 

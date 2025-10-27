@@ -7,9 +7,9 @@ namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 public interface IUsersApiServices
 {
     Task<ApiResponse<UserResponse>> GetByIdAsync(
-            GetUserByIdRequest request,
-            CancellationToken cancellationToken = default
-            );
+        GetUserByIdRequest request,
+        CancellationToken cancellationToken = default
+    );
     Task<ApiResponse<bool>> ResetPasswordAsync(
         ResetPasswordRequest request,
         CancellationToken cancellationToken = default

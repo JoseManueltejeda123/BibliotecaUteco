@@ -55,9 +55,17 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<CreateGenreCommand>(false, ApplicationContentTypes.ApplicationJson)
-                .Produces<SuccessApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
-                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<GenreResponse>>(
+                    200,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(UpdateGenreEndpoint))
                 .WithDescription(
@@ -83,9 +91,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 )
             )
             {
-                return new ConflictApiResult(
-                    "Ya existe un género con ese nombre."
-                );
+                return new ConflictApiResult("Ya existe un género con ese nombre.");
             }
 
             var genre = await context.Genres.FirstOrDefaultAsync(
@@ -95,9 +101,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
 
             if (genre is null)
             {
-                return new NotFoundApiResult(
-                    "No se encontro el genero literario"
-                );
+                return new NotFoundApiResult("No se encontro el genero literario");
             }
 
             genre.Update(request);

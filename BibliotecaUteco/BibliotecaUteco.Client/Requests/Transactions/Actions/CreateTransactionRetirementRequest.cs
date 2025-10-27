@@ -12,5 +12,4 @@ public class CreateTransactionRetirementRequest
     [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres.")]
     [MaxLength(30, ErrorMessage = "La contraseña no puede tener más de 30 caracteres.")]
     public string Password { get; set; } = "";
-
 }

@@ -43,12 +43,19 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
                 .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
-                .Produces<IApiResult>(200, ApplicationContentTypes.ApplicationJson)
-                .Produces<UnprocessableEntityApiResult>(422, ApplicationContentTypes.ApplicationJson)
-
-                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
-                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
-                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<bool>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<UnprocessableEntityApiResult>(
+                    422,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Book))
                 .WithName(nameof(DeleteBookEndpoint))
                 .WithDescription(
@@ -75,21 +82,15 @@ namespace BibliotecaUteco.Features.BooksFeatures.Actions
 
             if (book == null)
             {
-                return new NotFoundApiResult( "El libro no existe.");
+                return new NotFoundApiResult("El libro no existe.");
             }
 
-            if (
-                await context.BookLoans.AnyAsync(b =>
-                    b.BookId == request.BookId
-                )
-            )
+            if (await context.BookLoans.AnyAsync(b => b.BookId == request.BookId))
             {
                 return new ConflictApiResult(
                     "No se puede eliminar el libro porque tiene préstamos. Si quire inhabilitarlos establezca su stock a 0."
                 );
             }
-
-            
 
             var deletedRows = await context
                 .Books.Where(b => b.Id == request.BookId)

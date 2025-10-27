@@ -17,7 +17,6 @@ public static class ApiServicesDependencies
         services.AddScoped<IPenaltiesApiServices, PenaltiesApiServices>();
         services.AddScoped<ITransactionsApiServices, TransactionsApiServices>();
 
-
         return services;
     }
 }

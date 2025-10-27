@@ -31,14 +31,12 @@ public class ReadersApiServices(BibliotecaHttpClient client) : IReadersApiServic
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
 
-    
         query["readerId"] = request.ReaderId.ToString();
         string queryString = query?.ToString() ?? "";
 
         return await client.FetchDeleteAsync<bool>(
             ReadersEndpoint + $"/delete?{queryString}",
             cancellationToken
-          
         );
     }
 

@@ -1,6 +1,7 @@
 using BibliotecaUteco.Utilities;
 
 namespace BibliotecaUteco.Features.Penalties.Actions;
+
 public class PayPenaltyCommand : CommandWithUserCredentials, ICommand<IApiResult>
 {
     [FromBody, JsonPropertyName("penaltyId"), Required, Range(1, int.MaxValue)]
@@ -55,14 +56,15 @@ internal class PayPenaltyEndpoint : IEndpoint
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<PayPenaltyCommand>(false, ApplicationContentTypes.ApplicationJson)
-            .Produces<SuccessApiResult<PenaltyResponse>>(200, ApplicationContentTypes.ApplicationJson)
+            .Produces<SuccessApiResult<PenaltyResponse>>(
+                200,
+                ApplicationContentTypes.ApplicationJson
+            )
             .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
-
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .ProducesProblem(409, ApplicationContentTypes.ApplicationJson)
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
-                            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+            .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(Penalty))
             .WithName(nameof(PayPenaltyEndpoint))
             .WithDescription("Registra el pago de una penalización");
@@ -78,7 +80,14 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-        if(await context.Penalties.IgnoreAutoIncludes().AsSplitQuery().FirstOrDefaultAsync(p => p.Id == request.PenaltyId, cancellationToken) is var penalty && penalty is null)
+        if (
+            await context
+                .Penalties.IgnoreAutoIncludes()
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(p => p.Id == request.PenaltyId, cancellationToken)
+                is var penalty
+            && penalty is null
+        )
         {
             return new NotFoundApiResult(
                 $"No se encontró la penalización con ID {request.PenaltyId}"
@@ -87,9 +96,7 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
 
         if (!penalty.IsDue)
         {
-            return new ConflictApiResult(
-                "Esta penalización ya ha sido pagada"
-            );
+            return new ConflictApiResult("Esta penalización ya ha sido pagada");
         }
 
         if (request.GivenAmount < penalty.TotalAmount)
@@ -99,7 +106,9 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
             );
         }
 
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        await using var transaction = await context.Database.BeginTransactionAsync(
+            cancellationToken
+        );
 
         try
         {
@@ -112,32 +121,24 @@ public class PayPenaltyCommandHandler(IBibliotecaUtecoDbContext context)
             if (transactionInsertion.Entity.Id == 0)
             {
                 await transaction.RollbackAsync(cancellationToken);
-                return new BadRequestApiResult(
-                    "No se pudo crear la transacción de pago"
-                );
+                return new BadRequestApiResult("No se pudo crear la transacción de pago");
             }
 
             if (!penalty.Pay(request.GivenAmount, transactionInsertion.Entity.Id))
             {
                 await transaction.RollbackAsync(cancellationToken);
-                return new BadRequestApiResult(
-                    "No pudimos marcar la penalización como paga");
+                return new BadRequestApiResult("No pudimos marcar la penalización como paga");
             }
 
-           
             await context.SaveChangesAsync(cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
 
             context.ChangeTracker.Clear();
 
-          
-
             if (await context.Penalties.GetByIdAsync(penalty.Id) is var result && result is null)
             {
-                return new BadRequestApiResult(
-                    "No se pudo recuperar la penalización actualizada"
-                );
+                return new BadRequestApiResult("No se pudo recuperar la penalización actualizada");
             }
 
             return new SuccessApiResult<PenaltyResponse>(result.ToResponse());

@@ -93,6 +93,6 @@ public class Book : BaseEntity
             Stock = Stock,
             AvailableAmount = AvailableAmount,
             ActiveLoansCount = ActiveLoansCount,
-    LoansCount =LoansCount
+            LoansCount = LoansCount,
         };
 }

@@ -41,7 +41,6 @@ internal class GetUserByNameEndpoint : IEndpoint
             .DisableAntiforgery()
             .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
             .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
-
             .Produces<InternalServerErrorApiResult>(404, ApplicationContentTypes.ApplicationJson)
             .WithTags(nameof(User))
             .WithName(nameof(GetUserByNameEndpoint))
@@ -61,8 +60,6 @@ public class GetUserByNameQueryHandler(IBibliotecaUtecoDbContext context)
 
         var users = await context.Users.GetByFilterAsync(request.Username, cancellationToken);
 
-        return new SuccessApiResult<List<UserResponse>>(
-            users.Select(u => u.ToResponse()).ToList()
-        );
+        return new SuccessApiResult<List<UserResponse>>(users.Select(u => u.ToResponse()).ToList());
     }
 }

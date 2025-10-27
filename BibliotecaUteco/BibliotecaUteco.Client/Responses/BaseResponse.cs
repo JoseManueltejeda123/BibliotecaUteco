@@ -10,7 +10,13 @@ public class BaseResponse
     public DateTime UpdatedAtLocal => UpdatedAt.ToLocalTime();
 
     public string UpdatedAtLocalFormatted =>
-        UpdatedAtLocal.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES"));
+        UpdatedAtLocal.ToString(
+            "dd MMM yyyy hh:mm tt",
+            new System.Globalization.CultureInfo("es-ES")
+        );
     public string CreatedAtLocalFormatted =>
-        CreatedAtLocal.ToString("dd MMM yyyy hh:mm tt", new System.Globalization.CultureInfo("es-ES"));
+        CreatedAtLocal.ToString(
+            "dd MMM yyyy hh:mm tt",
+            new System.Globalization.CultureInfo("es-ES")
+        );
 }

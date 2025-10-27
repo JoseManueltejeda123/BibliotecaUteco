@@ -18,11 +18,9 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
 
-
         if (!string.IsNullOrEmpty(request.UserName))
         {
             query["userName"] = request.UserName;
-
         }
         query["skip"] = request.Skip.ToString();
         query["take"] = request.Take.ToString();
@@ -32,7 +30,6 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
         return await client.FetchGetAsync<List<TransactionResponse>>(
             TransactionsEndpoint + $"/by-filter?{queryString}",
             cancellationToken
-
         );
     }
 
@@ -41,14 +38,10 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
         CancellationToken cancellationToken = default
     )
     {
-       
-
         return await client.FetchPostAsync<TransactionResponse>(
             TransactionsEndpoint + $"/retirement",
             request,
             cancellationToken
-
         );
     }
-
 }

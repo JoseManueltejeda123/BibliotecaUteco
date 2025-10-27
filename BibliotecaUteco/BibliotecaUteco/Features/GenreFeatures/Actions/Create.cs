@@ -48,9 +48,17 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 .RequireCors(CorsPolicies.DefaultPolicy)
                 .DisableAntiforgery()
                 .Accepts<CreateGenreCommand>(false, ApplicationContentTypes.ApplicationJson)
-                .Produces<SuccessApiResult<GenreResponse>>(200, ApplicationContentTypes.ApplicationJson)
-                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)                                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
-                                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<GenreResponse>>(
+                    200,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
+                .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
+                .Produces<ForbiddenApiResult>(500, ApplicationContentTypes.ApplicationJson)
                 .WithTags(nameof(Genre))
                 .WithName(nameof(CreateGenreEndpoint))
                 .WithDescription(
@@ -75,9 +83,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 )
             )
             {
-                return new ConflictApiResult(
-                    "Ya existe un género con ese nombre."
-                );
+                return new ConflictApiResult("Ya existe un género con ese nombre.");
             }
 
             await context.Genres.AddAsync(Genre.Create(request), cancellationToken);
@@ -90,9 +96,7 @@ namespace BibliotecaUteco.Features.GenreFeatures.Actions
                 && genre is null
             )
             {
-                return new BadRequestApiResult(
-                    "El genero no pudo ser encontrado"
-                );
+                return new BadRequestApiResult("El genero no pudo ser encontrado");
             }
 
             return new SuccessApiResult<GenreResponse>(genre.ToResponse());

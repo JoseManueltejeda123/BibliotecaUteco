@@ -7,8 +7,8 @@ public interface ICommand<TResponse> { }
 public abstract class CommandWithUserCredentials
 {
     [JsonIgnore, BindNever]
-    public int CurrentUserId {get; private set;}
-    
+    public int CurrentUserId { get; private set; }
+
     public void SetCurrentUserId(int userId)
     {
         CurrentUserId = userId;

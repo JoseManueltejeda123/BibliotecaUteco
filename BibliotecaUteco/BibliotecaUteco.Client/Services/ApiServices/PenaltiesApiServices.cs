@@ -17,29 +17,28 @@ public class PenaltiesApiServices(BibliotecaHttpClient client) : IPenaltiesApiSe
     )
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
-        
+
         query["take"] = request.Take.ToString();
         query["skip"] = request.Skip.ToString();
         query["loanId"] = request.LoanId.ToString();
-        
-        if(request.IsDue.HasValue)
-        {
-            query["isDue"] =  request.IsDue.Value.ToString();
 
+        if (request.IsDue.HasValue)
+        {
+            query["isDue"] = request.IsDue.Value.ToString();
         }
-        
+
         string queryString = query.ToString() ?? "";
         return await client.FetchGetAsync<List<PenaltyResponse>>(
             PenaltiesEndpoint + $"/by-filter?{queryString}",
             cancellationToken
         );
     }
+
     public async Task<ApiResponse<PenaltyResponse>> PayAsync(
         PayPenaltyRequest request,
         CancellationToken cancellationToken = default
     )
     {
-       
         return await client.FetchPutAsync<PenaltyResponse>(
             PenaltiesEndpoint + $"/pay",
             request,
