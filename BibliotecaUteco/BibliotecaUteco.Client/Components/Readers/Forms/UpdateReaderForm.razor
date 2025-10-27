@@ -4,36 +4,35 @@
        
         <label class="font-normal text-[13px]">Actualiza los datos de un lector en nuestro sistema. Los campos con el asterisco rojo (<span class="text-red-600">*</span>) son obligatorios.</label>
 
-       
-        
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateReaderModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.FullName)"/></span>
-
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.PhoneNumber)"/></span>
 
 
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.Address)"/></span>
-        </div>
-        
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Text" @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.IdentityCardNumber)"/></span>
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => UpdateReaderModel.StudentLicence)"/></span>
-        </div>
-        <LumexRadioGroup Size="Size.Small" @bind-Value="UpdateReaderModel.SexId"  Label="Seleccione su sexo" TValue="int">
-            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
-            <LumexRadio Value="@(2)">Femenino</LumexRadio>
-        </LumexRadioGroup>
+        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.FullName).FirstOrDefault())" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateReaderModel.FullName" Label="Nombre completo" Disabled="_updatingReader" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.PhoneNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
+
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.Address).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
+
+        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.IdentityCardNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Text" @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.StudentLicence).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
+
+         <LumexSelect Size="Size.Small" TValue="@(ApplicationSexes)"
+                     @bind-Value="@UpdateReaderModel._sex"
+                     Disabled="_updatingReader"
+                     Label="Sexo del usuario"
+                     Placeholder="Selecciona el sexo del usuario"
+                     Class="max-w-xs">
+           
+            <LumexSelectItem @key=@(ApplicationSexes.Masculino) Value=@(ApplicationSexes.Masculino)>
+                Masculino
+            </LumexSelectItem>
+            <LumexSelectItem @key=@(ApplicationSexes.Femenino) Value=@(ApplicationSexes.Femenino)>
+                                                      
+                Femenino
+            </LumexSelectItem>
+            
+        </LumexSelect>
+      
         <SectionDivider/>
         @if (_updatingReader)
         {
@@ -66,7 +65,7 @@
     {
         
         UpdateReaderModel.FullName = reader.FullName;
-        UpdateReaderModel.SexId = reader.SexId;
+        UpdateReaderModel._sex = SexParser.ParseSex(reader.SexId);
         UpdateReaderModel.PhoneNumber = reader.PhoneNumber;
         UpdateReaderModel.FullName = reader.FullName;
         UpdateReaderModel.StudentLicence = reader.StudentLicence;

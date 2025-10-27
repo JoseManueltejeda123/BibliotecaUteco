@@ -8,15 +8,16 @@
         <h2 class="text-3xl font-semibold">Lectores</h2>
     </div>
 
-    <div class="flex w-full gap-2">
+    <div class="flex w-full gap-2 items-center">
         <div class="flex flex-col gap-1 w-full">
             <LumexTextbox Type="@InputType.Search"
-                          Placeholder="Buscar lectores"
+                          Placeholder="@filterPlaceholder"
                           LabelPlacement="@LabelPlacement.Outside"
                           ValueChanged="async (e) => {await HandleOnInput(Filter.Filter.Length >= 1, e); }"
                           Value="@Filter.Filter"
+                          Label="Buscar lectores"
                           maxLenght="11"
-                          
+                          StartContent="@_filterContainer"
                           Behavior="InputBehavior.OnInput"
                           
                           Disabled="_fetchingReaders"
@@ -24,23 +25,47 @@
                           />
             <p class="text-[13px] text-black">Usa los filtros de abajo para filtrar lectores por matricula o cédula </p>
         </div>
-       
-     
+        <LumexDropdown  ShowArrow="true" >
+                    <LumexDropdownTrigger>
+                        <button type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700 hover:text-green-700 transition-all lucide lucide-list-filter-plus-icon lucide-list-filter-plus"><path d="M12 5H2"/><path d="M6 12h12"/><path d="M9 19h6"/><path d="M16 5h6"/><path d="M19 8V2"/></svg>
+                        </button>
+                    </LumexDropdownTrigger>
+         <LumexDropdownMenu>
+                        <LumexDropdownItem OnClick="()=> SetFilterBy(ReadersFilterType.StudentLicence)" Id="by-licence" class=@($" {(FilterBy == ReadersFilterType.StudentLicence ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-id-card-lanyard-icon lucide-id-card-lanyard"><path d="M13.5 8h-3"/><path d="m15 2-1 2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3"/><path d="M16.899 22A5 5 0 0 0 7.1 22"/><path d="m9 2 3 6"/><circle cx="12" cy="15" r="3"/></svg>                
+                            </StartContent>                       
+                             <ChildContent>
+                                <p class="text-[13px] font-normal">Filtrar por matrícula</p>
+                            </ChildContent> 
+                        </LumexDropdownItem>
+                        <LumexDropdownItem  OnClick="()=> SetFilterBy(ReadersFilterType.IdentityCardNumber)" Id="by-identity" class=@($" {(FilterBy == ReadersFilterType.IdentityCardNumber ? "text-green-700" : "")}")>
+                            <StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-id-card-icon lucide-id-card"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></svg>                               
+                            </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Filtrar por cédula</p>
+                            </ChildContent> 
+                        </LumexDropdownItem>
+                       
+                    </LumexDropdownMenu>
+                </LumexDropdown>     
     </div>
     <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
-        <LumexChip  @onclick='async ()=>{await SetFilterBy(ReadersFilterType.StudentLicence);}' Variant="@(FilterBy == ReadersFilterType.StudentLicence ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por matrícula</LumexChip>
-        <LumexChip  @onclick='async ()=>{await SetFilterBy(ReadersFilterType.IdentityCardNumber);}' Variant="@(FilterBy == ReadersFilterType.IdentityCardNumber ? ChipVariant.Solid : ChipVariant.Flat )" Color="@ThemeColor.Primary">Por cédula</LumexChip>
-
-     
+        <LumexChip Class="cursor-pointer p-2" Size="Size.Medium" @onclick='SetCreateReaderView' Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+                    <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>                    
+                    </EndContent>
+                    <ChildContent>Crear lector</ChildContent>
+                </LumexChip>       
     </div>
     <SectionDivider Name="Lectores"/>
     <div class="flex flex-col gap-3">
 
     
-        <button @onclick="SetCreateReaderView" class="border-dotted border-[3px] border-green-600 p-3 w-full rounded-xl hover:bg-green-100/30 transition-all flex  justify-center items-center gap-2 cursor-pointer ">
-            <UserIcon Size="18px" class="text-green-700"/>
-            <p class="text-[13px] text-green-700">Agregar Lector</p>
-        </button>
+       
         @if (!Readers.Any() && !_fetchingReaders)
         {
             <p class=" text-center text-[13px] mt-[30px] font-semibold">No hay lectores</p>
@@ -80,7 +105,21 @@
     public SearchReadersFilter Filter { get; set; } = new();
     public CancellationTokenSource? _ctSearch {get; set;} 
     public CancellationTokenSource? _ctOnInput {get; set;} 
+    public RenderFragment _filterContainer => @<p class="text-[13px] animate-pulse font-semibold text-violet-700 mt-[2px] text-nowrap">Por @filterTranslated</p>;
 
+    public string filterPlaceholder => FilterBy switch
+    {
+        ReadersFilterType.IdentityCardNumber => "Ej. 123456789",
+        ReadersFilterType.StudentLicence => "Ej. 2020-0000",
+        _ => "Ej. 123456789"
+    };
+
+    public string filterTranslated => FilterBy switch
+    {
+        ReadersFilterType.IdentityCardNumber => "cédula",
+        ReadersFilterType.StudentLicence => "matrícula",
+        _ => "todo"
+    };
 
     public class SearchReadersFilter
     {

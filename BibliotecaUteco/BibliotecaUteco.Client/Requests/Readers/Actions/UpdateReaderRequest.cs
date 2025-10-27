@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BibliotecaUteco.Client.Utilities;
 
 namespace BibliotecaUteco.Client.Requests.Readers.Actions;
 
@@ -28,9 +29,12 @@ public class UpdateReaderRequest
     public string IdentityCardNumber { get; set; } = null!;
 
     [Range(1, 2)]
-    public int SexId { get; set; } = 1;
+    public int SexId => (int)_sex;
 
     [MaxLength(9, ErrorMessage = "La matrícula estudiantil no puede tener más de 9 caracteres.")]
     [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
     public string? StudentLicence { get; set; }
+
+    public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
+
 }

@@ -1,4 +1,4 @@
-<EditForm Model="CreateReaderModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="CreateReaderModel" OnValidSubmit="FetchCreateReaderAsync" class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
        
@@ -6,34 +6,31 @@
 
        
         
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateReaderModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.FullName)"/></span>
-
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Telephone" @bind-Value="CreateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.PhoneNumber)"/></span>
-
-
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="@InputType.Text" @bind-Value="CreateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.Address)"/></span>
-        </div>
-        
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Text" @bind-Value="@CreateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.IdentityCardNumber)"/></span>
-        </div>
-        <div class="flex flex-col gap-1">
-            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false" Type="InputType.Text" @bind-Value="@CreateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
-            <span class="text-[13px] text-red-700"><ValidationMessage For="@(() => CreateReaderModel.StudentLicence)"/></span>
-        </div>
-        <LumexRadioGroup Size="Size.Small" @bind-Value="CreateReaderModel.SexId"  Label="Seleccione su sexo" TValue="int">
-            <LumexRadio  Value="@(1)">Masculino</LumexRadio>
-            <LumexRadio Value="@(2)">Femenino</LumexRadio>
-        </LumexRadioGroup>
+        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.FullName).FirstOrDefault())" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateReaderModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+      
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.PhoneNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Telephone" @bind-Value="CreateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
+          
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.Address).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="@InputType.Text" @bind-Value="CreateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
+           
+        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.IdentityCardNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Text" @bind-Value="@CreateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
+            
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.StudentLicence).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false" Type="InputType.Text" @bind-Value="@CreateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
+           
+         <LumexSelect Size="Size.Small" TValue="@(ApplicationSexes)"
+                     @bind-Value="@CreateReaderModel._sex"
+                     Label="Sexo del usuario"
+                     Placeholder="Selecciona el sexo del usuario"
+                     Class="max-w-xs">
+           
+            <LumexSelectItem @key=@(ApplicationSexes.Masculino) Value=@(ApplicationSexes.Masculino)>
+                Masculino
+            </LumexSelectItem>
+            <LumexSelectItem @key=@(ApplicationSexes.Femenino) Value=@(ApplicationSexes.Femenino)>
+                                                      
+                Femenino
+            </LumexSelectItem>
+            
+        </LumexSelect>
         <SectionDivider/>
         @if (_creatingReader)
         {
@@ -41,7 +38,7 @@
         }
         else
         {
-            <LumexButton Color="ThemeColor.Primary" OnClick="FetchCreateReaderAsync" Disabled="@(!context.Validate() || _creatingReader)">Crear Lector</LumexButton>
+            <LumexButton Type="ButtonType.Submit" Color="ThemeColor.Primary ">Crear Lector</LumexButton>
 
         }
         
