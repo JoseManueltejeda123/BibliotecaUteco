@@ -1,11 +1,11 @@
 <div class="flex w-full gap-2 items-center py-2 ">
     
-    @if (IsExpanded)
+    @if (IsExpanded && !string.IsNullOrEmpty(Name))
     {
         <span class="text-xs text-nowrap opacity-60">@Name</span>
 
     }
-    <hr class="w-full border border-neutral-300 rounded-full"/>
+    <hr class="w-full h-[2px] border-none backdrop-blur-md bg-black/10 rounded-full"/>
 
 </div>
 

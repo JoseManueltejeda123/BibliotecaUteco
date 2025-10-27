@@ -52,6 +52,32 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         );
     }
 
+    public async Task<ApiResponse<bool>> DeleteAsync(
+        DeleteUserRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        
+        return await client.FetchDeleteAsync<bool>(
+            UserEndpoint + $"/delete?{QueryStringBuilder.ToQueryString(request)}",
+            cancellationToken
+        );
+    }
+
+    public async Task<ApiResponse<UserResponse>> ChangeStateAsync(
+        ChangeUserStateRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await client.FetchPutAsync<UserResponse>(
+            UserEndpoint + "/change-state",
+            request,
+            cancellationToken
+        );
+    }
+
+       
+
     public async Task<ApiResponse<UserResponse>> GetByIdAsync(
         GetUserByIdRequest request,
         CancellationToken cancellationToken = default

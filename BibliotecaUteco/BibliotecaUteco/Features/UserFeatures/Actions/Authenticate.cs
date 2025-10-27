@@ -105,6 +105,11 @@ public class AuthenticateUserCommandHandler(
             return new NotFoundApiResult("Credenciales incorrectas");
         }
 
+        if(user.IsDisabled)
+        {
+            return new ForbiddenApiResult("El usuario está deshabilitado");
+        }
+
         var token = jwtBuilder.GenerateToken(user.ToResponse());
 
         if (token is null)

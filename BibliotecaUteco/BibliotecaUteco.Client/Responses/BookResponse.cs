@@ -24,5 +24,8 @@ namespace BibliotecaUteco.Client.Responses
         public int ActiveLoansCount { get; set; }
 
         public int LoansCount { get; set; }
+
+        public bool IsDisabled { get; set; } 
+
     }
 }

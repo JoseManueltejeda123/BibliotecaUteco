@@ -7,7 +7,7 @@
                     
                     <div class="bg-white rounded-t-2xl p-6 w-full flex flex-col gap-4">
                         <h2 class="text-md font-semibold text-center">@DialogService.Title</h2>
-                        <p class="text-[13px] text-center opacity-80">@DialogService.Body</p>
+                        <p class="text-[13px] text-center font-normal">@DialogService.Body</p>
 
                         @if (DialogService.ChildContent is not null)
                         {
@@ -20,12 +20,13 @@
 
                     <div class="flex justify-between p-2 items-center gap-2 mt-4">
                         <LumexButton Color="DialogService.CancelColor"
+                        Class="font-semibold"
                                      @onclick="DialogService.Cancel">
                             @DialogService.CancelText
                         </LumexButton>
 
                         <LumexButton Color="DialogService.AcceptColor"
-                                     Class="w-full"
+                                     Class="w-full font-semibold"
                                      @onclick="DialogService.Accept">
                             @DialogService.AcceptText
                         </LumexButton>

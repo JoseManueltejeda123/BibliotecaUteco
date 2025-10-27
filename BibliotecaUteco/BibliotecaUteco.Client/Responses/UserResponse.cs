@@ -18,4 +18,6 @@ public class UserResponse : BaseResponse
     public ApplicationRoles Role { get; set; }
 
     public int RoleId { get; set; } = 0;
+
+    public bool IsDisabled {get; set;} 
 }

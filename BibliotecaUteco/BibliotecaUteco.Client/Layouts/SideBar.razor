@@ -190,12 +190,16 @@
 
     [Parameter]
     public EventCallback<bool> OnSideBarExpandedChanged {get; set;}
+
+        public LumexDropdown? dropdownRef;
+
     
     
 }
 
 @functions{
 
+    
     public async Task  SwitchSideBarExpanded()
     {
         await TriggerOnSideBarExpandedChanged();

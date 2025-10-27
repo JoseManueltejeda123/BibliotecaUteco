@@ -31,4 +31,14 @@ public interface IUsersApiServices
         UpdateUserRequest request,
         CancellationToken cancellationToken = default
     );
+
+    Task<ApiResponse<bool>> DeleteAsync(
+        DeleteUserRequest request,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<ApiResponse<UserResponse>> ChangeStateAsync(
+        ChangeUserStateRequest request,
+        CancellationToken cancellationToken = default
+    );
 }

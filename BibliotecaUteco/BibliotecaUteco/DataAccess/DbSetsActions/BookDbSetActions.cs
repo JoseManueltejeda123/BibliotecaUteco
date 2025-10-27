@@ -26,6 +26,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     LoansCount = b.Loans.Count(),
+                    IsDisabled = b.IsDisabled,
                 })
                 .FirstOrDefaultAsync(token);
         }
@@ -82,6 +83,8 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     AvailableAmount = b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     LoansCount = b.Loans.Count(),
+                    IsDisabled = b.IsDisabled,
+
                 })
                 .ToListAsync(token);
         }

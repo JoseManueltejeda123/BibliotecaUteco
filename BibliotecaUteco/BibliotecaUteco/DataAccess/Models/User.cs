@@ -38,6 +38,8 @@ public class User : BaseEntity
 
     public List<Transaction> Transactions { get; set; } = new();
 
+    public bool IsDisabled { get; set; } = false;
+
     public static User Create(CreateUserCommand request) =>
         new()
         {
@@ -109,9 +111,11 @@ public class User : BaseEntity
             UpdatedAt = UpdatedAt,
             Username = Username,
             FullName = FullName,
+
             IdentityCardNumber = IdentityCardNumber,
             ProfilePictureUrl = ProfilePictureUrl ?? "",
             Role = RoleParser.ParseRole(RoleId),
+            IsDisabled = IsDisabled,
             Sex = SexParser.ParseSex(SexId ?? 1),
             RoleId = RoleId,
             SexId = SexId ?? 1,
