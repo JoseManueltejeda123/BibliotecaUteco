@@ -1,17 +1,18 @@
-<EditForm Model="CreateReaderModel" OnValidSubmit="FetchCreateReaderAsync" class="flex w-full absolute flex-col justify-center">
-    <DataAnnotationsValidator/>
+<EditForm Model="@CreateReaderModel"  OnValidSubmit="FetchCreateReaderAsync" class="flex w-full absolute flex-col justify-center">
+            <DataAnnotationsValidator/>
+
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
        
         <label class="font-normal text-[13px]">Crea un nuevo lector en nuestro sistema. Los campos con el asterisco rojo (<span class="text-red-600">*</span>) son obligatorios.</label>
 
-       
+
         
         <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.FullName).FirstOrDefault())" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="CreateReaderModel.FullName" Label="Nombre completo" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
       
-        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.PhoneNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Telephone" @bind-Value="CreateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
+        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.PhoneNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" @bind-Value="CreateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
           
         <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.Address).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="@InputType.Text" @bind-Value="CreateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
-           
+
         <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.IdentityCardNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="true" Type="InputType.Text" @bind-Value="@CreateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
             
         <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => CreateReaderModel.StudentLicence).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false" Type="InputType.Text" @bind-Value="@CreateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
@@ -38,7 +39,7 @@
         }
         else
         {
-            <LumexButton Type="ButtonType.Submit" Color="ThemeColor.Primary ">Crear Lector</LumexButton>
+            <LumexButton Disabled="(_creatingReader || !context.Validate())" Type="ButtonType.Submit" Color="ThemeColor.Primary ">Crear Lector</LumexButton>
 
         }
         
@@ -52,6 +53,8 @@
 
     public bool _creatingReader { get; set; } = false;
     public CreateReaderRequest CreateReaderModel { get; set; } = new();
+
+    public EditContext EditContext { get; set; } = null!;
 
 
 

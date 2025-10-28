@@ -1,4 +1,4 @@
-<EditForm Model="UpdateReaderModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="UpdateReaderModel" OnInvalidSubmit="FetchUpdateReaderAsync"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
        
@@ -40,7 +40,7 @@
         }
         else
         {
-            <LumexButton Color="ThemeColor.Primary" OnClick="FetchUpdateReaderAsync" Disabled="@(!context.Validate() || _updatingReader)">Actualizar Lector</LumexButton>
+            <LumexButton Color="ThemeColor.Primary"  Disabled="@(!context.Validate() || _updatingReader)">Actualizar Lector</LumexButton>
 
         }
         

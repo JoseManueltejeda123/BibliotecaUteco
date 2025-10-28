@@ -147,6 +147,19 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
                 new StringContent(request.RemoveProfilePicture.ToString()),
                 "removeProfilePicture"
             );
+            if (!string.IsNullOrEmpty(request.CurrentPassword))
+            {
+                form.Add(new StringContent(request.CurrentPassword), "currentPassword");
+
+            }
+            
+             if(!string.IsNullOrEmpty( request.NewPassword))
+            {
+                form.Add(new StringContent(request.NewPassword), "newPassword");
+
+            }
+
+
             form.Add(new StringContent(request.FullName), "fullName");
             form.Add(new StringContent(request.SexId.ToString()), "sexId");
             form.Add(new StringContent(request.Username), "userName");
