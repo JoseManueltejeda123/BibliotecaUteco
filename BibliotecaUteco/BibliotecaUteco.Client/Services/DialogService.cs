@@ -1,9 +1,8 @@
-using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
+using BibliotecaUteco.Client.ServicesInterfaces;
 using LumexUI.Common;
-
-namespace BibliotecaUteco.Client.Services.ApiServices;
-
 using Microsoft.AspNetCore.Components;
+
+namespace BibliotecaUteco.Client.Services;
 
 public class DialogService : IDialogService
 {

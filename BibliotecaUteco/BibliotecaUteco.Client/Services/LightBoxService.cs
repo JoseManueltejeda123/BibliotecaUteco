@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
+using BibliotecaUteco.Client.ServicesInterfaces;
 
-namespace BibliotecaUteco.Client.Services.ApiServices
+namespace BibliotecaUteco.Client.Services
 {
     public class LightBoxService : ILightBoxService
     {

@@ -15,7 +15,7 @@ public class BibliotecaHttpClient(
     HttpClient client,
     ILocalStorageService localStorageService,
     CustomAuthenticationStateProvider authState,
-    ToastService toast
+    ISonnerService toast
 )
 {
     public string Prefix { get; set; } = "api/v1";
@@ -37,13 +37,7 @@ public class BibliotecaHttpClient(
     {
         toast.Error(
             "Oops",
-            new ToastModel()
-            {
-                Description = message,
-                Title = "Oops!",
-                Type = ToastType.Error,
-                Position = ToastPosition.BottomCenter,
-            }
+           message
         );
     }
 

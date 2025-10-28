@@ -1,0 +1,105 @@
+@using BibliotecaUteco.Client.Services
+@implements IDisposable 
+
+@foreach(var sonner in Sonners.Take(3))
+{
+    <Animate @onmouseenter="PauseTimer"
+             @onmouseleave="ResumeTimer" Animation="Animations.SlideDown"  style=@($"margin-top: {(Sonners.IndexOf(sonner) + 5) * 3}px; ")  class=@($"p-3 group transition-all hover:scale-105   fixed top-[20px] left-1/2 transform -translate-x-1/2 border min-w-[200px] max-w-[350px] rounded-xl flex flex-col  backdrop-blur-sm {GetThemeColor(sonner.Theme)} shadow-sm z-[99999]") >
+        
+            <button @onclick="() => {RemoveSonner(sonner);}" class="absolute scale- invisible group-hover:visible  top-[-10px] right-[-10px] rounded-full border border-neutral-200 flex items-center p-1 bg-neutral-100 justify-center"><XIcon Size="14px"/></button>
+            <div class="flex  w-full items-start gap-3">
+                <InfoIcon class="opacity-80 mt-1 shrink-0" Size="20px"/>
+                <div class="flex flex-col ">
+                    <p class="text-sm font-semibold">@sonner.Title</p>
+                    <p class="text-[13px] font-normal">@sonner.Description</p>
+
+                </div>
+            </div>
+    </Animate>
+}
+@code {
+public List<Sonner> Sonners { get; set; } = new();
+private Timer? _timer;
+private readonly TimeSpan _interval = TimeSpan.FromSeconds(2);
+private readonly object _lock = new();
+private bool _isPaused;
+
+protected override void OnInitialized()
+{
+Toast.OnSonnerAdded += HandleSonnerChanged;
+StartTimer();
+}
+
+public async void HandleSonnerChanged(Sonner sonner)
+{
+lock (_lock)
+{
+Sonners.Add(sonner);
+}
+
+RestartTimer();
+await InvokeAsync(StateHasChanged);
+}
+
+private void StartTimer()
+{
+_timer = new Timer(OnTimerElapsed, null, _interval, _interval);
+}
+
+private void RestartTimer()
+{
+_timer?.Change(_interval, _interval);
+}
+
+private void PauseTimer()
+{
+_isPaused = true;
+}
+
+private void ResumeTimer()
+{
+_isPaused = false;
+RestartTimer();
+}
+
+private void OnTimerElapsed(object? state)
+{
+if (_isPaused) return; // <- evita eliminar si está pausado
+
+lock (_lock)
+{
+if (Sonners.Count > 0)
+{
+Sonners.RemoveAt(0);
+InvokeAsync(StateHasChanged);
+}
+}
+}
+
+public void RemoveSonner(Sonner sonner)
+{
+lock (_lock)
+{
+Sonners.Remove(sonner);
+}
+InvokeAsync(StateHasChanged);
+}
+
+public void Dispose()
+{
+Toast.OnSonnerAdded -= HandleSonnerChanged;
+_timer?.Dispose();
+}
+
+public string GetThemeColor(SonnerTheme theme)
+{
+return theme switch
+{
+SonnerTheme.Info => "text-blue-800 bg-blue-100/50 border-blue-200",
+SonnerTheme.Success => "text-green-800 bg-green-100/50 border-green-200",
+SonnerTheme.Warning => "text-yellow-800 bg-yellow-100/50 border-yellow-200",
+SonnerTheme.Danger => "text-red-800 bg-red-100/50 border-red-200",
+_ => "text-neutral-800 bg-neutral-100/50"
+};
+}
+}

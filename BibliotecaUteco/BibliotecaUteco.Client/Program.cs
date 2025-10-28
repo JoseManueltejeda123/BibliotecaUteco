@@ -2,7 +2,6 @@ using BibliotecaUteco.Client;
 using BibliotecaUteco.Client.Identity.Provider;
 using BibliotecaUteco.Client.Services;
 using BibliotecaUteco.Client.Services.ApiServices;
-using BibliotecaUteco.Client.Services.ApiServicesInterfaces;
 using BibliotecaUteco.Client.ServicesInterfaces;
 using Blazor.Sonner.Extensions;
 using LumexUI.Extensions;
@@ -22,5 +21,6 @@ builder.Services.AddLumexServices();
 builder.Services.AddClientServices(builder);
 builder.Services.AddSingleton<IDialogService, DialogService>();
 builder.Services.AddSingleton<ILightBoxService, LightBoxService>();
+builder.Services.AddSingleton<ISonnerService, SonnerService>();
 
 await builder.Build().RunAsync();

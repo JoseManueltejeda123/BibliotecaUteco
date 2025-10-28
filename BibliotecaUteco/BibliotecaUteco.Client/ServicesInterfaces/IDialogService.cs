@@ -1,7 +1,7 @@
 using LumexUI.Common;
 using Microsoft.AspNetCore.Components;
 
-namespace BibliotecaUteco.Client.Services.ApiServicesInterfaces;
+namespace BibliotecaUteco.Client.ServicesInterfaces;
 
 public interface IDialogService
 {

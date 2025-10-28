@@ -3,6 +3,7 @@ using System.Web;
 using BibliotecaUteco.Client.Requests.Books.Actions;
 using BibliotecaUteco.Client.Requests.Books.Queries;
 using BibliotecaUteco.Client.Responses;
+using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 using BibliotecaUteco.Client.Settings;
 using BibliotecaUteco.Client.Utilities;
 

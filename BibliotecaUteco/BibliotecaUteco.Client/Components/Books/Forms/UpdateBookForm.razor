@@ -306,10 +306,7 @@
         var result = await FileHandler.HandleImageFromInputAsync(e);
         if (result.Item1 is null)
         {
-            Toast.Error("Error al subir la imagen", new ToastModel()
-            {
-                Description = result.Item2
-            });
+            await Toast.Error("Error al subir la imagen", result.Item2);
 
             return;
         }

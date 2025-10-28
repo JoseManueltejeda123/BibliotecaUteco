@@ -1,4 +1,4 @@
-namespace BibliotecaUteco.Client.Services.ApiServicesInterfaces
+namespace BibliotecaUteco.Client.ServicesInterfaces
 {
     public interface ILightBoxService
     {

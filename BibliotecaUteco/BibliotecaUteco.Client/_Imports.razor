@@ -1,7 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using BibliotecaUteco.Client.Services.ApiServices
-@using BibliotecaUteco.Client.Services.ApiServicesInterfaces
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -69,7 +68,6 @@
 
 @inject RightBarStore RightBarContext
 @inject  IJSRuntime JsRuntime
-@inject ToastService Toast
 @inject IUsersApiServices UsersApiServices
 @inject CustomAuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager
@@ -83,3 +81,4 @@
 @inject ITransactionsApiServices TransactionsApiServices
 @inject IDialogService DialogService
 @inject ILightBoxService LightBoxService
+@inject ISonnerService Toast

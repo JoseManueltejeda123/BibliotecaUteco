@@ -2,7 +2,7 @@ using BibliotecaUteco.Client.Requests.Books.Actions;
 using BibliotecaUteco.Client.Requests.Books.Queries;
 using BibliotecaUteco.Client.Responses;
 
-namespace BibliotecaUteco.Client.Services.ApiServices;
+namespace BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
 
 public interface IBooksApiServices
 {
