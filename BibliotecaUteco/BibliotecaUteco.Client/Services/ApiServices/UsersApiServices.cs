@@ -98,11 +98,40 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-        return await client.FetchPostAsync<UserResponse>(
-            UserEndpoint,
-            request.ToMultipartFormData(),
-            cancellationToken
-        );
+       try
+        {
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(request.FullName), "fullName");
+            form.Add(new StringContent(request.Password), "password");
+            form.Add(new StringContent(request.Username), "userName");
+            form.Add(new StringContent(request.SexId.ToString()), "sexId");
+
+            form.Add(new StringContent(request.RoleId.ToString()), "roleId");
+            form.Add(new StringContent(request.IdentityCardNumber), "identityCardNumber");
+
+            if (request.ProfilePictureFile is not null)
+            {
+                var stream = request.ProfilePictureFile.OpenReadStream(
+                    maxAllowedSize: FilesSettings.MaxFileSize
+                );
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(
+                    request.ProfilePictureFile.ContentType
+                );
+                form.Add(fileContent, "profilePictureFile", request.ProfilePictureFile.Name);
+            }
+            return await client.FetchPostAsync<UserResponse>(UserEndpoint, form, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<UserResponse>()
+            {
+                IsSuccess = false,
+                Data = null,
+                Messages = new[] { ex.InnerException?.Message ?? ex.Message }.ToList(),
+            };
+          
+        }
     }
 
     public async Task<ApiResponse<UserResponse>> UpdateAsync(
@@ -110,10 +139,40 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-        return await client.FetchPutAsync<UserResponse>(
-            UserEndpoint,
-            request.ToMultipartFormData(),
-            cancellationToken
-        );
+         try
+        {
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(request.UserId.ToString()), "userId");
+            form.Add(
+                new StringContent(request.RemoveProfilePicture.ToString()),
+                "removeProfilePicture"
+            );
+            form.Add(new StringContent(request.FullName), "fullName");
+            form.Add(new StringContent(request.SexId.ToString()), "sexId");
+            form.Add(new StringContent(request.Username), "userName");
+            form.Add(new StringContent(request.IdentityCardNumber), "identityCardNumber");
+
+            if (request.ProfilePictureFile is not null)
+            {
+                var stream = request.ProfilePictureFile.OpenReadStream(
+                    maxAllowedSize: FilesSettings.MaxFileSize
+                );
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(
+                    request.ProfilePictureFile.ContentType
+                );
+                form.Add(fileContent, "profilePictureFile", request.ProfilePictureFile.Name);
+            }
+            return await client.FetchPutAsync<UserResponse>(UserEndpoint, form, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<UserResponse>()
+            {
+                IsSuccess = false,
+                Data = null,
+                Messages = new[] { ex.InnerException?.Message ?? ex.Message }.ToList(),
+            };
+        }
     }
 }

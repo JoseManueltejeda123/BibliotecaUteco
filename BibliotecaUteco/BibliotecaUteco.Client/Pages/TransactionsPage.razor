@@ -44,7 +44,9 @@
            
 
             <div class="w-full flex flex-col gap-3">
-                <button disabled="@((Summary._lastRetirementDate - DateTime.Now).Days <= 15)" @onclick="SetCreateRetirementViewAsync" class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
+
+
+                <button  @onclick="SetCreateRetirementViewAsync" class="hover:bg-green-50 cursor-pointer transition-all rounded-lg border-dashed border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
                     <span class="text-green-600 font-semibold text-sm">Crear Transacción</span>
                 </button>
                 
@@ -118,6 +120,8 @@
     public bool _hasMore {get; set;} = true;
 
     public CashBoxSummaryResponse? Summary {get; set;} = null;
+
+    public bool _enableTransactions => Summary is not null && (Summary._lastRetirementDate - DateTime.Now).Days > 15;
 
 
 }

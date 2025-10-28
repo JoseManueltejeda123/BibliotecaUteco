@@ -18,21 +18,79 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         ) => await client.FetchDeleteAsync<bool>(
                 BooksEndpoint + $"/delete?{QueryStringBuilder.ToQueryString(request)}",
                 cancellationToken);
-        
+
 
         public async Task<ApiResponse<BookResponse>> CreateBookAsync(
             CreateBookRequest request,
             CancellationToken cancellationToken = default
-        )=> await client.FetchPostAsync<BookResponse>(
+        )
+        {
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(request.Name), "name");
+            form.Add(new StringContent(request.Synopsis), "synopsis");
+            form.Add(new StringContent(request.Stock.ToString()), "stock");
+            foreach (var id in request.Genres.Select(g => g.Id))
+            {
+                form.Add(new StringContent(id.ToString()), "genreIds");
+            }
+
+            foreach (var id in request.Authors.Select(a => a.Id))
+            {
+                form.Add(new StringContent(id.ToString()), "authorIds");
+            }
+
+            if (request.CoverFile is not null)
+            {
+                var stream = request.CoverFile.OpenReadStream(
+                    maxAllowedSize: FilesSettings.MaxFileSize
+                );
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(
+                    request.CoverFile.ContentType
+                );
+                form.Add(fileContent, "coverFile", request.CoverFile.Name);
+            }
+           return await client.FetchPostAsync<BookResponse>(
                 BooksEndpoint,
-                request.ToMultipartFormData(),
+                 form,
                 cancellationToken);
-        
+        }
 
         public async Task<ApiResponse<BookResponse>> UpdateBookAsync(
             UpdateBookRequest request,
             CancellationToken cancellationToken = default
-        )=>  await client.FetchPutAsync<BookResponse>(BooksEndpoint, request.ToMultipartFormData(), cancellationToken);
+        )
+        {
+              var form = new MultipartFormDataContent();
+            form.Add(new StringContent(request.BookId.ToString()), "bookId");
+            form.Add(new StringContent(request.BookName), "bookName");
+            form.Add(new StringContent(request.Synopsis), "Synopsis");
+            form.Add(new StringContent(request.RemoveCover.ToString()), "removeCover");
+            form.Add(new StringContent(request.Stock.ToString()), "stock");
+            foreach (var id in request.genreIds)
+            {
+                form.Add(new StringContent(id.ToString()), "genreIds");
+            }
+
+            foreach (var id in request.authorIds)
+            {
+                form.Add(new StringContent(id.ToString()), "authorIds");
+            }
+
+            if (request.CoverFile is not null)
+            {
+                var stream = request.CoverFile.OpenReadStream(
+                    maxAllowedSize: FilesSettings.MaxFileSize
+                );
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(
+                    request.CoverFile.ContentType
+                );
+                form.Add(fileContent, "coverFile", request.CoverFile.Name);
+            }
+
+            return await client.FetchPutAsync<BookResponse>(BooksEndpoint, form, cancellationToken);
+        }
         
 
         public async Task<ApiResponse<List<BookResponse>>> GetByFilterAsync(
