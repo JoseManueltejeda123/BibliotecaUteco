@@ -28,7 +28,7 @@ public class CreateReaderRequest
     public int SexId => (int)_sex;
 
     [MaxLength(9, ErrorMessage = "La matrícula estudiantil no puede tener más de 9 caracteres.")]
-    [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
+    [MinLength(3,  ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
     public string? StudentLicence { get; set; }
 
     public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
