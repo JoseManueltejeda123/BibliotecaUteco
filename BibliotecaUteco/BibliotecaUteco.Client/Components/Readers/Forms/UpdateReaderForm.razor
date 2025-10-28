@@ -1,20 +1,30 @@
-<EditForm Model="UpdateReaderModel" OnInvalidSubmit="FetchUpdateReaderAsync"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="UpdateReaderModel" OnValidSubmit="FetchUpdateReaderAsync"  class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[40px] ">
        
         <label class="font-normal text-[13px]">Actualiza los datos de un lector en nuestro sistema. Los campos con el asterisco rojo (<span class="text-red-600">*</span>) son obligatorios.</label>
 
 
-
-        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.FullName).FirstOrDefault())" Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateReaderModel.FullName" Label="Nombre completo" Disabled="_updatingReader" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
-
-        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.PhoneNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000"></LumexTextbox>
-
-        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.Address).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí"></LumexTextbox>
-
-        <LumexTextbox  ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.IdentityCardNumber).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="true" Type="InputType.Text" @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"></LumexTextbox>
-
-        <LumexTextbox ErrorMessage="@(context.GetValidationMessages(() => UpdateReaderModel.StudentLicence).FirstOrDefault())" Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde require." PlaceHolder="Ej. 0000-0000"></LumexTextbox>
+        <div>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="UpdateReaderModel.FullName" Label="Nombre completo" Disabled="_updatingReader" Description="Máximo 50 caracteres. Mínimo 15." PlaceHolder="Ej. Jose Manuel López"></LumexTextbox>
+            <p class="text-red-500 text-xs"><ValidationMessage For="@(() => UpdateReaderModel.FullName)"/></p> 
+        </div>
+        <div>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Telephone" @bind-Value="UpdateReaderModel.PhoneNumber" Label="Número de teléfono" Description="Solo números sin guiones." PlaceHolder="8090000000" Disabled="_updatingReader"></LumexTextbox>
+            <p class="text-red-500 text-xs"><ValidationMessage For="@(() => UpdateReaderModel.PhoneNumber)"/></p>
+        </div>
+        <div>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="@InputType.Text" @bind-Value="UpdateReaderModel.Address" Label="Dirección física" Description="Donde vive el lector" PlaceHolder="Ej. La Cueva, Cotuí" Disabled="_updatingReader"></LumexTextbox>
+            <p class="text-red-500 text-xs"><ValidationMessage For="@(() => UpdateReaderModel.Address)"/></p>
+        </div>
+        <div>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text" @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación" Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000" Disabled="_updatingReader"></LumexTextbox>
+            <p class="text-red-500 text-xs"><ValidationMessage For="@(() => UpdateReaderModel.IdentityCardNumber)"/></p>
+        </div>
+        <div>
+            <LumexTextbox Behavior="InputBehavior.OnInput" Required="false" Type="InputType.Text" @bind-Value="@UpdateReaderModel.StudentLicence" Label="Matrícula universitaria (si aplica)" Description="Opcional. Solo para estudiantes. Introduce el guión donde requiere." PlaceHolder="Ej. 0000-0000" Disabled="_updatingReader"></LumexTextbox>
+            <p class="text-red-500 text-xs"><ValidationMessage For="@(() => UpdateReaderModel.StudentLicence)"/></p>
+        </div>
 
          <LumexSelect Size="Size.Small" TValue="@(ApplicationSexes)"
                      @bind-Value="@UpdateReaderModel._sex"
@@ -40,7 +50,7 @@
         }
         else
         {
-            <LumexButton Color="ThemeColor.Primary"  Disabled="@(!context.Validate() || _updatingReader)">Actualizar Lector</LumexButton>
+            <LumexButton Color="ThemeColor.Primary" Type="ButtonType.Submit"  Disabled="@(!context.Validate() || _updatingReader)">Actualizar Lector</LumexButton>
 
         }
         
