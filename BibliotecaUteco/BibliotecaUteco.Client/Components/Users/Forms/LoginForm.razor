@@ -1,53 +1,60 @@
 <img class="size-[120px] aspect-square" src="https://akanuxt.uteco.edu.do/_nuxt/img/logo.f9c953e.svg" alt="uteco logo"/>
 <h2 class="font-semibold text-[30px] text-white">BiblioUteco</h2>
-        
+
 <p class="text-sm text-white mb-[25px]">Inicia sesión con tus credenciales</p>
 
-<EditForm  Model=@AuthenticateUserRequest class="w-[75%] flex flex-col gap-3 shadow-black" OnValidSubmit="@FetchLoginAsync">
+<EditForm Model="@AuthenticateUserRequest" class="w-[75%] flex flex-col gap-3 shadow-black"
+          OnValidSubmit="@FetchLoginAsync">
     <DataAnnotationsValidator/>
 
     <div class="flex flex-col gap-3">
         <LumexTextbox Type="@InputType.Text"
-                        @bind-Value="@AuthenticateUserRequest.Username"
-                        Label="Tu nombre de usuario"
-                        Placeholder="Ej. gendy.123"
-                        Size="Size.Small"
-                        LabelPlacement="@LabelPlacement.Inside"
-                        EndContent="@_userIcon"
-                        Required="true"
-                        Disabled="_logingIn"
-                        />
-        <span class="text-[13px] text-red-400"><ValidationMessage For="@(() => AuthenticateUserRequest.Username)"/></span>
+                      @bind-Value="@AuthenticateUserRequest.Username"
+                      Label="Tu nombre de usuario"
+                      Placeholder="Ej. gendy.123"
+                      Size="Size.Small"
+                      LabelPlacement="@LabelPlacement.Inside"
+                      EndContent="@_userIcon"
+                      Required="true"
+                      Disabled="_logingIn"
+        />
+        <span class="text-[13px] text-red-400"><ValidationMessage
+                For="@(() => AuthenticateUserRequest.Username)"/></span>
 
     </div>
-    
+
     <div class="flex flex-col gap-3">
-        <LumexTextbox Type="(ShowPassword ? InputType.Text : InputType.Password)"
-                        Behavior="InputBehavior.OnInput"
-                        @bind-Value="@AuthenticateUserRequest.Password"
-                        Label="Tu contraseña"
-                        Size="Size.Small"
-                        Required="true"
-                        Placeholder="********"
-                        Disabled="_logingIn"
-                        LabelPlacement="@LabelPlacement.Inside"
-                        EndContent="@(ShowPassword ? _eyeOpenIcon : _eyeClosedIcon)"
-                        />
-        <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar visibilidad</a>
-        <span class="text-[13px] text-red-400"><ValidationMessage For="@(() => AuthenticateUserRequest.Password)"/></span>
+        <LumexTextbox Type="ShowPassword ? InputType.Text : InputType.Password"
+                      Behavior="InputBehavior.OnInput"
+                      @bind-Value="@AuthenticateUserRequest.Password"
+                      Label="Tu contraseña"
+                      Size="Size.Small"
+                      Required="true"
+                      Placeholder="********"
+                      Disabled="_logingIn"
+                      LabelPlacement="@LabelPlacement.Inside"
+                      EndContent="@(ShowPassword ? _eyeOpenIcon : _eyeClosedIcon)"
+        />
+        <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar
+            visibilidad</a>
+        <span class="text-[13px] text-red-400"><ValidationMessage
+                For="@(() => AuthenticateUserRequest.Password)"/></span>
     </div>
-    
-    <LumexCheckbox  Disabled="_logingIn" Class="!text-white text-[13px]" Size="Size.Small" Color="ThemeColor.Primary" @bind-Value="@RemindMe"><span class="text-white text-[13px]">Recuerda mis credenciales</span></LumexCheckbox>
 
-    
+    <LumexCheckbox Disabled="_logingIn" Class="!text-white text-[13px]" Size="Size.Small" Color="ThemeColor.Primary"
+                   @bind-Value="@RemindMe"><span class="text-white text-[13px]">Recuerda mis credenciales</span>
+    </LumexCheckbox>
+
+
     @if (_logingIn)
     {
         <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"></LumexSpinner>
     }
     else
     {
-        <LumexButton  Variant="Variant.Solid" Type="ButtonType.Submit" Class="mt-3 text-white" Disabled="@(!context.Validate() || _logingIn)" Color="ThemeColor.Primary">Iniciar Sesión</LumexButton>
-
+        <LumexButton Variant="Variant.Solid" Type="ButtonType.Submit" Class="mt-3 text-white"
+                     Disabled="@(!context.Validate() || _logingIn)" Color="ThemeColor.Primary">Iniciar Sesión
+        </LumexButton>
     }
 </EditForm>
 
@@ -58,20 +65,38 @@
 
     //flags
     public bool _logingIn { get; set; } = false;
-    
+
     //props
     public AuthenticateUserRequest AuthenticateUserRequest { get; set; } = new();
-    
-    private RenderFragment _userIcon = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-neutral-300 lucide lucide-at-sign-icon lucide-at-sign"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg>;
 
-    private RenderFragment _eyeOpenIcon = @<svg  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>;
-    private RenderFragment _eyeClosedIcon = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-closed-icon lucide-eye-closed"><path d="m15 18-.722-3.25"/><path d="M2 8a10.645 10.645 0 0 0 20 0"/><path d="m20 15-1.726-2.05"/><path d="m4 15 1.726-2.05"/><path d="m9 18 .722-3.25"/></svg>;
+    private RenderFragment _userIcon = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="stroke-neutral-300 lucide lucide-at-sign-icon lucide-at-sign">
+                                           <circle cx="12" cy="12" r="4"/>
+                                           <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>
+                                       </svg>;
+
+    private RenderFragment _eyeOpenIcon = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-eye-icon lucide-eye">
+                                              <path
+                                                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+                                              <circle cx="12" cy="12" r="3"/>
+                                          </svg>;
+    private RenderFragment _eyeClosedIcon = @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  class="lucide lucide-eye-closed-icon lucide-eye-closed">
+                                                <path d="m15 18-.722-3.25"/>
+                                                <path d="M2 8a10.645 10.645 0 0 0 20 0"/>
+                                                <path d="m20 15-1.726-2.05"/>
+                                                <path d="m4 15 1.726-2.05"/>
+                                                <path d="m9 18 .722-3.25"/>
+                                            </svg>;
     private bool RemindMe { get; set; } = false;
     public bool ShowPassword { get; set; } = false;
-
-
-
-
 
 
 }
@@ -87,8 +112,8 @@
             await JsRuntime.InvokeVoidAsync("console.log", result);
             await AuthStateProvider.UpdateAuthenticationStateAsync(result.Data.Token, RemindMe);
             NavManager.NavigateTo("/books");
-            
         }
+
         _logingIn = false;
     }
 
@@ -96,5 +121,6 @@
     {
         ShowPassword = !ShowPassword;
     }
+
 }
 

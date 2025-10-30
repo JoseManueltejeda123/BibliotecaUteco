@@ -1,12 +1,15 @@
-<LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true" >
+<LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true">
     <LumexPopoverTrigger>
         <button type="button">
-          @if(ChildContent is not null){@(ChildContent)}
-  
+            @if (ChildContent is not null)
+            {
+                @(ChildContent)
+            }
+
         </button>
     </LumexPopoverTrigger>
 
-    <LumexPopoverContent  >
+    <LumexPopoverContent>
         <GenresContainer OnGenreClicked="HandleGenreSelected"/>
     </LumexPopoverContent>
 </LumexPopover>
@@ -17,17 +20,16 @@
     [Parameter] public RenderFragment? ChildContent { get; set; } = default;
 
 
-    [Parameter]
-    public EventCallback<GenreResponse> OnGenreSelected {get; set;}
-
+    [Parameter] public EventCallback<GenreResponse> OnGenreSelected { get; set; }
 
 
 }
 
 @functions{
 
-    public async Task HandleGenreSelected(GenreResponse genre){
-
+    public async Task HandleGenreSelected(GenreResponse genre)
+    {
         await OnGenreSelected.InvokeAsync(genre);
     }
+
 }

@@ -57,7 +57,6 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-        
         return await client.FetchDeleteAsync<bool>(
             UserEndpoint + $"/delete?{QueryStringBuilder.ToQueryString(request)}",
             cancellationToken
@@ -75,8 +74,6 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             cancellationToken
         );
     }
-
-       
 
     public async Task<ApiResponse<UserResponse>> GetByIdAsync(
         GetUserByIdRequest request,
@@ -98,7 +95,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-       try
+        try
         {
             var form = new MultipartFormDataContent();
             form.Add(new StringContent(request.FullName), "fullName");
@@ -130,7 +127,6 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
                 Data = null,
                 Messages = new[] { ex.InnerException?.Message ?? ex.Message }.ToList(),
             };
-          
         }
     }
 
@@ -139,7 +135,7 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
         CancellationToken cancellationToken = default
     )
     {
-         try
+        try
         {
             var form = new MultipartFormDataContent();
             form.Add(new StringContent(request.UserId.ToString()), "userId");
@@ -150,15 +146,12 @@ public class UsersApiServices(BibliotecaHttpClient client) : IUsersApiServices
             if (!string.IsNullOrEmpty(request.CurrentPassword))
             {
                 form.Add(new StringContent(request.CurrentPassword), "currentPassword");
-
             }
-            
-             if(!string.IsNullOrEmpty( request.NewPassword))
+
+            if (!string.IsNullOrEmpty(request.NewPassword))
             {
                 form.Add(new StringContent(request.NewPassword), "newPassword");
-
             }
-
 
             form.Add(new StringContent(request.FullName), "fullName");
             form.Add(new StringContent(request.SexId.ToString()), "sexId");

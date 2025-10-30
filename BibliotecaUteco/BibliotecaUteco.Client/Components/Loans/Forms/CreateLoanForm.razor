@@ -1,27 +1,31 @@
 @using System.Globalization
-@if(ShowInvoice)
+@if (ShowInvoice)
 {
     <div class="hidden">
         <LoanInvoice Loan="_loanToInvoice" OnPrinted=" () => {  ShowInvoice = false;  }"/>
     </div>
 }
-<EditForm Model="CreateLoanModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="CreateLoanModel" class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
-        
-        <p class="text-[13px] opacity-80">Estas a punto de crear un préstamo para @(Reader.FullName). los prestamos tienen un tiempo máximo de @LoanSettings.MaxLoanDays dias. Despues de pasado 24 horas de la fecha de entrega este se marca como excedido. </p>
-        
+
+        <p class="text-[13px] opacity-80">Estas a punto de crear un préstamo para @(Reader.FullName). los prestamos
+            tienen un tiempo máximo de @LoanSettings.MaxLoanDays dias. Despues de pasado 24 horas de la fecha de entrega
+            este se marca como excedido. </p>
+
         <div class="flex flex-col gap-1 w-full">
             <ReaderCardMini Reader="@Reader"/>
         </div>
-        
+
         <SectionDivider Name="Libros a prestar"/>
 
         <LumexPopover Shadow="Shadow.Medium" ShowArrow="true">
             <LumexPopoverTrigger>
-                <LumexButton Disabled="@(SelectedBooks.Count() >= 10 || _creatingLoan)" Size="Size.Small" Variant="Variant.Flat" Color="ThemeColor.Default">Aregar libro</LumexButton>
+                <LumexButton Disabled="@(SelectedBooks.Count() >= 10 || _creatingLoan)" Size="Size.Small"
+                             Variant="Variant.Flat" Color="ThemeColor.Default">Aregar libro
+                </LumexButton>
             </LumexPopoverTrigger>
-            <LumexPopoverContent Class="w-full px-2 py-3 flex flex-col gap-1 w-[250px] h-fit " >
+            <LumexPopoverContent Class="w-full px-2 py-3 flex flex-col gap-1 w-[250px] h-fit ">
                 <LumexTextbox Type="@InputType.Search"
                               Label="Buscar libro"
                               Value="@BookFilter"
@@ -34,31 +38,34 @@
                               Behavior="InputBehavior.OnInput"
                               OnCleared="async()=>{await FetchGetBooksByName();}"
                 />
-                @if(_searchingBooks)
+                @if (_searchingBooks)
                 {
                     <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
                 }
-                @if(!SearchedBooks.Any())
+                @if (!SearchedBooks.Any())
                 {
                     <p class="text-xs">Sin resultados \(o_o)/</p>
                 }
-                @foreach(var book in SearchedBooks)
+                @foreach (var book in SearchedBooks)
                 {
-                    <BookCardMini OnAddClicked="HandleBookAdded" ShowAddButton="@(!SelectedBooks.Any(b => b.Id == book.Id))" Book="@book"/>
+                    <BookCardMini OnAddClicked="HandleBookAdded"
+                                  ShowAddButton="@(!SelectedBooks.Any(b => b.Id == book.Id))" Book="@book"/>
                 }
             </LumexPopoverContent>
         </LumexPopover>
-        @foreach(var book in SelectedBooks)
+        @foreach (var book in SelectedBooks)
         {
-            <BookCardMini ShowRemoveButton="@(!_creatingLoan)" OnRemoveClicked="HandleBookRemoved" ShowAddButton="@(false)" Book="@book"/>
+            <BookCardMini ShowRemoveButton="@(!_creatingLoan)" OnRemoveClicked="HandleBookRemoved"
+                          ShowAddButton="@(false)" Book="@book"/>
         }
-        
+
         <p class="text-[13px] opacity-80">Máximo 10 libros. @SelectedBooks.Count() @("/10") seleccionados </p>
         <SectionDivider Name="Duración del prestamo"/>
-        
+
         @if (SelectedBooks.Any())
         {
-            <Animate class="flex flex-col gap-3" Animation="@Animations.FadeIn" Duration="TimeSpan.FromMilliseconds(300)">
+            <Animate class="flex flex-col gap-3" Animation="@Animations.FadeIn"
+                     Duration="TimeSpan.FromMilliseconds(300)">
 
                 <LumexNumbox TValue="int"
                              Label="Dias del prestamo"
@@ -70,9 +77,14 @@
                              @bind-Value="CreateLoanModel.MaxLoanDays"
                              Size="Size.Small"
                              LabelPlacement="@LabelPlacement.Inside"
-                             EndContent="@_clockDangerIcon" />
+                             EndContent="@_clockDangerIcon"/>
                 <div class="flex w-full gap-3 items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 lucide lucide-clock-icon lucide-clock"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-green-700 lucide lucide-clock-icon lucide-clock">
+                        <path d="M12 6v6l4 2"/>
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
                     <div>
 
                         <p class="text-sm font-semibold">@DateTime.Now.ToString("d 'de' MMMM 'del' yyyy", new CultureInfo("es-ES"))</p>
@@ -80,16 +92,24 @@
 
                     </div>
                 </div>
-                
+
                 <div class="flex w-full gap-3 items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-700 lucide lucide-clock-alert-icon lucide-clock-alert"><path d="M12 6v6l4 2"/><path d="M20 12v5"/><path d="M20 21h.01"/><path d="M21.25 8.2A10 10 0 1 0 16 21.16"/></svg>            <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-red-700 lucide lucide-clock-alert-icon lucide-clock-alert">
+                        <path d="M12 6v6l4 2"/>
+                        <path d="M20 12v5"/>
+                        <path d="M20 21h.01"/>
+                        <path d="M21.25 8.2A10 10 0 1 0 16 21.16"/>
+                    </svg>
+                    <div>
 
                         <p class="text-sm font-semibold">@DateTime.Now.AddDays(CreateLoanModel.MaxLoanDays).ToString("d 'de' MMMM 'del' yyyy", new CultureInfo("es-ES"))</p>
                         <p class="text-xs text-red-600">Fecha de vencimiento del prestamo</p>
 
                     </div>
-                    
-                   
+
+
                 </div>
             </Animate>
         }
@@ -99,8 +119,9 @@
         }
         else
         {
-            <LumexButton OnClick="SetDeleteGenreConfirmationModal" Class="mt-[20px]" Disabled="@(_creatingLoan || !context.Validate())" Color="ThemeColor.Primary">Crear Préstamo</LumexButton>
-
+            <LumexButton OnClick="SetDeleteGenreConfirmationModal" Class="mt-[20px]"
+                         Disabled="@(_creatingLoan || !context.Validate())" Color="ThemeColor.Primary">Crear Préstamo
+            </LumexButton>
         }
 
     </div>
@@ -108,18 +129,25 @@
 
 
 @code{
-     public LoanResponse _loanToInvoice {get; set;} = new();
-    public bool ShowInvoice {get; set;} = false;
-    public bool _creatingLoan {get; set;} = false;
+    public LoanResponse _loanToInvoice { get; set; } = new();
+    public bool ShowInvoice { get; set; } = false;
+    public bool _creatingLoan { get; set; } = false;
     public bool _searchingBooks { get; set; } = false;
     public ReaderResponse Reader { get; set; } = new();
-    public List<BookResponse> SearchedBooks {get; set;} = new();
+    public List<BookResponse> SearchedBooks { get; set; } = new();
     public CancellationTokenSource? _searchBookct { get; set; } = default;
-    public string BookFilter {get; set;} = "";
+    public string BookFilter { get; set; } = "";
     public List<BookResponse> SelectedBooks { get; set; } = new();
     public CreateLoanRequest CreateLoanModel { get; set; } = new();
-    public RenderFragment _clockDangerIcon => @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-300 lucide lucide-clock-alert-icon lucide-clock-alert"><path d="M12 6v6l4 2"/><path d="M20 12v5"/><path d="M20 21h.01"/><path d="M21.25 8.2A10 10 0 1 0 16 21.16"/></svg>;         
-
+    public RenderFragment _clockDangerIcon => @<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="text-neutral-300 lucide lucide-clock-alert-icon lucide-clock-alert">
+                                                  <path d="M12 6v6l4 2"/>
+                                                  <path d="M20 12v5"/>
+                                                  <path d="M20 21h.01"/>
+                                                  <path d="M21.25 8.2A10 10 0 1 0 16 21.16"/>
+                                              </svg>;
 
 
 }
@@ -128,16 +156,15 @@
 
     public async Task SetDeleteGenreConfirmationModal()
     {
-        if(_creatingLoan) return;
+        if (_creatingLoan) return;
 
-        
+
         var confirmed = await DialogService.ShowAsync(
-            title: "Crear Préstamo",
-            body: $"¿Desea Crear el prestamo para {Reader.FullName}? Una vez creado este no se puede eliminar o actualizar. Si necesita modificar, marquelo como devuelto y cree otro.",
-            acceptText: "Sí, Crear Préstamo",
-            cancelText: "Cancelar",
-                acceptColor: ThemeColor.Primary
-            
+            "Crear Préstamo",
+            $"¿Desea Crear el prestamo para {Reader.FullName}? Una vez creado este no se puede eliminar o actualizar. Si necesita modificar, marquelo como devuelto y cree otro.",
+            "Sí, Crear Préstamo",
+            "Cancelar",
+            acceptColor: ThemeColor.Primary
         );
 
         if (confirmed)
@@ -145,6 +172,7 @@
             await FetchCreateLoanAsync();
         }
     }
+
     public void ChangeMaxLoanDays(int number)
     {
         CreateLoanModel.MaxLoanDays += number;
@@ -155,30 +183,29 @@
         SelectedBooks.Insert(0, book);
         CreateLoanModel.BookIds = SelectedBooks.Select(b => b.Id).ToList();
     }
-    
+
     public void HandleBookRemoved(BookResponse book)
     {
         var item = SelectedBooks.FirstOrDefault(b => b.Id == book.Id);
 
         if (item is null) return;
-        
+
         SelectedBooks.Remove(item);
         CreateLoanModel.BookIds = SelectedBooks.Select(b => b.Id).ToList();
-
     }
 
 
     protected override async Task OnInitializedAsync()
     {
-       await FetchGetBooksByName();
-       CreateLoanModel.ReaderId = Reader.Id;
+        await FetchGetBooksByName();
+        CreateLoanModel.ReaderId = Reader.Id;
     }
-    
+
 
     public async Task HandleSearchBookTextChanged(string value)
     {
-        if(_searchingBooks) return;
-        
+        if (_searchingBooks) return;
+
         BookFilter = value;
 
         if (_searchBookct is not null)
@@ -188,13 +215,12 @@
 
         try
         {
-            _searchBookct = new();
+            _searchBookct = new CancellationTokenSource();
             await Task.Delay(500, _searchBookct.Token);
             await FetchGetBooksByName();
         }
         catch
         {
-            
         }
     }
 
@@ -210,13 +236,13 @@
 
     public async Task FetchGetBooksByName()
     {
-        if(_searchingBooks) return;
-        
+        if (_searchingBooks) return;
+
         SearchedBooks.Clear();
         _searchingBooks = true;
-        
+
         StateHasChanged();
-        var result = await BooksApiServices.GetByFilterAsync(new(){Take = 3, BookName = BookFilter});
+        var result = await BooksApiServices.GetByFilterAsync(new GetBooksByFilterRequest { Take = 3, BookName = BookFilter });
 
         if (result.IsSuccessful())
         {
@@ -226,7 +252,7 @@
         _searchingBooks = false;
         StateHasChanged();
     }
-  
+
     public async Task FetchCreateLoanAsync()
     {
         _creatingLoan = true;
@@ -236,14 +262,14 @@
         if (result.IsSuccessful())
         {
             Toast.Show("Prestamo creado con exito");
-             CreateLoanModel = new();
+            CreateLoanModel = new CreateLoanRequest();
             _loanToInvoice = result.Data;
             ShowInvoice = true;
-
         }
-            _creatingLoan = false;
-            StateHasChanged();
+
+        _creatingLoan = false;
+        StateHasChanged();
     }
-   
-    
+
+
 }

@@ -1,24 +1,26 @@
+@using BibliotecaUteco.Client.Requests.Users.Queries
 <div class="flex w-full absolute flex-col justify-center ">
     <img class="w-full object-cover h-[100px]" src="https://uteco.edu.do/wp-content/uploads/Biblioteca.jpg"/>
     <div class="w-full flex flex-col gap-1 p-3">
-        <label class="text-[13px] mb-3 font-normal opacity-80 ">Administra los usuarios que pueden utilizar esta plataforma. Solo los administradores pueden tener acceso a esta vista.</label>
-       
-        <button @onclick="SetCreateUserView" class="hover:bg-green-50 my-3 cursor-pointer transition-all rounded-lg border-dashed  border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
+        <label class="text-[13px] mb-3 font-normal opacity-80 ">Administra los usuarios que pueden utilizar esta
+            plataforma. Solo los administradores pueden tener acceso a esta vista.</label>
+
+        <button @onclick="SetCreateUserView"
+                class="hover:bg-green-50 my-3 cursor-pointer transition-all rounded-lg border-dashed  border-2 w-full flex items-center justify-center p-2 border-green-600 gap-2">
             <span class="text-green-600 font-semibold text-sm">Crear Usuario</span>
         </button>
         @foreach (var user in Users)
         {
             <UserCard OnDelete="HandleOnUserDeleted" User="user" @key="user.Id"/>
-           
         }
-       
-        
+
+
         @if (_fetchingUsers)
         {
             <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
         }
     </div>
-    
+
 </div>
 
 @code{
@@ -27,6 +29,7 @@
     public List<UserResponse> Users { get; set; } = new();
 
 }
+
 @functions {
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -36,7 +39,7 @@
             await FetchGetUsersByFilter();
         }
     }
-    
+
     public async Task SetCreateUserView()
     {
         await RightBarContext.OpenCreateUserAsync();
@@ -55,7 +58,7 @@
     {
         _fetchingUsers = true;
         StateHasChanged();
-        var result = await UsersApiServices.GetByFilterAsync(new(){Username = null});
+        var result = await UsersApiServices.GetByFilterAsync(new GetUsersByFilterRequest { Username = null });
 
         if (result.IsSuccessful())
         {
@@ -65,4 +68,5 @@
         _fetchingUsers = false;
         StateHasChanged();
     }
+
 }

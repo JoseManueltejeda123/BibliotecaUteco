@@ -19,5 +19,5 @@ public class UserResponse : BaseResponse
 
     public int RoleId { get; set; } = 0;
 
-    public bool IsDisabled {get; set;} 
+    public bool IsDisabled { get; set; }
 }

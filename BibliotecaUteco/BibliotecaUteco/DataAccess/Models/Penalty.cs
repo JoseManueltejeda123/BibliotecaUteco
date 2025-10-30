@@ -41,7 +41,7 @@ public class Penalty : BaseEntity
     [NotMapped]
     public string ReaderName { get; set; } = "";
 
-      [NotMapped]
+    [NotMapped]
     public string? ReaderStudentLicence { get; set; } = "";
 
     public bool Pay(double givenAmount, int transactionId)

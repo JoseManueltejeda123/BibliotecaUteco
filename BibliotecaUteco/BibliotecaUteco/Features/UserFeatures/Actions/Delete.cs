@@ -28,7 +28,7 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapDelete(
-                    EndpointSettings.UsersEndpoint  + "/delete",
+                    EndpointSettings.UsersEndpoint + "/delete",
                     async (
                         [AsParameters] DeleteUserCommand command,
                         ISender sender,
@@ -39,7 +39,9 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
                     {
                         return await wrapper.ExecuteAsync<IApiResult>(async () =>
                         {
-                            command.SetCurrentUserId(UserIdentityUtility.GetUserIdFromClaims(httpContext.User));
+                            command.SetCurrentUserId(
+                                UserIdentityUtility.GetUserIdFromClaims(httpContext.User)
+                            );
                             return await sender.SendAndValidateAsync(command, cancellationToken);
                         });
                     }
@@ -50,10 +52,15 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
                 .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
                 .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
                 .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
-                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .WithTags(nameof(User))
                 .WithName(nameof(DeleteUserEndpoint))
-                .WithDescription("Elimina un usuario del sistema si no tiene transacciones asociadas");
+                .WithDescription(
+                    "Elimina un usuario del sistema si no tiene transacciones asociadas"
+                );
         }
     }
 
@@ -67,22 +74,28 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
             CancellationToken cancellationToken = default
         )
         {
-            if (await context
-                .Users
-                .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken) is var user && user is null
+            if (
+                await context.Users.FirstOrDefaultAsync(
+                    u => u.Id == request.UserId,
+                    cancellationToken
+                )
+                    is var user
+                && user is null
             )
             {
                 return new NotFoundApiResult($"No se encontró el usuario con ID {request.UserId}");
             }
 
-            if (await context
-                .Transactions
-                .AnyAsync(t => t.UserId == request.UserId, cancellationToken)
+            if (
+                await context.Transactions.AnyAsync(
+                    t => t.UserId == request.UserId,
+                    cancellationToken
+                )
             )
             {
                 return new ConflictApiResult(
-                    "No se puede eliminar el usuario porque tiene transacciones asociadas. " +
-                    "Considere desactivar el usuario en lugar de eliminarlo."
+                    "No se puede eliminar el usuario porque tiene transacciones asociadas. "
+                        + "Considere desactivar el usuario en lugar de eliminarlo."
                 );
             }
 
@@ -91,24 +104,16 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
                 return new ForbiddenApiResult("No se puede eliminar un usuario administrador.");
             }
 
-
-
-
             if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
             {
-                fileUploadService.DeleteFile(
-                    user.ProfilePictureUrl,
-                    EnvFolders.UserPictures
-                );
+                fileUploadService.DeleteFile(user.ProfilePictureUrl, EnvFolders.UserPictures);
             }
 
             // 5. Eliminar el usuario
             context.Users.Remove(user);
             await context.SaveChangesAsync(cancellationToken);
 
-            return new SuccessApiResult<bool>(
-               true
-            );
+            return new SuccessApiResult<bool>(true);
         }
     }
 }

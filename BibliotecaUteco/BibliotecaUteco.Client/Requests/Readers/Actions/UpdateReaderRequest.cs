@@ -14,7 +14,7 @@ public class UpdateReaderRequest
     public string FullName { get; set; } = null!;
 
     [Required(ErrorMessage = "El número de teléfono es obligatorio.")]
-    [Length(10,10, ErrorMessage = "El número de teléfono debe tener exactamente 10 dígitos.")]
+    [Length(10, 10, ErrorMessage = "El número de teléfono debe tener exactamente 10 dígitos.")]
     public string PhoneNumber { get; set; } = null!;
 
     [Required(ErrorMessage = "La dirección es obligatoria.")]
@@ -34,5 +34,4 @@ public class UpdateReaderRequest
     public string? StudentLicence { get; set; }
 
     public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
-
 }

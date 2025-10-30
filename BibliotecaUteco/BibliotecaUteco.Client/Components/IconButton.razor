@@ -1,43 +1,38 @@
-<Tooltip Text="@TooltipText" >
-    <LumexButton OnClick="TriggerOnClick" Variant="Variant.Flat" Size="@Size" IconOnly="@true" Disabled="@Disabled" Type="ButtonType.Button"   Class=@($"text-neutral-900 icon-button transition-all bg-transparent text-[20px] rounded-lg cursor-pointer {@Class}") >
+<Tooltip Text="@TooltipText">
+    <LumexButton OnClick="TriggerOnClick" Variant="Variant.Flat" Size="@Size" IconOnly="@true" Disabled="@Disabled"
+                 Type="ButtonType.Button"
+                 Class=@($"text-neutral-900 icon-button transition-all bg-transparent text-[20px] rounded-lg cursor-pointer {@Class}")>
         @if (ChildContent is not null)
         {
             @ChildContent
-        }    
+        }
     </LumexButton>
-    
+
 </Tooltip>
 
 
 
 @code {
-    
-    [Parameter]
-    public RenderFragment? ChildContent {get; set;}
 
-    [Parameter]
-    public string Type {get; set;} = "button";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    [Parameter]
-    public bool Disabled {get; set;} = false;
+    [Parameter] public string Type { get; set; } = "button";
+
+    [Parameter] public bool Disabled { get; set; } = false;
 
     [Parameter] public string TooltipText { get; set; } = "button";
-    
-    [Parameter]
-    public EventCallback OnClick { get; set; }
+
+    [Parameter] public EventCallback OnClick { get; set; }
 
     [Parameter] public Size Size { get; set; } = Size.Small;
-    
-    [Parameter]
-    public string Class {get; set;} = "";
 
-    [Parameter]
-    public ThemeColor Color {get; set;} = ThemeColor.None;
+    [Parameter] public string Class { get; set; } = "";
 
-    [Parameter]
-    public bool Small {get; set;} = false;
-    
-    
+    [Parameter] public ThemeColor Color { get; set; } = ThemeColor.None;
+
+    [Parameter] public bool Small { get; set; } = false;
+
+
 }
 
 @functions{
@@ -47,6 +42,5 @@
         await OnClick.InvokeAsync();
     }
 
-   
 
 }

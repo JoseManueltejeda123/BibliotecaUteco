@@ -6,15 +6,15 @@
                       @bind-Value="@CreateAuthorModel.FullName"
                       Label="Nombre del autor (completo)"
                       Placeholder="Ej. R. R. Tolkien"
-                      
+
                       LabelPlacement="@LabelPlacement.Inside"
                       Required="true"
                       Disabled="_creatingAuthor"
                       Description="Los nombres que sean muy largos es recomendable reducirlos a iniciales"/>
         <span class="text-red-700 text-red-700"><ValidationMessage For="@(() => CreateAuthorModel.FullName)"/></span>
-        
+
     </div>
-    
+
 
     @if (_creatingAuthor)
     {
@@ -22,8 +22,9 @@
     }
     else
     {
-        <LumexButton Class="w-full"  Disabled="_creatingAuthor" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear Autor</LumexButton>
-
+        <LumexButton Class="w-full" Disabled="_creatingAuthor" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear
+            Autor
+        </LumexButton>
     }
 </EditForm>
 
@@ -32,11 +33,10 @@
     //flags
 
     public bool _creatingAuthor { get; set; } = false;
-    
+
     public CreateAuthorRequest CreateAuthorModel { get; set; } = new();
-    
-    [Parameter]
-    public EventCallback<AuthorResponse> OnAuthorCreated { get; set; }
+
+    [Parameter] public EventCallback<AuthorResponse> OnAuthorCreated { get; set; }
 
 }
 
@@ -54,10 +54,8 @@
         StateHasChanged();
         if (result.IsSuccessful())
         {
-            
             await TriggerOnAuthorCreated(result.Data);
         }
-        
     }
 
     public async Task TriggerOnAuthorCreated(AuthorResponse author)

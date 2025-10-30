@@ -16,10 +16,11 @@ namespace BibliotecaUteco.Client.Services.ApiServices
         public async Task<ApiResponse<bool>> DeleteBookAsync(
             DeleteBookRequest request,
             CancellationToken cancellationToken = default
-        ) => await client.FetchDeleteAsync<bool>(
+        ) =>
+            await client.FetchDeleteAsync<bool>(
                 BooksEndpoint + $"/delete?{QueryStringBuilder.ToQueryString(request)}",
-                cancellationToken);
-
+                cancellationToken
+            );
 
         public async Task<ApiResponse<BookResponse>> CreateBookAsync(
             CreateBookRequest request,
@@ -51,10 +52,11 @@ namespace BibliotecaUteco.Client.Services.ApiServices
                 );
                 form.Add(fileContent, "coverFile", request.CoverFile.Name);
             }
-           return await client.FetchPostAsync<BookResponse>(
+            return await client.FetchPostAsync<BookResponse>(
                 BooksEndpoint,
-                 form,
-                cancellationToken);
+                form,
+                cancellationToken
+            );
         }
 
         public async Task<ApiResponse<BookResponse>> UpdateBookAsync(
@@ -62,7 +64,7 @@ namespace BibliotecaUteco.Client.Services.ApiServices
             CancellationToken cancellationToken = default
         )
         {
-              var form = new MultipartFormDataContent();
+            var form = new MultipartFormDataContent();
             form.Add(new StringContent(request.BookId.ToString()), "bookId");
             form.Add(new StringContent(request.BookName), "bookName");
             form.Add(new StringContent(request.Synopsis), "Synopsis");
@@ -92,14 +94,14 @@ namespace BibliotecaUteco.Client.Services.ApiServices
 
             return await client.FetchPutAsync<BookResponse>(BooksEndpoint, form, cancellationToken);
         }
-        
 
         public async Task<ApiResponse<List<BookResponse>>> GetByFilterAsync(
             GetBooksByFilterRequest request,
             CancellationToken cancellationToken = default
-        )=>  await client.FetchGetAsync<List<BookResponse>>(
+        ) =>
+            await client.FetchGetAsync<List<BookResponse>>(
                 BooksEndpoint + $"/by-filter?{QueryStringBuilder.ToQueryString(request)}",
-                cancellationToken);
-        
+                cancellationToken
+            );
     }
 }

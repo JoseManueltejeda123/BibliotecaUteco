@@ -6,34 +6,96 @@
     <div class="flex w-full items-center gap-2 justify-between">
         <h2 class="text-3xl font-semibold">Préstamos</h2>
     </div>
+        <div class="flex items-center gap-3 w-full">
+            <div class="w-full flex flex-col gap-1">
+                <LumexTextbox Type="@InputType.Search"
+                              Label="Filtrar Préstamos"
+                              StartContent="_filterContainer"
+                              Behavior="InputBehavior.OnInput"
+                              Clearable="true"
+                              ValueChanged="async (e) => { await HandleOnChange(e); }"
+                              OnCleared="FetchLoansAsync"
+                              Required="false"
+                              Disabled="@(_searchingLoans)"
+                              Value="@FilterText"
+                              Placeholder="@PlaceholderText"
+                              maxLenght="11"
+                              LabelPlacement="@LabelPlacement.Outside"/>
+                <p class="text-[13px]">Usa los filtros de abajo para buscar por lector, cédula o matrícula.</p>
+            </div>
+                  <LumexDropdown  ShowArrow="true" >
+                    <LumexDropdownTrigger>
+                        <button type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700 hover:text-green-700 transition-all lucide lucide-list-filter-plus-icon lucide-list-filter-plus"><path d="M12 5H2"/><path d="M6 12h12"/><path d="M9 19h6"/><path d="M16 5h6"/><path d="M19 8V2"/></svg>
+                        </button>
+                    </LumexDropdownTrigger>
+                    <LumexDropdownMenu>
+                        <LumexDropdownItem Id="divider" Disabled="true">
+                            <SectionDivider Name="Por filtro"/>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterBy(LoansFilter.StudentLicence)" Id="by-licence" class=@($" {(FilterBy == LoansFilter.StudentLicence ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-id-card-lanyard-icon lucide-id-card-lanyard"><path d="M13.5 8h-3"/><path d="m15 2-1 2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3"/><path d="M16.899 22A5 5 0 0 0 7.1 22"/><path d="m9 2 3 6"/><circle cx="12" cy="15" r="3"/></svg>
+                            </StartContent>
+                            <ChildContent>
+                                <p class="text-[13px] font-normal">Filtrar por matrícula</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterBy(LoansFilter.IdentityCardNumber)" Id="by-identity" class=@($" {(FilterBy == LoansFilter.IdentityCardNumber ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-id-card-icon lucide-id-card"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+                            </StartContent>
+                            <ChildContent>
 
-        <div class="w-full flex flex-col gap-1">
-            <LumexTextbox Type="@InputType.Search"
-                          Label="Filtrar Préstamos"
-                          Behavior="InputBehavior.OnInput"
-                          Clearable="true"
-                          ValueChanged="async (e) => { await HandleOnChange(e); }"
-                          OnCleared="FetchLoansAsync"
-                          Required="false"
-                          Disabled="@(_searchingLoans)"
-                          Value="@FilterText"
-                          Placeholder="@PlaceholderText"
-                          maxLenght="11"
-                          LabelPlacement="@LabelPlacement.Outside"/>
-            <p class="text-[13px]">Usa los filtros de abajo para buscar por lector, cédula o matrícula.</p>
+                                <p class="text-[13px] font-normal">Filtrar por cédula</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem Id="divider2" Disabled="true">
+                            <SectionDivider Name="Por estado"/>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterByState(LoansState.None)" Id="all" class=@($" {(FilterByState == LoansState.None ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gallery-vertical-end-icon lucide-gallery-vertical-end"><path d="M7 2h10"/><path d="M5 6h14"/><rect width="18" height="12" x="3" y="10" rx="2"/></svg>                            
+                                </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Obtener todos</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterByState(LoansState.Pending)" Id="just-pending" class=@($" {(FilterByState == LoansState.Pending ? "text-green-700" : "")}")>
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hourglass-icon lucide-hourglass"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>                                </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Solo los pendientes</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterByState(LoansState.Returned)" Id="just-returned" class=@($" {(FilterByState == LoansState.Returned ? "text-green-700" : "")}")>
+                            <StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-undo2-icon lucide-undo-2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>                          
+                            </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Solo los devueltos</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                        <LumexDropdownItem OnClick="() => SetFilterByState(LoansState.Exceeded)" Id="just-exceeded" class=@($" {(FilterByState == LoansState.Exceeded ? "text-green-700" : "")}")>
+                            <StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                            </StartContent>
+                            <ChildContent>
+
+                                <p class="text-[13px] font-normal">Solo los excedidos</p>
+                            </ChildContent>
+                        </LumexDropdownItem>
+                    </LumexDropdownMenu>
+                </LumexDropdown>     
+
+
         </div>
+        
 
-    <div class="mb-3 max-w-full flex items-center gap-2 flex-wrap">
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(LoansFilter.IdentityCardNumber); }' Variant="@(FilterBy == LoansFilter.IdentityCardNumber ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Cédula</LumexChip>
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterBy(LoansFilter.StudentLicence); }' Variant="@(FilterBy == LoansFilter.StudentLicence ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Por Matrícula</LumexChip>
-
-        <div class="border rounded-full border-neutral-300 h-[10px]" />
-
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.All); }' Variant="@(FilterByState == LoansState.All ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Todos</LumexChip>
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Pending); }' Variant="@(FilterByState == LoansState.Pending ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Pendientes</LumexChip>
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Returned); }' Variant="@(FilterByState ==LoansState.Returned ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Entregados</LumexChip>
-        <LumexChip Class="cursor-pointer" Size="Size.Small" @onclick='async () => { await SetFilterByState(LoansState.Exceeded); }' Variant="@(FilterByState == LoansState.Exceeded ? ChipVariant.Solid : ChipVariant.Outlined)" Color="@ThemeColor.Primary">Excedidos</LumexChip>
-    </div>
+  
     <SectionDivider Name="Préstamos"/>
 
     <div class="w-full flex flex-col gap-3">
@@ -73,13 +135,40 @@
 
 @code {
     public LoansFilter FilterBy { get; set; } = LoansFilter.IdentityCardNumber;
-    public LoansState FilterByState { get; set; } = LoansState.All;
+    public LoansState FilterByState { get; set; } = LoansState.None;
     public string FilterText { get; set; } = "";
     public bool _searchingLoans { get; set; } = false;
     public bool _hasMore { get; set; } = true;
     private CancellationTokenSource? cts;
     private CancellationTokenSource? fetchCts;
     public List<LoanResponse> Loans { get; set; } = new();
+    
+    public RenderFragment _filterContainer => @<p class="text-[13px] animate-pulse font-semibold text-violet-700 mt-[2px] text-nowrap">@filterStateTranslated por @filterTranslated</p>;
+
+    public string filterPlaceholder => FilterBy switch
+    {
+        LoansFilter.IdentityCardNumber => "Ej. 123456789",
+        LoansFilter.StudentLicence => "Ej. 2020-0000",
+        _ => "Ej. 123456789"
+    };
+
+    public string filterTranslated => FilterBy switch
+    {
+        LoansFilter.IdentityCardNumber => "cédula",
+    LoansFilter.StudentLicence => "matrícula",
+        _ => "todo"
+    };
+
+    public string filterStateTranslated => FilterByState switch
+    {
+        LoansState.None => "todos",
+        LoansState.Exceeded => "solo excedidos",
+        LoansState.Returned => "solo devueltos",
+    LoansState.Pending => "solo pendientes",
+
+
+    _ => "todo"
+    };
 
     public string PlaceholderText
     {
@@ -228,6 +317,6 @@
         Returned,
         Exceeded,
         Pending,
-        All
+        None
     }
 }

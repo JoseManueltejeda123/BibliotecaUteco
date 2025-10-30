@@ -6,17 +6,17 @@
                       @bind-Value="@UpdateGenreModel.GenreName"
                       Label="Nombre del género literario"
                       Placeholder="Ej. Misterio"
-                    Behavior="InputBehavior.OnInput"
+                      Behavior="InputBehavior.OnInput"
                       LabelPlacement="@LabelPlacement.Inside"
                       Required="true"
                       Disabled="_updatingGenre"
-                        Description="Los generos literarios no pueden estar repetidos. Deben de tener maximo 25 caracteres."
+                      Description="Los generos literarios no pueden estar repetidos. Deben de tener maximo 25 caracteres."
 
-                      />
+        />
         <span class=" text-red-700"><ValidationMessage For="@(() => UpdateGenreModel.GenreName)"/></span>
-        
+
     </div>
-    
+
 
     @if (_updatingGenre)
     {
@@ -24,8 +24,10 @@
     }
     else
     {
-        <LumexButton Class="w-full"  Disabled="@(_updatingGenre || !context.Validate() || Genre.Name == UpdateGenreModel.GenreName)" Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios</LumexButton>
-
+        <LumexButton Class="w-full"
+                     Disabled="@(_updatingGenre || !context.Validate() || Genre.Name == UpdateGenreModel.GenreName)"
+                     Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios
+        </LumexButton>
     }
 </EditForm>
 
@@ -36,15 +38,13 @@
     public bool _updatingGenre { get; set; } = false;
 
 
-    [Parameter]
-    public GenreResponse Genre {get; set;} = new();
+    [Parameter] public GenreResponse Genre { get; set; } = new();
 
-    
+
     public UpdateGenreRequest UpdateGenreModel { get; set; } = new();
-    
 
-    [Parameter]
-    public EventCallback<GenreResponse> OnGenreUpdated { get; set; }
+
+    [Parameter] public EventCallback<GenreResponse> OnGenreUpdated { get; set; }
 
 }
 
@@ -53,11 +53,11 @@
 
     protected override void OnParametersSet()
     {
-       if(Genre is not null)
-       {
-         UpdateGenreModel.GenreName = Genre.Name;
-         UpdateGenreModel.GenreId = Genre.Id;
-       }
+        if (Genre is not null)
+        {
+            UpdateGenreModel.GenreName = Genre.Name;
+            UpdateGenreModel.GenreId = Genre.Id;
+        }
     }
 
     public async Task FetchCreatGenreAsync()
@@ -73,7 +73,6 @@
             Toast.Show("Género actualizado con éxito");
             await TriggerOnGenreCreated(result.Data);
         }
-        
     }
 
     public async Task TriggerOnGenreCreated(GenreResponse genre)

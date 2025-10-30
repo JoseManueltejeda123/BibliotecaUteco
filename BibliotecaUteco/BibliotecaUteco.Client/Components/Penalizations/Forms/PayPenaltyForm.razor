@@ -1,71 +1,87 @@
 @if (ShowInvoice)
 {
-        <div class="w-full hidden">
-            <PenalizationInvoice OnPrinted=" () => {  ShowInvoice = false;}" Penalty="_penaltyToInvoice"/>
-        </div>
+    <div class="w-full hidden">
+        <PenalizationInvoice OnPrinted=" () => {  ShowInvoice = false;}" Penalty="_penaltyToInvoice"/>
+    </div>
 }
 
-<EditForm Model="PayPenaltyModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="PayPenaltyModel" class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
-        
-        <p class="text-[13px] opacity-80">Estas a punto de pagar una penalizacion para @(Penalty.ReaderName). La transaccion quedará reflejada con tus credenciales de la aplicacion. </p>
-        
+
+        <p class="text-[13px] opacity-80">Estas a punto de pagar una penalizacion para @(Penalty.ReaderName). La
+            transaccion quedará reflejada con tus credenciales de la aplicacion. </p>
+
         <div class="flex flex-col gap-1 w-full">
             <PenaltyCardMini Penalty="@Penalty"/>
         </div>
-        
+
         <SectionDivider Name="Detalles de pago"/>
-        
-            <div class="flex flex-col gap-1 w-full">
-                <LumexNumbox TValue="double"
-                             @bind-Value="PayPenaltyModel.GivenAmount"
-                             LabelPlacement="LabelPlacement.Inside"
-                             Label="Monto dado (RD$)"
-                             Behavior="InputBehavior.OnInput"
-                             Size="Size.Small"
-                             Disabled="@_payingPenalty"
-                             step="1"
-                             Description="Monto dado por el lector (RD$)"
-                             minValue="@Penalty.TotalAmount">
-                </LumexNumbox>
-                <p class="text-[13px] text-red-600"><ValidationMessage For="@(() => PayPenaltyModel.GivenAmount)"/></p>
-            </div>
-        
+
+        <div class="flex flex-col gap-1 w-full">
+            <LumexNumbox TValue="double"
+                         @bind-Value="PayPenaltyModel.GivenAmount"
+                         LabelPlacement="LabelPlacement.Inside"
+                         Label="Monto dado (RD$)"
+                         Behavior="InputBehavior.OnInput"
+                         Size="Size.Small"
+                         Disabled="@_payingPenalty"
+                         step="1"
+                         Description="Monto dado por el lector (RD$)"
+                         minValue="@Penalty.TotalAmount">
+            </LumexNumbox>
+            <p class="text-[13px] text-red-600">
+                <ValidationMessage For="@(() => PayPenaltyModel.GivenAmount)"/>
+            </p>
+        </div>
+
         <Animate Animation="Animations.FadeIn">
-            @if((PayPenaltyModel.GivenAmount - Penalty.TotalAmount) >= 1)
+            @if (PayPenaltyModel.GivenAmount - Penalty.TotalAmount >= 1)
             {
                 <div class="flex gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60 lucide lucide-undo2-icon lucide-undo-2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="opacity-60 lucide lucide-undo2-icon lucide-undo-2">
+                        <path d="M9 14 4 9l5-5"/>
+                        <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+                    </svg>
                     <div>
-                        <p class="text-sm font-semibold">RD$ @((PayPenaltyModel.GivenAmount - Penalty.TotalAmount).ToString("F2"))</p>
+                        <p class="text-sm font-semibold">
+                            RD$ @((PayPenaltyModel.GivenAmount - Penalty.TotalAmount).ToString("F2"))</p>
 
                         <p class="text-xs opacity-90">Monto a devolver</p>
                     </div>
                 </div>
-                    
-                   
-
-
-
             }
-            else if((PayPenaltyModel.GivenAmount - Penalty.TotalAmount) < 0)
+            else if (PayPenaltyModel.GivenAmount - Penalty.TotalAmount < 0)
             {
                 <div class="flex gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 lucide lucide-heart-crack-icon lucide-heart-crack"><path d="M12.409 5.824c-.702.792-1.15 1.496-1.415 2.166l2.153 2.156a.5.5 0 0 1 0 .707l-2.293 2.293a.5.5 0 0 0 0 .707L12 15"/><path d="M13.508 20.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5a5.5 5.5 0 0 1 9.591-3.677.6.6 0 0 0 .818.001A5.5 5.5 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-red-600 lucide lucide-heart-crack-icon lucide-heart-crack">
+                        <path
+                            d="M12.409 5.824c-.702.792-1.15 1.496-1.415 2.166l2.153 2.156a.5.5 0 0 1 0 .707l-2.293 2.293a.5.5 0 0 0 0 .707L12 15"/>
+                        <path
+                            d="M13.508 20.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5a5.5 5.5 0 0 1 9.591-3.677.6.6 0 0 0 .818.001A5.5 5.5 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5z"/>
+                    </svg>
                     <div>
                         <p class="text-sm font-semibold text-red-500">El monto dado es muy bajo</p>
 
                         <p class="text-xs opacity-90">Monto a devolver</p>
                     </div>
                 </div>
-
             }
-       
+
             else
             {
                 <div class="flex gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60 lucide lucide-thumbs-up-icon lucide-thumbs-up"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="opacity-60 lucide lucide-thumbs-up-icon lucide-thumbs-up">
+                        <path d="M7 10v12"/>
+                        <path
+                            d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>
+                    </svg>
                     <div>
                         <p class="text-sm font-semibold ">No hay monto a devolver</p>
 
@@ -74,8 +90,8 @@
                 </div>
             }
         </Animate>
-        
-        @if((PayPenaltyModel.GivenAmount - Penalty.TotalAmount) >= 0)
+
+        @if (PayPenaltyModel.GivenAmount - Penalty.TotalAmount >= 0)
         {
             <div class="mt-2 flex flex-col gap-1 ml-[30px]">
                 <Animate Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(100)">
@@ -87,33 +103,35 @@
 
                 </Animate>
                 <Animate Animation="Animations.FadeIn" Delay="TimeSpan.FromMilliseconds(200)">
-                    <p class="text-[13px]"><strong>Taza de penalizacion diaria:</strong> RD$ @LoanSettings.DailyFineRate.ToString("F2")</p>
+                    <p class="text-[13px]"><strong>Taza de penalizacion diaria:</strong>
+                        RD$ @LoanSettings.DailyFineRate.ToString("F2")</p>
 
                 </Animate>
             </div>
-         
         }
-       <SectionDivider />
-        
-        @if(_payingPenalty)
+        <SectionDivider/>
+
+        @if (_payingPenalty)
         {
-        <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
+            <LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/>
         }
         else
         {
-        <LumexButton OnClick="SetPayConfirmationModal" Color="ThemeColor.Primary" Class="=mt-[20px]" Disabled=@(!context.Validate()) >Pagar Penalización</LumexButton>
-
+            <LumexButton OnClick="SetPayConfirmationModal" Color="ThemeColor.Primary" Class="=mt-[20px]"
+                         Disabled=@(!context.Validate())>Pagar Penalización
+            </LumexButton>
         }
 
     </div>
 </EditForm>
 
 @code {
-    public PenaltyResponse _penaltyToInvoice {get; set;} = new();
-    public bool ShowInvoice {get; set;} = false;
-    public PayPenaltyRequest PayPenaltyModel {get; set;} = new();
+    public PenaltyResponse _penaltyToInvoice { get; set; } = new();
+    public bool ShowInvoice { get; set; } = false;
+    public PayPenaltyRequest PayPenaltyModel { get; set; } = new();
     public bool _payingPenalty { get; set; } = false;
     public PenaltyResponse Penalty { get; set; } = new();
+
     protected override void OnInitialized()
     {
         if (RightBarContext.State.PenaltyToPay is not null)
@@ -122,22 +140,18 @@
             ParseRequest(RightBarContext.State.PenaltyToPay);
         }
     }
-    
+
     public async Task SetPayConfirmationModal()
     {
-        if(_payingPenalty) return;
+        if (_payingPenalty) return;
 
 
         var confirmed = await DialogService.ShowAsync(
-            title: "Pagar Penalización",
-            body: $"Estas a punto de pagar una penalizacion para {Penalty.ReaderName}. La transaccion quedará reflejada con tus credenciales de la aplicacion. Ninguna de estas acciones puede ser deshecha",
-            acceptText: "Sí, registrar pago",
-       
+            "Pagar Penalización",
+            $"Estas a punto de pagar una penalizacion para {Penalty.ReaderName}. La transaccion quedará reflejada con tus credenciales de la aplicacion. Ninguna de estas acciones puede ser deshecha",
+            "Sí, registrar pago",
             acceptColor: ThemeColor.Primary,
             cancelText: "Cancelar"
-            
-            
-            
         );
 
         if (confirmed)
@@ -145,26 +159,27 @@
             await FetchPayPenaltyAsync();
         }
     }
-    
+
     public async Task FetchPayPenaltyAsync()
-   {
+    {
         _payingPenalty = true;
-        
+
         StateHasChanged();
-        
+
         var result = await PenaltiesApiServices.PayAsync(PayPenaltyModel);
 
         if (result.IsSuccessful())
         {
             Toast.Success("Pago registrado con éxito.");
             await RightBarContext.SetPayedPenaltyAsync(result.Data);
-            PayPenaltyModel = new();
+            PayPenaltyModel = new PayPenaltyRequest();
             _penaltyToInvoice = result.Data;
             ShowInvoice = true;
         }
+
         _payingPenalty = false;
         StateHasChanged();
-   }
+    }
 
     public void ParseRequest(PenaltyResponse response)
     {

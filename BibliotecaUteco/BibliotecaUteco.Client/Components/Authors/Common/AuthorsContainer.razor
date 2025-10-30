@@ -1,20 +1,23 @@
 ﻿<div class="flex max-h-[500px] w-[300px] flex-col gap-2 overflow-y-auto p-2">
-    
+
     @if (ShowCreateAuthorModal)
     {
         <AuthorizeView>
             <Authorized>
-             <div class="mb-4 flex w-full items-center justify-between">
+                <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Crear Autor</label>
                     <IconButton Small="true" OnClick="() => { ShowCreateAuthorModal = false; }" TooltipText="Cancelar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-x-icon lucide-x">
+                            <path d="M18 6 6 18"/>
+                            <path d="m6 6 12 12"/>
+                        </svg>
                     </IconButton>
                 </div>
                 <CreateAuthorForm OnAuthorCreated="HandleOnAuthorCreated"/>
             </Authorized>
         </AuthorizeView>
-       
-        
     }
     else if (ShowUpdateAuthorModal && SelectedAuthor is not null)
     {
@@ -22,8 +25,14 @@
             <Authorized>
                 <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Actualizar Autor</label>
-                    <IconButton Small="true" OnClick="() => { ShowUpdateAuthorModal = false; SelectedAuthor = null; }" TooltipText="Cancelar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    <IconButton Small="true" OnClick="() => { ShowUpdateAuthorModal = false; SelectedAuthor = null; }"
+                                TooltipText="Cancelar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-x-icon lucide-x">
+                            <path d="M18 6 6 18"/>
+                            <path d="m6 6 12 12"/>
+                        </svg>
                     </IconButton>
                 </div>
                 <UpdateAuthorForm OnAuthorUpdated="HandleOnAuthorUpdated" Author="SelectedAuthor"/>
@@ -35,59 +44,57 @@
         <div class="flex w-full flex-col gap-3">
             <label class="font-semibold text-[15px]">Administrar Autores</label>
 
-        <EditForm class="flex w-full items-end gap-2" Model="@GetAuthorsByName" OnValidSubmit="FetchGetAuthorsByNameAsync">
-            <DataAnnotationsValidator></DataAnnotationsValidator>
-            <LumexTextbox Type="@InputType.Search"
-                            Label="Buscar autor"
-                            @bind-Value="@GetAuthorsByName.AuthorsName"
-                            Placeholder="Ej. George R. R. Martin"
-                            LabelPlacement="@LabelPlacement.Outside"
-                            Disabled="@_fetchingAuthors"
-                            Clearable="@true"
-                            Size="Size.Small"
-                            Behavior="InputBehavior.OnInput"
-                            OnCleared="async()=>{await FetchGetAuthorsByNameAsync();}"
-            />
-            <LumexButton Size="Size.Small" Type="ButtonType.Submit" Disabled="@_fetchingAuthors" Color="ThemeColor.Primary" >
-                Buscar
-            </LumexButton>
-        </EditForm>
-        
-    </div>
-    <SectionDivider Name="Autores"/>
+            <EditForm class="flex w-full items-end gap-2" Model="@GetAuthorsByName"
+                      OnValidSubmit="FetchGetAuthorsByNameAsync">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <LumexTextbox Type="@InputType.Search"
+                              Label="Buscar autor"
+                              @bind-Value="@GetAuthorsByName.AuthorsName"
+                              Placeholder="Ej. George R. R. Martin"
+                              LabelPlacement="@LabelPlacement.Outside"
+                              Disabled="@_fetchingAuthors"
+                              Clearable="@true"
+                              Size="Size.Small"
+                              Behavior="InputBehavior.OnInput"
+                              OnCleared="async()=>{await FetchGetAuthorsByNameAsync();}"
+                />
+                <LumexButton Size="Size.Small" Type="ButtonType.Submit" Disabled="@_fetchingAuthors"
+                             Color="ThemeColor.Primary">
+                    Buscar
+                </LumexButton>
+            </EditForm>
 
-    
-            <button @onclick="() => {ShowCreateAuthorModal = true; }" disabled="@_fetchingAuthors" class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-1 items-center justify-center gap-3 cursor-pointer">
-                <p class="text-sm text-green-600">Crear Autor</p>
-
-            </button>
-      
-   
+        </div>
+        <SectionDivider Name="Autores"/>
 
 
-    @if(_fetchingAuthors){
+        <button @onclick="() => {ShowCreateAuthorModal = true; }" disabled="@_fetchingAuthors"
+                class="w-full hover:bg-green-100/30 transition-all border-dotted border-[4px] border-green-600 rounded-lg flex px-3 py-1 items-center justify-center gap-3 cursor-pointer">
+            <p class="text-sm text-green-600">Crear Autor</p>
 
-        <AuthorCardSkeleton Count="3"/>
-    }
-    else
-    {
-        if(Authors.Any())
+        </button>
+
+
+        @if (_fetchingAuthors)
         {
-            foreach(var author in Authors)
-            {
-                <AuthorCard OnUpdate="HandleOnUpdateAuthor" OnClicked="HandleAuthorClicked" Author="author"/>
-            }
+            <AuthorCardSkeleton Count="3"/>
         }
         else
-        {   
-            <NoResultsFound></NoResultsFound>
+        {
+            if (Authors.Any())
+            {
+                foreach (var author in Authors)
+                {
+                    <AuthorCard OnUpdate="HandleOnUpdateAuthor" OnClicked="HandleAuthorClicked" Author="author"/>
+                }
+            }
+            else
+            {
+                <NoResultsFound></NoResultsFound>
+            }
         }
+    }
 
-       
-    }
-    }
-    
-    
 
 </div>
 
@@ -96,33 +103,29 @@
 
     //flags
 
-    public bool _fetchingAuthors {get; set;} = true;
+    public bool _fetchingAuthors { get; set; } = true;
 
     //props
-    public List<AuthorResponse> Authors {get; set;} = new();
-    public GetAuthorsByNameRequest GetAuthorsByName {get; set;} = new();
+    public List<AuthorResponse> Authors { get; set; } = new();
+    public GetAuthorsByNameRequest GetAuthorsByName { get; set; } = new();
 
     public bool ShowCreateAuthorModal { get; set; } = false;
-    public bool ShowUpdateAuthorModal {get; set;} = false;
+    public bool ShowUpdateAuthorModal { get; set; } = false;
     public AuthorResponse? SelectedAuthor { get; set; } = null;
 
-    [Parameter]
-    public EventCallback<AuthorResponse> OnAuthorClicked {get; set;}
-    
+    [Parameter] public EventCallback<AuthorResponse> OnAuthorClicked { get; set; }
 
-    
+
 }
 
 @functions{
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             await FetchGetAuthorsByNameAsync();
-
         }
-
     }
 
     public void HandleOnAuthorCreated(AuthorResponse author)
@@ -131,14 +134,14 @@
         Authors.Insert(0, author);
     }
 
-    public async Task FetchGetAuthorsByNameAsync(){
-
+    public async Task FetchGetAuthorsByNameAsync()
+    {
         _fetchingAuthors = true;
         StateHasChanged();
 
         var result = await AuthorsApiServices.GetByNameAsync(GetAuthorsByName);
 
-        if(result.IsSuccessful())
+        if (result.IsSuccessful())
         {
             Authors = result.Data;
         }
@@ -147,8 +150,8 @@
         StateHasChanged();
     }
 
-    public async Task HandleAuthorClicked(AuthorResponse author){
-
+    public async Task HandleAuthorClicked(AuthorResponse author)
+    {
         await OnAuthorClicked.InvokeAsync(author);
     }
 
@@ -170,7 +173,6 @@
 
         Authors[index] = au;
     }
-    
 
-   
+
 }

@@ -6,151 +6,92 @@ public class SonnerService : ISonnerService
 {
     public event Action<Sonner>? OnSonnerAdded;
 
-
     private TaskCompletionSource? _tcs;
 
-    public Task Show(string title, string description , SonnerTheme theme = SonnerTheme.Info)
-    {   
-       
-        
-        OnSonnerAdded?.Invoke(
-            new()
-                {
-                                                  
-                                              
-                  Title = title,
-                  Description = description,
-                  Theme = theme
-                }
-            );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
-    }
-    
-    public Task Show(string description,  SonnerTheme theme = SonnerTheme.Info)
-    {   
-       
-        
+    public Task Show(string title, string description, SonnerTheme theme = SonnerTheme.Info)
+    {
         OnSonnerAdded?.Invoke(
             new()
             {
-                                                  
-                                              
-                Description = description,
-                Theme = theme
-            }
-        );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
-    }
-    
-    public Task Success(string title, string description,  SonnerTheme theme = SonnerTheme.Success)
-    {   
-       
-        
-        OnSonnerAdded?.Invoke(
-            new()
-            {
-                                                  
-                                              
                 Title = title,
                 Description = description,
-                Theme = theme
+                Theme = theme,
             }
         );
         _tcs = new TaskCompletionSource();
         return _tcs.Task;
     }
-    
-    public Task Success(string description,  SonnerTheme theme = SonnerTheme.Success)
-        {   
-           
-            
-            OnSonnerAdded?.Invoke(
-                new()
-                {
-                                                      
-                                                  
-                    Description = description,
-                    Theme = theme
-                }
-            );
-            _tcs = new TaskCompletionSource();
-            return _tcs.Task;
-        }
-    public Task Warning(string title, string description,  SonnerTheme theme = SonnerTheme.Warning)
-    {   
-       
-        
+
+    public Task Show(string description, SonnerTheme theme = SonnerTheme.Info)
+    {
+        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
+        _tcs = new TaskCompletionSource();
+        return _tcs.Task;
+    }
+
+    public Task Success(string title, string description, SonnerTheme theme = SonnerTheme.Success)
+    {
         OnSonnerAdded?.Invoke(
             new()
             {
-                                                  
-                                              
                 Title = title,
                 Description = description,
-                Theme = theme
+                Theme = theme,
             }
         );
         _tcs = new TaskCompletionSource();
         return _tcs.Task;
     }
-    
+
+    public Task Success(string description, SonnerTheme theme = SonnerTheme.Success)
+    {
+        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
+        _tcs = new TaskCompletionSource();
+        return _tcs.Task;
+    }
+
+    public Task Warning(string title, string description, SonnerTheme theme = SonnerTheme.Warning)
+    {
+        OnSonnerAdded?.Invoke(
+            new()
+            {
+                Title = title,
+                Description = description,
+                Theme = theme,
+            }
+        );
+        _tcs = new TaskCompletionSource();
+        return _tcs.Task;
+    }
+
     public Task Warning(string description, SonnerTheme theme = SonnerTheme.Warning)
-    {   
-       
-        
-        OnSonnerAdded?.Invoke(
-            new()
-            {
-                                                  
-                                              
-                Description = description,
-                Theme = theme
-            }
-        );
+    {
+        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
         _tcs = new TaskCompletionSource();
         return _tcs.Task;
     }
-    public Task Error(  string title, string description, SonnerTheme theme = SonnerTheme.Danger)
-    {   
-       
-        
+
+    public Task Error(string title, string description, SonnerTheme theme = SonnerTheme.Danger)
+    {
         OnSonnerAdded?.Invoke(
             new()
             {
-                                                  
-                                              
                 Title = title,
                 Description = description,
-                Theme = theme
+                Theme = theme,
             }
         );
         _tcs = new TaskCompletionSource();
         return _tcs.Task;
     }
-   
+
     public Task Error(string description, SonnerTheme theme = SonnerTheme.Danger)
-    {   
-       
-        
-        OnSonnerAdded?.Invoke(
-            new()
-            {
-                                                  
-                                              
-                Description = description,
-                Theme = theme
-            }
-        );
+    {
+        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
         _tcs = new TaskCompletionSource();
         return _tcs.Task;
     }
-
-
-   
 }
-
 
 public enum SonnerTheme
 {

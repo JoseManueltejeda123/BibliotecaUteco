@@ -37,15 +37,11 @@ public class TransactionsApiServices(BibliotecaHttpClient client) : ITransaction
         CancellationToken cancellationToken = default
     )
     {
-       
         return await client.FetchGetAsync<CashBoxSummaryResponse>(
             TransactionsEndpoint + $"/summary",
             cancellationToken
         );
     }
-
-
-       
 
     public async Task<ApiResponse<TransactionResponse>> RetireAsync(
         CreateTransactionRetirementRequest request,

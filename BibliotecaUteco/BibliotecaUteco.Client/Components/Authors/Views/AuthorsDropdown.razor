@@ -1,31 +1,32 @@
-<LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true" >
+<LumexPopover Shadow="Shadow.Large" Placement="PopoverPlacement.BottomStart" ShowArrow="true">
     <LumexPopoverTrigger>
-        <button  type="button">
-           @if (ChildContent is not null)
-           {
-               @(ChildContent)
-           }
+        <button type="button">
+            @if (ChildContent is not null)
+            {
+                @(ChildContent)
+            }
         </button>
-         
+
     </LumexPopoverTrigger>
 
     <LumexPopoverContent>
-        <AuthorsContainer OnAuthorClicked="HandleAuthorClicked" />
+        <AuthorsContainer OnAuthorClicked="HandleAuthorClicked"/>
     </LumexPopoverContent>
 </LumexPopover>
 
 
 @code{
 
-    [Parameter] public EventCallback<AuthorResponse> OnAuthorSelected {get; set;}
+    [Parameter] public EventCallback<AuthorResponse> OnAuthorSelected { get; set; }
 
-    [Parameter] public RenderFragment? ChildContent {get; set;} = default;
+    [Parameter] public RenderFragment? ChildContent { get; set; } = default;
 }
 
 @functions{
 
-    public async Task HandleAuthorClicked(AuthorResponse author){
-
+    public async Task HandleAuthorClicked(AuthorResponse author)
+    {
         await OnAuthorSelected.InvokeAsync(author);
     }
+
 }

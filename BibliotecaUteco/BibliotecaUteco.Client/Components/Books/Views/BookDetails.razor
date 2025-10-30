@@ -8,12 +8,12 @@
         else
         {
             <img src="@Book.CoverUrl" class=" w-full h-[200px] object-cover  "/>
-
         }
-        <div class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
+        <div
+            class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
 
     </div>
-  
+
     <div class="flex flex-col px-3 py-3 gap-2">
         <div class="flex flex-col gap-2 ">
             <p class="text-md font-semibold">@Book.Name</p>
@@ -21,7 +21,7 @@
         </div>
         <SectionDivider Name="Autores"/>
         <div class="flex flex-col gap-1">
-            @foreach(var author in Book.Authors.Select(x => x.Author))
+            @foreach (var author in Book.Authors.Select(x => x.Author))
             {
                 <AuthorCard HideActions="true" ShowBooksCount="false" ShowRemoveButton="false" Author="author"/>
             }
@@ -31,16 +31,17 @@
             @foreach (var genre in Book.Genres.Select(g => g.Genre))
             {
                 <LumexChip Variant="ChipVariant.Flat" Color="RandomColorHelper.GetRandomColor()">@genre.Name</LumexChip>
-
             }
         </div>
         <SectionDivider Name="Mas detalles"/>
         <p class="text-[13px] mb-2">Este libro se encuentra en <strong>@Book.LoansCount</strong> préstamos.</p>
         <div class="w-full flex flex-col  gap-2">
             <div class="flex items-center gap-2 w-full">
-                <div class="w-[100%] max-md:w-full h-[15px] bg-violet-300 border-violet-300 border rounded-full overflow-hidden">
-                    <div class="h-full py-1 px-2 text-center text-xs text-white bg-violet-500 rounded-full transition-all duration-500"
-                            style="width:@Progress">
+                <div
+                    class="w-[100%] max-md:w-full h-[15px] bg-violet-300 border-violet-300 border rounded-full overflow-hidden">
+                    <div
+                        class="h-full py-1 px-2 text-center text-xs text-white bg-violet-500 rounded-full transition-all duration-500"
+                        style="width:@Progress">
 
                     </div>
                 </div>
@@ -49,40 +50,36 @@
             <div class="flex items-center gap-4 ">
                 <div class="flex items-center gap-2">
                     <div class="rounded-full size-2 bg-violet-300">
-                        
+
                     </div>
                     <p class="text-xs">@Book.Stock en stock</p>
                     <div class="rounded-full size-2 bg-violet-500">
-                        
+
                     </div>
                     <p class="text-xs">@Book.AvailableAmount disponibles</p>
                 </div>
             </div>
-       </div>
-       
+        </div>
+
     </div>
-    </div>
-    
-      
-    
+</div>
+
+
+
 
 @code {
-    string Progress => $"{(Book.Stock == 0 ? 0 : (Book.AvailableAmount * 100 / Book.Stock))}%";
+    string Progress => $"{(Book.Stock == 0 ? 0 : Book.AvailableAmount * 100 / Book.Stock)}%";
 
     public BookResponse Book { get; set; } = new();
 
     protected override void OnInitialized()
     {
-      
-            if (RightBarContext.State.BookDetails is not null)
-            {
-                 Book = RightBarContext.State.BookDetails;
-            }
+        if (RightBarContext.State.BookDetails is not null)
+        {
+            Book = RightBarContext.State.BookDetails;
+        }
 
-            StateHasChanged();
-
-
-
+        StateHasChanged();
     }
 
 }

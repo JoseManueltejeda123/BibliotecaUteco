@@ -6,15 +6,15 @@
                       @bind-Value="@UpdateAuthorModel.FullName"
                       Label="Nombre del autor (completo)"
                       Placeholder="Ej. R. R. Tolkien"
-                      
+
                       LabelPlacement="@LabelPlacement.Inside"
                       Required="true"
                       Disabled="_updatingAuthor"
                       Description="Los nombres que sean muy largos es recomendable reducirlos a iniciales"/>
         <span class="text-red-700 text-red-700"><ValidationMessage For="@(() => UpdateAuthorModel.FullName)"/></span>
-        
+
     </div>
-    
+
 
     @if (_updatingAuthor)
     {
@@ -22,8 +22,9 @@
     }
     else
     {
-        <LumexButton Class="w-full"  Disabled="@(_updatingAuthor || Author.FullName == UpdateAuthorModel.FullName)" Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios</LumexButton>
-
+        <LumexButton Class="w-full" Disabled="@(_updatingAuthor || Author.FullName == UpdateAuthorModel.FullName)"
+                     Type="ButtonType.Submit" Color="ThemeColor.Primary">Guardar Cambios
+        </LumexButton>
     }
 </EditForm>
 
@@ -32,11 +33,10 @@
     //flags
 
     public bool _updatingAuthor { get; set; } = false;
-    
+
     public UpdateAuthorRequest UpdateAuthorModel { get; set; } = new();
-    
-    [Parameter]
-    public EventCallback<AuthorResponse> OnAuthorUpdated { get; set; }
+
+    [Parameter] public EventCallback<AuthorResponse> OnAuthorUpdated { get; set; }
 
     [Parameter] public AuthorResponse Author { get; set; } = new();
 
@@ -65,7 +65,6 @@
             Toast.Show("Autor actualizado exitosamente");
             await TriggerOnAuthorUpdated(result.Data);
         }
-        
     }
 
     public async Task TriggerOnAuthorUpdated(AuthorResponse author)

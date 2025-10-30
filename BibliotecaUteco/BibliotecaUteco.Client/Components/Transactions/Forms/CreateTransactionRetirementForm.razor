@@ -1,43 +1,45 @@
 @using System.Globalization
-<EditForm Model="RetirementModel"  class="flex w-full absolute flex-col justify-center">
+<EditForm Model="RetirementModel" class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-3 p-3 mt-[50px] ">
-        
-        <p class="text-[13px] opacity-80">Estas a punto de crear un retiro. Estos se reflejaran automaticamente en el estado de caja y no pueden ser cambiados o editados posteriormente.</p>
-        
-       
-        
+
+        <p class="text-[13px] opacity-80">Estas a punto de crear un retiro. Estos se reflejaran automaticamente en el
+            estado de caja y no pueden ser cambiados o editados posteriormente.</p>
+
+
+
         <SectionDivider Name="Detalles del retiro"/>
-         <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3">
             <LumexNumbox TValue="double"
-                        Label="Monto del retiro"
-                        Placeholder="0.00"
-                        minValue="0.01"
-                        step="1"
-                        @bind-Value="RetirementModel.Amount"
-                        LabelPlacement="@LabelPlacement.Inside"
-                        Description="Ingresa el monto que deseas retirar"
-                        Behavior="InputBehavior.OnInput"
-                        Size="Size.Small"
-                        Prefix="RD$ "/>
-                <span class="text-[13px] text-red-400"><ValidationMessage For="@(() => RetirementModel.Amount)"/></span>
+                         Label="Monto del retiro"
+                         Placeholder="0.00"
+                         minValue="0.01"
+                         step="1"
+                         @bind-Value="RetirementModel.Amount"
+                         LabelPlacement="@LabelPlacement.Inside"
+                         Description="Ingresa el monto que deseas retirar"
+                         Behavior="InputBehavior.OnInput"
+                         Size="Size.Small"
+                         Prefix="RD$ "/>
+            <span class="text-[13px] text-red-400"><ValidationMessage For="@(() => RetirementModel.Amount)"/></span>
 
         </div>
-        
-        
-         <div class="flex flex-col gap-3">
-            <LumexTextbox Type="(ShowPassword ? InputType.Text : InputType.Password)"
-                            Behavior="InputBehavior.OnInput"
-                            @bind-Value="@RetirementModel.Password"
-                            Label="Tu contraseña"
-                            Size="Size.Small"
-                            Required="true"
-                            Placeholder="********"
-                            Description="Ingresa tu contraseña"
-                            Disabled="_creatingTransaction"
-                            LabelPlacement="@LabelPlacement.Inside"
-                            />
-            <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar visibilidad</a>
+
+
+        <div class="flex flex-col gap-3">
+            <LumexTextbox Type="ShowPassword ? InputType.Text : InputType.Password"
+                          Behavior="InputBehavior.OnInput"
+                          @bind-Value="@RetirementModel.Password"
+                          Label="Tu contraseña"
+                          Size="Size.Small"
+                          Required="true"
+                          Placeholder="********"
+                          Description="Ingresa tu contraseña"
+                          Disabled="_creatingTransaction"
+                          LabelPlacement="@LabelPlacement.Inside"
+            />
+            <a class="text-xs underline text-green-600 cursor-pointer" @onclick="SwitchPasswordVisibility">Cambiar
+                visibilidad</a>
             <span class="text-[13px] text-red-400"><ValidationMessage For="@(() => RetirementModel.Password)"/></span>
         </div>
         @if (_creatingTransaction)
@@ -46,8 +48,10 @@
         }
         else
         {
-            <LumexButton OnClick="SetCreateTransactionRetirementConfirmationModal" Class="mt-[20px]" Disabled="@(_creatingTransaction || !context.Validate())" Color="ThemeColor.Primary">Crear Retiro</LumexButton>
-
+            <LumexButton OnClick="SetCreateTransactionRetirementConfirmationModal" Class="mt-[20px]"
+                         Disabled="@(_creatingTransaction || !context.Validate())" Color="ThemeColor.Primary">Crear
+                Retiro
+            </LumexButton>
         }
 
     </div>
@@ -55,31 +59,31 @@
 
 
 @code{
-    public bool _creatingTransaction {get; set;} = false;
+    public bool _creatingTransaction { get; set; } = false;
     public CreateTransactionRetirementRequest RetirementModel { get; set; } = new();
-  public bool ShowPassword { get; set; } = false;
+    public bool ShowPassword { get; set; } = false;
 
 
 }
 
 @functions{
 
- public void SwitchPasswordVisibility()
+    public void SwitchPasswordVisibility()
     {
         ShowPassword = !ShowPassword;
     }
+
     public async Task SetCreateTransactionRetirementConfirmationModal()
     {
-        if(_creatingTransaction) return;
+        if (_creatingTransaction) return;
 
-        
+
         var confirmed = await DialogService.ShowAsync(
-            title: "Crear Retiro",
-            body: $"¿Desea Crear el retiro por RD${RetirementModel.Amount}? El retiro se reflejará inmediatamente en el estado de cuenta.",
-            acceptText: "Sí, Crear Retiro",
-            cancelText: "Cancelar",
+            "Crear Retiro",
+            $"¿Desea Crear el retiro por RD${RetirementModel.Amount}? El retiro se reflejará inmediatamente en el estado de cuenta.",
+            "Sí, Crear Retiro",
+            "Cancelar",
             acceptColor: ThemeColor.Primary
-            
         );
 
         if (confirmed)
@@ -87,10 +91,8 @@
             await FetchCreateRetirementAsync();
         }
     }
-   
 
 
-    
     public async Task FetchCreateRetirementAsync()
     {
         _creatingTransaction = true;
@@ -102,11 +104,11 @@
             Toast.Show("Retiro creado con exito");
             await RightBarContext.SetCreatedTransaction(result.Data);
             await RightBarContext.CloseAsync();
-
         }
+
         _creatingTransaction = false;
         StateHasChanged();
     }
-   
-    
+
+
 }

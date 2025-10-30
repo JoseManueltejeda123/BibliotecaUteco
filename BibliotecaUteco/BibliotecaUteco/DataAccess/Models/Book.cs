@@ -28,7 +28,6 @@ public class Book : BaseEntity
 
     public bool IsDisabled { get; set; } = false;
 
-
     [NotMapped]
     public int AvailableAmount { get; set; }
 
@@ -37,8 +36,6 @@ public class Book : BaseEntity
 
     [NotMapped]
     public int LoansCount { get; set; }
-
-
 
     public static Book Create(CreateBookCommand command) =>
         new()

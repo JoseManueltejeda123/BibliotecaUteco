@@ -1,58 +1,72 @@
 @using BibliotecaUteco.Client.Utilities
-<EditForm Model="UpdateBookModel" Enhance="true"   class="flex w-full absolute flex-col justify-center">
+<EditForm Model="UpdateBookModel" Enhance="true" class="flex w-full absolute flex-col justify-center">
     <DataAnnotationsValidator/>
-    
-    
+
+
     <div class="relative w-full h-fit overflow-hidden">
         @if (!string.IsNullOrEmpty(_prevBookCover))
         {
-            <img src="@_prevBookCover" class=" w-full h-[200px] object-cover  "/>
+        <img src="@_prevBookCover" class=" w-full h-[200px] object-cover  "/>
 
         }
         else
         {
-            if (string.IsNullOrEmpty(BookCoverPrview) || UpdateBookModel.CoverFile is null)
-            {
-                <div class="bg-neutral-300 w-full h-[200px] object-cover "></div>
-            }
-            else
-            {
-                <img src="@BookCoverPrview" class=" w-full h-[200px] object-cover  "/>
-
-            }
+        if (string.IsNullOrEmpty(BookCoverPrview) || UpdateBookModel.CoverFile is null)
+        {
+        <div class="bg-neutral-300 w-full h-[200px] object-cover "></div>
         }
-        
-        <div class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
+        else
+        {
+        <img src="@BookCoverPrview" class=" w-full h-[200px] object-cover  "/>
+
+        }
+        }
+
+        <div
+            class="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-transparent via-white/70 to-white "></div>
 
     </div>
-   
-    
-    
+
+
+
     @if (!string.IsNullOrEmpty(_prevBookCover))
     {
-        <LumexButton Class="mx-3" Variant="Variant.Light" Type="ButtonType.Button" OnClick="RemovePrevCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
+    <LumexButton Class="mx-3" Variant="Variant.Light" Type="ButtonType.Button" OnClick="RemovePrevCover"
+                 Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada
+    </LumexButton>
 
     }
     else{
-            @if(UpdateBookModel.CoverFile is not null)
-            {
-                <LumexButton Class="mx-3" Variant="Variant.Light"  Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small" Color="ThemeColor.Danger">Eliminar portada</LumexButton>
-            }
-            else
-            {
-        
-               <LumexChip @onclick="TriggerFileInput" Variant="ChipVariant.Light" Color="ThemeColor.Primary" Class="absolute  top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer">
-                    <StartContent>          
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus-icon lucide-image-plus"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
-                    </StartContent>
-                    <ChildContent>Agregar Portada</ChildContent>
-                </LumexChip>
-            
-            }
+    @if(UpdateBookModel.CoverFile is not null)
+    {
+    <LumexButton Class="mx-3" Variant="Variant.Light" Type="ButtonType.Button" OnClick="RemoveCover" Size="Size.Small"
+                 Color="ThemeColor.Danger">Eliminar portada
+    </LumexButton>
     }
-       
-    <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput"  class="hidden" OnChange="HandleFileChange" />
-    
+    else
+    {
+
+    <LumexChip @onclick="TriggerFileInput" Variant="ChipVariant.Light" Color="ThemeColor.Primary"
+               Class="absolute  top-[100px] left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer">
+        <StartContent>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-image-plus-icon lucide-image-plus">
+                <path d="M16 5h6"/>
+                <path d="M19 2v6"/>
+                <path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/>
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                <circle cx="9" cy="9" r="2"/>
+            </svg>
+        </StartContent>
+        <ChildContent>Agregar Portada</ChildContent>
+    </LumexChip>
+
+    }
+    }
+
+    <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
+
     <div class="flex flex-col gap-3 px-3 py-3">
         <LumexTextbox Type="@InputType.Text"
                       Behavior="InputBehavior.OnInput"
@@ -69,32 +83,32 @@
         />
         <div class="flex flex-col gap-3 w-full bg-neutral-100 rounded-lg p-2">
             <label for="book synopsis" class="text-[13px] opacity-80">Synopsis o descripción</label>
-            <textarea 
-                            class="bg-transparent form-input max-w-full  text-sm outline-none resize-none  min-h-[6rem]"
-                            name="book synopsis"
-                            @bind="@UpdateBookModel.Synopsis"
-                            placeholder="Una breve descripcion de la historia o de que trata el libro"
-                            required="@true"
-                            maxlength="500"
+            <textarea
+                class="bg-transparent form-input max-w-full  text-sm outline-none resize-none  min-h-[6rem]"
+                name="book synopsis"
+                @bind="@UpdateBookModel.Synopsis"
+                placeholder="Una breve descripcion de la historia o de que trata el libro"
+                required="@true"
+                maxlength="500"
 
-                            minlength="10"></textarea>
+                minlength="10"></textarea>
             <span class="text-xs text-red-500"><ValidationMessage For="@(() => UpdateBookModel.Synopsis)"/></span>
 
         </div>
-         <LumexNumbox TValue="@int"
+        <LumexNumbox TValue="@int"
                      Label="Copias a disponibilidad"
                      @bind-Value="UpdateBookModel.Stock"
-                    Behavior="InputBehavior.OnInput"
+                     Behavior="InputBehavior.OnInput"
                      LabelPlacement="LabelPlacement.Inside"
                      Placeholder="Cantidad de copias"
-                    ErrorMessage="@(context.GetValidationMessages(() => UpdateBookModel.Stock).FirstOrDefault())"
+                     ErrorMessage="@(context.GetValidationMessages(() => UpdateBookModel.Stock).FirstOrDefault())"
                      EndContent="@_stackIcon"
                      Description="Cantidad de copias disponibles del libro. Mínimo 1."
                      min="1"
                      max="@int.MaxValue"
-                     step="1" />
+                     step="1"/>
 
-                      <SectionDivider Name="Autores"/>
+        <SectionDivider Name="Autores"/>
 
         <div class="flex flex-col gap-3 w-full">
             <p class="text-xs">Máximo 10 autores.</p>
@@ -102,21 +116,21 @@
             <div class="w-full gap-2 items-center flex flex-wrap">
                 @if (UpdateBookModel.Authors.Count < 10)
                 {
-                <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
-                                        <LumexButton Size="Size.Small" Class="w-[334px]" Color="ThemeColor.Primary" Variant="Variant.Flat">Agregar Autor</LumexButton>
+                    <AuthorsDropdown OnAuthorSelected="HandleOnAuthorSelected">
+                        <LumexButton Size="Size.Small" Class="w-[334px]" Color="ThemeColor.Primary"
+                                     Variant="Variant.Flat">Agregar Autor
+                        </LumexButton>
 
-                </AuthorsDropdown>
+                    </AuthorsDropdown>
                 }
                 @foreach (var author in UpdateBookModel.Authors)
                 {
-
-                <AuthorCard ShowBooksCount="false" ShowRemoveButton="@true" OnRemove="RemoveAuthor" Author="@author" />
+                    <AuthorCard ShowBooksCount="false" ShowRemoveButton="@true" OnRemove="RemoveAuthor"
+                                Author="@author"/>
                 }
 
 
-
             </div>
-
 
 
         </div>
@@ -129,24 +143,27 @@
 
                 @if (UpdateBookModel.Genres.Count < 5)
                 {
-                <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
-                    <LumexChip > <EndContent><PlusIcon Size="16px"/> </EndContent> <ChildContent>Agregar Genero</ChildContent></LumexChip>
-                </GenresDropdown>
+                    <GenresDropdown OnGenreSelected="HandleOnGenreSelected">
+                        <LumexChip>
+                            <EndContent>
+                                <PlusIcon Size="16px"/>
+                            </EndContent>
+                            <ChildContent>Agregar Genero</ChildContent>
+                        </LumexChip>
+                    </GenresDropdown>
                 }
                 @foreach (var genre in UpdateBookModel.Genres)
                 {
-
-                <LumexChip Variant="ChipVariant.Flat"  Color="RandomColorHelper.GetRandomColor()" OnClose="() => { RemoveGenre(genre);}">@genre.Name</LumexChip>
+                    <LumexChip Variant="ChipVariant.Flat" Color="RandomColorHelper.GetRandomColor()"
+                               OnClose="() => { RemoveGenre(genre);}">@genre.Name</LumexChip>
                 }
-
 
 
             </div>
 
 
-
         </div>
-      
+
 
         @if(_updatingBook)
         {
@@ -154,190 +171,191 @@
         }
         else
         {
-            <LumexButton Class="w-full mt-[20px]" Onclick="FetchUpdateBookAsync" Color="ThemeColor.Primary" Disabled="!context.Validate()">Guardar Cambios</LumexButton>
+        <LumexButton Class="w-full mt-[20px]" Onclick="FetchUpdateBookAsync" Color="ThemeColor.Primary"
+                     Disabled="!context.Validate()">Guardar Cambios
+        </LumexButton>
 
         }
     </div>
-   
 
 
 </EditForm>
-
-    
-        
-       
-          
-                    
-            
-        
-        
-
-
-
 
 
 @code{
 
 
     public string _prevBookCover { get; set; } = "";
-    public bool _updatingBook {get; set;} = false;
-    public RenderFragment _titleIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=" lucide lucide-type-icon lucide-type"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>;
-    public UpdateBookRequest UpdateBookModel {get; set;} = new();
-    public RenderFragment _stackIcon {get; set;} = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers-icon lucide-layers"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>;
+    public bool _updatingBook { get; set; } = false;
+    public RenderFragment _titleIcon { get; set; } = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=" lucide lucide-type-icon lucide-type">
+        <path d="M12 4v16"/>
+        <path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/>
+        <path d="M9 20h6"/>
+    </svg>;
+
+    public UpdateBookRequest UpdateBookModel { get; set; } = new();
+    public RenderFragment _stackIcon { get; set; } = @<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers-icon lucide-layers">
+        <path
+            d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/>
+        <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/>
+        <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>
+    </svg>;
 
 
     [Required(ErrorMessage = "Debe seleccionar al menos un género literario.")]
     [MinLength(1, ErrorMessage = "Debe seleccionar al menos un género literario.")]
 
-    public string CurrentFormSection {get; set;} = "name";
+    public string CurrentFormSection { get; set; } = "name";
 
-    public bool IsOpen {get; set;} = false;
+    public bool IsOpen { get; set; } = false;
     public string? BookCoverPrview { get; set; } = null;
 
     public CancellationTokenSource? _cts;
-   
+
     private InputFile? fileInput = null;
-    
+
 
 }
 
 @functions{
-    
-    public void ParseBookToUpdate(BookResponse book)
+
+public void ParseBookToUpdate(BookResponse book)
+{
+    UpdateBookModel.BookId = book.Id;
+    UpdateBookModel.BookName = book.Name;
+    UpdateBookModel.Authors = book.Authors.Select(x => x.Author).ToList();
+    UpdateBookModel.Genres = book.Genres.Select(x => x.Genre).ToList();
+    UpdateBookModel.Stock = book.Stock;
+    UpdateBookModel.Synopsis = book.Synopsis;
+    _prevBookCover = book.CoverUrl ?? "";
+
+    StateHasChanged();
+}
+protected override void OnInitialized()
+{
+    if (RightBarContext.State.BookToUpdate is var book && book is not null)
     {
-        UpdateBookModel.BookId = book.Id;
-        UpdateBookModel.BookName = book.Name;
-        UpdateBookModel.Authors = book.Authors.Select(x => x.Author).ToList();
-        UpdateBookModel.Genres = book.Genres.Select(x => x.Genre).ToList();
-        UpdateBookModel.Stock = book.Stock;
-        UpdateBookModel.Synopsis = book.Synopsis;
-        _prevBookCover = book.CoverUrl ?? "";
-            
-        StateHasChanged();
-        
+        ParseBookToUpdate(book);
     }
-    protected override void OnInitialized()
+
+    StateHasChanged();
+}
+
+public void HandleOnGenreSelected(GenreResponse genre)
+{
+    if (UpdateBookModel.Genres.Any(g => g.Id == genre.Id))
     {
-       
-            if (RightBarContext.State.BookToUpdate is var book && book is not null)
-            {
-            
-                ParseBookToUpdate(book);
-            }
-
-            StateHasChanged();
-
+        return;
     }
 
-    public void HandleOnGenreSelected(GenreResponse genre){
+    UpdateBookModel.Genres.Insert(0, genre);
+}
 
-        if(UpdateBookModel.Genres.Any(g => g.Id == genre.Id)){
-            return;
-        }
-        UpdateBookModel.Genres.Insert(0, genre);
-    }
+public void RemoveGenre(GenreResponse genre)
+{
+    var remove = UpdateBookModel.Genres.FirstOrDefault(g => g.Id == genre.Id);
 
-    public void RemoveGenre(GenreResponse genre){
-        var remove = UpdateBookModel.Genres.FirstOrDefault(g => g.Id == genre.Id);
-
-        if(remove is not null)
-        {
+    if (remove is not null)
+    {
         UpdateBookModel.Genres.Remove(remove);
-        }
     }
+}
 
-     public void HandleOnAuthorSelected(AuthorResponse author){
-
-        if(UpdateBookModel.Authors.Any(a => a.Id == author.Id)){
-            return;
-        }
-     UpdateBookModel.Authors.Insert(0, author);
-    }
-
-    public void RemoveAuthor(AuthorResponse author){
-        var remove = UpdateBookModel.Authors.FirstOrDefault(g => g.Id == author.Id);
-
-        if(remove is not null)
-        {
-            UpdateBookModel.Authors.Remove(remove);
-        }
-    }
-
-
-    public async Task FetchUpdateBookAsync()
+public void HandleOnAuthorSelected(AuthorResponse author)
+{
+    if (UpdateBookModel.Authors.Any(a => a.Id == author.Id))
     {
-
-        _updatingBook = true;
-
-        if(_cts is not null)
-        {
-           await  _cts.CancelAsync();
-        }
-
-        _cts = new();
-        StateHasChanged();
-       
-        UpdateBookModel.RemoveCover = string.IsNullOrEmpty(_prevBookCover) && UpdateBookModel.CoverFile is null;
-        var result = await BooksApiServices.UpdateBookAsync(UpdateBookModel, _cts.Token);
-
-        if (result.IsSuccessful())
-        {   
-            Toast.Success("Libro actualizado con exito");
-
-            await RightBarContext.SetUpdatedBookAsync(result.Data);
-            await RightBarContext.CloseAsync();
-            Clear();
-        }
-        _updatingBook = false;
-    
-        StateHasChanged();
-
+        return;
     }
 
-    public void Clear()
+    UpdateBookModel.Authors.Insert(0, author);
+}
+
+public void RemoveAuthor(AuthorResponse author)
+{
+    var remove = UpdateBookModel.Authors.FirstOrDefault(g => g.Id == author.Id);
+
+    if (remove is not null)
     {
-        UpdateBookModel = new();
-       
-        BookCoverPrview = null;
+        UpdateBookModel.Authors.Remove(remove);
     }
+}
 
-    public async Task HandleFileChange(InputFileChangeEventArgs e)
+
+public async Task FetchUpdateBookAsync()
+{
+    _updatingBook = true;
+
+    if (_cts is not null)
     {
-        var result = await FileHandler.HandleImageFromInputAsync(e);
-        if (result.Item1 is null)
-        {
-            await Toast.Error("Error al subir la imagen", result.Item2);
-
-            return;
-        }
-
-        UpdateBookModel.CoverFile = result.Item1;
-        BookCoverPrview = result.Item2;
-
+        await _cts.CancelAsync();
     }
 
-    public void Dispose()
+    _cts = new CancellationTokenSource();
+    StateHasChanged();
+
+    UpdateBookModel.RemoveCover = string.IsNullOrEmpty(_prevBookCover) && UpdateBookModel.CoverFile is null;
+    var result = await BooksApiServices.UpdateBookAsync(UpdateBookModel, _cts.Token);
+
+    if (result.IsSuccessful())
     {
-        UpdateBookModel = new();
-        BookCoverPrview = null;
+        Toast.Success("Libro actualizado con exito");
+
+        await RightBarContext.SetUpdatedBookAsync(result.Data);
+        await RightBarContext.CloseAsync();
+        Clear();
     }
 
-    public void RemovePrevCover()
+    _updatingBook = false;
+
+    StateHasChanged();
+}
+
+public void Clear()
+{
+    UpdateBookModel = new UpdateBookRequest();
+
+    BookCoverPrview = null;
+}
+
+public async Task HandleFileChange(InputFileChangeEventArgs e)
+{
+    var result = await FileHandler.HandleImageFromInputAsync(e);
+    if (result.Item1 is null)
     {
-        _prevBookCover = "";
+        await Toast.Error("Error al subir la imagen", result.Item2);
+
+        return;
     }
 
-    public void RemoveCover()
-    {
-        UpdateBookModel.CoverFile = null;
-        BookCoverPrview = null;
-    }
-    
-    private async Task TriggerFileInput()
-    {
-        if (fileInput is null) return;
-        await JsRuntime.InvokeVoidAsync("triggerClick", fileInput.Element);
-    }
+    UpdateBookModel.CoverFile = result.Item1;
+    BookCoverPrview = result.Item2;
+}
+
+public void Dispose()
+{
+    UpdateBookModel = new UpdateBookRequest();
+    BookCoverPrview = null;
+}
+
+public void RemovePrevCover()
+{
+    _prevBookCover = "";
+}
+
+public void RemoveCover()
+{
+    UpdateBookModel.CoverFile = null;
+    BookCoverPrview = null;
+}
+
+private async Task TriggerFileInput()
+{
+    if (fileInput is null) return;
+    await JsRuntime.InvokeVoidAsync("triggerClick", fileInput.Element);
+}
 
 }
 

@@ -11,11 +11,11 @@
                       Required="true"
                       Disabled="_creatingGenre"
                       Description="Los generos literarios no pueden estar repetidos. Deben de tener maximo 25 caracteres."
-                      />
+        />
         <span class=" text-red-700"><ValidationMessage For="@(() => CreateGenreModel.Name)"/></span>
-        
+
     </div>
-    
+
 
     @if (_creatingGenre)
     {
@@ -23,8 +23,9 @@
     }
     else
     {
-        <LumexButton Class="w-full"  Disabled="@(_creatingGenre || !context.Validate())" Type="ButtonType.Submit" Color="ThemeColor.Primary">Crear género</LumexButton>
-
+        <LumexButton Class="w-full" Disabled="@(_creatingGenre || !context.Validate())" Type="ButtonType.Submit"
+                     Color="ThemeColor.Primary">Crear género
+        </LumexButton>
     }
 </EditForm>
 
@@ -33,11 +34,10 @@
     //flags
 
     public bool _creatingGenre { get; set; } = false;
-    
+
     public CreateGenreRequest CreateGenreModel { get; set; } = new();
-    
-    [Parameter]
-    public EventCallback<GenreResponse> OnGenreCreated { get; set; }
+
+    [Parameter] public EventCallback<GenreResponse> OnGenreCreated { get; set; }
 
 }
 
@@ -59,7 +59,6 @@
 
             await TriggerOnGenreCreated(result.Data);
         }
-        
     }
 
     public async Task TriggerOnGenreCreated(GenreResponse author)

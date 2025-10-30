@@ -30,8 +30,7 @@ public static class UserDbSetActions
                 IdentityCardNumber = b.IdentityCardNumber,
                 ProfilePictureUrl = b.ProfilePictureUrl,
                 Role = b.Role,
-                    IsDisabled = b.IsDisabled,
-
+                IsDisabled = b.IsDisabled,
             })
             .ToListAsync(token);
     }
@@ -57,7 +56,6 @@ public static class UserDbSetActions
                 ProfilePictureUrl = b.ProfilePictureUrl,
                 Role = b.Role,
                 IsDisabled = b.IsDisabled,
-
             })
             .FirstOrDefaultAsync(token);
     }

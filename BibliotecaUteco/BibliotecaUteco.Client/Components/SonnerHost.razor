@@ -64,42 +64,44 @@ RestartTimer();
 
 private void OnTimerElapsed(object? state)
 {
-if (_isPaused) return; // <- evita eliminar si está pausado
+    if (_isPaused) return; // <- evita eliminar si está pausado
 
-lock (_lock)
-{
-if (Sonners.Count > 0)
-{
-Sonners.RemoveAt(0);
-InvokeAsync(StateHasChanged);
-}
-}
+    lock (_lock)
+    {
+        if (Sonners.Count > 0)
+        {
+            Sonners.RemoveAt(0);
+            InvokeAsync(StateHasChanged);
+        }
+    }
 }
 
 public void RemoveSonner(Sonner sonner)
 {
-lock (_lock)
-{
-Sonners.Remove(sonner);
-}
-InvokeAsync(StateHasChanged);
+    lock (_lock)
+    {
+        Sonners.Remove(sonner);
+    }
+
+    InvokeAsync(StateHasChanged);
 }
 
 public void Dispose()
 {
-Toast.OnSonnerAdded -= HandleSonnerChanged;
-_timer?.Dispose();
+    Toast.OnSonnerAdded -= HandleSonnerChanged;
+    _timer?.Dispose();
 }
 
 public string GetThemeColor(SonnerTheme theme)
 {
-return theme switch
-{
-SonnerTheme.Info => "text-blue-800 bg-blue-100/50 border-blue-200",
-SonnerTheme.Success => "text-green-800 bg-green-100/50 border-green-200",
-SonnerTheme.Warning => "text-yellow-800 bg-yellow-100/50 border-yellow-200",
-SonnerTheme.Danger => "text-red-800 bg-red-100/50 border-red-200",
-_ => "text-neutral-800 bg-neutral-100/50"
-};
+    return theme switch
+    {
+        SonnerTheme.Info => "text-blue-800 bg-blue-100/50 border-blue-200",
+        SonnerTheme.Success => "text-green-800 bg-green-100/50 border-green-200",
+        SonnerTheme.Warning => "text-yellow-800 bg-yellow-100/50 border-yellow-200",
+        SonnerTheme.Danger => "text-red-800 bg-red-100/50 border-red-200",
+        _ => "text-neutral-800 bg-neutral-100/50"
+    };
 }
+
 }

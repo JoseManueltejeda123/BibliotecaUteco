@@ -35,10 +35,7 @@ public class BibliotecaHttpClient(
 
     public void ShowErrorToast(string message)
     {
-        toast.Error(
-            "Oops",
-           message
-        );
+        toast.Error("Oops", message);
     }
 
     private async Task<ApiResponse<TResult>> ProcessResult<TResult>(

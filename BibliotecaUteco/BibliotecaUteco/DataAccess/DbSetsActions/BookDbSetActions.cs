@@ -84,7 +84,6 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     LoansCount = b.Loans.Count(),
                     IsDisabled = b.IsDisabled,
-
                 })
                 .ToListAsync(token);
         }

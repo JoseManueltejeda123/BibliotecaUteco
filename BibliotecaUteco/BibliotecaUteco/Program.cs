@@ -75,8 +75,7 @@ app.UseStaticFiles(
         FileProvider = new PhysicalFileProvider(
             Path.Combine(app.Environment.WebRootPath, "BookCovers")
         ),
-        RequestPath = "/BookCovers"
-    
+        RequestPath = "/BookCovers",
     }
 );
 app.UseAuthentication();

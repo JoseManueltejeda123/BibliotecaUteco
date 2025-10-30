@@ -44,28 +44,32 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
                     ) =>
                     {
                         return await wrapper.ExecuteAsync<IApiResult>(async () =>
-                     {
+                        {
                             return await sender.SendAndValidateAsync(command, cancellationToken);
                         });
                     }
                 )
                 .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
                 .RequireCors(CorsPolicies.DefaultPolicy)
-                .Produces<SuccessApiResult<UserResponse>>(200, ApplicationContentTypes.ApplicationJson)
+                .Produces<SuccessApiResult<UserResponse>>(
+                    200,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .Produces<BadRequestApiResult>(400, ApplicationContentTypes.ApplicationJson)
                 .Produces<NotFoundApiResult>(404, ApplicationContentTypes.ApplicationJson)
                 .Produces<ForbiddenApiResult>(403, ApplicationContentTypes.ApplicationJson)
-                .Produces<InternalServerErrorApiResult>(500, ApplicationContentTypes.ApplicationJson)
+                .Produces<InternalServerErrorApiResult>(
+                    500,
+                    ApplicationContentTypes.ApplicationJson
+                )
                 .WithTags(nameof(User))
                 .WithName(nameof(ChangeUserStateEndpoint))
                 .WithDescription("Habilita o deshabilita un usuario en el sistema");
         }
     }
 
-
-    public class ChangeUserStateCommandHandler(
-        IBibliotecaUtecoDbContext context
-    ) : ICommandHandler<ChangeUserStateCommand, IApiResult>
+    public class ChangeUserStateCommandHandler(IBibliotecaUtecoDbContext context)
+        : ICommandHandler<ChangeUserStateCommand, IApiResult>
     {
         public async Task<IApiResult> HandleAsync(
             ChangeUserStateCommand request,
@@ -73,9 +77,10 @@ namespace BibliotecaUteco.Features.UserFeatures.Actions
         )
         {
             // 1. Verificar que el usuario existe
-            var user = await context
-                .Users
-                .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
+            var user = await context.Users.FirstOrDefaultAsync(
+                u => u.Id == request.UserId,
+                cancellationToken
+            );
 
             if (user == null)
             {

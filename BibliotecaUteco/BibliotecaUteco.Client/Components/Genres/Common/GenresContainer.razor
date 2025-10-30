@@ -1,32 +1,38 @@
-﻿
-<div class="flex max-h-[400px] w-[300px] flex-col gap-2 overflow-y-auto p-2">
-    
+﻿<div class="flex max-h-[400px] w-[300px] flex-col gap-2 overflow-y-auto p-2">
+
     @if (ShowCreateGenreModal)
     {
-
         <AuthorizeView>
             <Authorized>
                 <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Crear Género</label>
                     <IconButton Small="true" OnClick="() => { ShowCreateGenreModal = false; }" TooltipText="Cancelar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-x-icon lucide-x">
+                            <path d="M18 6 6 18"/>
+                            <path d="m6 6 12 12"/>
+                        </svg>
                     </IconButton>
                 </div>
                 <CreateGenreForm OnGenreCreated="HandleOnGenreCreated"/>
             </Authorized>
         </AuthorizeView>
-        
-        
-        
     }
-    else if(ShowUpdateGenreModal && GenreToUpdate is not null)
+    else if (ShowUpdateGenreModal && GenreToUpdate is not null)
     {
-         <AuthorizeView>
+        <AuthorizeView>
             <Authorized>
                 <div class="mb-4 flex w-full items-center justify-between">
                     <label class="text-lg font-semibold">Actualizar Género</label>
-                    <IconButton Small="true" OnClick="()=>{ShowUpdateGenreModal = false; GenreToUpdate = null;}" TooltipText="Cancelar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    <IconButton Small="true" OnClick="()=>{ShowUpdateGenreModal = false; GenreToUpdate = null;}"
+                                TooltipText="Cancelar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-x-icon lucide-x">
+                            <path d="M18 6 6 18"/>
+                            <path d="m6 6 12 12"/>
+                        </svg>
                     </IconButton>
                 </div>
                 <UpdateGenreForm Genre="GenreToUpdate" OnGenreUpdated="HandleOnGenreUpdated"/>
@@ -37,7 +43,8 @@
     {
         <div class="flex w-full flex-col gap-3">
             <label class="font-semibold text-[15px]">Administrar géneros</label>
-            <EditForm class="flex w-full items-end gap-2" Model="@GetGenresByName" OnValidSubmit="FetchGetGenresByNameAsync">
+            <EditForm class="flex w-full items-end gap-2" Model="@GetGenresByName"
+                      OnValidSubmit="FetchGetGenresByNameAsync">
                 <DataAnnotationsValidator></DataAnnotationsValidator>
                 <LumexTextbox Type="@InputType.Search"
                               Label="Buscar género"
@@ -49,56 +56,50 @@
                               Size="Size.Small"
                               Behavior="InputBehavior.OnInput"
                               OnCleared="async () => { await FetchGetGenresByNameAsync(); }"/>
-                <LumexButton Type="ButtonType.Submit" Size="Size.Small" Disabled="@_fetchingGenres" Color="ThemeColor.Primary">
+                <LumexButton Type="ButtonType.Submit" Size="Size.Small" Disabled="@_fetchingGenres"
+                             Color="ThemeColor.Primary">
                     Buscar
                 </LumexButton>
 
             </EditForm>
 
         </div>
-    <SectionDivider Name="Géneros"/>
+        <SectionDivider Name="Géneros"/>
 
-    
-           
-   
 
-     <div class="mt-3 flex w-full flex-wrap items-center gap-2">
-        
-         @if(_fetchingGenres){
+        <div class="mt-3 flex w-full flex-wrap items-center gap-2">
 
-             <GenreSkeleton Count="10"/>
-         }
-         else
-         {
-           
-                     <div @onclick="() => {ShowCreateGenreModal = true; }">
-                         <LumexChip Class="cursor-pointer border-dashed !py-1 transition-all hover:bg-green-50" Variant="ChipVariant.Outlined" Color="ThemeColor.Primary">
-                             Crear Género
-                         </LumexChip>
-                     </div>
-             
-          
-         
-             if(Genres.Any())
-             {
-                 foreach(var genre in Genres)
-                 {   
-                    <GenreCard @key="genre.Id" Index="@(Genres.IndexOf(genre))" OnGenreDeleted="HandleGenreDeleted" OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked" Genre="genre"/>
-    
-                 }
-             }
-             else
-             {   
-                 <NoResultsFound></NoResultsFound>
-             }
+            @if (_fetchingGenres)
+            {
+                <GenreSkeleton Count="10"/>
+            }
+            else
+            {
+                <div @onclick="() => {ShowCreateGenreModal = true; }">
+                    <LumexChip Class="cursor-pointer border-dashed !py-1 transition-all hover:bg-green-50"
+                               Variant="ChipVariant.Outlined" Color="ThemeColor.Primary">
+                        Crear Género
+                    </LumexChip>
+                </div>
 
-       
-         }
-     </div>
-   
+
+                if (Genres.Any())
+                {
+                    foreach (var genre in Genres)
+                    {
+                        <GenreCard @key="genre.Id" Index="@(Genres.IndexOf(genre))" OnGenreDeleted="HandleGenreDeleted"
+                                   OnUpdateGenreClicked="HandleOnUpdateGenreClicked" OnClicked="HandleGenreClicked"
+                                   Genre="genre"/>
+                    }
+                }
+                else
+                {
+                    <NoResultsFound></NoResultsFound>
+                }
+            }
+        </div>
     }
-    
-    
+
 
 </div>
 
@@ -107,17 +108,17 @@
 
     //flags
 
-    public bool _fetchingGenres {get; set;} = true;
+    public bool _fetchingGenres { get; set; } = true;
 
     //props
-    public List<GenreResponse> Genres {get; set;} = new();
-    public GetGenresByNameRequest GetGenresByName {get; set;} = new();
+    public List<GenreResponse> Genres { get; set; } = new();
+    public GetGenresByNameRequest GetGenresByName { get; set; } = new();
 
-    [Parameter] public EventCallback<GenreResponse> OnGenreClicked {get; set;}
+    [Parameter] public EventCallback<GenreResponse> OnGenreClicked { get; set; }
     public bool ShowCreateGenreModal { get; set; } = false;
     public bool ShowUpdateGenreModal { get; set; } = false;
 
-    public GenreResponse? GenreToUpdate {get; set;} = null;
+    public GenreResponse? GenreToUpdate { get; set; } = null;
 
 }
 
@@ -125,12 +126,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             await FetchGetGenresByNameAsync();
-
         }
-
     }
 
     public void HandleOnUpdateGenreClicked(GenreResponse genre)
@@ -139,8 +138,9 @@
         GenreToUpdate = genre;
     }
 
-    public async Task HandleGenreClicked(GenreResponse genre){
-         await OnGenreClicked.InvokeAsync(genre);
+    public async Task HandleGenreClicked(GenreResponse genre)
+    {
+        await OnGenreClicked.InvokeAsync(genre);
     }
 
     public void HandleOnGenreCreated(GenreResponse genre)
@@ -149,18 +149,18 @@
         Genres.Insert(0, genre);
     }
 
-     public void HandleOnGenreUpdated(GenreResponse genre)
+    public void HandleOnGenreUpdated(GenreResponse genre)
     {
         ShowUpdateGenreModal = false;
         GenreToUpdate = null;
 
         var genreToUpdate = Genres.FirstOrDefault(g => g.Id == genre.Id);
 
-        if(genreToUpdate is null) return;
+        if (genreToUpdate is null) return;
 
         var index = Genres.IndexOf(genreToUpdate);
 
-        if(index < 0) return;
+        if (index < 0) return;
 
         Genres[index] = genre;
     }
@@ -169,19 +169,20 @@
     {
         var genreToDelete = Genres.FirstOrDefault(g => g.Id == genre.Id);
 
-        if(genreToDelete is null) return;
+        if (genreToDelete is null) return;
 
         Genres.Remove(genreToDelete);
         StateHasChanged();
     }
-    public async Task FetchGetGenresByNameAsync(){
 
+    public async Task FetchGetGenresByNameAsync()
+    {
         _fetchingGenres = true;
         StateHasChanged();
 
         var result = await GenresApiServices.GetByNameAsync(GetGenresByName);
 
-        if(result.IsSuccessful())
+        if (result.IsSuccessful())
         {
             Genres = result.Data;
         }
@@ -189,4 +190,5 @@
         _fetchingGenres = false;
         StateHasChanged();
     }
+
 }

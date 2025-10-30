@@ -1,57 +1,62 @@
-<div class=@($"w-full p-3 flex  rounded-xl gap-3 bg-neutral-100/70 {(Transaction.Amount < 0 ? "hover:bg-red-50 text-red-800": "hover:bg-green-50 text-green-800")}")>
-        @if (Transaction.Amount < 0)
-        {
+<div
+    class=@($"w-full p-3 flex  rounded-xl gap-3 bg-neutral-100/70 {(Transaction.Amount < 0 ? "hover:bg-red-50 text-red-800" : "hover:bg-green-50 text-green-800")}")>
+    @if (Transaction.Amount < 0)
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right">
+            <path d="m7 7 10 10"/>
+            <path d="M17 7v10H7"/>
+        </svg>
+    }
+    else
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-arrow-up-left-icon lucide-arrow-up-left">
+            <path d="M7 17V7h10"/>
+            <path d="M17 17 7 7"/>
+        </svg>
+    }
+    <div class="flex flex-col gap-1 w-full">
 
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
-        }
-        else
-        {
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-left-icon lucide-arrow-up-left"><path d="M7 17V7h10"/><path d="M17 17 7 7"/></svg>
-
-
-        }
-        <div class="flex flex-col gap-1 w-full">
-            
-            <div class="flex w-full">
-                @if (Transaction.Amount < 0)
-                {
-                    <label class="text-sm font-semibold">Retiro de caja</label>
-
-                }
-                else
-                {
-                    <label class="text-sm font-semibold">Abono a caja</label>
-
-                }
-                <p class="text-[13px] text-nowrap font-semibold text-neutral-700 ml-auto">@Transaction.CreatedAtLocalFormatted</p>
-            </div>
-           
-            <label class="text-lg font-semibold">RD$ @Transaction.Amount.ToString("F2")</label>
-
-            <SectionDivider Name="Creador de la transacción"/>
-
-            <div class="flex items-center gap-3 text-neutral-800">
-                @if (!string.IsNullOrEmpty(Transaction.User.ProfilePictureUrl))
-                {
-                    <img class="rounded-full size-[35px]" src="@Transaction.User.ProfilePictureUrl" alt="user-pfp"/>
-                }
-                else
-                {
-                    <img alt="user-pfp" class="w-[35px] h-[35px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Transaction.User.Username}")/>
-                }
-                <div class="flex flex-col">
-                    <p class="text-sm">@Transaction.User.FullName</p>
-                    <p class="text-xs"> @("@" + Transaction.User.Username)</p>
-
-                </div>
-            </div>
-
-
-
+        <div class="flex w-full">
+            @if (Transaction.Amount < 0)
+            {
+                <label class="text-sm font-semibold">Retiro de caja</label>
+            }
+            else
+            {
+                <label class="text-sm font-semibold">Abono a caja</label>
+            }
+            <p class="text-[13px] text-nowrap font-semibold text-neutral-700 ml-auto">@Transaction.CreatedAtLocalFormatted</p>
         </div>
-       
-    
-   
+
+        <label class="text-lg font-semibold">RD$ @Transaction.Amount.ToString("F2")</label>
+
+        <SectionDivider Name="Creador de la transacción"/>
+
+        <div class="flex items-center gap-3 text-neutral-800">
+            @if (!string.IsNullOrEmpty(Transaction.User.ProfilePictureUrl))
+            {
+                <img class="rounded-full size-[35px]" src="@Transaction.User.ProfilePictureUrl" alt="user-pfp"/>
+            }
+            else
+            {
+                <img alt="user-pfp" class="w-[35px] h-[35px] rounded-full object-cover"
+                     src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Transaction.User.Username}")/>
+            }
+            <div class="flex flex-col">
+                <p class="text-sm">@Transaction.User.FullName</p>
+                <p class="text-xs"> @("@" + Transaction.User.Username)</p>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
 </div>
 
 

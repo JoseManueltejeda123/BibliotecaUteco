@@ -1,14 +1,16 @@
 
 @if (ShowInvoice)
 {
-        <div class="w-full hidden">
-            <PenalizationInvoice OnPrinted="() => {ShowInvoice = false; }" Penalty="Penalty"/>
-        </div>
+    <div class="w-full hidden">
+        <PenalizationInvoice OnPrinted="() => {ShowInvoice = false; }" Penalty="Penalty"/>
+    </div>
 }
 
 <div class=@($"w-full outlined  transition-all bg-neutral-100 border-neutral-200 border rounded-xl p-3 flex gap-3")>
-    <div class=@($"rounded-full {(Penalty.IsDue ? "bg-red-300 text-red-700" : "bg-green-300 text-green-700")}  flex items-center justify-center shrink-0 w-[30px] h-[30px]")>
-        @if(!Penalty.IsDue){
+    <div
+        class=@($"rounded-full {(Penalty.IsDue ? "bg-red-300 text-red-700" : "bg-green-300 text-green-700")}  flex items-center justify-center shrink-0 w-[30px] h-[30px]")>
+        @if (!Penalty.IsDue)
+        {
             <CircleCheckFilledIcon Size="22px"/>
         }
         else
@@ -21,16 +23,19 @@
             <div>
                 <p class="text-[15px]">Multa para <strong>@Penalty.ReaderName</strong></p>
                 <div class="text-sm font-medium mt-1 inconsolata flex max-md:flex-col  gap-2">
-                    <span class=" inconsolata">ID Préstamo: <span class="bg-black px-2 text-white">@Penalty.Id</span></span>
+                    <span class=" inconsolata">ID Préstamo: <span
+                            class="bg-black px-2 text-white">@Penalty.Id</span></span>
 
-                    <span class=" inconsolata">Cédula: <span class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderIdentityCardNumber) ? "------" : Penalty.ReaderIdentityCardNumber)</span></span>
-                    <span class=" inconsolata">Matrícula: <span class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderStudentLicence) ? "------" : Penalty.ReaderStudentLicence)</span></span>
+                    <span class=" inconsolata">Cédula: <span
+                            class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderIdentityCardNumber) ? "------" : Penalty.ReaderIdentityCardNumber)</span></span>
+                    <span class=" inconsolata">Matrícula: <span
+                            class="bg-black px-2 text-white">@(string.IsNullOrEmpty(Penalty.ReaderStudentLicence) ? "------" : Penalty.ReaderStudentLicence)</span></span>
 
                 </div>
             </div>
-            
-            
-            <LumexDropdown  ShowArrow="true" >
+
+
+            <LumexDropdown ShowArrow="true">
                 <LumexDropdownTrigger>
                     <button>
                         <EllipsisVerticalIcon Size="18"/>
@@ -43,69 +48,90 @@
                         </StartContent>
                         <ChildContent>
                             <p class="text-[13px] font-normal">Copiar Id a portapapeles</p>
-                        </ChildContent> 
+                        </ChildContent>
                     </LumexDropdownItem>
-                    
-                    
-                    <LumexDropdownItem  OnClick="()=>{ShowInvoice = true;}" Id="print">
+
+
+                    <LumexDropdownItem OnClick="()=>{ShowInvoice = true;}" Id="print">
                         <StartContent>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer">
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                                <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+                                <rect x="6" y="14" width="12" height="8" rx="1"/>
+                            </svg>
                         </StartContent>
                         <ChildContent>
                             <p class="text-[13px] font-normal">Imprimir penalización</p>
-                        </ChildContent> 
+                        </ChildContent>
                     </LumexDropdownItem>
-                    
-                    
-                    <LumexDropdownItem Disabled="@(!Penalty.IsDue)"  OnClick="SetPayPenaltyView" Id="pay">
+
+
+                    <LumexDropdownItem Disabled="@(!Penalty.IsDue)" OnClick="SetPayPenaltyView" Id="pay">
                         <StartContent>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="M18 12h.01"/><path d="M19 22v-6"/><path d="m22 19-3-3-3 3"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/></svg>                        </StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up">
+                                <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/>
+                                <path d="M18 12h.01"/>
+                                <path d="M19 22v-6"/>
+                                <path d="m22 19-3-3-3 3"/>
+                                <path d="M6 12h.01"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                        </StartContent>
                         <ChildContent>
                             <p class="text-[13px] font-normal">Registrar pago</p>
-                        </ChildContent> 
+                        </ChildContent>
                     </LumexDropdownItem>
-                          
+
                 </LumexDropdownMenu>
             </LumexDropdown>
 
-           
-            
+
         </div>
         <div class="flex w-full items-start max-md:flex-col gap-8 max-md:gap-1">
 
             <div class="flex flex-col">
-              <SectionDivider Name="Detalles de cobro"/>
-                <span class="font-semibold text-sm mt-2 inconsolata"> Taza de penalización (diario): <span class="bg-black px-2  text-white inconsolata">RD$ @(Penalty._dailyFineRate)</span></span>
-                <span class="font-semibold text-sm mt-2 inconsolata"> Dias excedidos: <span class="bg-black px-2  text-white inconsolata">@Penalty.OverdueDays</span></span>
+                <SectionDivider Name="Detalles de cobro"/>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Taza de penalización (diario): <span
+                        class="bg-black px-2  text-white inconsolata">RD$ @(Penalty._dailyFineRate)</span></span>
+                <span class="font-semibold text-sm mt-2 inconsolata"> Dias excedidos: <span
+                        class="bg-black px-2  text-white inconsolata">@Penalty.OverdueDays</span></span>
 
-                <span class="font-semibold text-sm mt-2 inconsolata">Monto a pagar: <span class="bg-neutral-950 px-2  text-white ">RD$ @Penalty._totalAmount  </span></span>
+                <span class="font-semibold text-sm mt-2 inconsolata">Monto a pagar: <span
+                        class="bg-neutral-950 px-2  text-white ">RD$ @Penalty._totalAmount  </span></span>
 
 
             </div>
-          
 
-            @if(!Penalty.IsDue)
+
+            @if (!Penalty.IsDue)
             {
                 <div class="flex flex-col">
-                  <SectionDivider Name="Detalles de pago"/>
-                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto dado: <span class="bg-black px-2 text-white inconsolata">RD$ @Penalty._givenAmount</span></span>
-                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto develto: <span class="bg-black px-2  text-white inconsolata">RD$ @Penalty._returnedAmount </span></span>
+                    <SectionDivider Name="Detalles de pago"/>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto dado: <span
+                            class="bg-black px-2 text-white inconsolata">RD$ @Penalty._givenAmount</span></span>
+                    <span class="font-semibold text-sm mt-2 inconsolata"> Monto develto: <span
+                            class="bg-black px-2  text-white inconsolata">RD$ @Penalty._returnedAmount </span></span>
 
 
                 </div>
-              
             }
-            
+
         </div>
-        
+
     </div>
-    
+
 </div>
+
 @code{
 
     [Parameter] public PenaltyResponse Penalty { get; set; } = new();
-    [Parameter] public bool ShowInvoice {get; set;} = false;
-    
+    [Parameter] public bool ShowInvoice { get; set; } = false;
+
 }
 
 @functions{
@@ -115,6 +141,7 @@
         Toast.Show("Id copiado al portapapeles");
         await JsRuntime.InvokeVoidAsync("copyToClipboard", Penalty.Id.ToString());
     }
+
     public async Task SetPayPenaltyView()
     {
         await RightBarContext.OpenPayPenalty(Penalty);

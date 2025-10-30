@@ -1,11 +1,12 @@
-@implements  IDisposable
+@implements IDisposable
 
-<div class=@($"flex items-start relative gap-3 justify-between text-neutral-800 w-full  px-2 py-3 rounded-2xl {(User.IsDisabled ? "bg-red-50 text-red-700" : "bg-neutral-50")}")>
+<div
+    class=@($"flex items-start relative gap-3 justify-between text-neutral-800 w-full  px-2 py-3 rounded-2xl {(User.IsDisabled ? "bg-red-50 text-red-700" : "bg-neutral-50")}")>
     <div class="flex w-full  items-start gap-2">
         @if (string.IsNullOrEmpty(User.ProfilePictureUrl))
         {
-        <img class="w-[30px] h-[30px] rounded-full object-cover" src=@($"https://hostedboringavatars.vercel.app/api/beam?name={User.Username}")/>
-
+            <img class="w-[30px] h-[30px] rounded-full object-cover"
+                 src=@($"https://hostedboringavatars.vercel.app/api/beam?name={User.Username}")/>
         }
         else
         {
@@ -16,119 +17,144 @@
             <p class="text-xs">@(User.Username)</p>
             <SectionDivider/>
             <p class="text-xs">Cédula: @User.IdentityCardNumber</p>
-            
+
             <p class="text-xs">Rol: @User.Role.ToString()</p>
 
         </div>
     </div>
-   <AuthorizeView>
-       <Authorized>
-           <LumexDropdown  @ref="dropdownRef" ShowArrow="true" Placement="PopoverPlacement.Bottom"  >
-               <LumexDropdownTrigger >
-                   <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
-               </LumexDropdownTrigger>
-               <LumexDropdownMenu>
-                   <LumexDropdownItem Disabled="true" Id="info">
-                       <StartContent>
-                           <InfoFilledIcon Size="18px"/>
-                       </StartContent>
-                       <ChildContent>
-                           <div class="w-full">
-                               <p class="text-[13px] font-semibold">@User.FullName</p>
-                               <p class="text-xs ">@User.Role.ToString()</p>
-                           </div>
-                       </ChildContent>
+    <AuthorizeView>
+        <Authorized>
+            <LumexDropdown @ref="dropdownRef" ShowArrow="true" Placement="PopoverPlacement.Bottom">
+                <LumexDropdownTrigger>
+                    <EllipsisVerticalIcon Size="18px" class=" cursor-pointer text-neutral-800"/>
+                </LumexDropdownTrigger>
+                <LumexDropdownMenu>
+                    <LumexDropdownItem Disabled="true" Id="info">
+                        <StartContent>
+                            <InfoFilledIcon Size="18px"/>
+                        </StartContent>
+                        <ChildContent>
+                            <div class="w-full">
+                                <p class="text-[13px] font-semibold">@User.FullName</p>
+                                <p class="text-xs ">@User.Role.ToString()</p>
+                            </div>
+                        </ChildContent>
 
-                   </LumexDropdownItem>
+                    </LumexDropdownItem>
 
-                   <LumexDropdownItem Disabled="true" Id="Divider">
-                       <LumexDivider/>
-                   </LumexDropdownItem>
-                   <LumexDropdownItem OnClick="SetUpdateUserView" Id="ActualizarUsuario">
-                       <StartContent>
-                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
-                       </StartContent>
-                       <ChildContent>Actualizar usuario</ChildContent>
-                   </LumexDropdownItem>
+                    <LumexDropdownItem Disabled="true" Id="Divider">
+                        <LumexDivider/>
+                    </LumexDropdownItem>
+                    <LumexDropdownItem OnClick="SetUpdateUserView" Id="ActualizarUsuario">
+                        <StartContent>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
+                                <path
+                                    d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+                                <path d="m15 5 4 4"/>
+                            </svg>
+                        </StartContent>
+                        <ChildContent>Actualizar usuario</ChildContent>
+                    </LumexDropdownItem>
 
-                   @if(context.User.FindFirst("role")?.Value == "Admin" && User.Id.ToString() != context.User.FindFirst("sub")?.Value)
-                   {
-                     @if(User.IsDisabled)
-                     {
-                          <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowChangeUserStateDialog" Id="EnableUser" >
-                           <StartContent>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-keyhole-open-icon lucide-lock-keyhole-open"><circle cx="12" cy="16" r="1"/><rect width="18" height="12" x="3" y="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 9.33-2.5"/></svg>     
-                           </StartContent>
-                           <ChildContent>Habilitar usuario</ChildContent>
-                       </LumexDropdownItem>
+                    @if (context.User.FindFirst("role")?.Value == "Admin" && User.Id.ToString() != context.User.FindFirst("sub")?.Value)
+                    {
+                        @if (User.IsDisabled)
+                        {
+                            <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowChangeUserStateDialog"
+                                               Id="EnableUser">
+                                <StartContent>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="lucide lucide-lock-keyhole-open-icon lucide-lock-keyhole-open">
+                                        <circle cx="12" cy="16" r="1"/>
+                                        <rect width="18" height="12" x="3" y="10" rx="2"/>
+                                        <path d="M7 10V7a5 5 0 0 1 9.33-2.5"/>
+                                    </svg>
+                                </StartContent>
+                                <ChildContent>Habilitar usuario</ChildContent>
+                            </LumexDropdownItem>
+                        }
+                        else
+                        {
+                            <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowChangeUserStateDialog"
+                                               Id="DisableUser">
+                                <StartContent>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="lucide lucide-user-lock-icon lucide-user-lock">
+                                        <circle cx="10" cy="7" r="4"/>
+                                        <path d="M10.3 15H7a4 4 0 0 0-4 4v2"/>
+                                        <path d="M15 15.5V14a2 2 0 0 1 4 0v1.5"/>
+                                        <rect width="8" height="5" x="13" y="16" rx=".899"/>
+                                    </svg>
+                                </StartContent>
+                                <ChildContent>Deshabilitar usuario</ChildContent>
+                            </LumexDropdownItem>
+                        }
+                    }
 
-                     }
-                     else
-                     {
-                        <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowChangeUserStateDialog" Id="DisableUser" >
-                           <StartContent>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-lock-icon lucide-user-lock"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><path d="M15 15.5V14a2 2 0 0 1 4 0v1.5"/><rect width="8" height="5" x="13" y="16" rx=".899"/></svg>       
-                           </StartContent>
-                           <ChildContent>Deshabilitar usuario</ChildContent>
-                       </LumexDropdownItem>
-                     }
-                   
+                    @if (User.Role.ToString() != "Admin" && context.User.FindFirst("sub")?.Value != User.Id.ToString() && context.User.FindFirst("role")?.Value == "Admin")
+                    {
+                        <LumexDropdownItem OnClick="SetResetPasswordConfirmationModal" Id="ResetPassord">
+                            <StartContent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="lucide lucide-key-icon lucide-key">
+                                    <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/>
+                                    <path d="m21 2-9.6 9.6"/>
+                                    <circle cx="7.5" cy="15.5" r="5.5"/>
+                                </svg>
+                            </StartContent>
+                            <ChildContent>Restablecer contraseña</ChildContent>
+                        </LumexDropdownItem>
 
-                   }
-                  
-                   @if(User.Role.ToString() != "Admin" && context.User.FindFirst("sub")?.Value != User.Id.ToString() && context.User.FindFirst("role")?.Value == "Admin" )
-                   {
-                       <LumexDropdownItem OnClick="SetResetPasswordConfirmationModal" Id="ResetPassord">
-                           <StartContent>
-                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-icon lucide-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>                </StartContent>
-                           <ChildContent>Restablecer contraseña</ChildContent>
-                       </LumexDropdownItem>
+                        <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowDeleteUserDialog" Id="DeleteUser"
+                                           class="" Color="@ThemeColor.Danger">
+                            <StartContent>
+                                <Trash2Icon Size="18px"/>
+                            </StartContent>
+                            <ChildContent>Eliminar usuario</ChildContent>
+                        </LumexDropdownItem>
+                    }
 
-                       <LumexDropdownItem Disabled="@_deletingUser" OnClick="ShowDeleteUserDialog" Id="DeleteUser" class="" Color="@ThemeColor.Danger">
-                           <StartContent>
-                               <Trash2Icon Size="18px" />
-                         </StartContent>
-                           <ChildContent>Eliminar usuario</ChildContent>
-                       </LumexDropdownItem>
-                   }
-                   
-                  
-               </LumexDropdownMenu>
-           </LumexDropdown>
-       </Authorized>
-   </AuthorizeView>
-   
+
+                </LumexDropdownMenu>
+            </LumexDropdown>
+        </Authorized>
+    </AuthorizeView>
+
 </div>
 
 @code{
 
-    
-    
+
     [Parameter] public UserResponse User { get; set; } = new();
     public LumexDropdown? dropdownRef;
-    public bool _resetingPassword {get; set;} = false;
+    public bool _resetingPassword { get; set; } = false;
 
-    [Parameter]
-    public EventCallback<UserResponse> OnDelete { get; set; }
+    [Parameter] public EventCallback<UserResponse> OnDelete { get; set; }
 
-    public bool _deletingUser {get; set;} = false;
+    public bool _deletingUser { get; set; } = false;
 
-  
+
 }
 
 
 
 @functions{
-    
+
     public async Task ShowChangeUserStateDialog()
     {
-        if(_deletingUser) return;
+        if (_deletingUser) return;
 
         await HideDropdown();
         var confirmed = await DialogService.ShowAsync(
-            title: $"{(User.IsDisabled ? "Habilitar" : "Deshabilitar")} usuario",
-            body: $"Vas a {(User.IsDisabled ? "habilitar" : "deshabilitar")} al usuario {User.FullName}. ¿Deseas proceder?",
-            acceptText: $"Sí, {(User.IsDisabled ? "habilitar" : "deshabilitar")} usuario"
+            $"{(User.IsDisabled ? "Habilitar" : "Deshabilitar")} usuario",
+            $"Vas a {(User.IsDisabled ? "habilitar" : "deshabilitar")} al usuario {User.FullName}. ¿Deseas proceder?",
+            $"Sí, {(User.IsDisabled ? "habilitar" : "deshabilitar")} usuario"
         );
 
         if (confirmed)
@@ -136,15 +162,16 @@
             await FetchChangeUserStateAsync();
         }
     }
+
     public async Task ShowDeleteUserDialog()
     {
-        if(_deletingUser) return;
+        if (_deletingUser) return;
 
         await HideDropdown();
         var confirmed = await DialogService.ShowAsync(
-            title: "Eliminar usuario",
-            body: $"Vas a eliminar al usuario {User.FullName}. Esta acción es irreversible. ¿Deseas proceder?",
-            acceptText: "Sí, eliminar usuario",
+            "Eliminar usuario",
+            $"Vas a eliminar al usuario {User.FullName}. Esta acción es irreversible. ¿Deseas proceder?",
+            "Sí, eliminar usuario",
             acceptColor: ThemeColor.Danger
         );
 
@@ -153,17 +180,17 @@
             await FetchDeleteUserAsync();
         }
     }
+
     public async Task SetResetPasswordConfirmationModal()
     {
-        if(_resetingPassword) return;
+        if (_resetingPassword) return;
 
         await HideDropdown();
         var confirmed = await DialogService.ShowAsync(
-            title: "Reiniciar contraseña",
-            body: $"Vas a restablecer la contraseña de {User.Username} a Uteco.2025. ¿Deseas proceder?",
-            acceptText: "Sí, restablecer contraseña",
-            cancelText: "Cancelar"
-            
+            "Reiniciar contraseña",
+            $"Vas a restablecer la contraseña de {User.Username} a Uteco.2025. ¿Deseas proceder?",
+            "Sí, restablecer contraseña",
+            "Cancelar"
         );
 
         if (confirmed)
@@ -176,39 +203,41 @@
     {
         _deletingUser = true;
         StateHasChanged();
-        
-        var result = await UsersApiServices.ChangeStateAsync(new(){UserId = User.Id, IsDisabled = !User.IsDisabled});
+
+        var result = await UsersApiServices.ChangeStateAsync(new ChangeUserStateRequest { UserId = User.Id, IsDisabled = !User.IsDisabled });
 
         if (result.IsSuccessful())
         {
             User.IsDisabled = !User.IsDisabled;
             Toast.Show($"Usuario {(User.IsDisabled ? "deshabilitado" : "habilitado")} exitosamente");
         }
+
         _deletingUser = false;
         StateHasChanged();
     }
-    
+
     public async Task FetchResetPasswordAsync()
     {
         _resetingPassword = true;
         StateHasChanged();
-        
-        var result = await UsersApiServices.ResetPasswordAsync(new(){UserId = User.Id});
+
+        var result = await UsersApiServices.ResetPasswordAsync(new ResetPasswordRequest { UserId = User.Id });
 
         if (result.IsSuccessful())
         {
             Toast.Success("Contraseña restablecida a Uteco.2025");
-            
         }
+
         _resetingPassword = false;
         StateHasChanged();
-    }   
+    }
+
     public async Task SetUpdateUserView()
     {
-       await HideDropdown();
+        await HideDropdown();
         await RightBarContext.OpenUpdateUserAsync(User);
     }
-    
+
     public async Task HideDropdown()
     {
         if (dropdownRef is null) return;
@@ -216,15 +245,15 @@
         StateHasChanged();
         await Task.Delay(20);
     }
-    
+
 
     public async Task FetchDeleteUserAsync()
     {
-        if(_deletingUser) return;
+        if (_deletingUser) return;
 
         _deletingUser = true;
         StateHasChanged();
-        var result = await UsersApiServices.DeleteAsync(new() { UserId = User.Id });
+        var result = await UsersApiServices.DeleteAsync(new DeleteUserRequest { UserId = User.Id });
 
         if (result.IsSuccessful())
         {
@@ -240,6 +269,6 @@
     {
         StateHasChanged();
     }
-    
+
 
 }

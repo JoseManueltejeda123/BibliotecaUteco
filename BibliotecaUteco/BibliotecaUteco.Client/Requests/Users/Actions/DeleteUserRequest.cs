@@ -7,6 +7,6 @@ namespace BibliotecaUteco.Client.Requests.Users.Actions
 {
     public class DeleteUserRequest
     {
-        public int UserId { get; set; } 
+        public int UserId { get; set; }
     }
 }

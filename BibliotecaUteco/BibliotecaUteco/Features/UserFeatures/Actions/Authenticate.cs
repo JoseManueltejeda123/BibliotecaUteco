@@ -105,7 +105,7 @@ public class AuthenticateUserCommandHandler(
             return new NotFoundApiResult("Credenciales incorrectas");
         }
 
-        if(user.IsDisabled)
+        if (user.IsDisabled)
         {
             return new ForbiddenApiResult("El usuario está deshabilitado");
         }
