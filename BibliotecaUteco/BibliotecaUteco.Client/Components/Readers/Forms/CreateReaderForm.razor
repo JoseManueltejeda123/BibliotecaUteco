@@ -45,6 +45,17 @@
             </p>
         </div>
 
+         <div class="flex flex-col">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false"
+                          Type="InputType.Text" Value="@CreateReaderModel.Passport" ValueChanged="(e)=> {HandleOnPassportInputChanged(e);}"
+                          Label="Pasaporte" Description="Introduzca el numero de su pasaporte (opcional)."
+                          PlaceHolder="Ej. B11111000"></LumexTextbox>
+            <p class="text-red-500 text-xs">
+                <ValidationMessage For="@(() => CreateReaderModel.Passport)"/>
+            </p>
+        </div>
+
+
         <div class="flex flex-col">
             <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader" Required="false"
                           Type="InputType.Text" Value="@CreateReaderModel.StudentLicence"
@@ -112,6 +123,19 @@
         return;
     }
 
+    public void HandleOnPassportInputChanged(string? e)
+    {
+        var value = e ?? string.Empty;
+        if (value == string.Empty)
+        {
+            CreateReaderModel.Passport = null;
+            return;
+        }
+
+        CreateReaderModel.Passport = value;
+        return;
+    }
+
     public async Task FetchCreateReaderAsync()
     {
         _creatingReader = true;
@@ -121,7 +145,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Lector creado exitosamente");
+           await Toast.Show("Lector creado exitosamente");
             await RightBarContext.SetCreatedReaderAsync(result.Data);
             await RightBarContext.CloseAsync();
             CreateReaderModel = new();

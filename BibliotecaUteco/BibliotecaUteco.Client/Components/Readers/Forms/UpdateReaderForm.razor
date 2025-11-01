@@ -43,6 +43,17 @@
                 <ValidationMessage For="@(() => UpdateReaderModel.IdentityCardNumber)"/>
             </p>
         </div>
+
+        <div class="flex flex-col">
+            <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_updatingReader" Required="false"
+                          Type="InputType.Text" Value="@UpdateReaderModel.Passport" ValueChanged="(e)=> {HandleOnPassportInputChanged(e);}"
+                          Label="Pasaporte" Description="Introduzca el numero de su pasaporte (opcional)."
+                          PlaceHolder="Ej. B11111000"></LumexTextbox>
+            <p class="text-red-500 text-xs">
+                <ValidationMessage For="@(() => UpdateReaderModel.Passport)"/>
+            </p>
+        </div>
+
         <div>
             <LumexTextbox Behavior="InputBehavior.OnInput" Required="false" Type="InputType.Text"
                           Value="@UpdateReaderModel.StudentLicence"
@@ -111,6 +122,19 @@
         return;
     }
 
+     public void HandleOnPassportInputChanged(string? e)
+    {
+        var value = e ?? string.Empty;
+        if (value == string.Empty)
+        {
+            UpdateReaderModel.Passport = null;
+            return;
+        }
+
+        UpdateReaderModel.Passport = value;
+        return;
+    }
+
     public void ParseReaderToUpdate(ReaderResponse reader)
     {
         UpdateReaderModel.FullName = reader.FullName;
@@ -121,6 +145,7 @@
         UpdateReaderModel.IdentityCardNumber = reader.IdentityCardNumber;
         UpdateReaderModel.ReaderId = reader.Id;
         UpdateReaderModel.Address = reader.Address;
+        UpdateReaderModel.Passport = reader.Passport;
     }
 
     protected override void OnInitialized()
@@ -142,8 +167,9 @@
 
         if (result.IsSuccessful())
         {
-            await Toast.Show("Lector actualizado exitosamente");
+            Toast.Show("Lector actualizado exitosamente");
             await RightBarContext.SetUpdatedReaderAsync(result.Data);
+           
             await RightBarContext.CloseAsync();
             UpdateReaderModel = new UpdateReaderRequest();
         }

@@ -37,6 +37,7 @@ public record RightBarState
             PenaltyToPay = null,
             PayedPenalty = null,
             CreatedTransaction = null,
+            View = RightBarView.Default
         };
 }
 

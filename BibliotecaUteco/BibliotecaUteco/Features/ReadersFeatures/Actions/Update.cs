@@ -63,6 +63,10 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
         [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
         [Description("Número de matrícula del estudiante (opcional).")]
         public string? StudentLicence { get; set; }
+
+        [FromBody, JsonPropertyName("passport"), MaxLength(9), MinLength(9)]
+        [Description("Pasaporte del lector (opcional)")]
+        public string? Passport { get; set; }
     }
 
     public class UpdateReaderCommandValidator : AbstractValidator<UpdateReaderCommand>
@@ -110,6 +114,21 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
                         .MaximumLength(9)
                         .Matches(@"^[0-9\-]+$")
                         .WithMessage("La matrícula solo puede contener números y guiones.");
+                }
+            );
+
+              When(
+
+            x => !string.IsNullOrEmpty(x.Passport),
+
+                () =>
+                {
+                    RuleFor(x => x.Passport)
+                    .MinimumLength(9)
+                    .WithMessage("El pasaporte debe de tener un mínimo de 9 caracteres")
+                    .MaximumLength(9)
+                    .WithMessage("El pasaporte debe de tener un máximo de 9 caracteres");
+
                 }
             );
         }

@@ -6,11 +6,19 @@ public class SonnerService : ISonnerService
 {
     public event Action<Sonner>? OnSonnerAdded;
 
-    private TaskCompletionSource? _tcs;
+
+    private TaskCompletionSource<object?>? _tcs;
+
+    private Task StartSonner(Sonner sonner)
+    {
+        OnSonnerAdded?.Invoke(sonner);
+        _tcs = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        return _tcs.Task;
+    }
 
     public Task Show(string title, string description, SonnerTheme theme = SonnerTheme.Info)
     {
-        OnSonnerAdded?.Invoke(
+        return StartSonner(
             new()
             {
                 Title = title,
@@ -18,20 +26,16 @@ public class SonnerService : ISonnerService
                 Theme = theme,
             }
         );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
     }
 
     public Task Show(string description, SonnerTheme theme = SonnerTheme.Info)
     {
-        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
+        return StartSonner(new() { Description = description, Theme = theme });
     }
 
     public Task Success(string title, string description, SonnerTheme theme = SonnerTheme.Success)
     {
-        OnSonnerAdded?.Invoke(
+        return StartSonner(
             new()
             {
                 Title = title,
@@ -39,20 +43,16 @@ public class SonnerService : ISonnerService
                 Theme = theme,
             }
         );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
     }
 
     public Task Success(string description, SonnerTheme theme = SonnerTheme.Success)
     {
-        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
+        return StartSonner(new() { Description = description, Theme = theme });
     }
 
     public Task Warning(string title, string description, SonnerTheme theme = SonnerTheme.Warning)
     {
-        OnSonnerAdded?.Invoke(
+        return StartSonner(
             new()
             {
                 Title = title,
@@ -60,20 +60,16 @@ public class SonnerService : ISonnerService
                 Theme = theme,
             }
         );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
     }
 
     public Task Warning(string description, SonnerTheme theme = SonnerTheme.Warning)
     {
-        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
+        return StartSonner(new() { Description = description, Theme = theme });
     }
 
     public Task Error(string title, string description, SonnerTheme theme = SonnerTheme.Danger)
     {
-        OnSonnerAdded?.Invoke(
+        return StartSonner(
             new()
             {
                 Title = title,
@@ -81,15 +77,21 @@ public class SonnerService : ISonnerService
                 Theme = theme,
             }
         );
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
     }
 
     public Task Error(string description, SonnerTheme theme = SonnerTheme.Danger)
     {
-        OnSonnerAdded?.Invoke(new() { Description = description, Theme = theme });
-        _tcs = new TaskCompletionSource();
-        return _tcs.Task;
+        return StartSonner(new() { Description = description, Theme = theme });
+    }
+
+    // Call this from the UI component when the sonner is dismissed to unblock awaiting callers.
+    public void Dismiss()
+    {
+        if (_tcs is not null)
+        {
+            _tcs.TrySetResult(null);
+            _tcs = null;
+        }
     }
 }
 

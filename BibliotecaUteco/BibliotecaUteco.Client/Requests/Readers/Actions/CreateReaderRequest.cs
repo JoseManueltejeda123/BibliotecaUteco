@@ -30,5 +30,8 @@ public class CreateReaderRequest
     [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
     public string? StudentLicence { get; set; }
 
+    [Length(9, 9, ErrorMessage = "El pasaporte debe de tener 9 caracteres.")]
+    public string? Passport { get; set; }
+
     public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;
 }

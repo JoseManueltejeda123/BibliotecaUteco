@@ -29,8 +29,13 @@ public class Reader : BaseEntity
 
     public List<Loan> Loans { get; set; } = new();
 
+    [Column("Pasaporte")]
+    [MaxLength(9), MinLength(9)]
+    public string? Passport { get; set; } 
+
     [NotMapped]
     public int LoansCount { get; set; } = 0;
+    
 
     [NotMapped]
     public int ReturnedLoans { get; set; } = 0;
@@ -40,6 +45,8 @@ public class Reader : BaseEntity
 
     [NotMapped]
     public bool LastLoanIsActive { get; set; }
+
+
 
     [Column("IdSexo")]
     public int? SexId { get; set; }
@@ -88,6 +95,12 @@ public class Reader : BaseEntity
             hasBeenUpdated = true;
         }
 
+        if(Passport != command.Passport)
+        {
+            Passport = command.Passport;
+            hasBeenUpdated = true;
+        }
+
         if (hasBeenUpdated)
         {
             UpdatedAt = DateTime.UtcNow;
@@ -103,6 +116,7 @@ public class Reader : BaseEntity
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
             SexId = request.SexId,
+            Passport = request.Passport,
             IdentityCardNumber = request.IdentityCardNumber,
             StudentLicence = !string.IsNullOrWhiteSpace(request.StudentLicence)
                 ? request.StudentLicence.ToUpper().Trim()
@@ -118,6 +132,7 @@ public class Reader : BaseEntity
             FullName = FullName,
             PhoneNumber = PhoneNumber,
             Address = Address,
+            Passport = Passport ?? "",
             StudentLicence = StudentLicence,
             IdentityCardNumber = IdentityCardNumber,
             LoansCount = LoansCount,

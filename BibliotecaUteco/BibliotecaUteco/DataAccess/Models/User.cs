@@ -49,6 +49,7 @@ public class User : BaseEntity
             IdentityCardNumber = request.IdentityCardNumber,
             RoleId = request.RoleId,
             SexId = request.SexId,
+
         };
 
     public bool Update(UpdateUserCommand command)

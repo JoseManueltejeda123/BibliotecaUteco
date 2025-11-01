@@ -22,9 +22,13 @@ public class CreateReaderCommand : ICommand<IApiResult>
     [Description("ID del sexo")]
     public int SexId { get; set; }
 
-    [FromBody, JsonPropertyName("studentLicence"), MaxLength(9), MinLength(3)]
-    [Description("Matrícula de estudiante (opcional)")]
+    [FromBody, JsonPropertyName("studentLicence"), MaxLength(9), MinLength(8)]
+    [Description("Matrícula del lector (opcional)")]
     public string? StudentLicence { get; set; }
+
+    [FromBody, JsonPropertyName("passport"), MaxLength(9), MinLength(9)]
+    [Description("Pasaporte del lector (opcional)")]
+    public string? Passport { get; set; }
 }
 
 public class CreateReaderCommandValidator : AbstractValidator<CreateReaderCommand>
@@ -56,6 +60,19 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
             .WithMessage("El numero de teléfono debe tener al menos 10 caracteres")
             .MaximumLength(10)
             .WithMessage("El numero de teléfono no puede superar los 10 caracteres");
+
+        When(
+
+            x => !string.IsNullOrEmpty(x.Passport),
+
+            () =>
+            {
+                RuleFor(x => x.Passport)
+                .MinimumLength(9).WithMessage("El pasaporte debe de tener un mínimo de 9 caracteres")
+                .MaximumLength(9).WithMessage("El pasaporte debe de tener un máximo de 9 caracteres");
+
+            }
+        );
 
         RuleFor(x => x.IdentityCardNumber)
             .NotEmpty()
@@ -155,6 +172,21 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
             )
             {
                 return new ConflictApiResult("Ya existe un lector registrado con esa matrícula");
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Passport))
+        {
+            var normalizedPassport = request.Passport.ToUpper().Trim();
+
+            if (
+                await _context.Readers.AnyAsync(
+                    r => r.Passport == normalizedPassport,
+                    cancellationToken
+                )
+            )
+            {
+                return new ConflictApiResult("Ya existe un lector registrado con ese número de pasaporte.");
             }
         }
 
