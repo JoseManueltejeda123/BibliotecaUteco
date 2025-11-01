@@ -85,10 +85,8 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
                 .NotEmpty()
                 .WithMessage("El número de teléfono es obligatorio.")
                 .Matches(@"^\d{10}$")
-                .WithMessage("El número telefónico debe tener exactamente 10 dígitos numéricos.")
-                .Must(x => x.StartsWith("809") || x.StartsWith("829") || x.StartsWith("849"))
-                .WithMessage("El número de teléfono debe comenzar con 809, 829 o 849.");
-
+                .WithMessage("El número telefónico debe tener exactamente 10 dígitos numéricos.");
+               
             RuleFor(x => x.Address)
                 .NotEmpty()
                 .WithMessage("La dirección es obligatoria.")

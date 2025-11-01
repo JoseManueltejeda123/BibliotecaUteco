@@ -50,8 +50,6 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .WithMessage("El numero de teléfono es obligatorio")
-            .Must(x => x.StartsWith("809") || x.StartsWith("829") || x.StartsWith("849"))
-            .WithMessage("El numero de telefono debe de empezar con 809, 829 u 849")
             .Matches(@"^\d{10}$")
             .WithMessage("El número telefónico solo puede contener números")
             .MinimumLength(10)
