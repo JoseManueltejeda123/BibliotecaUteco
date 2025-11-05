@@ -4,7 +4,7 @@
 @foreach(var sonner in Sonners.Take(3))
 {
     <Animate @onmouseenter="PauseTimer"
-             @onmouseleave="ResumeTimer" Animation="Animations.SlideDown"  style=@($"margin-top: {(Sonners.IndexOf(sonner) + 5) * 3}px; ")  class=@($"p-3 group transition-all hover:scale-105   fixed top-[20px] left-1/2 transform -translate-x-1/2 border min-w-[200px] max-w-[350px] rounded-xl flex flex-col  backdrop-blur-sm {GetThemeColor(sonner.Theme)} shadow-sm z-[99999]") >
+             @onmouseleave="ResumeTimer" Animation="Animations.SlideDown"  style=@($"margin-top: {(Sonners.IndexOf(sonner) + 5) * 3}px; ")  class=@($"p-3 group transition-all hover:scale-105   fixed top-[20px] left-1/2 transform -translate-x-1/2 border min-w-[300px] max-w-[350px] rounded-xl flex flex-col  {GetThemeColor(sonner.Theme)} shadow-sm z-[99999]") >
         
             <button @onclick="() => {RemoveSonner(sonner);}" class="absolute scale- invisible group-hover:visible  top-[-10px] right-[-10px] rounded-full border border-neutral-200 flex items-center p-1 bg-neutral-100 justify-center"><XIcon Size="14px"/></button>
             <div class="flex  w-full items-start gap-3">
@@ -96,11 +96,11 @@ public string GetThemeColor(SonnerTheme theme)
 {
     return theme switch
     {
-        SonnerTheme.Info => "text-blue-800 bg-blue-100/50 border-blue-200",
-        SonnerTheme.Success => "text-green-800 bg-green-100/50 border-green-200",
-        SonnerTheme.Warning => "text-yellow-800 bg-yellow-100/50 border-yellow-200",
-        SonnerTheme.Danger => "text-red-800 bg-red-100/50 border-red-200",
-        _ => "text-neutral-800 bg-neutral-100/50"
+        SonnerTheme.Info => "text-blue-800 bg-blue-100 border-blue-200",
+        SonnerTheme.Success => "text-green-800 bg-green-100 border-green-200",
+        SonnerTheme.Warning => "text-yellow-800 bg-yellow-100 border-yellow-200",
+        SonnerTheme.Danger => "text-red-800 bg-red-100 border-red-200",
+        _ => "text-neutral-800 bg-neutral-100"
     };
 }
 

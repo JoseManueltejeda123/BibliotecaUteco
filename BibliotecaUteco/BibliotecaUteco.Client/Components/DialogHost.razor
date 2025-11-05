@@ -1,11 +1,11 @@
 @implements IDisposable
 @if (DialogService.IsOpen)
 {
-    <div @onclick="@(DialogService.Cancel)"
+    <div    @onclick="@(DialogService.Cancel)"
          class="fixed inset-0 z-[99999] bg-white/70  flex justify-center items-center">
-        <Animate Animation="Animations.ZoomIn" Delay="@TimeSpan.FromMilliseconds(100)">
-            <div
-                class=" rounded-2xl gap-0 border border-neutral-200 w-[350px] flex flex-col  bg-white/50 backdrop-blur-lg">
+        <Animate  Animation="Animations.ZoomIn" Delay="@TimeSpan.FromMilliseconds(100)">
+            <div @onclick:stopPropagation
+                class="z-[999999] rounded-2xl gap-0 border border-neutral-200 w-[350px] flex flex-col  bg-white/50 backdrop-blur-lg">
 
                 <div class="bg-white rounded-t-2xl p-6 w-full flex flex-col gap-4">
                     <h2 class="text-md font-semibold text-center">@DialogService.Title</h2>
