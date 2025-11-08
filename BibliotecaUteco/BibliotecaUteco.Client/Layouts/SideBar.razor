@@ -129,7 +129,7 @@
                 </Icon>
             </SideBarButton>
 
-            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/penalties");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
+            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/help");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
                 <Icon>
 
                     <LumexTooltip Size="Size.Small" Content=@("Penalizaciones") ShowArrow="true">
@@ -140,7 +140,7 @@
                 
             </SideBarButton>
          
-            @if(SideBarExpanded)
+           @* @if(SideBarExpanded)
             {
                 <SideBarButton OnClick='()=>{NavManager.NavigateTo("/about");}'  Name="Acerca" IsExpanded="SideBarExpanded">
                     <Icon>
@@ -164,7 +164,7 @@
                     
                 </SideBarButton>
          
-            }
+            }*@
             
             
         </Authorized>

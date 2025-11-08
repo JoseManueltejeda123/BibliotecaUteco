@@ -3,7 +3,11 @@
 
     @if(_fetchingBook)
     {
-        <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+        <div class="w-full h-full flex items-center justify-center gap-3">
+            <p class="text-[13px]">Obteniendo libro de la base de datos</p>
+            <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+
+        </div>
     }
     else
     {
