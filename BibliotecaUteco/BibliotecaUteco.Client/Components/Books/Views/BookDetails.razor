@@ -1,6 +1,13 @@
 @using BibliotecaUteco.Client.Utilities
 <div class="flex w-full absolute flex-col">
-    <div class="relative w-full h-fit overflow-hidden">
+
+    @if(_fetchingBook)
+    {
+        <LumexSpinner Variant="SpinnerVariant.Classic" Size="Size.Small"/>
+    }
+    else
+    {
+         <div class="relative w-full h-fit overflow-hidden">
         @if (string.IsNullOrEmpty(Book.CoverUrl))
         {
             <div class="bg-black w-full h-[200px] object-cover "></div>
@@ -62,6 +69,8 @@
         </div>
 
     </div>
+    }
+   
 </div>
 
 
@@ -70,16 +79,38 @@
 @code {
     string Progress => $"{(Book.Stock == 0 ? 0 : Book.AvailableAmount * 100 / Book.Stock)}%";
 
+    public bool _fetchingBook {get; set;} = false;
     public BookResponse Book { get; set; } = new();
+    public int BookId {get; set;} 
 
-    protected override void OnInitialized()
+    public async Task FetchGetBookById()
+    {
+        _fetchingBook = true;
+        StateHasChanged();
+        var result = await BooksApiServices.GetByIdAsync(new(){BookId = BookId});
+
+        if(result.IsSuccessful())
+        {
+            Book = result.Data;
+            
+        }
+        _fetchingBook = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
     {
         if (RightBarContext.State.BookDetails is not null)
         {
-            Book = RightBarContext.State.BookDetails;
+            BookId = RightBarContext.State.BookDetails.Id;
         }
 
-        StateHasChanged();
+        await FetchGetBookById();
+        
+    }
+    protected override void OnInitialized()
+    {
+       
     }
 
 }

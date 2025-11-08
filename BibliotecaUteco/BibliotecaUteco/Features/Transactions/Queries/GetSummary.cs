@@ -58,7 +58,6 @@ namespace BibliotecaUteco.Features.Transactions.Queries
                 .GroupBy(t => 1) 
                 .Select(g => new CashBoxSummaryResponse
                 {
-                    // Estado de caja: suma de todos los montos (positivos y negativos)
                     CashBoxState = g.Sum(t => t.Amount),
 
                     LastDepositAmount = g.Where(t => t.Amount > 0)

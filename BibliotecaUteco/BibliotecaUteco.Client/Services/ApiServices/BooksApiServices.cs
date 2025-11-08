@@ -22,6 +22,16 @@ namespace BibliotecaUteco.Client.Services.ApiServices
                 cancellationToken
             );
 
+
+        public async Task<ApiResponse<BookResponse>> GetByIdAsync(
+            GetBookByIdRequest request,
+            CancellationToken cancellationToken = default
+        ) =>
+            await client.FetchGetAsync<BookResponse>(
+                BooksEndpoint + $"/by-id?{QueryStringBuilder.ToQueryString(request)}",
+                cancellationToken
+            );
+
         public async Task<ApiResponse<BookResponse>> CreateBookAsync(
             CreateBookRequest request,
             CancellationToken cancellationToken = default

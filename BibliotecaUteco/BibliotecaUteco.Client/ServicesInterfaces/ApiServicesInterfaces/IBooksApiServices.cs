@@ -23,4 +23,8 @@ public interface IBooksApiServices
         UpdateBookRequest request,
         CancellationToken cancellationToken = default
     );
+    Task<ApiResponse<BookResponse>> GetByIdAsync(
+        GetBookByIdRequest request,
+        CancellationToken cancellationToken = default
+    );
 }
