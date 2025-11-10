@@ -129,7 +129,7 @@
                 </Icon>
             </SideBarButton>
 
-            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/help");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
+            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/penalties");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
                 <Icon>
 
                     <LumexTooltip Size="Size.Small" Content=@("Penalizaciones") ShowArrow="true">
@@ -138,6 +138,16 @@
                 </Icon>
 
                 
+            </SideBarButton>
+            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/summary");}'  Name="Reportes" IsExpanded="SideBarExpanded">
+                <Icon>
+
+                    <LumexTooltip Size="Size.Small" Content=@("Reportes") ShowArrow="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>                   
+                    </LumexTooltip>
+                </Icon>
+
+
             </SideBarButton>
          
            @* @if(SideBarExpanded)
@@ -266,8 +276,8 @@
                   await RightBarContext.OpenUpdateUserAsync(result.Data);
                     
            }
-    _fetchingUser = false;
-    StateHasChanged();
+        _fetchingUser = false;
+        StateHasChanged();
            
     }
 

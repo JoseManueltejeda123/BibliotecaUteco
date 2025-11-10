@@ -167,7 +167,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Lector actualizado exitosamente");
+            await Toast.Show("Lector actualizado exitosamente");
             await RightBarContext.SetUpdatedReaderAsync(result.Data);
            
             await RightBarContext.CloseAsync();

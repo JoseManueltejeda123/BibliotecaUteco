@@ -60,6 +60,7 @@
 
 @using Microsoft.IdentityModel.JsonWebTokens
 @using BibliotecaUteco.Client.Components.Loans.Common
+@using BibliotecaUteco.Client.Services.ApiServicesInterfaces
 @using BibliotecaUteco.Client.Stores
 @using Blazor.Sonner.Services
 @using Blazor.Sonner.Common
@@ -79,6 +80,8 @@
 @inject ILoansApiServices LoansApiServices
 @inject IPenaltiesApiServices PenaltiesApiServices
 @inject ITransactionsApiServices TransactionsApiServices
+@inject IApplicationSummariesApiServices ApplicationSummariesServices
+
 @inject IDialogService DialogService
 @inject ILightBoxService LightBoxService
 @inject ISonnerService Toast

@@ -170,7 +170,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Success("Pago registrado con éxito.");
+            await Toast.Success("Pago registrado con éxito.");
             await RightBarContext.SetPayedPenaltyAsync(result.Data);
             PayPenaltyModel = new PayPenaltyRequest();
             _penaltyToInvoice = result.Data;

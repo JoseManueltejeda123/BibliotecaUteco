@@ -70,7 +70,7 @@
         StateHasChanged();
         if (result.IsSuccessful())
         {
-            Toast.Show("Género actualizado con éxito");
+            await Toast.Show("Género actualizado con éxito");
             await TriggerOnGenreCreated(result.Data);
         }
     }
