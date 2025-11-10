@@ -1,7 +1,6 @@
 using BibliotecaUteco.Dependencies;
 using BibliotecaUteco.Services;
-using DinkToPdf;
-using DinkToPdf.Contracts;
+
 
 namespace BibliotecaUteco;
 

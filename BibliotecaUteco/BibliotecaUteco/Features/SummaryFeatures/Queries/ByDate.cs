@@ -7,19 +7,17 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
 {
     public class GetApplicationSummaryCommand : ICommand<IApiResult>
     {
-        public DateTime StartTime { get; set; } = DateTime.UtcNow;
-        public DateTime EndTime { get; set; } = DateTime.UtcNow;
-
-        public DateTime _startTime => StartTime.ToUniversalTime();
-        public DateTime _endTime => EndTime.ToUniversalTime();
+        public DateTime? Date { get; set; }
+        public bool IsPrecise { get; set; } = false;
+       
     }
 
     public class GetApplicationSummaryCommandValidator : AbstractValidator<GetApplicationSummaryCommand>
     {
         public GetApplicationSummaryCommandValidator()
         {
-            RuleFor(x => x._endTime)
-            .Must(x => x <= DateTime.UtcNow).WithMessage("No se puede obtener un reporte de una fecha mayor a la actual");
+            RuleFor(x => x.Date)
+            .Must(x => x <= DateTime.UtcNow).WithMessage("No se puede obtener un reporte de una fecha mayor a la actual").When(x => x.Date.HasValue);
         }
     }
 
@@ -64,34 +62,9 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
     {
         public async Task<IApiResult> HandleAsync(GetApplicationSummaryCommand request, CancellationToken cancellationToken = default)
         {
-            ApplicationSummaryResponse response = new();
+            var response = await context.GetApplicationSummaryResponseAsync(request.Date);
 
-            var summary = await context.Books
-             .GroupBy(_ => 1)
-             .Select(_ => new ApplicationSummaryResponse
-             {
-                 StartTime = DateTime.Now, // opcional, no lo puedes hacer en SQL así que EF lo evaluará en memoria
-                 EndTime = DateTime.Now,
-
-                 BooksSummary = new BooksSummaryResponse
-                 {
-                     AvailableBooks = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) >= 1),
-                     LoanedBooks = context.Loans.Count(),
-                     NonAvailableBooks = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) <= 0),
-                     TotalBooksCount = context.Books.Count()
-                 },
-
-                 LoansSummary = new LoanSummaryResponse
-                 {
-                     ActiveLoans = context.Loans.Count(l => l.ReturnedDate == null),
-                     ReturnedLoans = context.Loans.Count(l => l.ReturnedDate != null),
-                     ExceededLoans = context.Loans.Count(l => l.DueDate < DateTime.UtcNow && l.ReturnedDate == null),
-                     TotalLoansCount = context.Loans.Count()
-                 }
-             })
-             .FirstAsync();
-
-            return new SuccessApiResult<ApplicationSummaryResponse>(summary);
+            return new SuccessApiResult<ApplicationSummaryResponse>(response);
         }
     }
 }

@@ -11,6 +11,7 @@ public static class DbContextDependencies
     {
         services.AddDbContext<IBibliotecaUtecoDbContext, BibliotecaUtecoDbContext>(options =>
         {
+            
             options.UseSqlServer(configuration.GetConnectionString("MSSQL"));
             options.ConfigureWarnings(warning =>
                 warning.Ignore(RelationalEventId.PendingModelChangesWarning)
