@@ -41,5 +41,6 @@
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\bibliotecauteco.publishsettings" />
     <None Remove="Properties\PublishProfiles\bibliotecauteco.pubxml" />
+    <None Remove="Properties\PublishProfiles\production.PublishSettings" />
   </ItemGroup>
 </Project>

@@ -86,7 +86,7 @@ app.UseAuthorization();
 app.UseAntiforgery();
 app.MapEndpoints();
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
+app.MapRazorComponents<BibliotecaUteco.Components.App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BibliotecaUteco.Client._Imports).Assembly);
 using (var scope = app.Services.CreateScope())
