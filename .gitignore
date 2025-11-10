@@ -9,6 +9,7 @@ out/
 *.suo
 *.userosscache
 *.sln.docstates
+appsettings*.json
 
 # Visual Studio
 .vs/

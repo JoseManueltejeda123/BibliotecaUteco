@@ -1,5 +1,4 @@
 using BibliotecaUteco;
-using BibliotecaUteco.Components;
 using BibliotecaUteco.Dependencies;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
