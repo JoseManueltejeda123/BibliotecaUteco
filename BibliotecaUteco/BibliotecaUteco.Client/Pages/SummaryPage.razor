@@ -1,0 +1,69 @@
+@page "/summary"
+@using BibliotecaUteco.Client.Requests.Summaries.Queries
+
+<div class="flex flex-col w-full mt-[20px] gap-4 px-4">
+
+    <div class="flex w-full items-center gap-2 justify-between">
+        <h2 class="text-3xl font-semibold">Reportes</h2>
+        <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+            <EndContent>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>            </EndContent>
+            <ChildContent>Imprimir</ChildContent>
+        </LumexChip>
+    </div>
+    
+    <SectionDivider Name="Resumen de libros"/>
+    
+    <div class="text-[16px] font-semibold text-neutral-600" style="font-family: 'Inconsolata';">
+        <p>LIBROS DISPONIBLES:<span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.AvailableBooks</span></p>
+        <p>lIBROS PRESTADOS: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.LoanedBooks</span></p>
+        <p>LIBROS NO DISPONIBLES: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.NonAvailableBooks</span></p>
+        <p>TOTAL DE LIBROS REGISTRADOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.BooksSummary.TotalBooksCount</span></p>
+
+    </div>
+
+    <SectionDivider Name="Resumen de préstamos"/>
+
+    <div class="text-[16px] font-semibold text-neutral-600" style="font-family: 'Inconsolata';">
+        <p>PRESTAMOS ACTIVOS:<span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.ActiveLoans</span></p>
+        <p>PRESTAMOS EXCEDIDOS: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.ExceededLoans</span></p>
+        <p>PRESTAMOS SIN DEVOLVER: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.NonReturnedLoans</span></p>
+        <p>PRESTAMOS DEVUELTOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.LoansSummary.ReturnedLoans</span></p>
+        <p>TOTAL DE PRÉSTAMOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.LoansSummary.TotalLoansCount</span></p>
+
+    </div>
+</div>
+
+@code {
+    
+    public bool _fetchingSummary { get; set; }
+    public GetApplicationSummaryRequest GetApplicationSummaryModel { get; set; } = new();
+    public ApplicationSummaryResponse ApplicationSummaryModel { get; set; } = new();
+}
+
+@functions{
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchGetApplicationSummaryAsync();
+    }
+
+    public async Task FetchGetApplicationSummaryAsync()
+    {
+        _fetchingSummary = true;
+        StateHasChanged();
+
+        var result = await ApplicationSummariesServices.GetByDateAsync(GetApplicationSummaryModel);
+        
+        if(result.IsSuccessful())
+        {
+            await JsRuntime.InvokeVoidAsync("console.log", result);
+            ApplicationSummaryModel = result.Data;
+        }
+
+        _fetchingSummary = false;
+        StateHasChanged();
+
+    }
+
+}

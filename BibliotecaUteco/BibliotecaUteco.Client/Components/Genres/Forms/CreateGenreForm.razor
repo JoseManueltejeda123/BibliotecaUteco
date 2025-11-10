@@ -55,7 +55,7 @@
         StateHasChanged();
         if (result.IsSuccessful())
         {
-            Toast.Show("Género creado con éxito");
+            await Toast.Show("Género creado con éxito");
 
             await TriggerOnGenreCreated(result.Data);
         }

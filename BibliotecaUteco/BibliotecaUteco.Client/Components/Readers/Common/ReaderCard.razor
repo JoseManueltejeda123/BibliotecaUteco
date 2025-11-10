@@ -207,7 +207,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Lector eliminado exitosamente");
+            await Toast.Show("Lector eliminado exitosamente");
             await OnDelete.InvokeAsync(Reader);
         }
 
@@ -227,7 +227,7 @@
 
     public async Task CopyToClipboard(string text)
     {
-        Toast.Show("Texto copiado en el portapapeles");
+        await Toast.Show("Texto copiado en el portapapeles");
         await JsRuntime.InvokeVoidAsync("copyToClipboard", text);
     }
 

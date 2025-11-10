@@ -7,8 +7,11 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
 {
     public class GetApplicationSummaryCommand : ICommand<IApiResult>
     {
+        [FromQuery(Name = "date"), JsonPropertyName("date"), Description("La fecha precisa de donde quieres los reportes (opcional)")]
         public DateTime? Date { get; set; }
-        public bool IsPrecise { get; set; } = false;
+        
+        [FromQuery(Name = "isPrecise"), JsonPropertyName("isPrecise"), Description("Si se establece como verdadero, los reportes se harán de solo esa fecha, de lo contrario, se obtendrán los datos menor o igual a esa fecha (opcional)")]
+        public bool? IsPrecise { get; set; } = false;
        
     }
 
@@ -25,7 +28,7 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet(EndpointSettings.SummarysEndpoint + "/summary",
+            app.MapGet(EndpointSettings.SummarysEndpoint + "/by-date",
             async (
                 [AsParameters] GetApplicationSummaryCommand command,
                 ISender sender,
@@ -40,7 +43,7 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
                 });
 
             })
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .AllowAnonymous()
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Produces<SuccessApiResult<ApplicationSummaryResponse>>(
@@ -62,9 +65,15 @@ namespace BibliotecaUteco.Features.SummaryFeatures.Queries
     {
         public async Task<IApiResult> HandleAsync(GetApplicationSummaryCommand request, CancellationToken cancellationToken = default)
         {
-            var response = await context.GetApplicationSummaryResponseAsync(request.Date);
+           
 
-            return new SuccessApiResult<ApplicationSummaryResponse>(response);
+            return new SuccessApiResult<ApplicationSummaryResponse>(
+                
+                request.IsPrecise.HasValue && request.IsPrecise.Value ?  
+                    await context.GetApplicationSummaryResponsePreciseAsync(request.Date, cancellationToken) :
+                    await context.GetApplicationSummaryResponseAsync(request.Date, cancellationToken) 
+
+            );
         }
     }
 }

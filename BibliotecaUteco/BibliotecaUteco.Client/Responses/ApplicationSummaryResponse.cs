@@ -7,8 +7,7 @@ namespace BibliotecaUteco.Client.Responses
 {
     public class ApplicationSummaryResponse
     {
-        public DateTime StartTime {get; set;} = DateTime.Now;
-        public DateTime EndTime {get; set;} = DateTime.Now;
+     
         public BooksSummaryResponse BooksSummary { get; set; } = new();
         public LoanSummaryResponse LoansSummary { get; set; } = new();
     }

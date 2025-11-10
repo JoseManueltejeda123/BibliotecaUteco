@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js"; /* styles */
-@import "../bin/lumexui/theme.css";
-@source "../bin/lumexui/*cs";
+@import "../bin/lumexui/theme"; /* theme */
+@source "../bin/lumexui/*.cs"; /* styles */
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inconsolata:wght@200..900&display=swap');
 @import url("https://use.typekit.net/wjv8wts.css");
 

@@ -2,6 +2,7 @@ using BibliotecaUteco;
 using BibliotecaUteco.Dependencies;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
+using BibliotecaUteco.Client;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -86,7 +87,7 @@ app.UseAuthorization();
 app.UseAntiforgery();
 app.MapEndpoints();
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
+app.MapRazorComponents<BibliotecaUteco.Components.App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BibliotecaUteco.Client._Imports).Assembly);
 using (var scope = app.Services.CreateScope())

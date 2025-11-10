@@ -168,7 +168,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Libro eliminado exitosamente.");
+            await Toast.Show("Libro eliminado exitosamente.");
             await OnBookDeleted.InvokeAsync();
         }
 

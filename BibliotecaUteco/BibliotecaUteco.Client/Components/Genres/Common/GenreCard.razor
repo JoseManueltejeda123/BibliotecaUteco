@@ -154,7 +154,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Género eliminado exitosamente.");
+            await Toast.Show("Género eliminado exitosamente.");
             await OnGenreDeleted.InvokeAsync(Genre);
             await HideDropdown();
         }

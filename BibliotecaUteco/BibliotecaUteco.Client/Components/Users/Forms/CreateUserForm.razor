@@ -141,7 +141,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Usuario creado exitosamente");
+            await Toast.Show("Usuario creado exitosamente");
             await RightBarContext.CloseAsync();
             CreateUserModel = new CreateUserRequest();
         }
