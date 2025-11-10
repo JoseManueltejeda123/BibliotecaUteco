@@ -7,6 +7,7 @@ public abstract class CorsPolicies
 
 public abstract class CorsAllowedDomains
 {
+
     #if DEBUG
         public static string DefaultDomain => "http://localhost:5000";
     #else
