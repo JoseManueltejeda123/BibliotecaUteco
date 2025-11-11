@@ -6,3 +6,9 @@ public class TopBooksResponse
     public int Year {get; set;}
     public List<BookResponse> Books { get; set; } = new();
 }
+
+public class LoansPerMonthResponse
+{
+
+    public Dictionary<string, int> MonthLoanCount { get; set; } = new();
+}

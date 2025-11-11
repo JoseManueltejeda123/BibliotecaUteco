@@ -78,6 +78,7 @@ public class GetTopBooksByDateCommandHandler(IBibliotecaUtecoDbContext context)
 
         var topBooks = await context.Books
             .AsNoTracking()
+            .AsSplitQuery()
             .Where(b => b.Loans
                 .Count(l => l.CreatedAt >= start && l.CreatedAt < end) >= 1)
             .OrderByDescending(b => b.Loans

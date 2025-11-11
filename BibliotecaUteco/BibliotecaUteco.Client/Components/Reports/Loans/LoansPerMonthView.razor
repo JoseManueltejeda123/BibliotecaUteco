@@ -1,5 +1,113 @@
-<h3>LoansPerMonthView</h3>
+<div class="flex flex-col gap-3 w-full">
+    
+    <div class="flex items-center justify-between gap-3 mb-2">
+        <div class="flex flex-col">
+            <h3 class="text-[28px] font-semibold">Reportes</h3>
+            <label class="text-[13px] font-semibold opacity-80">Prestamos por mes</label>
+
+        </div>
+        
+        <a @onclick="async () => { await OnClose.InvokeAsync(); }" class="text-[13px] cursor-pointer font-semibold text-green-700 underline">Cerrar</a>
+    </div>
+    
+    <div class="flex w-full items-center gap-3">
+       
+        <LumexNumbox TValue="int?"
+                     min="1"
+                     max="@DateTime.Now.Year"
+                     Placeholder="Itroduce el año para el reporte"
+                     LabelPlacement="@LabelPlacement.Inside"
+                     ValueChanged="HandleYearChanged"
+                     Value="@RequestModel.Year"
+                     Label="Año del reporte"
+                     Behavior="InputBehavior.OnInput"
+                     Disabled="_fetching"
+                     />
+       
+        <LumexButton OnClick="FetchGetLoansPerMonthAsync" Disabled="@_fetching" Class="mt-auto" Color="ThemeColor.Primary">
+            Buscar
+        </LumexButton>
+
+
+
+    </div>
+    
+    <div class="flex flex-col gap-3 w-full">
+        
+        @if(LoansPerMonth.MonthLoanCount.Any())
+        {
+             <SectionDivider Name=@($"Prestamos por mes del {RequestModel.Year}")/>
+        }
+        else if(!LoansPerMonth.MonthLoanCount.Any() && !_fetching)
+        {
+            <div class="w-full flex items-center justify-center">
+                <p class="text-[13px] font-semibold opacity-80">No hay prestamos en este año</p>
+            </div>
+
+        }
+        
+        @foreach(var loan in LoansPerMonth.MonthLoanCount)
+        {
+            <div class="flex w-full ites-center gap-3">
+                
+                    <p class="font-semibold line-clamp-1 text-[13px]">@loan.Value prestamos hechos</p>
+                    <p class="font-medium line-clamp-1 text-xs">
+
+                       @loan.Key
+                    </p>
+            </div>
+        }
+        
+        @if(_fetching)
+        {
+            <div class="w-full flex items-center justify-center"><LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/></div>
+            
+
+        }
+
+    </div>
+
+
+</div>
 
 @code {
+
+
+  public bool _fetching { get; set; } = false;
+    public int Year {get; set;} = DateTime.Now.Year;
+    public LoansPerMonthResponse LoansPerMonth { get; set; } = new();
+    public GetLoansPerMonthRequest RequestModel {get; set;} = new();
     
+    [Parameter]
+    public EventCallback OnClose {get; set;}
+    
+   
+    
+    
+   
+    
+}
+
+@functions{
+    public void HandleYearChanged(int? value)
+    {
+        RequestModel.Year = value ?? DateTime.Now.Year;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+         await FetchGetLoansPerMonthAsync();
+    }
+
+    public async Task FetchGetLoansPerMonthAsync()
+    {
+        _fetching = true;
+        StateHasChanged();
+        var result = await ReportsApiServices.GetLoansPerMonthAsync(RequestModel);
+
+        if (result.IsSuccessful()){
+           LoansPerMonth = result.Data;
+        }
+        _fetching = false;
+        StateHasChanged();
+    }
 }

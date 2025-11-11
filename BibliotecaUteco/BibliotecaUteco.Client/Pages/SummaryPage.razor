@@ -2,18 +2,13 @@
 @using BibliotecaUteco.Client.Requests.Summaries.Queries
 
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
-
    
 
     @if(CurrentReportView is null)
     {
         <div class="flex w-full items-center gap-2 justify-between">
             <h2 class="text-3xl font-semibold">Reportes</h2>
-            <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
-                <EndContent>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>            </EndContent>
-                <ChildContent>Imprimir</ChildContent>
-            </LumexChip>
+          
         </div>
         <SectionDivider Name="Opciones de reportes"/>
         <div class="flex flex-col gap-2 w-full">
@@ -36,13 +31,16 @@
             case ReportType.TopBooks:
                     <TopBooksView OnClose="()=>{SetReportView(null);}"/>
                     break;
+            case ReportType.LoansPerMonth:
+                    <LoansPerMonthView OnClose="()=>{SetReportView(null);}"/>
+                break;
             
         }
     }
   
    
     
-    
+
    
 </div>
 
@@ -64,6 +62,12 @@
                 Name = "Top 10 libros más prestados",
                 Icon = @<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:text-green-700 lucide lucide-chart-spline-icon lucide-chart-spline"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7"/></svg>,
                 Type = ReportType.TopBooks
+            },
+            new()
+            {
+                Name = "Prestamos por mes",
+                Icon = @<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days-icon lucide-calendar-days"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>,
+                Type = ReportType.LoansPerMonth
             }
         };
     }
@@ -78,7 +82,8 @@
 
     public enum ReportType
     {
-        TopBooks
+        TopBooks,
+        LoansPerMonth
     }
 
     public class ReportKind()

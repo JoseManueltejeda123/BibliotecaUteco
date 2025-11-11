@@ -8,4 +8,9 @@ public interface IReportsApiServices
         GetTopBooksByDateRequest request,
         CancellationToken cancellationToken = default
     );
+
+    Task<ApiResponse<LoansPerMonthResponse>> GetLoansPerMonthAsync(
+        GetLoansPerMonthRequest request,
+        CancellationToken cancellationToken = default
+    );
 }

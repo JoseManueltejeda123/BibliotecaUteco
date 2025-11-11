@@ -22,4 +22,16 @@ public class ReportsApiServices(BibliotecaHttpClient client) : IReportsApiServic
             cancellationToken
         );
     }
+    
+    public async Task<ApiResponse<LoansPerMonthResponse>> GetLoansPerMonthAsync(
+        GetLoansPerMonthRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+            
+        return await client.FetchGetAsync<LoansPerMonthResponse>(
+            ReportsEndpoint + $"/loans-per-month?{QueryStringBuilder.ToQueryString(request)}",
+            cancellationToken
+        );
+    }
 }

@@ -6,28 +6,28 @@
             <label class="text-[13px] font-semibold opacity-80">Top libros mas prestados</label>
 
         </div>
+        
         <a @onclick="async () => { await OnClose.InvokeAsync(); }" class="text-[13px] cursor-pointer font-semibold text-green-700 underline">Cerrar</a>
     </div>
     
     <div class="flex w-full items-center gap-3">
+       
         <LumexNumbox TValue="int?"
                      min="1"
                      max="@DateTime.Now.Year"
                      Placeholder="Itroduce el año para el reporte"
-                     LabelPlacement="@LabelPlacement.Outside"
+                     LabelPlacement="@LabelPlacement.Inside"
                      ValueChanged="HandleYearChanged"
-                     Value="@Year"
+                     Value="@RequestModel.Year"
                      Label="Año del reporte"
                      Behavior="InputBehavior.OnInput"
-                     Disabled="_fetching"
-
-        />
-        <LumexSelect  TValue="int"
-                      @bind-Value="@RequestModel.Month"
-                      Label="Mes"
-                      LabelPlacement="LabelPlacement.Outside"
-                      Placeholder="Selecciona un mes"
-                      Class="max-w-xs">
+                     Disabled="_fetching"/>
+        <LumexSelect TValue="int"
+                     @bind-Value="@RequestModel.Month"
+                     Label="Mes"
+                     LabelPlacement="LabelPlacement.Inside"
+                     Placeholder="Selecciona un mes"
+                     Class="max-w-xs">
 
             @foreach (var mes in meses)
             {
@@ -41,7 +41,7 @@
             Buscar
         </LumexButton>
 
-        
+
 
     </div>
     
@@ -49,7 +49,7 @@
         
         @if(TopBooks.Books.Any())
         {
-             <p class="text-[13px] font-semibold">Top libros de @meses[RequestModel.Month] del @RequestModel.Year</p>
+             <SectionDivider Name=@($"Top 10 libros de {meses[RequestModel.Month]} del {RequestModel.Year}")/>
         }
         else if(!TopBooks.Books.Any() && !_fetching)
         {
@@ -142,7 +142,7 @@
 @functions{
     public void HandleYearChanged(int? value)
     {
-        Year = value ?? DateTime.Now.Year;
+        RequestModel.Year = value ?? DateTime.Now.Year;
     }
     protected override async Task OnInitializedAsync()
     {
