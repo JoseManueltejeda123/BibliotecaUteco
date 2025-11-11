@@ -25,7 +25,7 @@ internal class GetLoansPerMonthEndpoint : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet(
-                EndpointSettings.LoansEndpoint + "/loans-per-month",
+                EndpointSettings.ReportsEndpoint + "/loans-per-month",
                 async (
                     [AsParameters] GetLoansPerMonthCommand command,
                     ISender sender,

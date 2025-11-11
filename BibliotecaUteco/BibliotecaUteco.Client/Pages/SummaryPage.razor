@@ -15,7 +15,7 @@
 
             @foreach (var reportType in ReportKinds)
             {
-                <div @onclick="()=>{SetReportView(reportType.Type);}" class="group report-card w-full rounded-lg hover:text-green-700 hover:bg-neutral-200/30 bg-neutral-100 border-neutral-200 border transition-all p-3 flex items-center gap-3">
+                <div @onclick="()=>{SetReportView(reportType.Type);}" class="group report-card w-full rounded-lg hover:text-green-700 hover:bg-neutral-200/30 cursor-pointer bg-neutral-50 border-neutral-100 border transition-all p-3 flex items-center gap-3">
                     @reportType.Icon
                     <p class="text-[13px] font-semibold line-clamp-1">@reportType.Name</p>
                 </div>
