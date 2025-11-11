@@ -10,5 +10,6 @@ public class TopBooksResponse
 public class LoansPerMonthResponse
 {
 
+    public int Year { get; set; }
     public Dictionary<string, int> MonthLoanCount { get; set; } = new();
 }

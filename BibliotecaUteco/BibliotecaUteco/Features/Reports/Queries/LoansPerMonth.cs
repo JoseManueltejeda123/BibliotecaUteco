@@ -109,7 +109,8 @@ public class GetLoansPerMonthCommandHandler
 
         var response = new LoansPerMonthResponse
         {
-            MonthLoanCount = monthLoanCount
+            MonthLoanCount = monthLoanCount,
+            Year = request.Year
         };
 
         return new SuccessApiResult<LoansPerMonthResponse>(response);

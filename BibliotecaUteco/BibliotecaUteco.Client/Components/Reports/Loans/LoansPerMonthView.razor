@@ -1,5 +1,9 @@
-<div class="flex flex-col gap-3 w-full">
+<div class="flex flex-col gap-3 w-full max-w-full">
     
+    @if(_showInvoice)
+    {
+        <LoansPerMonthInvoice Model="@LoansPerMonth" OnPrinted="()=>{SetShowInvoice();}"/>
+    }
     <div class="flex items-center justify-between gap-3 mb-2">
         <div class="flex flex-col">
             <h3 class="text-[28px] font-semibold">Reportes</h3>
@@ -7,30 +11,41 @@
 
         </div>
         
-        <a @onclick="async () => { await OnClose.InvokeAsync(); }" class="text-[13px] cursor-pointer font-semibold text-green-700 underline">Cerrar</a>
+        <div class="flex items-center gap-3">
+            <LumexChip @onclick="async () => { SetShowInvoice(); }" Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Info" Variant="ChipVariant.Flat">
+                <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>                
+                </EndContent>
+              <ChildContent>Imprimir</ChildContent>
+
+            </LumexChip>
+            <LumexChip @onclick="async () => { await OnClose.InvokeAsync(); }" Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Danger" Variant="ChipVariant.Flat">
+                <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>            </EndContent>
+                <ChildContent>Cerrar</ChildContent>
+            </LumexChip>
+        </div>
+        
     </div>
-    
-    <div class="flex w-full items-center gap-3">
-       
-        <LumexNumbox TValue="int?"
-                     min="1"
-                     max="@DateTime.Now.Year"
-                     Placeholder="Itroduce el año para el reporte"
-                     LabelPlacement="@LabelPlacement.Inside"
-                     ValueChanged="HandleYearChanged"
-                     Value="@RequestModel.Year"
-                     Label="Año del reporte"
-                     Behavior="InputBehavior.OnInput"
-                     Disabled="_fetching"
-                     />
-       
-        <LumexButton OnClick="FetchGetLoansPerMonthAsync" Disabled="@_fetching" Class="mt-auto" Color="ThemeColor.Primary">
-            Buscar
-        </LumexButton>
+        <div class="relative w-[300px]">
+            <div id="dates-container" class="flex px-[30px] gap-4 overflow-x-auto items-end scrollbar-none" style="scrollbar-width: none;">
+                @for(int i = DateTime.Now.Year; i >= 1980; i--)
+                {
+                    var year = i;
+                    <p id="@(year + "-date")" @key="year" @onclick="async ()=>{ await HandleYearChanged(year);}" class=@($"{(RequestModel.Year == year ? "text-[20px] text-green-800" : "text-[14px] opacity-80 hover:scale-105")} transition-all font-semibold cursor-pointer")>@year</p>
+                }
+            </div>
+            <p class="text-xs font-normal">Selecciona el año para hacer el reporte</p>
 
+            <!-- left shadow -->
+            <div class="pointer-events-none absolute left-0 inset-y-0 w-6 z-10"
+                 style="background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
 
-
-    </div>
+            <!-- right shadow -->
+            <div class="pointer-events-none absolute right-0 inset-y-0 w-6 z-10"
+                 style="background: linear-gradient(270deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
+        </div>
+  
         @if(LoansPerMonth.MonthLoanCount.Any())
         {
              <SectionDivider Name=@($"Prestamos por mes del {RequestModel.Year}")/>
@@ -55,7 +70,7 @@
                 <div class="flex w-full items-center gap-3 justify-between">
                    
                     <div class="flex flex-col ">
-                        <p class="font-semibold line-clamp-1 text-[15px] text-black">@loan.Value Prestamos</p>
+                        <p class="font-semibold line-clamp-1 text-[13px] text-black">@loan.Value Prestamos</p>
                         <p class="font-medium line-clamp-1 opacity-80 text-xs">
 
                             @loan.Key
@@ -64,20 +79,20 @@
                      @if( loan.Value == prevValue || loan.Value == 0)
                     {
                         
-                        <div class="rounded-full bg-neutral-300/50  border-neutral-400 border shrink-0 text-neutral-300 w-[25px] h-[25px] flex items-center justify-center">
+                        <div class="rounded-full bg-neutral-300/50  border-neutral-400  shrink-0 text-neutral-300 w-[25px] h-[25px] flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=" text-neutral-600 lucide lucide-equal-icon lucide-equal"><line x1="5" x2="19" y1="9" y2="9"/><line x1="5" x2="19" y1="15" y2="15"/></svg>                       
                          </div>
                         
                     }
                     else if(prevValue > loan.Value)
                     {
-                        <div class="rounded-full bg-red-300/50 border-red-400 border shrink-0 w-[25px] h-[25px] aspect-square flex items-center justify-center">
+                        <div class="rounded-full bg-red-300/50 border-red-400  shrink-0 w-[25px] h-[25px] aspect-square flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 lucide lucide-arrow-down-icon lucide-arrow-down"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>                       
                          </div>
                     }
                     else if(prevValue < loan.Value)
                     {
-                         <div class="rounded-full  bg-green-300/50 border-green-400 border shrink-0 text-green-600 aspect-square w-[25px] h-[25px] flex items-center justify-center">
+                         <div class="rounded-full  bg-green-300/50 border-green-400  shrink-0 text-green-600 aspect-square w-[25px] h-[25px] flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600 lucide lucide-arrow-up-icon lucide-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>                      
                               </div>
                     }
@@ -112,7 +127,10 @@
     
     [Parameter]
     public EventCallback OnClose {get; set;}
+
+    public bool _showInvoice {get; set;}
     
+    public CancellationTokenSource? _cts = null;
    
     
     
@@ -121,20 +139,44 @@
 }
 
 @functions{
-    public void HandleYearChanged(int? value)
+    public async Task HandleYearChanged(int? value)
     {
         RequestModel.Year = value ?? DateTime.Now.Year;
+        await FocusDate(value + "-date");
+        StateHasChanged();
+        await FetchGetLoansPerMonthAsync();
+        
+    }
+
+
+    public void SetShowInvoice()
+    {
+        _showInvoice = !_showInvoice;
     }
     protected override async Task OnInitializedAsync()
     {
-         await FetchGetLoansPerMonthAsync();
+        await FetchGetLoansPerMonthAsync();
     }
+
+
+    public async Task FocusDate(string dateId)
+    {
+        await JsRuntime.InvokeVoidAsync("focusAndScroll", dateId);
+    }
+
+
 
     public async Task FetchGetLoansPerMonthAsync()
     {
+        if(_cts is not null)
+        {
+           await _cts.CancelAsync();
+        }
+
+        _cts = new();
         _fetching = true;
         StateHasChanged();
-        var result = await ReportsApiServices.GetLoansPerMonthAsync(RequestModel);
+        var result = await ReportsApiServices.GetLoansPerMonthAsync(RequestModel, _cts.Token);
 
         if (result.IsSuccessful()){
            LoansPerMonth = result.Data;
