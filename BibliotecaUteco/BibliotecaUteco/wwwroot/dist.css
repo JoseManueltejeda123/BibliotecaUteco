@@ -745,14 +745,11 @@
   .inline-grid {
     display: inline-grid;
   }
-  .\!aspect-square {
-    aspect-ratio: 1 / 1 !important;
-  }
   .aspect-\[2\/3\] {
     aspect-ratio: 2/3;
   }
   .aspect-square {
-    aspect-ratio: 1 / 1 !important;
+    aspect-ratio: 1 / 1;
   }
   .\!size-\[18px\] {
     width: 18px !important;
@@ -1540,9 +1537,6 @@
   .border-green-200 {
     border-color: var(--color-green-200);
   }
-  .border-green-300 {
-    border-color: var(--color-green-300);
-  }
   .border-green-400 {
     border-color: var(--color-green-400);
   }
@@ -2076,9 +2070,6 @@
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
-  .p-\[2px\] {
-    padding: 2px;
-  }
   .p-\[30px\] {
     padding: 30px;
   }
@@ -2250,9 +2241,6 @@
   .\!text-white {
     color: var(--color-white) !important;
   }
-  .text-\[px\] {
-    color: px;
-  }
   .text-black {
     color: var(--color-black);
   }
@@ -2306,9 +2294,6 @@
   }
   .text-foreground-500 {
     color: var(--lumex-foreground-500);
-  }
-  .text-green-300 {
-    color: var(--color-green-300);
   }
   .text-green-600 {
     color: var(--color-green-600);
