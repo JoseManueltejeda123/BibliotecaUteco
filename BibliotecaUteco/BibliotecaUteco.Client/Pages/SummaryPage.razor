@@ -3,67 +3,93 @@
 
 <div class="flex flex-col w-full mt-[20px] gap-4 px-4">
 
-    <div class="flex w-full items-center gap-2 justify-between">
-        <h2 class="text-3xl font-semibold">Reportes</h2>
-        <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
-            <EndContent>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>            </EndContent>
-            <ChildContent>Imprimir</ChildContent>
-        </LumexChip>
-    </div>
+   
+
+    @if(CurrentReportView is null)
+    {
+        <div class="flex w-full items-center gap-2 justify-between">
+            <h2 class="text-3xl font-semibold">Reportes</h2>
+            <LumexChip Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Primary" Variant="ChipVariant.Flat">
+                <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>            </EndContent>
+                <ChildContent>Imprimir</ChildContent>
+            </LumexChip>
+        </div>
+        <SectionDivider Name="Opciones de reportes"/>
+        <div class="flex flex-col gap-2 w-full">
+
+            @foreach (var reportType in ReportKinds)
+            {
+                <div @onclick="()=>{SetReportView(reportType.Type);}" class="group report-card w-full rounded-lg hover:text-green-700 hover:bg-neutral-200/30 bg-neutral-100 border-neutral-200 border transition-all p-3 flex items-center gap-3">
+                    @reportType.Icon
+                    <p class="text-[13px] font-semibold line-clamp-1">@reportType.Name</p>
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+           
+        @switch(CurrentReportView)
+        {
+            case ReportType.TopBooks:
+                    <TopBooksView OnClose="()=>{SetReportView(null);}"/>
+                    break;
+            
+        }
+    }
+  
+   
     
-    <SectionDivider Name="Resumen de libros"/>
     
-    <div class="text-[16px] font-semibold text-neutral-600" style="font-family: 'Inconsolata';">
-        <p>LIBROS DISPONIBLES:<span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.AvailableBooks</span></p>
-        <p>lIBROS PRESTADOS: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.LoanedBooks</span></p>
-        <p>LIBROS NO DISPONIBLES: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.BooksSummary.NonAvailableBooks</span></p>
-        <p>TOTAL DE LIBROS REGISTRADOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.BooksSummary.TotalBooksCount</span></p>
-
-    </div>
-
-    <SectionDivider Name="Resumen de préstamos"/>
-
-    <div class="text-[16px] font-semibold text-neutral-600" style="font-family: 'Inconsolata';">
-        <p>PRESTAMOS ACTIVOS:<span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.ActiveLoans</span></p>
-        <p>PRESTAMOS EXCEDIDOS: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.ExceededLoans</span></p>
-        <p>PRESTAMOS SIN DEVOLVER: <span style=" padding: 0 2px; color: black;">@ApplicationSummaryModel.LoansSummary.NonReturnedLoans</span></p>
-        <p>PRESTAMOS DEVUELTOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.LoansSummary.ReturnedLoans</span></p>
-        <p>TOTAL DE PRÉSTAMOS:<span style="color: black; padding: 0 2px;">@ApplicationSummaryModel.LoansSummary.TotalLoansCount</span></p>
-
-    </div>
+   
 </div>
 
 @code {
-    
-    public bool _fetchingSummary { get; set; }
-    public GetApplicationSummaryRequest GetApplicationSummaryModel { get; set; } = new();
-    public ApplicationSummaryResponse ApplicationSummaryModel { get; set; } = new();
+
+    public List<ReportKind> ReportKinds { get; set; } = new();
+    public ReportType? CurrentReportView { get; set; } = null;
+
 }
 
 @functions{
-    
-    protected override async Task OnInitializedAsync()
-    {
-        await FetchGetApplicationSummaryAsync();
-    }
 
-    public async Task FetchGetApplicationSummaryAsync()
+    protected override void OnInitialized()
     {
-        _fetchingSummary = true;
-        StateHasChanged();
-
-        var result = await ApplicationSummariesServices.GetByDateAsync(GetApplicationSummaryModel);
-        
-        if(result.IsSuccessful())
+        ReportKinds = new()
         {
-            await JsRuntime.InvokeVoidAsync("console.log", result);
-            ApplicationSummaryModel = result.Data;
-        }
+            new()
+            {
+                Name = "Top 10 libros más prestados",
+                Icon = @<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:text-green-700 lucide lucide-chart-spline-icon lucide-chart-spline"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7"/></svg>,
+                Type = ReportType.TopBooks
+            }
+        };
+    }
 
-        _fetchingSummary = false;
-        StateHasChanged();
+   
+   
+    public void SetReportView(ReportType? type)
+    {
+        CurrentReportView = type;
+    }
+
+
+    public enum ReportType
+    {
+        TopBooks
+    }
+
+    public class ReportKind()
+    {
+        public string Name { get; set; } = "";
+        public RenderFragment Icon {get; set;}
+        public ReportType Type { get; set; }
 
     }
+
+
+
 
 }

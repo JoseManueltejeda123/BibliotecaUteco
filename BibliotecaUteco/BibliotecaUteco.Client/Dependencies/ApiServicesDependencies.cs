@@ -17,6 +17,7 @@ public static class ApiServicesDependencies
         services.AddScoped<IPenaltiesApiServices, PenaltiesApiServices>();
         services.AddScoped<ITransactionsApiServices, TransactionsApiServices>();
         services.AddScoped<IApplicationSummariesApiServices, ApplicationSummariesApiServices>();
+        services.AddScoped<IReportsApiServices, ReportsApiServices>();
 
 
         return services;

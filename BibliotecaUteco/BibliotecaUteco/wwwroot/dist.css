@@ -94,7 +94,6 @@
     --color-neutral-100: oklch(97% 0 0);
     --color-neutral-200: oklch(92.2% 0 0);
     --color-neutral-300: oklch(87% 0 0);
-    --color-neutral-600: oklch(43.9% 0 0);
     --color-neutral-700: oklch(37.1% 0 0);
     --color-neutral-800: oklch(26.9% 0 0);
     --color-neutral-900: oklch(20.5% 0 0);
@@ -655,6 +654,9 @@
   }
   .mt-\[50px\] {
     margin-top: 50px;
+  }
+  .mt-auto {
+    margin-top: auto;
   }
   .-mr-1 {
     margin-right: calc(var(--spacing) * -1);
@@ -1386,6 +1388,9 @@
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
+  }
+  .rounded-md {
+    border-radius: var(--radius-md);
   }
   .rounded-medium {
     border-radius: var(--lumex-radius-medium);
@@ -2276,9 +2281,6 @@
   .text-neutral-300 {
     color: var(--color-neutral-300);
   }
-  .text-neutral-600 {
-    color: var(--color-neutral-600);
-  }
   .text-neutral-700 {
     color: var(--color-neutral-700);
   }
@@ -2908,6 +2910,13 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         color: currentcolor;
+      }
+    }
+  }
+  .group-hover\:text-green-700 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-green-700);
       }
     }
   }
@@ -4520,6 +4529,16 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-neutral-100);
+      }
+    }
+  }
+  .hover\:bg-neutral-200\/30 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, oklch(92.2% 0 0) 30%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-neutral-200) 30%, transparent);
+        }
       }
     }
   }
@@ -6246,7 +6265,13 @@
 @import url("https://use.typekit.net/wjv8wts.css");
 html, body {
   font-family: "inter-variable", sans-serif;
-  background-color: #FAFAFAFF !important;
+  background-color: #FFFFFF !important;
+}
+.report-card {
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 html {
   scrollbar-width: thin;
@@ -6294,6 +6319,9 @@ button[data-slot="trigger"] {
 }
 div[data-slot="input-wrapper"] {
   border-radius: var(--radius-lg);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-neutral-100);
   background-color: var(--color-neutral-100);
 }
 .icon-button-sm {

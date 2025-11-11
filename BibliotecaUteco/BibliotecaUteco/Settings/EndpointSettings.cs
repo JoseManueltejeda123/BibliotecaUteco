@@ -10,7 +10,7 @@ public static class EndpointSettings
     public static string BooksEndpoint => $"api/{ApiV1}/books";
     public static string ReadersEndpoint => $"api/{ApiV1}/readers";
     public static string LoansEndpoint => $"api/{ApiV1}/loans";
-
+    public static string ReportsEndpoint => $"api/{ApiV1}/reports";
     public static string PenaltiesEndpoint => $"api/{ApiV1}/penalties";
     public static string TransactionsEndpoint => $"api/{ApiV1}/transactions";
     public static string SummarysEndpoint => $"api/{ApiV1}/summary";

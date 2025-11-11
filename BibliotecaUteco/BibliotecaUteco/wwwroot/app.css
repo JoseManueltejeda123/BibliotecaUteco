@@ -8,7 +8,17 @@
 
 html, body {
     font-family: "inter-variable", sans-serif;
-    background-color: #FAFAFAFF !important;
+    background-color: #FFFFFF !important;
+    
+    
+}
+
+.report-card{
+    
+    svg{
+        width: 20px;
+        height: 20px;
+    }
     
     
 }
@@ -61,11 +71,11 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 input{
-    @apply bg-inherit
+    @apply bg-inherit 
 }
 
 textarea{
-    @apply bg-neutral-100 rounded-lg
+    @apply bg-neutral-100 rounded-lg 
 }
 
 
@@ -78,7 +88,7 @@ button[data-slot="trigger"]{
 
 
 div[data-slot="input-wrapper"]{
-    @apply bg-neutral-100  rounded-lg
+    @apply bg-neutral-100  rounded-lg border border-neutral-100
 
 }
 

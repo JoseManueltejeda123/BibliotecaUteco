@@ -56,6 +56,8 @@
 @using BibliotecaUteco.Client.Requests.Transactions.Actions
 @using System.ComponentModel.DataAnnotations
 @using BlazorAnimate
+@using BibliotecaUteco.Client.Requests.Reports.Books
+@using BibliotecaUteco.Client.Components.Reports.Books
 
 
 @using Microsoft.IdentityModel.JsonWebTokens
@@ -81,7 +83,7 @@
 @inject IPenaltiesApiServices PenaltiesApiServices
 @inject ITransactionsApiServices TransactionsApiServices
 @inject IApplicationSummariesApiServices ApplicationSummariesServices
-
+@inject IReportsApiServices ReportsApiServices
 @inject IDialogService DialogService
 @inject ILightBoxService LightBoxService
 @inject ISonnerService Toast
