@@ -36,6 +36,10 @@
                         @(" MÁS")
                     }
                 </span>
+               
+                <span style="font-family: 'Inconsolata'; opacity: 0.5; font-size: 14px; ">
+                   PRESTADO @book.LoansCount VECES
+                </span>
 
             </div>
         }
@@ -49,7 +53,7 @@
 
     </div>
     <div>
-        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CANTIDAD DE PRESTAMOS DEL @Model.Year:
+        <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CANTIDAD DE LIBROS DEL @Model.Year:
             <span style="color: black; padding: 0 2px;">@Model.Books.Count() LIBROS</span></p>
         <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600;color: dimgray;  ">FECHA DE LA CONSULTA:
             <span style="color: black; padding: 0 2px;">

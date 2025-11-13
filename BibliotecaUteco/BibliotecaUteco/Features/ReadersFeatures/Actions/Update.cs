@@ -44,12 +44,11 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
         [
             FromBody,
             JsonPropertyName("identityCardNumber"),
-            Required(ErrorMessage = "El número de cédula es obligatorio.")
         ]
         [MaxLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
         [MinLength(11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
         [Description("Cédula de identidad del lector (11 dígitos sin guiones).")]
-        public string IdentityCardNumber { get; set; } = null!;
+        public string? IdentityCardNumber { get; set; } = null!;
 
         [FromBody, JsonPropertyName("sexId"), Range(1, 2)]
         [Description("ID del sexo del lector (1 = Masculino, 2 = Femenino).")]
@@ -64,7 +63,7 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
         [Description("Número de matrícula del estudiante (opcional).")]
         public string? StudentLicence { get; set; }
 
-        [FromBody, JsonPropertyName("passport"), MaxLength(9), MinLength(9)]
+        [FromBody, JsonPropertyName("passport"), MaxLength(8), MinLength(11)]
         [Description("Pasaporte del lector (opcional)")]
         public string? Passport { get; set; }
     }
@@ -76,6 +75,25 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
             RuleFor(x => x.ReaderId)
                 .GreaterThan(0)
                 .WithMessage("Debe proporcionar un ID de lector válido.");
+
+            When(
+                x => !string.IsNullOrEmpty(x.Passport),
+                () =>
+                {
+                    RuleFor(x => x.Passport)
+                    .MinimumLength(8).WithMessage("El pasaporte debe de tener un mínimo de 8 caracteres")
+                    .MaximumLength(11).WithMessage("El pasaporte debe de tener un máximo de 11 caracteres");
+
+                }
+            );
+
+             RuleFor(x => x)
+            .Must(x =>
+                !string.IsNullOrEmpty(x.IdentityCardNumber) ||
+                !string.IsNullOrEmpty(x.StudentLicence) ||
+                !string.IsNullOrEmpty(x.Passport)
+            )
+            .WithMessage("Debe de poner almenos un pasaporte, una matrícula o una cédula");
 
             RuleFor(x => x.FullName)
                 .NotEmpty()
@@ -99,11 +117,19 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
                 .MaximumLength(100)
                 .WithMessage("La dirección no puede superar los 100 caracteres.");
 
-            RuleFor(x => x.IdentityCardNumber)
-                .NotEmpty()
-                .WithMessage("La cédula es obligatoria.")
-                .Matches(@"^\d{11}$")
-                .WithMessage("La cédula solo puede contener números y tener 11 dígitos.");
+            When(
+
+            x => !string.IsNullOrEmpty(x.IdentityCardNumber),
+
+                () =>
+                {
+                    RuleFor(x => x.IdentityCardNumber)
+                    .Length(11)
+                    .WithMessage("La cédula debe tener exactamente 11 dígitos")
+                    .Matches(@"^\d{11}$")
+                    .WithMessage("La cédula solo puede contener números");
+                }
+            );
 
             When(
                 x => !string.IsNullOrWhiteSpace(x.StudentLicence),
@@ -198,6 +224,7 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
             if (
                 await context.Readers.AnyAsync(
                     r =>
+                        !string.IsNullOrEmpty(request.IdentityCardNumber) &&
                         r.IdentityCardNumber == request.IdentityCardNumber
                         && r.Id != request.ReaderId,
                     cancellationToken
