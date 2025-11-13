@@ -1,6 +1,210 @@
-@page "/about"
+﻿@page "/about"
 
-<div class="flex flex-col   w-full mt-[20px] gap-4 px-4">
-    <h2 class="text-3xl font-semibold">Acerca</h2>
-    <p class="text-center">hjgjhgjjghgjhgjhgjgjhgjggjggjhghg</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+    <div class="max-w-5xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Acerca de Nosotros</h1>
+            <p class="text-lg text-gray-600">Sistema de Gestión de Préstamos de Libros</p>
+            <div class="w-24 h-1 bg-gradient-to-r from-green-500 to-green-600 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <!-- Información de la Aplicación -->
+        <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-green-600 mb-2">BiblioUteco</h2>
+                <p class="text-sm text-gray-500 mb-4">Universidad Tecnológica del Cibao Oriental (UTECO)</p>
+
+               
+            </div>
+
+            <div class="space-y-6">
+                <!-- Descripción -->
+                <div class="border-l-4 border-green-500 pl-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">📚 Descripción</h3>
+                    <p class="text-gray-600">
+                        BiblioUteco es una aplicación web desarrollada para gestionar el préstamo y control de libros
+                        en la biblioteca de la Universidad Tecnológica del Cibao Oriental (UTECO). Permite administrar
+                        libros, lectores, préstamos, penalizaciones y reportes de manera rápida y eficiente.
+                    </p>
+                </div>
+
+                <!-- Objetivo -->
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">🎯 Objetivo</h3>
+                    <p class="text-gray-600">
+                        Optimizar el control de los recursos bibliográficos mediante un sistema digital que facilite
+                        el registro, búsqueda y seguimiento de los préstamos.
+                    </p>
+                </div>
+
+                <!-- Características Principales -->
+                <div class="border-l-4 border-purple-500 pl-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">✨ Características Principales</h3>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Gestión de libros y lectores</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Control de préstamos y devoluciones</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Registro automático de penalizaciones</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Reportes detallados del sistema</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Módulo de transacciones de caja</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span class="text-gray-600">Interfaz moderna y fácil de usar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipo de Desarrollo -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Equipo de Desarrollo</h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Desarrollador Backend -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl font-bold">JA</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">José Apolinar de León</h3>
+                        <p class="text-green-600 font-semibold mb-2 text-sm">Backend Developer</p>
+                        <div class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                            Desarrollo del Servidor
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Administrador de Base de Datos -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl font-bold">JM</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">José Manuel Tejeda</h3>
+                        <p class="text-green-600 font-semibold mb-2 text-sm">Database Administrator</p>
+                        <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                            Gestión de Datos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desarrollador Frontend -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-2xl font-bold">GJ</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">Gendy Joel Villa</h3>
+                        <p class="text-green-600 font-semibold mb-2 text-sm">Frontend Developer</p>
+                        <div class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            Interfaz de Usuario
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Contacto</h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- José Apolinar -->
+                <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">José Apolinar</h3>
+                    <p class="text-sm text-gray-600 mb-2">Backend Developer</p>
+                    <div class="space-y-2">
+                        <a href="tel:8299212963" class="flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            829-921-2963
+                        </a>
+                        <a href="mailto:japolinar@gmail.com" class="flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            japolinar@gmail.com
+                        </a>
+                    </div>
+                </div>
+
+                <!-- José Manuel Tejeda -->
+                <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">José Manuel Tejeda</h3>
+                    <p class="text-sm text-gray-600 mb-2">Database Administrator</p>
+                    <div class="space-y-2">
+                        <a href="tel:8298786082" class="flex items-center justify-center gap-2 text-purple-600 hover:text-purple-700 font-medium text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            829-878-6082
+                        </a>
+                        <a href="mailto:josemanueltejeda1999@gmail.com" class="flex items-center justify-center gap-2 text-purple-600 hover:text-purple-700 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            josemanueltejeda1999@gmail.com
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Gendy Joel Villa -->
+                <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Gendy Joel Villa</h3>
+                    <p class="text-sm text-gray-600 mb-2">Frontend Developer</p>
+                    <div class="space-y-2">
+                        <a href="tel:8294982875" class="flex items-center justify-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            829-498-2875
+                        </a>
+                        <a href="mailto:gvilla@gmail.com" class="flex items-center justify-center gap-2 text-green-600 hover:text-green-700 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            gvilla@gmail.com
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white text-center">
+            <p class="text-sm mb-2">© 2025 BiblioUteco - Sistema de Gestión de Préstamos de Libros</p>
+            <p class="text-xs text-green-100">Universidad Tecnológica del Cibao Oriental (UTECO) | Versión 1.0</p>
+        </div>
+
+    </div>
 </div>
