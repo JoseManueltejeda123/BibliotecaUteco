@@ -35,8 +35,9 @@
             </p>
         </div>
         <div>
-            <LumexTextbox Behavior="InputBehavior.OnInput" Required="true" Type="InputType.Text"
-                          @bind-Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación"
+            <LumexTextbox Behavior="InputBehavior.OnInput" Type="InputType.Text"
+                        ValueChanged="HandleOnIdentityNumberInput"
+                          Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación"
                           Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"
                           Disabled="_updatingReader"></LumexTextbox>
             <p class="text-red-500 text-xs">
@@ -109,6 +110,18 @@
 
 @functions{
 
+    public void HandleOnIdentityNumberInput(string? e)
+    {
+        var value = e ?? string.Empty;
+        if (value == string.Empty)
+        {
+            UpdateReaderModel.IdentityCardNumber = null;
+            return;
+        }
+
+        UpdateReaderModel.IdentityCardNumber = value;
+        return;
+    }
     public void HandleOnStudentLicenceInput(string? e)
     {
         var value = e ?? string.Empty;
