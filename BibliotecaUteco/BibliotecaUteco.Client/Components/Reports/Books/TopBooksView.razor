@@ -7,49 +7,20 @@
 
         </div>
         
-        <a @onclick="async () => { await OnClose.InvokeAsync(); }" class="text-[13px] cursor-pointer font-semibold text-green-700 underline">Cerrar</a>
+        <LumexChip @onclick="async () => { await OnClose.InvokeAsync(); }" Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Danger" Variant="ChipVariant.Flat">
+            <EndContent>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>            </EndContent>
+            <ChildContent>Cerrar</ChildContent>
+        </LumexChip>    
     </div>
-    
-    <div class="flex w-full items-center gap-3">
-       
-        <LumexNumbox TValue="int?"
-                     min="1"
-                     max="@DateTime.Now.Year"
-                     Placeholder="Itroduce el año para el reporte"
-                     LabelPlacement="@LabelPlacement.Inside"
-                     ValueChanged="HandleYearChanged"
-                     Value="@RequestModel.Year"
-                     Label="Año del reporte"
-                     Behavior="InputBehavior.OnInput"
-                     Disabled="_fetching"/>
-        <LumexSelect TValue="int"
-                     @bind-Value="@RequestModel.Month"
-                     Label="Mes"
-                     LabelPlacement="LabelPlacement.Inside"
-                     Placeholder="Selecciona un mes"
-                     Class="max-w-xs">
-
-            @foreach (var mes in meses)
-            {
-                <LumexSelectItem @key="@mes.Key" Value="@mes.Key">
-                    @mes.Value
-                </LumexSelectItem>
-            }
-
-        </LumexSelect>
-        <LumexButton OnClick="FetchGetTopBooksAsync" Disabled="@_fetching" Class="mt-auto" Color="ThemeColor.Primary">
-            Buscar
-        </LumexButton>
-
-
-
-    </div>
-    
+    <YearPicker OnYearChanged="HandleYearChanged" SelectedYear="RequestModel.Year"/>
+   <MonthsPicker OnMonthChanged="HandleMonthChanged" SelectedMonth="RequestModel.Month"/>
+    <p class="text-xs font-normal">Selecciona el año para hacer el reporte</p>
     <div class="flex flex-col gap-3 w-full">
         
         @if(TopBooks.Books.Any())
         {
-             <SectionDivider Name=@($"Top 10 libros de {meses[RequestModel.Month]} del {RequestModel.Year}")/>
+             <SectionDivider Name=@($"Top 10 libros")/>
         }
         else if(!TopBooks.Books.Any() && !_fetching)
         {
@@ -118,42 +89,47 @@
     [Parameter]
     public EventCallback OnClose {get; set;}
     
-    private Dictionary<int, string> meses = new Dictionary<int, string>
-    {
-        { 1, "Enero" },
-        { 2, "Febrero" },
-        { 3, "Marzo" },
-        { 4, "Abril" },
-        { 5, "Mayo" },
-        { 6, "Junio" },
-        { 7, "Julio" },
-        { 8, "Agosto" },
-        { 9, "Septiembre" },
-        { 10, "Octubre" },
-        { 11, "Noviembre" },
-        { 12, "Diciembre" }
-    };
-    
+        public CancellationTokenSource? _cts = null;
+
     
    
     
 }
 
 @functions{
-    public void HandleYearChanged(int? value)
+    public async Task HandleYearChanged(int? value)
     {
         RequestModel.Year = value ?? DateTime.Now.Year;
+        await FetchGetTopBooksAsync();
+        
+    }
+
+    public async Task HandleMonthChanged(int? value)
+    {
+        RequestModel.Month = value ?? DateTime.Now.Month;
+        await FetchGetTopBooksAsync();
+
+        
     }
     protected override async Task OnInitializedAsync()
     {
          await FetchGetTopBooksAsync();
     }
 
+    
+
+    
     public async Task FetchGetTopBooksAsync()
     {
+        if(_cts is not null)
+        {
+            await _cts.CancelAsync();
+        }
+
+        _cts = new();
         _fetching = true;
         StateHasChanged();
-        var result = await ReportsApiServices.GetTopBooksByDateAsync(RequestModel);
+        var result = await ReportsApiServices.GetTopBooksByDateAsync(RequestModel, _cts.Token);
 
         if (result.IsSuccessful()){
            TopBooks = result.Data;

@@ -27,25 +27,7 @@
         </div>
         
     </div>
-        <div class="relative w-[300px]">
-            <div id="dates-container" class="flex px-[30px] gap-4 overflow-x-auto items-end scrollbar-none" style="scrollbar-width: none;">
-                @for(int i = DateTime.Now.Year; i >= 1980; i--)
-                {
-                    var year = i;
-                    <p id="@(year + "-date")" @key="year" @onclick="async ()=>{ await HandleYearChanged(year);}" class=@($"{(RequestModel.Year == year ? "text-[20px] text-green-800" : "text-[14px] opacity-80 hover:scale-105")} transition-all font-semibold cursor-pointer")>@year</p>
-                }
-            </div>
-            <p class="text-xs font-normal">Selecciona el año para hacer el reporte</p>
-
-            <!-- left shadow -->
-            <div class="pointer-events-none absolute left-0 inset-y-0 w-6 z-10"
-                 style="background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
-
-            <!-- right shadow -->
-            <div class="pointer-events-none absolute right-0 inset-y-0 w-6 z-10"
-                 style="background: linear-gradient(270deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
-        </div>
-  
+        <YearPicker SelectedYear="RequestModel.Year" OnYearChanged="HandleYearChanged"/>
         @if(LoansPerMonth.MonthLoanCount.Any())
         {
              <SectionDivider Name=@($"Prestamos por mes del {RequestModel.Year}")/>
@@ -142,8 +124,6 @@
     public async Task HandleYearChanged(int? value)
     {
         RequestModel.Year = value ?? DateTime.Now.Year;
-        await FocusDate(value + "-date");
-        StateHasChanged();
         await FetchGetLoansPerMonthAsync();
         
     }
@@ -159,11 +139,7 @@
     }
 
 
-    public async Task FocusDate(string dateId)
-    {
-        await JsRuntime.InvokeVoidAsync("focusAndScroll", dateId);
-    }
-
+   
 
 
     public async Task FetchGetLoansPerMonthAsync()

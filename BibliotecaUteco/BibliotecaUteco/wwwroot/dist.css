@@ -1051,9 +1051,6 @@
   .w-\[80\%\] {
     width: 80%;
   }
-  .w-\[90\%\] {
-    width: 90%;
-  }
   .w-\[100\%\] {
     width: 100%;
   }
@@ -2270,9 +2267,6 @@
   }
   .\!text-white {
     color: var(--color-white) !important;
-  }
-  .text-\[1\] {
-    color: 1;
   }
   .text-black {
     color: var(--color-black);
@@ -4372,16 +4366,6 @@
       @media (hover: hover) {
         --tw-translate-x: calc(var(--spacing) * 0);
         translate: var(--tw-translate-x) var(--tw-translate-y);
-      }
-    }
-  }
-  .hover\:scale-10 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-scale-x: 10%;
-        --tw-scale-y: 10%;
-        --tw-scale-z: 10%;
-        scale: var(--tw-scale-x) var(--tw-scale-y);
       }
     }
   }

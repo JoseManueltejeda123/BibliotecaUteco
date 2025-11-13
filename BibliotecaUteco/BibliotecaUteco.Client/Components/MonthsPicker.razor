@@ -1,0 +1,56 @@
+  <div class="relative w-[300px]">
+    <div id="months-container"
+        class="flex px-[30px] gap-4 overflow-x-auto items-end scrollbar-none"
+        style="scrollbar-width: none;">
+        
+        @foreach (Months month in Enum.GetValues(typeof(Months)))
+        {
+            var monthIndex = (int)month;
+            <p id="@($"{monthIndex}-month")"
+            @key="monthIndex"
+            @onclick="async () => await TriggerOnMonthChanged(monthIndex)"
+            class=@($"{(SelectedMonth == monthIndex ? "text-[16px] text-green-800" : "text-[14px] opacity-80 hover:scale-105")} transition-all font-semibold cursor-pointer")>
+                @month
+            </p>
+        }
+    </div>
+    <div class="pointer-events-none absolute left-0 inset-y-0 w-6 z-10"
+        style="background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
+
+            <!-- right shadow -->
+    <div class="pointer-events-none absolute right-0 inset-y-0 w-6 z-10"
+            style="background: linear-gradient(270deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
+</div>
+
+
+@code{
+
+    [Parameter]
+    public int SelectedMonth {get; set;}
+    
+    [Parameter]
+    public EventCallback<int?> OnMonthChanged {get; set;}
+    
+}
+
+@functions{
+
+    public async Task TriggerOnMonthChanged(int monthNum)
+    {
+        await FocusMonth(monthNum + "-month");
+        StateHasChanged();
+        await OnMonthChanged.InvokeAsync(monthNum);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await FocusMonth(SelectedMonth + "-month");
+        StateHasChanged();
+    }
+
+    public async Task FocusMonth(string monthId)
+    {
+        await JsRuntime.InvokeVoidAsync("focusAndScrollMonths", monthId);
+    }
+
+}
