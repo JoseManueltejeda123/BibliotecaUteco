@@ -65,7 +65,7 @@
                     style="padding: 0 2px; font-family: 'Inconsolata'; font-size: 14px; text-wrap: nowrap; font-weight: 600; color: black;">@(Loan.Books.IndexOf(book) + 1) @book.Name.ToUpper()</span>
                 <span style="font-family: 'Inconsolata'; font-size: 14px; color: dimgray; ">
                     
-                @if (book.Authors.Any())
+                    @if (book.Authors.Any())
                     {
                         @(book.Authors.FirstOrDefault()?.Author.FullName.ToUpper() ?? "SIN AUTOR")
                     }
