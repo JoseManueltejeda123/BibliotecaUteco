@@ -1,3 +1,4 @@
+using BibliotecaUteco.Client.Requests.Reports;
 using BibliotecaUteco.Client.Requests.Reports.Books;
 using BibliotecaUteco.Client.Responses;
 
@@ -11,6 +12,11 @@ public interface IReportsApiServices
 
     Task<ApiResponse<LoansPerMonthResponse>> GetLoansPerMonthAsync(
         GetLoansPerMonthRequest request,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<ApiResponse<GeneralReport>> GetGeneralAsync(
+        GetGeneralReportRequest request,
         CancellationToken cancellationToken = default
     );
 }

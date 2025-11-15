@@ -30,7 +30,7 @@ namespace BibliotecaUteco.Client.Utilities
 
                 if (value == null)
                 {
-                    query[prop.Name] = string.Empty;
+                    
                     continue;
                 }
 

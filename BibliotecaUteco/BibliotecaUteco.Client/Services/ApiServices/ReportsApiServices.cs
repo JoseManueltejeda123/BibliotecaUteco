@@ -1,3 +1,4 @@
+using BibliotecaUteco.Client.Requests.Reports;
 using BibliotecaUteco.Client.Requests.Reports.Books;
 using BibliotecaUteco.Client.Responses;
 using BibliotecaUteco.Client.ServicesInterfaces.ApiServicesInterfaces;
@@ -31,6 +32,18 @@ public class ReportsApiServices(BibliotecaHttpClient client) : IReportsApiServic
             
         return await client.FetchGetAsync<LoansPerMonthResponse>(
             ReportsEndpoint + $"/loans-per-month?{QueryStringBuilder.ToQueryString(request)}",
+            cancellationToken
+        );
+    }
+
+    public async Task<ApiResponse<GeneralReport>> GetGeneralAsync(
+        GetGeneralReportRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+            
+        return await client.FetchGetAsync<GeneralReport>(
+            ReportsEndpoint + $"/general?{QueryStringBuilder.ToQueryString(request)}",
             cancellationToken
         );
     }

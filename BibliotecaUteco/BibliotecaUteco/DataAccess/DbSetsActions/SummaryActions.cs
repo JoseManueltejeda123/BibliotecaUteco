@@ -79,5 +79,79 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             return summary;
         }
 
+        public static async Task<GeneralReport> GetGeneralReportForAMonthAsync(this IBibliotecaUtecoDbContext context, int year, int month, CancellationToken token = default)
+        {
+            var startDate = new DateTime(year, month, 1);
+            var endDate = startDate.AddMonths(1);
+            return await context.Books.Select(_ => new GeneralReport(){
+
+                CurrentStateAvailableBooksCount = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) >= 1),
+                CurrentStateBooksCount = context.Books.Count(),
+                CurrentStateLoanedBooksCount = context.Loans.Where(l => l.ReturnedDate == null).Sum(l => l.Books.Count()),
+                Year = year,
+                Month = month,
+                
+
+                Books = context.Books.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(b => new BookResponse()
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    CreatedAt = b.CreatedAt,
+                    Authors = b.Authors.Select(a => new BookAuthorResponse(){
+                        Author = new()
+                        {
+                            FullName = a.Author.FullName
+                        }
+                    }).ToList(),
+                    Genres = b.Genres.Select(g => new GenreBookResponse()
+                    {
+                        Genre = new(){
+                            Name = g.Genre.Name
+                        }
+                    }).ToList(),
+                    LoansCount = b.Loans.Count(),
+                    ActiveLoansCount = b.Loans.Count(),
+                    Stock = b.Stock,
+                    AvailableAmount = b.AvailableAmount
+                }).ToList()
+            }).FirstOrDefaultAsync() ?? new();
+        }
+
+         public static async Task<GeneralReport> GetGeneralReportAsync(this IBibliotecaUtecoDbContext context, int year, CancellationToken token = default)
+        {
+            var startDate = new DateTime(year, 1, 1);
+            var endDate = startDate.AddMonths(12);
+            return await context.Books.Select(_ => new GeneralReport(){
+
+                CurrentStateAvailableBooksCount = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) >= 1),
+                CurrentStateBooksCount = context.Books.Count(),
+                CurrentStateLoanedBooksCount = context.Loans.Where(l => l.ReturnedDate == null).Sum(l => l.Books.Count()),
+
+
+                Year = year,
+                Books = context.Books.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(b => new BookResponse()
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    CreatedAt = b.CreatedAt,
+                    Authors = b.Authors.Select(a => new BookAuthorResponse(){
+                        Author = new()
+                        {
+                            FullName = a.Author.FullName
+                        }
+                    }).ToList(),
+                    Genres = b.Genres.Select(g => new GenreBookResponse()
+                    {
+                        Genre = new(){
+                            Name = g.Genre.Name
+                        }
+                    }).ToList(),
+                    LoansCount = b.Loans.Count(),
+                    ActiveLoansCount = b.Loans.Count(),
+                    Stock = b.Stock,
+                    AvailableAmount = b.AvailableAmount
+                }).ToList()
+            }).FirstOrDefaultAsync() ?? new();
+        }
     }
 }

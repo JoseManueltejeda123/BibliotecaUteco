@@ -13,3 +13,16 @@ public class LoansPerMonthResponse
     public int Year { get; set; }
     public Dictionary<string, int> MonthLoanCount { get; set; } = new();
 }
+
+public class GeneralReport
+{
+    public int Year {get; set;}
+    public int Month {get; set;}
+
+    public int CurrentStateBooksCount {get; set;}
+    public int CurrentStateAvailableBooksCount {get; set;}
+
+    public int CurrentStateLoanedBooksCount {get; set;}
+
+    public List<BookResponse> Books {get; set;} = new();
+}

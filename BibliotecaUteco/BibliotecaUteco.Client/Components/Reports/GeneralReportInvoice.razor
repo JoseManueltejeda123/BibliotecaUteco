@@ -1,0 +1,111 @@
+<div id="generalStateInvoice"
+     style="width: 100%; gap: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+    <div style="width: 100%; display: flex; gap: 4px; align-items: center; justify-content: space-between">
+        <p style="font-family: 'Inconsolata'; font-size: 16px; font-weight: 600;">@(Model.Month <= 0 ?  $"REPORTE GENERAL DEL AÑO {Model.Year}" : $"REPORTE DEL MES {Model.Month} DEL {Model.Year}")</p>
+        <img src="https://uteco.edu.do/wp-content/uploads/2021/04/Logo-Pag.jpg"
+             style="width: 150px; object-fit: contain; height: 50px;"/>
+    </div>
+
+
+   
+
+     <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">LIBROS</span>
+        <hr style="border-bottom: 1px solid black; width: 100%;"/>
+    </div>
+
+    <div class="flex flexe-col w-full gap-2">
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            ESTADO ACTUAL DEL SISTEMA
+           
+        </p>
+       
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL LIBROS:
+            <span style="color: black; padding: 0 2px;">
+                  @Model.CurrentStateBooksCount LIBROS
+            </span>
+        </p>
+       
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+         TOTAL LIBROS DISPONIBLES:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateAvailableBooksCount LIBROS
+            </span>
+        </p>
+        
+        
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+         TOTAL LIBROS PRESTADOS:
+            <span style="color: black; padding: 0 2px;">
+                @Model.CurrentStateLoanedBooksCount LIBROS
+            </span>
+        </p>
+      
+       
+        <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">NOMBRE</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">GENEROS</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">AUTORES</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model.Books)
+                {
+                    <tr>
+                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@book.Name</td>
+                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@(string.Join(", ", book.Genres.Select(g => g.Genre.Name)))</td>
+                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@(string.Join(", ", book.Authors.Select(g => g.Author.FullName)))</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+
+
+    </div>
+
+ <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">LIBROS</span>
+        <hr style="border-bottom: 1px solid black; width: 100%;"/>
+    </div>
+   
+    <div>
+   
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">FECHA DE LA CONSULTA:
+            <span style="color: black; padding: 0 2px;">
+                @DateTime.Now.ToString("dd MMMM yyyy hh:mm:ss")
+            </span>
+        </p>
+       
+    </div>
+
+    <div
+        style="width: 100%; gap: 0 !important; display: flex; flex-direction: column; justify-content: center; opacity: 0.7; margin-top: 200px; align-items: center;">
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600; ">BIBLIOTECA UTECO</p>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 500; ">COTUÍ, SÁNCHEZ RAMÍREZ, REP. DOM.
+            (43000) </p>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter] public EventCallback OnPrinted { get; set; }
+
+    [Parameter] public GeneralReport Model { get; set; } = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("printElement", $"ResumenGeneral{Model.Year}", "generalStateInvoice");
+            await OnPrinted.InvokeAsync();
+        }
+    }
+
+}
