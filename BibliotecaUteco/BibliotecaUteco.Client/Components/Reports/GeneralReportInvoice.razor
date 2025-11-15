@@ -43,12 +43,15 @@
         </p>
       
        
-        <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+        <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
             <thead>
                 <tr>
-                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">NOMBRE</th>
-                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">GENEROS</th>
-                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px 0px; font-size: 13px;">AUTORES</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">NOMBRE</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">GENEROS</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">AUTORES</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">STOCK</th>
+
 
                 </tr>
             </thead>
@@ -56,21 +59,86 @@
                 @foreach (var book in Model.Books)
                 {
                     <tr>
-                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@book.Name</td>
-                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@(string.Join(", ", book.Genres.Select(g => g.Genre.Name)))</td>
-                        <td style="font-family: Inconsolata; padding: 8px 0px; font-size: 13px;">@(string.Join(", ", book.Authors.Select(g => g.Author.FullName)))</td>
-
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@book.Id</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@book.Name</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(string.Join(", ", book.Genres.Select(g => g.Genre.Name)))</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(string.Join(", ", book.Authors.Select(g => g.Author.FullName)))</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@book.Stock</td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        
+
+        
+        
+
+
+    </div>
+
+    <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">LECTORES</span>
+        <hr style="border-bottom: 1px solid black; width: 100%;"/>
+    </div>
+
+    <div class="flex flexe-col w-full gap-2">
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            ESTADO ACTUAL DEL SISTEMA
+           
+        </p>
+       
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL LECTORES:
+            <span style="color: black; padding: 0 2px;">
+                  @Model.CurrentStateReadersCount LECTORES
+            </span>
+        </p>
+       
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+         TOTAL LECTORES CON PRESTAMOS EXCEDIDOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateReadersWithExceededLoansCount LECTORES
+            </span>
+        </p>
+       
+       
+        <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">NOMBRE</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">CÉDULA</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">MATRÍCULA</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">PASAPORTE</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">PRÉSTAMOS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reader in Model.Readers)
+                {
+                    <tr>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@reader.Id</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@reader.FullName</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(reader.IdentityCardNumber ?? "----")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(reader.StudentLicence ?? "------")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(reader.Passport ?? "------")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@reader.LoansCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        
+
+        
         
 
 
     </div>
 
  <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
-        <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">LIBROS</span>
+        <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">RESUMEN</span>
         <hr style="border-bottom: 1px solid black; width: 100%;"/>
     </div>
    

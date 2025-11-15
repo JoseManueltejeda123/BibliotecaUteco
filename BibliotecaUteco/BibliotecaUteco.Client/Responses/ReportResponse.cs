@@ -16,6 +16,8 @@ public class LoansPerMonthResponse
 
 public class GeneralReport
 {
+
+    //books
     public int Year {get; set;}
     public int Month {get; set;}
 
@@ -25,4 +27,12 @@ public class GeneralReport
     public int CurrentStateLoanedBooksCount {get; set;}
 
     public List<BookResponse> Books {get; set;} = new();
+
+
+    //readers
+
+    public int CurrentStateReadersCount {get; set;}
+    public int CurrentStateReadersWithExceededLoansCount {get; set;}
+
+    public List<ReaderResponse> Readers {get; set;} = new();
 }

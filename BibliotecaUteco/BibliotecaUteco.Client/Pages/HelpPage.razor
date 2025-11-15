@@ -22,7 +22,7 @@
             </h2>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach(var url in Urls)
+                @foreach(var video in Videos)
                 {
                     <div
                         target="_blank"
@@ -30,49 +30,60 @@
                                
 
                             <iframe id="ytplayer" type="text/html" class="w-full aspect-video" 
-                                    src=@($"https://www.youtube.com/embed/{url}")
+                                    src=@($"https://www.youtube.com/embed/{video.Url}")
                                     frameborder="0">
                             </iframe>
                             <div class="p-5">
                                 <h3 class="font-semibold text-lg text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                                    Introducion a BiblioUTECO
+                                    @video.Name
                                 </h3>
                                 <p class="text-gray-600 text-sm mb-3">
-                                    Aprende los conceptos básicos para comenzar a usar la aplicación de forma efectiva.
+                                    @video.Description
                                 </p>
-                                <div class="flex items-center text-green-600 text-sm font-medium">
+                                <a class="flex items-center text-green-600 text-sm font-medium underline" href=@($"https://www.youtube.com/watch?v={video.Url}")>
                                     Ver tutorial
                                     <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
-                                </div>
+                                </a>
                             </div>
                     </div>
                 }
-                
-
                
             </div>
-
         </div>
-
-
-
-        <!-- Footer Info -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white text-center">
-            <p class="text-sm mb-2">© 2025 BiblioUteco - Sistema de Gestión de Préstamos de Libros</p>
-            <p class="text-xs text-green-100">Universidad Tecnológica del Cibao Oriental (UTECO) | Versión 1.0</p>
-        </div>
-
     </div>
+</div>
+
+<div class="absolute bg-green-700 rounded-lg shadow-lg p-6 text-white text-center w-full">
+    <p class="text-sm mb-2">© 2025 BiblioUteco - Sistema de Gestión de Préstamos de Libros</p>
+    <p class="text-xs text-green-100">Universidad Tecnológica del Cibao Oriental (UTECO) | Versión 1.0</p>
 </div>
 
 @code{
 
-    public List<string> Urls {get; set;}
+    public List<Video> Videos {get; set;} = new();
 
     protected override void OnInitialized()
     {
-        Urls = ["XVgwIGLGWBY?si=iadTnQtOE5OU_bfv"];
+        Videos = [
+
+            new()
+            {
+                Name = "Introducion a BiblioUTECO",
+                Description = "Aprende los conceptos básicos para comenzar a usar la aplicación de forma efectiva.",
+                Url="XVgwIGLGWBY?si=iadTnQtOE5OU_bfv"
+            }
+        
+        ];
+        
+     
+    }
+
+    public class Video{
+
+        public string Name {get; set;} = "";
+        public string Description {get; set;} = "";
+        public string Url {get; set;} = "";
     }
 }

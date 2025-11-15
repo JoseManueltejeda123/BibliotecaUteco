@@ -237,6 +237,8 @@
             else
             {
                 await Toast.Success("Préstamo marcado como devuelto");
+                ShowInvoice = true;
+
             }
 
             Loan.ReturnedDate = result.Data.ReturnedDate;

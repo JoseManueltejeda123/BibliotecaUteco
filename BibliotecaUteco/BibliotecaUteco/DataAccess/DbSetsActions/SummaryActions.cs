@@ -113,6 +113,18 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     ActiveLoansCount = b.Loans.Count(),
                     Stock = b.Stock,
                     AvailableAmount = b.AvailableAmount
+                }).ToList(),
+                 CurrentStateReadersCount = context.Readers.Count(),
+                CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
+                Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
+                {
+                    Id = l.Id,
+                    FullName = l.FullName,
+                    StudentLicence = l.StudentLicence ?? "",
+                    IdentityCardNumber = l.IdentityCardNumber ?? "",
+                    Passport = l.Passport ?? "",
+                    LoansCount = l.Loans.Count()
+
                 }).ToList()
             }).FirstOrDefaultAsync() ?? new();
         }
@@ -150,7 +162,21 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     ActiveLoansCount = b.Loans.Count(),
                     Stock = b.Stock,
                     AvailableAmount = b.AvailableAmount
+                }).ToList(),
+                
+                CurrentStateReadersCount = context.Readers.Count(),
+                CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
+                Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
+                {
+                    Id = l.Id,
+                    FullName = l.FullName,
+                    StudentLicence = l.StudentLicence ?? "",
+                    IdentityCardNumber = l.IdentityCardNumber ?? "",
+                    Passport = l.Passport ?? "",
+                    LoansCount = l.Loans.Count()
+
                 }).ToList()
+
             }).FirstOrDefaultAsync() ?? new();
         }
     }
