@@ -7,17 +7,23 @@
              src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Reader.FullName}")/>
         <div class="flex flex-col gap-1 ">
             <label class="text-[16px] font-semibold opacity-80 text-black ">@Reader.FullName</label>
-            <label class="text-[13px] font-normal line-clamp-1">Info: @Reader.IdentityCardNumber
-                (
-                @if (!string.IsNullOrEmpty(Reader.StudentLicence))
-                {
-                    @Reader.StudentLicence
-                }
-                else
-                {
-                    @(" -------")
-                }
+            
+            <label class="text-[13px] font-normal line-clamp-1">Cédula: @Reader.IdentityCardNumber
+                (Matrícula: 
+                    @if (!string.IsNullOrEmpty(Reader.StudentLicence))
+                    {
+                        @Reader.StudentLicence
+                    }
+                   
                 )
+                (Pasaporte: 
+                    @if (!string.IsNullOrEmpty(Reader.Passport))
+                    {
+                        @Reader.Passport
+                    }
+                    
+                )
+                
             </label>
 
 

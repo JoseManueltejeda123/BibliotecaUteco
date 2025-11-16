@@ -118,7 +118,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 CurrentStateUnactiveReaders = context.Readers.Count(l => l.Loans.All(a => a.ReturnedDate != null)),
                 CurrentStateActiveReaders = context.Readers.Count(l => l.Loans.Any(r => r.ReturnedDate == null)),
                 CurrentStateReadersCount = context.Readers.Count(),
-                CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
+                CurrentStateReadersWithExceededLoansCount = context.Readers.Count(r => r.Loans.Any(l => l.DueDate < DateTime.UtcNow && l.ReturnedDate == null)),
                 Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
                 {
                     Id = l.Id,
@@ -149,6 +149,26 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                         IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
                         Passport = l.Reader.Passport ?? ""
                     }
+
+
+                    
+
+                }).ToList(),
+
+                CurrentStatePayedPenalties = context.Penalties.Count(p => !p.IsDue),
+                CurrentStateUnpayedPenalties = context.Penalties.Count(p => p.IsDue),
+                CurrentStateTotalPenalties = context.Penalties.Count(),
+                Penalties = context.Penalties.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new PenaltyResponse()
+                {
+                    Id = l.Id,
+                    CreatedAt = l.CreatedAt,
+                    IsDue = l.IsDue,
+                    TransactionId = l.TransactionId,
+                    DailyFineRate = l.DailyFineRate,
+                    OverdueDays = l.OverdueDays,
+                    TotalAmount = l.TotalAmount
+
+                   
 
 
                     

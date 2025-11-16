@@ -33,8 +33,28 @@
                     <MonthsPicker SelectedMonth="GeneralReportModel.Month ?? DateTime.Now.Month" OnMonthChanged="(e)=>{GeneralReportModel.Month = e;}"/>
                     <SectionDivider/>
                     
-                    <LumexButton OnClick="FetchGetGeneralReportByMonthAsync" Color="ThemeColor.Primary">Imprimir Reporte</LumexButton>
-                    <LumexButton OnClick="FetchGetGeneralReportByYearAsync" Variant="Variant.Flat" Color="ThemeColor.Secondary">Imprimir solo por año</LumexButton>
+                    <LumexButton OnClick="FetchGetGeneralReportByMonthAsync" Color="ThemeColor.Primary"  Disabled="_fetchingInvoice">
+                        @if(_fetchingInvoice)
+                        {
+
+                            <LumexSpinner Color="ThemeColor.Primary" Variant="SpinnerVariant.Classic"/>
+                        }
+                        else
+                        {
+                            @("Imprimir Reporte")
+                        }
+                    </LumexButton>
+                    <LumexButton OnClick="FetchGetGeneralReportByYearAsync" Variant="Variant.Flat" Color="ThemeColor.Secondary" Disabled="_fetchingInvoice"> 
+                        @if(_fetchingInvoice)
+                        {
+
+                            <LumexSpinner Color="ThemeColor.Primary" Variant="SpinnerVariant.Classic"/>
+                        }
+                        else
+                        {
+                            @("Imprimir Anual")
+                        }
+                    </LumexButton>
 
                 </div>
                 
@@ -85,6 +105,8 @@
     GetGeneralReportRequest GeneralReportModel {get; set;} = new();
     GeneralReport GeneralReportResponse {get; set;} = new();
 
+    public bool _fetchingInvoice {get; set;}
+
 }
 
 @functions{
@@ -115,6 +137,8 @@
 
     public async Task FetchGetGeneralReportByMonthAsync()
     {
+        _fetchingInvoice = true;
+        StateHasChanged();
         var result = await ReportsApiServices.GetGeneralAsync(GeneralReportModel);
 
         if(result.IsSuccessful())
@@ -122,11 +146,15 @@
              GeneralReportResponse = result.Data;
         }
 
+        _fetchingInvoice = false;
+        StateHasChanged();
         SetShowInvoice();
     }
    
    public async Task FetchGetGeneralReportByYearAsync()
    {
+        _fetchingInvoice = true;
+        StateHasChanged();
         GeneralReportModel.Month = null;
       var result = await ReportsApiServices.GetGeneralAsync(GeneralReportModel);
 
@@ -134,7 +162,8 @@
       {
         GeneralReportResponse = result.Data;
       }
-
+        _fetchingInvoice = false;
+        StateHasChanged();
       SetShowInvoice();
    }
     public void SetReportView(ReportType? type)

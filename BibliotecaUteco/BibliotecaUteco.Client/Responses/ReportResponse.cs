@@ -52,4 +52,14 @@ public class GeneralReport
     public List<LoanResponse> Loans {get; set;} = new();
 
 
+    //penalties
+    
+
+    public int CurrentStateTotalPenalties {get; set;}
+    public int CurrentStateUnpayedPenalties {get; set;}
+    public int CurrentStatePayedPenalties {get; set;}
+
+    public List<PenaltyResponse> Penalties {get; set;} = new();
+
+
 }

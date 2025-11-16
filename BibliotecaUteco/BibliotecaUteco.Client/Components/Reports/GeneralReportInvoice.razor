@@ -216,6 +216,70 @@
             </tbody>
         </table>
 
+         <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+            <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">PENALIZACIONES</span>
+            <hr style="border-bottom: 1px solid black; width: 100%;"/>
+        </div>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL PENALIZACIONES:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateTotalPenalties PENALIZACIONES
+            </span>
+        </p>
+         <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            PENALIZACIOENS PAGADAS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStatePayedPenalties PENALIZACIONES
+            </span>
+        </p>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            PENALZACIONES NO PAGAS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateUnpayedPenalties PENALIZACIONES
+            </span>
+        </p>
+
+       
+         <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID TRAN.</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">F. CREACION</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">MONTO</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">DIAS EXC.</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">TAZA. PEN. DIA.</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ESTADO</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var  penalty in Model.Penalties)
+                {
+                    <tr>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@penalty.Id</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@penalty.TransactionId</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(penalty.CreatedAtLocalFormatted)</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">RD$ @( penalty.TotalAmount.ToString("f2"))</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(penalty.OverdueDays)</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">RD$ @( penalty.DailyFineRate.ToString("f2"))</td>
+
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">
+                        @if(penalty.IsDue)
+                        {
+                            @("NO PAGA")
+                        } 
+                        else 
+                        {
+                            @("PAGA")
+                        } 
+                         
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
         
 
         
