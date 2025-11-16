@@ -52,7 +52,7 @@ internal class GetGeneralReportEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
+            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Produces<SuccessApiResult<LoansPerMonthResponse>>(

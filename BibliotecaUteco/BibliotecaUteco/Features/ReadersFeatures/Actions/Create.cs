@@ -134,7 +134,7 @@ internal class CreateReaderEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<CreateReaderCommand>(false, ApplicationContentTypes.ApplicationJson)
