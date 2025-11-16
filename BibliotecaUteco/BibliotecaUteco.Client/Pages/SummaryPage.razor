@@ -144,11 +144,15 @@
         if(result.IsSuccessful())
         {
              GeneralReportResponse = result.Data;
+                     await JsRuntime.InvokeVoidAsync("console.log", result);
+
         }
+
+
+        SetShowInvoice();
 
         _fetchingInvoice = false;
         StateHasChanged();
-        SetShowInvoice();
     }
    
    public async Task FetchGetGeneralReportByYearAsync()
@@ -157,14 +161,17 @@
         StateHasChanged();
         GeneralReportModel.Month = null;
       var result = await ReportsApiServices.GetGeneralAsync(GeneralReportModel);
+        await JsRuntime.InvokeVoidAsync("console.log", result);
 
       if(result.IsSuccessful())
       {
         GeneralReportResponse = result.Data;
       }
-        _fetchingInvoice = false;
-        StateHasChanged();
+        
       SetShowInvoice();
+
+      _fetchingInvoice = false;
+        StateHasChanged();
    }
     public void SetReportView(ReportType? type)
     {
