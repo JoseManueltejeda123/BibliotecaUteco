@@ -1,0 +1,118 @@
+﻿@page "/help"
+
+<div class="min-h-screen py-8 px-4">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Centro de Ayuda</h1>
+            <p class="text-lg text-gray-600">Encuentra toda la información que necesitas para usar la aplicación</p>
+        </div>
+
+
+
+        <!-- Tutoriales en Video -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-7 h-7 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Tutoriales en Video
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach(var video in Videos)
+                {
+                    <div
+                        target="_blank"
+                        class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                               
+
+                            <iframe id="ytplayer" type="text/html" class="w-full aspect-video" 
+                                    src=@($"https://www.youtube.com/embed/{video.Url}")
+                                    frameborder="0">
+                            </iframe>
+                            <div class="p-5">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
+                                    @video.Name
+                                </h3>
+                                <p class="text-gray-600 text-sm mb-3">
+                                    @video.Description
+                                </p>
+                                <a class="flex items-center text-green-600 text-sm font-medium underline" href=@($"https://www.youtube.com/watch?v={video.Url}")>
+                                    Ver tutorial
+                                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                    </div>
+                }
+                
+
+               
+            </div>
+
+        </div>
+
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white text-center">
+            <p class="text-sm mb-2">© 2025 BiblioUteco - Sistema de Gestión de Préstamos de Libros</p>
+            <p class="text-xs text-green-100">Universidad Tecnológica del Cibao Oriental (UTECO) | Versión 1.0</p>
+        </div>
+
+    </div>
+</div>
+
+@code{
+
+    public List<Video> Videos {get; set;} = new();
+
+    protected override void OnInitialized()
+    {
+        Videos = [
+
+            new()
+            {
+                Name = "Introducion a BiblioUTECO",
+                Description = "Aprende los conceptos básicos para comenzar a usar la aplicación de forma efectiva.",
+                Url="XVgwIGLGWBY?si=iadTnQtOE5OU_bfv"
+            },
+             new()
+            {
+                Name = "Sistema de login y apartado de libro",
+                Description = "Aprende como incial sesion y como agregar, eliminar edictar libro de manera facil paso a paso.",
+                Url="z79JdV9P_0A?si=iadTnQtOE5OU_bfv"
+            },
+             new()
+            {
+                Name = "Crear lectores y Asignar prestamos",
+                Description = "En este video aprenderá a crear lectores y como asignarle préstamo de libros.",
+                Url="HTC0zmb7DXw?si=iadTnQtOE5OU_bfv"
+            },
+             new()
+            {
+                Name = "Penalizaciones por retardo de devolución de libro 📕",
+                Description = "En este video aprenderá cómo funcionan las Penalizaciones en base a los prestamos de libro que sobrepasan la fecha de entrega.",
+                Url="9edWoOWUOPk?si=iadTnQtOE5OU_bfv"
+            },
+             new()
+            {
+                Name = "Asignación de Roles, ya sea Bibliotecario o Administrador",
+                Description = "como administrador con este en este video aprenderá a como crear bibliotecario para asignarle su rol de bibliotecario.",
+                Url="N43vK1Mhxe4?si=iadTnQtOE5OU_bfv"
+            }
+
+        
+        ];
+        
+     
+    }
+
+    public class Video{
+
+        public string Name {get; set;} = "";
+        public string Description {get; set;} = "";
+        public string Url {get; set;} = "";
+    }
+}

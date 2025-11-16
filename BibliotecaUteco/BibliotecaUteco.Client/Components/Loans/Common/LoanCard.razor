@@ -55,19 +55,14 @@
 
             <div class="border rounded-full border-neutral-300 h-[10px] "/>
             <label class="text-xs font-normal">Matrícula:
-                @if (!string.IsNullOrEmpty(Loan.Reader.StudentLicence))
-                {
-                    @Loan.Reader.StudentLicence
-                }
-                else
-                {
-                    @("-------")
-                }
+                @(string.IsNullOrEmpty(Loan.Reader.StudentLicence) ? "" : Loan.Reader.StudentLicence)
 
 
             </label>
             <div class="border rounded-full border-neutral-300 h-[10px] "/>
-            <label class="text-xs font-normal">Cédula: @Loan.Reader.IdentityCardNumber</label>
+            <label class="text-xs font-normal">Cédula: @(string.IsNullOrEmpty(Loan.Reader.IdentityCardNumber) ? "" : Loan.Reader.IdentityCardNumber)</label>
+            <div class="border rounded-full border-neutral-300 h-[10px] "/>
+            <label class="text-xs font-normal">Pasaporte: @(string.IsNullOrEmpty(Loan.Reader.Passport) ? "" : Loan.Reader.Passport)</label>
 
 
         </div>
@@ -237,6 +232,8 @@
             else
             {
                 await Toast.Success("Préstamo marcado como devuelto");
+                ShowInvoice = true;
+
             }
 
             Loan.ReturnedDate = result.Data.ReturnedDate;

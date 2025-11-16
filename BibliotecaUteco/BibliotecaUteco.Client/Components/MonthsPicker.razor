@@ -1,4 +1,5 @@
-  <div class="relative w-[300px]">
+<a class="text-xs">Seleccione un mes</a>
+<div class="relative w-[300px] opacity-80 hover:opacity-100">
     <div id="months-container"
         class="flex px-[30px] gap-4 overflow-x-auto items-end scrollbar-none"
         style="scrollbar-width: none;">
@@ -9,7 +10,7 @@
             <p id="@($"{monthIndex}-month")"
             @key="monthIndex"
             @onclick="async () => await TriggerOnMonthChanged(monthIndex)"
-            class=@($"{(SelectedMonth == monthIndex ? "text-[16px] text-green-800" : "text-[14px] opacity-80 hover:scale-105")} transition-all font-semibold cursor-pointer")>
+            class=@($"{(SelectedMonth == monthIndex ? "text-[16px] text-green-800" : "text-[14px] text-black  hover:scale-105")} transition-all font-semibold cursor-pointer")>
                 @month
             </p>
         }

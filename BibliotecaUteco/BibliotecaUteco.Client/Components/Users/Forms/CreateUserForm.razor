@@ -3,6 +3,8 @@
     <DataAnnotationsValidator/>
     <div class="w-full flex flex-col gap-4 p-3 mt-[40px] ">
         <InputFile accept=".jpg,.jpeg,.png,.webp" @ref="fileInput" class="hidden" OnChange="HandleFileChange"/>
+        <input type="text" style="display:none" autocomplete="username">
+        <input type="password" style="display:none" autocomplete="current-password">
 
         @if (!string.IsNullOrEmpty(ProfilePicturePreview) && CreateUserModel.ProfilePictureFile is not null)
         {
@@ -43,7 +45,7 @@
 
         </div>
         <div class="flex flex-col ">
-            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
+            <LumexTextbox  autocomplete="off" Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
                           Type="InputType.Text" @bind-Value="CreateUserModel.Username" Label="Nombre de usuario"
                           Description="Máximo 15 caracteres. Mínimo 5. Solo letras, numeros, raya baja y punto."
                           PlaceHolder="Ej. Manuel.Lopez1"></LumexTextbox>
@@ -52,7 +54,7 @@
 
         </div>
         <div class="flex flex-col ">
-            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
+            <LumexTextbox  autocomplete="off" Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
                           Type="@(ShowPassword ? InputType.Text : InputType.Password)"
                           @bind-Value="CreateUserModel.Password" Label="Contraseña"
                           Description="Máximo 30 caracteres. Mínimo 8." PlaceHolder="********"></LumexTextbox>
@@ -62,7 +64,7 @@
         </div>
 
         <div class="flex flex-col ">
-            <LumexTextbox Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
+            <LumexTextbox  autocomplete="off" Size="Size.Small" Behavior="InputBehavior.OnInput" Disabled="_creatingUser" Required="true"
                           Type="InputType.Text" @bind-Value="@CreateUserModel.IdentityCardNumber"
                           Label="Cédula de identificación" Description="Sin guiones, solo los números."
                           PlaceHolder="Ej. 000000000000"></LumexTextbox>

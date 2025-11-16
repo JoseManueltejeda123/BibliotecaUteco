@@ -143,20 +143,8 @@ namespace BibliotecaUteco.Features.ReadersFeatures.Actions
                 }
             );
 
-              When(
 
-            x => !string.IsNullOrEmpty(x.Passport),
-
-                () =>
-                {
-                    RuleFor(x => x.Passport)
-                    .MinimumLength(9)
-                    .WithMessage("El pasaporte debe de tener un mínimo de 9 caracteres")
-                    .MaximumLength(9)
-                    .WithMessage("El pasaporte debe de tener un máximo de 9 caracteres");
-
-                }
-            );
+           
         }
     }
 

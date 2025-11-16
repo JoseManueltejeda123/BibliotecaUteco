@@ -7,10 +7,10 @@ namespace BibliotecaUteco.Client.Responses
 {
     public class ApplicationSummaryResponse
     {
-     
         public BooksSummaryResponse BooksSummary { get; set; } = new();
         public LoanSummaryResponse LoansSummary { get; set; } = new();
     }
+
 
     public class BooksSummaryResponse
     {

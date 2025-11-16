@@ -14,16 +14,42 @@
             <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">ID LECTOR: <span
                     style=" padding: 0 2px;color: black;">@Penalty.ReaderId</span></p>
             <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CÉDULA DEL
-                LECTOR: <span style="padding: 0 2px;color: black;">
+               CÉDULA LECTOR: <span style="padding: 0 2px;color: black;">
                 
                 @if (!string.IsNullOrEmpty(Penalty.ReaderIdentityCardNumber))
-                    {
-                        @Penalty.ReaderIdentityCardNumber
-                    }
-                    else
-                    {
-                        @("------")
-                    }
+                {
+                    @Penalty.ReaderIdentityCardNumber
+                }
+                else
+                {
+                    @("------")
+                }
+            </span></p>
+
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CÉDULA DEL
+               MATRÍCULA LECTOR: <span style="padding: 0 2px;color: black;">
+                
+                @if (!string.IsNullOrEmpty(Penalty.ReaderStudentLicence))
+                {
+                    @Penalty.ReaderStudentLicence
+                }
+                else
+                {
+                    @("------")
+                }
+            </span></p>
+
+            <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray; ">CÉDULA DEL
+               PASAPORTE LECTOR: <span style="padding: 0 2px;color: black;">
+                
+                @if (!string.IsNullOrEmpty(Penalty.ReaderPassport))
+                {
+                    @Penalty.ReaderPassport
+                }
+                else
+                {
+                    @("------")
+                }
             </span></p>
 
         </div>
