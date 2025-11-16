@@ -21,7 +21,7 @@ public class Reader : BaseEntity
 
     [Column("Cedula")]
     [MaxLength(11), MinLength(11)]
-    public string IdentityCardNumber { get; set; } = null!;
+    public string? IdentityCardNumber { get; set; }
 
     [Column("Matricula")]
     [MaxLength(9), MinLength(3)]
@@ -45,8 +45,6 @@ public class Reader : BaseEntity
 
     [NotMapped]
     public bool LastLoanIsActive { get; set; }
-
-
 
     [Column("IdSexo")]
     public int? SexId { get; set; }
@@ -134,7 +132,7 @@ public class Reader : BaseEntity
             Address = Address,
             Passport = Passport ?? "",
             StudentLicence = StudentLicence,
-            IdentityCardNumber = IdentityCardNumber,
+            IdentityCardNumber = IdentityCardNumber ?? "",
             LoansCount = LoansCount,
             LastLoanDate = LastLoanDate,
             LastLoanIsActive = LastLoanIsActive,

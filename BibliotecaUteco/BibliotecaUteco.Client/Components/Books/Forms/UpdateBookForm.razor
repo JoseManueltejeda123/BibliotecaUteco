@@ -301,7 +301,7 @@ public async Task FetchUpdateBookAsync()
 
     if (result.IsSuccessful())
     {
-        Toast.Success("Libro actualizado con exito");
+        await Toast.Success("Libro actualizado con exito");
 
         await RightBarContext.SetUpdatedBookAsync(result.Data);
         await RightBarContext.CloseAsync();

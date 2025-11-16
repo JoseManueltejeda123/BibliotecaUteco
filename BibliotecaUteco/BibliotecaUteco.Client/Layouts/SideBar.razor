@@ -129,7 +129,7 @@
                 </Icon>
             </SideBarButton>
 
-            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/help");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
+            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/penalties");}'  Name="Penalizaciones" IsExpanded="SideBarExpanded">
                 <Icon>
 
                     <LumexTooltip Size="Size.Small" Content=@("Penalizaciones") ShowArrow="true">
@@ -139,8 +139,9 @@
 
                 
             </SideBarButton>
+           
          
-           @* @if(SideBarExpanded)
+           @if(SideBarExpanded)
             {
                 <SideBarButton OnClick='()=>{NavManager.NavigateTo("/about");}'  Name="Acerca" IsExpanded="SideBarExpanded">
                     <Icon>
@@ -164,7 +165,7 @@
                     
                 </SideBarButton>
          
-            }*@
+            }
             
             
         </Authorized>
@@ -173,6 +174,14 @@
         <Authorized>
             
             <SectionDivider Name="Administradores" IsExpanded="SideBarExpanded"/>
+            <SideBarButton OnClick='()=>{NavManager.NavigateTo("/summary");}'  Name="Reportes" IsExpanded="SideBarExpanded">
+                <Icon>
+
+                    <LumexTooltip Size="Size.Small" Content=@("Reportes") ShowArrow="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-spreadsheet-icon lucide-file-spreadsheet"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>                  
+                          </LumexTooltip>
+                </Icon>
+            </SideBarButton>
             
             <SideBarButton OnClick='()=>{NavManager.NavigateTo("/transactions");}'  Name="Transacciones de caja" IsExpanded="SideBarExpanded">
                 
@@ -266,8 +275,8 @@
                   await RightBarContext.OpenUpdateUserAsync(result.Data);
                     
            }
-    _fetchingUser = false;
-    StateHasChanged();
+        _fetchingUser = false;
+        StateHasChanged();
            
     }
 

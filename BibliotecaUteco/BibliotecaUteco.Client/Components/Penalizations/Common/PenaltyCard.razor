@@ -141,7 +141,7 @@
 
     public async Task CopyId()
     {
-        Toast.Show("Id copiado al portapapeles");
+        await Toast.Show("Id copiado al portapapeles");
         await JsRuntime.InvokeVoidAsync("copyToClipboard", Penalty.Id.ToString());
     }
 

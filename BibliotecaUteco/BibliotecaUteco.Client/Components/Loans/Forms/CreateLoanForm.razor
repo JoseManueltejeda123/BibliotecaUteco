@@ -261,7 +261,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Prestamo creado con exito");
+            await Toast.Show("Prestamo creado con exito");
             CreateLoanModel = new CreateLoanRequest();
             _loanToInvoice = result.Data;
             ShowInvoice = true;

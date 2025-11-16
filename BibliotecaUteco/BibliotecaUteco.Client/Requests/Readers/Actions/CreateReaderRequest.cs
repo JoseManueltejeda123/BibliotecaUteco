@@ -19,9 +19,8 @@ public class CreateReaderRequest
     [MinLength(10, ErrorMessage = "La dirección debe tener al menos 10 caracteres.")]
     public string Address { get; set; } = null!;
 
-    [Required(ErrorMessage = "El número de cédula es obligatorio.")]
     [Length(11, 11, ErrorMessage = "El número de cédula debe tener exactamente 11 dígitos.")]
-    public string IdentityCardNumber { get; set; } = null!;
+    public string? IdentityCardNumber { get; set; } 
 
     [Range(1, 2)]
     public int SexId => (int)_sex;
@@ -30,7 +29,7 @@ public class CreateReaderRequest
     [MinLength(3, ErrorMessage = "La matrícula estudiantil debe tener al menos 3 caracteres.")]
     public string? StudentLicence { get; set; }
 
-    [Length(9, 9, ErrorMessage = "El pasaporte debe de tener 9 caracteres.")]
+    [Length(8, 11, ErrorMessage = "El pasaporte debe de tener 8 u 11 caracteres.")]
     public string? Passport { get; set; }
 
     public ApplicationSexes _sex { get; set; } = ApplicationSexes.Masculino;

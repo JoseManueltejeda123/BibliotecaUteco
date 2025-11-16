@@ -14,9 +14,9 @@ public class CreateReaderCommand : ICommand<IApiResult>
     [Description("Dirección completa")]
     public string Address { get; set; } = null!;
 
-    [FromBody, JsonPropertyName("identityCardNumber"), Required, MaxLength(11), MinLength(11)]
+    [FromBody, JsonPropertyName("identityCardNumber"), MaxLength(11), MinLength(11)]
     [Description("Cédula de identidad (11 dígitos)")]
-    public string IdentityCardNumber { get; set; } = null!;
+    public string? IdentityCardNumber { get; set; } = null!;
 
     [FromBody, JsonPropertyName("sexId"), Required, Range(1, 2)]
     [Description("ID del sexo")]
@@ -26,7 +26,7 @@ public class CreateReaderCommand : ICommand<IApiResult>
     [Description("Matrícula del lector (opcional)")]
     public string? StudentLicence { get; set; }
 
-    [FromBody, JsonPropertyName("passport"), MaxLength(9), MinLength(9)]
+    [FromBody, JsonPropertyName("passport"), MaxLength(11), MinLength(8)]
     [Description("Pasaporte del lector (opcional)")]
     public string? Passport { get; set; }
 }
@@ -68,19 +68,35 @@ public class CreateReaderCommandValidator : AbstractValidator<CreateReaderComman
             () =>
             {
                 RuleFor(x => x.Passport)
-                .MinimumLength(9).WithMessage("El pasaporte debe de tener un mínimo de 9 caracteres")
-                .MaximumLength(9).WithMessage("El pasaporte debe de tener un máximo de 9 caracteres");
+                .MinimumLength(8).WithMessage("El pasaporte debe de tener un mínimo de 8 caracteres")
+                .MaximumLength(11).WithMessage("El pasaporte debe de tener un máximo de 11 caracteres");
 
             }
         );
 
-        RuleFor(x => x.IdentityCardNumber)
-            .NotEmpty()
-            .WithMessage("La cédula es obligatoria")
-            .Length(11)
-            .WithMessage("La cédula debe tener exactamente 11 dígitos")
-            .Matches(@"^\d{11}$")
-            .WithMessage("La cédula solo puede contener números");
+        When(
+
+           x => !string.IsNullOrEmpty(x.IdentityCardNumber),
+
+           () =>
+           {
+               RuleFor(x => x.IdentityCardNumber)
+               .Length(11)
+               .WithMessage("La cédula debe tener exactamente 11 dígitos")
+               .Matches(@"^\d{11}$")
+               .WithMessage("La cédula solo puede contener números");
+           }
+        );
+
+
+        RuleFor(x => x)
+        .Must(x =>
+            !string.IsNullOrEmpty(x.IdentityCardNumber) ||
+            !string.IsNullOrEmpty(x.StudentLicence) ||
+            !string.IsNullOrEmpty(x.Passport)
+        )
+        .WithMessage("Debe de poner almenos un pasaporte, una matrícula o una cédula");
+            
         RuleFor(x => x.SexId).GreaterThan(0).WithMessage("Debe seleccionar un sexo valido.");
 
         When(
@@ -118,7 +134,7 @@ internal class CreateReaderEndpoint : IEndpoint
                     });
                 }
             )
-            .RequireAuthorization(AuthorizationPolicies.AllowAdminsOnly)
+            .RequireAuthorization(AuthorizationPolicies.AllowAuthorizedUsers)
             .RequireCors(CorsPolicies.DefaultPolicy)
             .DisableAntiforgery()
             .Accepts<CreateReaderCommand>(false, ApplicationContentTypes.ApplicationJson)
@@ -150,7 +166,7 @@ public class CreateReaderCommandHandler : ICommandHandler<CreateReaderCommand, I
         CancellationToken cancellationToken = default
     )
     {
-        if (
+        if ( !string.IsNullOrEmpty(request.IdentityCardNumber) &&
             await _context.Readers.AnyAsync(
                 r => r.IdentityCardNumber == request.IdentityCardNumber,
                 cancellationToken

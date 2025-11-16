@@ -24,8 +24,50 @@
 
 <script>
     
-    window.triggerClick = (element) => {
-     if (element) element.click();
+   window.focusAndScrollYears = (elementId) => {
+        const el = document.getElementById(elementId);
+        const container = document.getElementById("years-container");
+
+        if (el && container) {
+            el.focus();
+
+            const elLeft = el.offsetLeft;
+            const elWidth = el.offsetWidth;
+            const containerWidth = container.offsetWidth;
+
+            const scrollPosition = elLeft - (containerWidth / 2) + (elWidth / 2);
+
+            container.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
+        };
+        window.triggerClick = (element) => {
+        if (element) element.click();
+    };
+
+    window.focusAndScrollMonths = (elementId) => {
+        const el = document.getElementById(elementId);
+        const container = document.getElementById("months-container");
+
+        if (el && container) {
+            el.focus();
+
+            const elLeft = el.offsetLeft;
+            const elWidth = el.offsetWidth;
+            const containerWidth = container.offsetWidth;
+
+            const scrollPosition = elLeft - (containerWidth / 2) + (elWidth / 2);
+
+            container.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
+        };
+        window.triggerClick = (element) => {
+        if (element) element.click();
     };
 
     window.dropdownManager = {

@@ -45,7 +45,7 @@
         await RightBarContext.OpenCreateUserAsync();
     }
 
-    public async Task HandleOnUserDeleted(UserResponse user)
+    public void HandleOnUserDeleted(UserResponse user)
     {
         var userToRemove = Users.FirstOrDefault(u => u.Id == user.Id);
         if (userToRemove != null)

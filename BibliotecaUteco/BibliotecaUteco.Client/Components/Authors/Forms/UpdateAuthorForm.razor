@@ -62,7 +62,7 @@
         StateHasChanged();
         if (result.IsSuccessful())
         {
-            Toast.Show("Autor actualizado exitosamente");
+            await Toast.Show("Autor actualizado exitosamente");
             await TriggerOnAuthorUpdated(result.Data);
         }
     }

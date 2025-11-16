@@ -1,14 +1,24 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js"; /* styles */
-@import "../bin/lumexui/theme.css";
-@source "../bin/lumexui/*cs";
+@import "../bin/lumexui/theme"; /* theme */
+@source "../bin/lumexui/*.cs"; /* styles */
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inconsolata:wght@200..900&display=swap');
 @import url("https://use.typekit.net/wjv8wts.css");
 
 
 html, body {
     font-family: "inter-variable", sans-serif;
-    background-color: #FAFAFAFF !important;
+    background-color: #FFFFFF !important;
+    
+    
+}
+
+.report-card{
+    
+    svg{
+        width: 20px;
+        height: 20px;
+    }
     
     
 }
@@ -61,11 +71,11 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 input{
-    @apply bg-inherit
+    @apply bg-inherit 
 }
 
 textarea{
-    @apply bg-neutral-100 rounded-lg
+    @apply bg-neutral-100 rounded-lg 
 }
 
 
@@ -78,7 +88,7 @@ button[data-slot="trigger"]{
 
 
 div[data-slot="input-wrapper"]{
-    @apply bg-neutral-100  rounded-lg
+    @apply bg-neutral-100  rounded-lg border border-neutral-100
 
 }
 

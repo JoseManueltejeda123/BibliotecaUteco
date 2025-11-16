@@ -26,4 +26,7 @@ public class PenaltyResponse : BaseResponse
     public string ReaderName { get; set; } = "";
 
     public string? ReaderStudentLicence { get; set; } = "";
+
+    public string? ReaderPassport { get; set; } = "";
+
 }

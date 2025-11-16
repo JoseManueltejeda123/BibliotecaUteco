@@ -2,6 +2,7 @@ using BibliotecaUteco;
 using BibliotecaUteco.Dependencies;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Timeouts;
+using BibliotecaUteco.Client;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);

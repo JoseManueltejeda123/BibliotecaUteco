@@ -13,7 +13,8 @@ public class SonnerService : ISonnerService
     {
         OnSonnerAdded?.Invoke(sonner);
         _tcs = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-        return _tcs.Task;
+        return Task.CompletedTask;
+
     }
 
     public Task Show(string title, string description, SonnerTheme theme = SonnerTheme.Info)

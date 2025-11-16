@@ -46,7 +46,7 @@ public static class ReadersDbSetActions
 
         if (!string.IsNullOrWhiteSpace(identityCardNumber))
         {
-            query = query.Where(u => u.IdentityCardNumber.Contains(identityCardNumber));
+            query = query.Where(u => u.IdentityCardNumber != null && u.IdentityCardNumber.Contains(identityCardNumber));
         }
 
         if (!string.IsNullOrWhiteSpace(studentLicence))

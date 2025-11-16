@@ -101,7 +101,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Retiro creado con exito");
+            await Toast.Show("Retiro creado con exito");
             await RightBarContext.SetCreatedTransaction(result.Data);
             await RightBarContext.CloseAsync();
         }
