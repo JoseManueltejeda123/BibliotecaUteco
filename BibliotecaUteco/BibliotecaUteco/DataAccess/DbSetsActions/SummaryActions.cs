@@ -114,7 +114,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     Stock = b.Stock,
                     AvailableAmount = b.AvailableAmount
                 }).ToList(),
-                 CurrentStateReadersCount = context.Readers.Count(),
+
+                CurrentStateUnactiveReaders = context.Readers.Count(l => l.Loans.All(a => a.ReturnedDate != null)),
+                CurrentStateActiveReaders = context.Readers.Count(l => l.Loans.Any(r => r.ReturnedDate == null)),
+                CurrentStateReadersCount = context.Readers.Count(),
                 CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
                 Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
                 {
@@ -125,7 +128,34 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     Passport = l.Passport ?? "",
                     LoansCount = l.Loans.Count()
 
-                }).ToList()
+                }).ToList(),
+
+               
+                CurrentStateExceededCount = context.Loans.Count(),
+                CurrentStateNotReturnedLoansCount = context.Loans.Select(r => r.ReturnedDate == null).Count(),
+                CurrentStateReturnedLoansCount = context.Loans.Select(r => r.ReturnedDate != null).Count(),
+                Loans = context.Loans.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new LoanResponse()
+                {
+                    Id = l.Id,
+                    CreatedAt = l.CreatedAt,
+                    ReturnedDate = l.ReturnedDate,
+                    DueDate = l.DueDate,
+                    BookCount = l.Books.Count(),
+                    Reader = new ReaderResponse(){
+
+                        FullName = l.Reader.FullName,
+                        StudentLicence = l.Reader.StudentLicence ?? "",
+                        IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
+                        Passport = l.Reader.Passport ?? ""
+                    }
+
+
+                    
+
+                }).ToList(),
+                
+                
+               
             }).FirstOrDefaultAsync() ?? new();
         }
 
@@ -164,6 +194,8 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     AvailableAmount = b.AvailableAmount
                 }).ToList(),
                 
+                CurrentStateUnactiveReaders = context.Readers.Count(l => l.Loans.All(a => a.ReturnedDate != null)),
+                CurrentStateActiveReaders = context.Readers.Count(l => l.Loans.Any(r => r.ReturnedDate == null)),
                 CurrentStateReadersCount = context.Readers.Count(),
                 CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
                 Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()

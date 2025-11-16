@@ -32,7 +32,24 @@ public class GeneralReport
     //readers
 
     public int CurrentStateReadersCount {get; set;}
+
+    public int CurrentStateActiveReaders {get; set;}
+
+    public int CurrentStateUnactiveReaders {get; set;}
+
     public int CurrentStateReadersWithExceededLoansCount {get; set;}
 
     public List<ReaderResponse> Readers {get; set;} = new();
+
+    //loans
+
+    public int CurrentSatetLoansCount {get; set;}
+    public int CurrentStateExceededCount {get; set;}
+
+    public int CurrentStateReturnedLoansCount {get; set;}
+    public int CurrentStateNotReturnedLoansCount {get; set;}
+
+    public List<LoanResponse> Loans {get; set;} = new();
+
+
 }

@@ -101,6 +101,20 @@
                  @Model.CurrentStateReadersWithExceededLoansCount LECTORES
             </span>
         </p>
+
+         <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+         TOTAL LECTORES ACTIVOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateActiveReaders LECTORES
+            </span>
+        </p>
+
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+         TOTAL LECTORES INACTIVOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateUnactiveReaders LECTORES
+            </span>
+        </p>
        
        
         <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
@@ -124,6 +138,77 @@
                         <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(reader.StudentLicence ?? "------")</td>
                         <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(reader.Passport ?? "------")</td>
                         <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@reader.LoansCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+            <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">PRÉSTAMO</span>
+            <hr style="border-bottom: 1px solid black; width: 100%;"/>
+        </div>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL PRÉSTAMOS EXCEDIDOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateExceededCount PRÉSTAMOS
+            </span>
+        </p>
+         <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL PRÉSTAMOS SIN DEVOLVER:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateNotReturnedLoansCount PRÉSTAMOS
+            </span>
+        </p>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL PRÉSTAMOS DEVUELTOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateReturnedLoansCount PRÉSTAMOS
+            </span>
+        </p>
+
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL PRÉSTAMOS:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentSatetLoansCount PRÉSTAMOS
+            </span>
+        </p>
+
+         <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">F. CREACION</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">F. ENTREGA</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">F. ENTREGADO</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">CANT. LIBROS</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">LECTOR</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loan in Model.Loans)
+                {
+                    <tr>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@loan.Id</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@loan.CreatedAtLocalFormatted</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(loan.DueDateLocalFormatted ?? "----")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(loan.ReturnedDateLocalFormatted ?? "------")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(loan.BookCount)</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">
+                        @if(!string.IsNullOrEmpty(loan.Reader.StudentLicence))
+                        {
+                            @("MATRÍCULA")
+                        } 
+                        else if(!string.IsNullOrEmpty(loan.Reader.IdentityCardNumber))
+                        {
+                            @("CÉDULA")
+                        } 
+                        else if(!string.IsNullOrEmpty(loan.Reader.Passport))
+                        {
+                            @("PASAPORTE")
+                        } 
+                        
+                        @(loan.Reader.StudentLicence ?? loan.Reader.IdentityCardNumber ?? loan.Reader.Passport ?? "------")</td>
                     </tr>
                 }
             </tbody>

@@ -37,6 +37,7 @@
         <div>
             <LumexTextbox Behavior="InputBehavior.OnInput" Type="InputType.Text"
                         ValueChanged="HandleOnIdentityNumberInput"
+                        Required="false"
                           Value="@UpdateReaderModel.IdentityCardNumber" Label="Cédula de identificación"
                           Description="Sin guiones, solo los números." PlaceHolder="Ej. 000000000000"
                           Disabled="_updatingReader"></LumexTextbox>

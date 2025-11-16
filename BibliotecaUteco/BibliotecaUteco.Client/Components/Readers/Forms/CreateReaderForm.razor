@@ -37,6 +37,7 @@
 
         <div class="flex flex-col">
             <LumexTextbox Behavior="InputBehavior.OnInput" Disabled="_creatingReader"
+                        Required="false"
                           Type="InputType.Text" Value="@CreateReaderModel.IdentityCardNumber" ValueChanged="HandleOnIdentityNumberInput"
                           Label="Cédula de identificación" Description="Sin guiones, solo los números."
                           PlaceHolder="Ej. 000000000000"></LumexTextbox>
