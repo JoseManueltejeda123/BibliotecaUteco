@@ -144,7 +144,6 @@
         if(result.IsSuccessful())
         {
              GeneralReportResponse = result.Data;
-                     await JsRuntime.InvokeVoidAsync("console.log", result);
 
         }
 
@@ -161,7 +160,6 @@
         StateHasChanged();
         GeneralReportModel.Month = null;
       var result = await ReportsApiServices.GetGeneralAsync(GeneralReportModel);
-        await JsRuntime.InvokeVoidAsync("console.log", result);
 
       if(result.IsSuccessful())
       {
@@ -188,7 +186,7 @@
     public class ReportKind()
     {
         public string Name { get; set; } = "";
-        public RenderFragment Icon {get; set;}
+        public RenderFragment? Icon {get; set;} 
         public ReportType Type { get; set; }
 
     }

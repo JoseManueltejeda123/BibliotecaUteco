@@ -94,6 +94,8 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 Month = month
             };
 
+            
+
             //
             // 1. ESTADÍSTICAS
             //
@@ -105,7 +107,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     token);
 
             report.CurrentStateLoanedBooksCount =
-                await context.Loans.Where(l => l.ReturnedDate == null)
+                await context.Loans.AsNoTracking().IgnoreAutoIncludes().AsSplitQuery().Where(l => l.ReturnedDate == null)
                                 .SumAsync(l => l.Books.Count(), token);
 
             //
@@ -159,9 +161,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             // 2. LISTAS (separadas, limpias)
             //
             report.Books = await context.Books
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(b => b.CreatedAt >= start && b.CreatedAt < end)
-                .Include(b => b.Authors).ThenInclude(a => a.Author)
-                .Include(b => b.Genres).ThenInclude(g => g.Genre)
                 .Select(b => new BookResponse
                 {
                     Id = b.Id,
@@ -183,7 +186,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 .ToListAsync(token);
 
 
-            report.Readers = await context.Readers
+            report.Readers = await context.Readers  
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(r => r.CreatedAt >= start && r.CreatedAt < end)
                 .Select(r => new ReaderResponse
                 {
@@ -198,6 +204,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Loans = await context.Loans
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(l => l.CreatedAt >= start && l.CreatedAt < end)
                 .Select(l => new LoanResponse
                 {
@@ -218,6 +227,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Penalties = await context.Penalties
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(p => p.CreatedAt >= start && p.CreatedAt < end)
                 .Select(p => new PenaltyResponse
                 {
@@ -233,6 +245,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Transactions = await context.Transactions
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(t => t.CreatedAt >= start && t.CreatedAt < end)
                 .Select(t => new TransactionResponse
                 {
@@ -258,10 +273,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 Month = 0
             };
 
-            //
-            // 1. ESTADÍSTICAS
-            //
-            report.CurrentStateBooksCount = await context.Books.CountAsync(token);
+             report.CurrentStateBooksCount = await context.Books.CountAsync(token);
 
             report.CurrentStateAvailableBooksCount =
                 await context.Books.CountAsync(b =>
@@ -269,7 +281,7 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     token);
 
             report.CurrentStateLoanedBooksCount =
-                await context.Loans.Where(l => l.ReturnedDate == null)
+                await context.Loans.AsNoTracking().IgnoreAutoIncludes().AsSplitQuery().Where(l => l.ReturnedDate == null)
                                 .SumAsync(l => l.Books.Count(), token);
 
             //
@@ -323,9 +335,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             // 2. LISTAS (separadas, limpias)
             //
             report.Books = await context.Books
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(b => b.CreatedAt >= start && b.CreatedAt < end)
-                .Include(b => b.Authors).ThenInclude(a => a.Author)
-                .Include(b => b.Genres).ThenInclude(g => g.Genre)
                 .Select(b => new BookResponse
                 {
                     Id = b.Id,
@@ -347,7 +360,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 .ToListAsync(token);
 
 
-            report.Readers = await context.Readers
+            report.Readers = await context.Readers  
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(r => r.CreatedAt >= start && r.CreatedAt < end)
                 .Select(r => new ReaderResponse
                 {
@@ -362,6 +378,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Loans = await context.Loans
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(l => l.CreatedAt >= start && l.CreatedAt < end)
                 .Select(l => new LoanResponse
                 {
@@ -382,6 +401,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Penalties = await context.Penalties
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(p => p.CreatedAt >= start && p.CreatedAt < end)
                 .Select(p => new PenaltyResponse
                 {
@@ -397,6 +419,9 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
 
 
             report.Transactions = await context.Transactions
+                .AsNoTracking()
+                .IgnoreAutoIncludes()
+                .AsSplitQuery()
                 .Where(t => t.CreatedAt >= start && t.CreatedAt < end)
                 .Select(t => new TransactionResponse
                 {
