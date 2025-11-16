@@ -79,222 +79,336 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             return summary;
         }
 
-        public static async Task<GeneralReport> GetGeneralReportForAMonthAsync(this IBibliotecaUtecoDbContext context, int year, int month, CancellationToken token = default)
+
+        public static async Task<GeneralReport> GetGeneralReportForAMonthAsync(
+            this IBibliotecaUtecoDbContext context, 
+            int year, int month, 
+            CancellationToken token = default)
         {
-            var startDate = new DateTime(year, month, 1);
-            var endDate = startDate.AddMonths(1);
-            return await context.Books.Select(_ => new GeneralReport(){
+            var start = new DateTime(year, month, 1);
+            var end   = start.AddMonths(1);
 
-                CurrentStateAvailableBooksCount = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) >= 1),
-                CurrentStateBooksCount = context.Books.Count(),
-                CurrentStateLoanedBooksCount = context.Loans.Where(l => l.ReturnedDate == null).Sum(l => l.Books.Count()),
+            var report = new GeneralReport()
+            {
                 Year = year,
-                Month = month,
-                
+                Month = month
+            };
 
-                Books = context.Books.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(b => new BookResponse()
+            //
+            // 1. ESTADÍSTICAS
+            //
+            report.CurrentStateBooksCount = await context.Books.CountAsync(token);
+
+            report.CurrentStateAvailableBooksCount =
+                await context.Books.CountAsync(b =>
+                    b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null) >= 1,
+                    token);
+
+            report.CurrentStateLoanedBooksCount =
+                await context.Loans.Where(l => l.ReturnedDate == null)
+                                .SumAsync(l => l.Books.Count(), token);
+
+            //
+            // READERS STATS
+            //
+            report.CurrentStateReadersCount = await context.Readers.CountAsync(token);
+
+            report.CurrentStateUnactiveReaders =
+                await context.Readers.CountAsync(r => r.Loans.All(l => l.ReturnedDate != null), token);
+
+            report.CurrentStateActiveReaders =
+                await context.Readers.CountAsync(r => r.Loans.Any(l => l.ReturnedDate == null), token);
+
+            report.CurrentStateReadersWithExceededLoansCount =
+                await context.Readers.CountAsync(
+                    r => r.Loans.Any(l => l.DueDate < DateTime.UtcNow && l.ReturnedDate == null), 
+                    token);
+
+
+            //
+            // LOANS STATS
+            //
+            report.CurrentSatetLoansCount = await context.Loans.CountAsync(token);
+
+            report.CurrentStateExceededCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow, token);
+
+            report.CurrentStateNotReturnedLoansCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate == null, token);
+
+            report.CurrentStateReturnedLoansCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate != null, token);
+
+
+            //
+            // PENALTIES STATS
+            //
+            report.CurrentStateTotalPenalties = await context.Penalties.CountAsync(token);
+            report.CurrentStatePayedPenalties = await context.Penalties.CountAsync(p => !p.IsDue, token);
+            report.CurrentStateUnpayedPenalties = await context.Penalties.CountAsync(p => p.IsDue, token);
+
+
+            //
+            // CASHBOX
+            //
+            report.CurrentStateCashBox = await context.Transactions.SumAsync(t => t.Amount, token);
+            report.CurrentStateTrasactionsCount = await context.Transactions.CountAsync(token);
+
+
+            //
+            // 2. LISTAS (separadas, limpias)
+            //
+            report.Books = await context.Books
+                .Where(b => b.CreatedAt >= start && b.CreatedAt < end)
+                .Include(b => b.Authors).ThenInclude(a => a.Author)
+                .Include(b => b.Genres).ThenInclude(g => g.Genre)
+                .Select(b => new BookResponse
                 {
                     Id = b.Id,
                     Name = b.Name,
                     CreatedAt = b.CreatedAt,
-                    Authors = b.Authors.Select(a => new BookAuthorResponse(){
-                        Author = new()
-                        {
-                            FullName = a.Author.FullName
-                        }
-                    }).ToList(),
-                    Genres = b.Genres.Select(g => new GenreBookResponse()
+                    Authors = b.Authors.Select(a => new BookAuthorResponse
                     {
-                        Genre = new(){
-                            Name = g.Genre.Name
-                        }
+                        Author = new AuthorResponse { FullName = a.Author.FullName }
+                    }).ToList(),
+                    Genres = b.Genres.Select(g => new GenreBookResponse
+                    {
+                        Genre = new GenreResponse { Name = g.Genre.Name }
                     }).ToList(),
                     LoansCount = b.Loans.Count(),
-                    ActiveLoansCount = b.Loans.Count(),
+                    ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     Stock = b.Stock,
                     AvailableAmount = b.AvailableAmount
-                }).ToList(),
+                })
+                .ToListAsync(token);
 
-                CurrentStateUnactiveReaders = context.Readers.Count(l => l.Loans.All(a => a.ReturnedDate != null)),
-                CurrentStateActiveReaders = context.Readers.Count(l => l.Loans.Any(r => r.ReturnedDate == null)),
-                CurrentStateReadersCount = context.Readers.Count(),
-                CurrentStateReadersWithExceededLoansCount = context.Readers.Count(r => r.Loans.Any(l => l.DueDate < DateTime.UtcNow && l.ReturnedDate == null)),
-                Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
+
+            report.Readers = await context.Readers
+                .Where(r => r.CreatedAt >= start && r.CreatedAt < end)
+                .Select(r => new ReaderResponse
                 {
-                    Id = l.Id,
-                    FullName = l.FullName,
-                    StudentLicence = l.StudentLicence ?? "",
-                    IdentityCardNumber = l.IdentityCardNumber ?? "",
-                    Passport = l.Passport ?? "",
-                    LoansCount = l.Loans.Count()
+                    Id = r.Id,
+                    FullName = r.FullName,
+                    StudentLicence = r.StudentLicence ?? "",
+                    IdentityCardNumber = r.IdentityCardNumber ?? "",
+                    Passport = r.Passport ?? "",
+                    LoansCount = r.Loans.Count()
+                })
+                .ToListAsync(token);
 
-                }).ToList(),
 
-               
-                CurrentSatetLoansCount = context.Loans.Count(),
-                CurrentStateExceededCount = context.Loans.Count(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow),
-                CurrentStateNotReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate == null),
-                CurrentStateReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate != null),
-                Loans = context.Loans.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new LoanResponse()
+            report.Loans = await context.Loans
+                .Where(l => l.CreatedAt >= start && l.CreatedAt < end)
+                .Select(l => new LoanResponse
                 {
                     Id = l.Id,
                     CreatedAt = l.CreatedAt,
                     ReturnedDate = l.ReturnedDate,
                     DueDate = l.DueDate,
                     BookCount = l.Books.Count(),
-                    Reader = new ReaderResponse(){
-
+                    Reader = new ReaderResponse
+                    {
                         FullName = l.Reader.FullName,
                         StudentLicence = l.Reader.StudentLicence ?? "",
                         IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
                         Passport = l.Reader.Passport ?? ""
                     }
+                })
+                .ToListAsync(token);
 
 
-                    
-
-                }).ToList(),
-
-                CurrentStatePayedPenalties = context.Penalties.Count(p => !p.IsDue),
-                CurrentStateUnpayedPenalties = context.Penalties.Count(p => p.IsDue),
-                CurrentStateTotalPenalties = context.Penalties.Count(),
-                Penalties = context.Penalties.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new PenaltyResponse()
+            report.Penalties = await context.Penalties
+                .Where(p => p.CreatedAt >= start && p.CreatedAt < end)
+                .Select(p => new PenaltyResponse
                 {
-                    Id = l.Id,
-                    CreatedAt = l.CreatedAt,
-                    IsDue = l.IsDue,
-                    TransactionId = l.TransactionId,
-                    DailyFineRate = l.DailyFineRate,
-                    OverdueDays = l.OverdueDays,
-                    TotalAmount = l.TotalAmount
+                    Id = p.Id,
+                    CreatedAt = p.CreatedAt,
+                    IsDue = p.IsDue,
+                    TransactionId = p.TransactionId,
+                    DailyFineRate = p.DailyFineRate,
+                    OverdueDays = p.OverdueDays,
+                    TotalAmount = p.TotalAmount
+                })
+                .ToListAsync(token);
 
-                   
 
-
-                    
-
-                }).ToList(),
-
-                CurrentStateCashBox = context.Transactions.Sum(t => t.Amount),
-                CurrentStateTrasactionsCount = context.Transactions.Count(),
-                Transactions = context.Transactions.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new TransactionResponse()
+            report.Transactions = await context.Transactions
+                .Where(t => t.CreatedAt >= start && t.CreatedAt < end)
+                .Select(t => new TransactionResponse
                 {
-                    Id = l.Id,
-                    CreatedAt = l.CreatedAt,
-                    Amount = l.Amount,
-                    User = new()
-                    {
-                        Username = l.User.Username
-                    }
+                    Id = t.Id,
+                    CreatedAt = t.CreatedAt,
+                    Amount = t.Amount,
+                    User = new UserResponse { Username = t.User.Username }
+                })
+                .ToListAsync(token);
 
-                   
-
-
-                    
-
-                }).ToList(),
-                
-                
-               
-            }).FirstOrDefaultAsync() ?? new();
+            return report;
         }
+
 
          public static async Task<GeneralReport> GetGeneralReportAsync(this IBibliotecaUtecoDbContext context, int year, CancellationToken token = default)
         {
-            var startDate = new DateTime(year, 1, 1);
-            var endDate = startDate.AddMonths(12);
-            return await context.Books.Select(_ => new GeneralReport(){
+            var start = new DateTime(year, 1, 1);
+            var end = start.AddMonths(12);
 
-                CurrentStateAvailableBooksCount = context.Books.Count(b => b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null && l.BookId == b.Id) >= 1),
-                CurrentStateBooksCount = context.Books.Count(),
-                CurrentStateLoanedBooksCount = context.Loans.Where(l => l.ReturnedDate == null).Sum(l => l.Books.Count()),
-
-
+             var report = new GeneralReport()
+            {
                 Year = year,
-                Books = context.Books.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(b => new BookResponse()
+                Month = 0
+            };
+
+            //
+            // 1. ESTADÍSTICAS
+            //
+            report.CurrentStateBooksCount = await context.Books.CountAsync(token);
+
+            report.CurrentStateAvailableBooksCount =
+                await context.Books.CountAsync(b =>
+                    b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null) >= 1,
+                    token);
+
+            report.CurrentStateLoanedBooksCount =
+                await context.Loans.Where(l => l.ReturnedDate == null)
+                                .SumAsync(l => l.Books.Count(), token);
+
+            //
+            // READERS STATS
+            //
+            report.CurrentStateReadersCount = await context.Readers.CountAsync(token);
+
+            report.CurrentStateUnactiveReaders =
+                await context.Readers.CountAsync(r => r.Loans.All(l => l.ReturnedDate != null), token);
+
+            report.CurrentStateActiveReaders =
+                await context.Readers.CountAsync(r => r.Loans.Any(l => l.ReturnedDate == null), token);
+
+            report.CurrentStateReadersWithExceededLoansCount =
+                await context.Readers.CountAsync(
+                    r => r.Loans.Any(l => l.DueDate < DateTime.UtcNow && l.ReturnedDate == null), 
+                    token);
+
+
+            //
+            // LOANS STATS
+            //
+            report.CurrentSatetLoansCount = await context.Loans.CountAsync(token);
+
+            report.CurrentStateExceededCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow, token);
+
+            report.CurrentStateNotReturnedLoansCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate == null, token);
+
+            report.CurrentStateReturnedLoansCount =
+                await context.Loans.CountAsync(l => l.ReturnedDate != null, token);
+
+
+            //
+            // PENALTIES STATS
+            //
+            report.CurrentStateTotalPenalties = await context.Penalties.CountAsync(token);
+            report.CurrentStatePayedPenalties = await context.Penalties.CountAsync(p => !p.IsDue, token);
+            report.CurrentStateUnpayedPenalties = await context.Penalties.CountAsync(p => p.IsDue, token);
+
+
+            //
+            // CASHBOX
+            //
+            report.CurrentStateCashBox = await context.Transactions.SumAsync(t => t.Amount, token);
+            report.CurrentStateTrasactionsCount = await context.Transactions.CountAsync(token);
+
+
+            //
+            // 2. LISTAS (separadas, limpias)
+            //
+            report.Books = await context.Books
+                .Where(b => b.CreatedAt >= start && b.CreatedAt < end)
+                .Include(b => b.Authors).ThenInclude(a => a.Author)
+                .Include(b => b.Genres).ThenInclude(g => g.Genre)
+                .Select(b => new BookResponse
                 {
                     Id = b.Id,
                     Name = b.Name,
                     CreatedAt = b.CreatedAt,
-                    Authors = b.Authors.Select(a => new BookAuthorResponse(){
-                        Author = new()
-                        {
-                            FullName = a.Author.FullName
-                        }
-                    }).ToList(),
-                    Genres = b.Genres.Select(g => new GenreBookResponse()
+                    Authors = b.Authors.Select(a => new BookAuthorResponse
                     {
-                        Genre = new(){
-                            Name = g.Genre.Name
-                        }
+                        Author = new AuthorResponse { FullName = a.Author.FullName }
+                    }).ToList(),
+                    Genres = b.Genres.Select(g => new GenreBookResponse
+                    {
+                        Genre = new GenreResponse { Name = g.Genre.Name }
                     }).ToList(),
                     LoansCount = b.Loans.Count(),
-                    ActiveLoansCount = b.Loans.Count(),
+                    ActiveLoansCount = b.Loans.Count(l => l.Loan.ReturnedDate == null),
                     Stock = b.Stock,
                     AvailableAmount = b.AvailableAmount
-                }).ToList(),
-                
-                CurrentStateUnactiveReaders = context.Readers.Count(l => l.Loans.All(a => a.ReturnedDate != null)),
-                CurrentStateActiveReaders = context.Readers.Count(l => l.Loans.Any(r => r.ReturnedDate == null)),
-                CurrentStateReadersCount = context.Readers.Count(),
-                CurrentStateReadersWithExceededLoansCount = context.Readers.Select(r => r.Loans.Where(l => l.DueDate < DateTime.UtcNow)).Count(),
-                Readers = context.Readers.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new ReaderResponse()
+                })
+                .ToListAsync(token);
+
+
+            report.Readers = await context.Readers
+                .Where(r => r.CreatedAt >= start && r.CreatedAt < end)
+                .Select(r => new ReaderResponse
                 {
-                    Id = l.Id,
-                    FullName = l.FullName,
-                    StudentLicence = l.StudentLicence ?? "",
-                    IdentityCardNumber = l.IdentityCardNumber ?? "",
-                    Passport = l.Passport ?? "",
-                    LoansCount = l.Loans.Count()
+                    Id = r.Id,
+                    FullName = r.FullName,
+                    StudentLicence = r.StudentLicence ?? "",
+                    IdentityCardNumber = r.IdentityCardNumber ?? "",
+                    Passport = r.Passport ?? "",
+                    LoansCount = r.Loans.Count()
+                })
+                .ToListAsync(token);
 
-                }).ToList(),
 
-              
-                CurrentSatetLoansCount = context.Loans.Count(),
-                CurrentStateExceededCount = context.Loans.Count(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow),
-                CurrentStateNotReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate == null),
-                CurrentStateReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate != null),
-                Loans = context.Loans.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new LoanResponse()
+            report.Loans = await context.Loans
+                .Where(l => l.CreatedAt >= start && l.CreatedAt < end)
+                .Select(l => new LoanResponse
                 {
                     Id = l.Id,
                     CreatedAt = l.CreatedAt,
                     ReturnedDate = l.ReturnedDate,
                     DueDate = l.DueDate,
                     BookCount = l.Books.Count(),
-                    Reader = new ReaderResponse(){
-
+                    Reader = new ReaderResponse
+                    {
                         FullName = l.Reader.FullName,
                         StudentLicence = l.Reader.StudentLicence ?? "",
                         IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
                         Passport = l.Reader.Passport ?? ""
                     }
+                })
+                .ToListAsync(token);
 
 
-                    
-
-                }).ToList(),
-
-                 CurrentStatePayedPenalties = context.Penalties.Count(p => !p.IsDue),
-                CurrentStateUnpayedPenalties = context.Penalties.Count(p => p.IsDue),
-                CurrentStateTotalPenalties = context.Penalties.Count(),
-                Penalties = context.Penalties.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new PenaltyResponse()
+            report.Penalties = await context.Penalties
+                .Where(p => p.CreatedAt >= start && p.CreatedAt < end)
+                .Select(p => new PenaltyResponse
                 {
-                    Id = l.Id,
-                    CreatedAt = l.CreatedAt,
-                    IsDue = l.IsDue,
-                    TransactionId = l.TransactionId,
-                    DailyFineRate = l.DailyFineRate,
-                    OverdueDays = l.OverdueDays,
-                    TotalAmount = l.TotalAmount
+                    Id = p.Id,
+                    CreatedAt = p.CreatedAt,
+                    IsDue = p.IsDue,
+                    TransactionId = p.TransactionId,
+                    DailyFineRate = p.DailyFineRate,
+                    OverdueDays = p.OverdueDays,
+                    TotalAmount = p.TotalAmount
+                })
+                .ToListAsync(token);
 
-                   
 
+            report.Transactions = await context.Transactions
+                .Where(t => t.CreatedAt >= start && t.CreatedAt < end)
+                .Select(t => new TransactionResponse
+                {
+                    Id = t.Id,
+                    CreatedAt = t.CreatedAt,
+                    Amount = t.Amount,
+                    User = new UserResponse { Username = t.User.Username }
+                })
+                .ToListAsync(token);
 
-                    
-
-                }).ToList(),
-
-            }).FirstOrDefaultAsync() ?? new();
+            return report;
+           
         }
     }
 }
