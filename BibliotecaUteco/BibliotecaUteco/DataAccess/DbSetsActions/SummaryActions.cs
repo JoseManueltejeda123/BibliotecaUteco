@@ -131,9 +131,10 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                 }).ToList(),
 
                
-                CurrentStateExceededCount = context.Loans.Count(),
-                CurrentStateNotReturnedLoansCount = context.Loans.Select(r => r.ReturnedDate == null).Count(),
-                CurrentStateReturnedLoansCount = context.Loans.Select(r => r.ReturnedDate != null).Count(),
+                CurrentSatetLoansCount = context.Loans.Count(),
+                CurrentStateExceededCount = context.Loans.Count(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow),
+                CurrentStateNotReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate == null),
+                CurrentStateReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate != null),
                 Loans = context.Loans.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new LoanResponse()
                 {
                     Id = l.Id,
@@ -207,7 +208,32 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     Passport = l.Passport ?? "",
                     LoansCount = l.Loans.Count()
 
-                }).ToList()
+                }).ToList(),
+
+              
+                CurrentSatetLoansCount = context.Loans.Count(),
+                CurrentStateExceededCount = context.Loans.Count(l => l.ReturnedDate == null && l.DueDate < DateTime.UtcNow),
+                CurrentStateNotReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate == null),
+                CurrentStateReturnedLoansCount = context.Loans.Count(r => r.ReturnedDate != null),
+                Loans = context.Loans.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new LoanResponse()
+                {
+                    Id = l.Id,
+                    CreatedAt = l.CreatedAt,
+                    ReturnedDate = l.ReturnedDate,
+                    DueDate = l.DueDate,
+                    BookCount = l.Books.Count(),
+                    Reader = new ReaderResponse(){
+
+                        FullName = l.Reader.FullName,
+                        StudentLicence = l.Reader.StudentLicence ?? "",
+                        IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
+                        Passport = l.Reader.Passport ?? ""
+                    }
+
+
+                    
+
+                }).ToList(),
 
             }).FirstOrDefaultAsync() ?? new();
         }
