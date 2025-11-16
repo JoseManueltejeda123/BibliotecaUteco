@@ -37,6 +37,7 @@ public static class LoanDbSetActions
                     FullName = l.Reader.FullName,
                     IdentityCardNumber = l.Reader.IdentityCardNumber,
                     StudentLicence = l.Reader.StudentLicence,
+                    Passport = l.Reader.Passport
                 },
                 ReaderId = l.ReaderId,
                 HasPenalty = l.Penalty != null,
@@ -124,6 +125,7 @@ public static class LoanDbSetActions
                     FullName = l.Reader.FullName,
                     IdentityCardNumber = l.Reader.IdentityCardNumber,
                     StudentLicence = l.Reader.StudentLicence,
+                    Passport = l.Reader.Passport
                 },
                 ReaderId = l.ReaderId,
                 HasPenalty = l.Penalty != null,

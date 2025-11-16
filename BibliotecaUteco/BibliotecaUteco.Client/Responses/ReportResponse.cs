@@ -25,7 +25,7 @@ public class GeneralReport
     public int CurrentStateAvailableBooksCount {get; set;}
 
     public int CurrentStateLoanedBooksCount {get; set;}
-
+    public int CurrentStateNonAvailableBooks {get;set;}
     public List<BookResponse> Books {get; set;} = new();
 
 

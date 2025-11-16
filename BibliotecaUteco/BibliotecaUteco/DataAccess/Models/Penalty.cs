@@ -44,6 +44,8 @@ public class Penalty : BaseEntity
     [NotMapped]
     public string? ReaderStudentLicence { get; set; } = "";
 
+    [NotMapped]
+    public string? ReaderPassport { get; set; } = "";
     public bool Pay(double givenAmount, int transactionId)
     {
         if (givenAmount < TotalAmount)
@@ -96,5 +98,6 @@ public class Penalty : BaseEntity
             ReaderIdentityCardNumber = ReaderIdentityCardNumber ?? "",
             ReaderStudentLicence = ReaderStudentLicence ?? "",
             ReaderName = ReaderName ?? "",
+            ReaderPassport = ReaderPassport ?? ""
         };
 }

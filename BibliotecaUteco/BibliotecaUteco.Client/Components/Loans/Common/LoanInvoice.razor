@@ -36,6 +36,17 @@
                         @("------")
                     }
             </span></p>
+              <p style="font-family: 'Inconsolata'; font-size: 14px; font-weight: 600; color: dimgray;">MATRÍCULA: <span
+                    style=" padding: 0 2px; color: black;">
+                    @if (!string.IsNullOrEmpty(Loan.Reader.Passport))
+                    {
+                        @Loan.Reader.Passport
+                    }
+                    else
+                    {
+                        @("------")
+                    }
+            </span></p>
         </div>
 
         <div>

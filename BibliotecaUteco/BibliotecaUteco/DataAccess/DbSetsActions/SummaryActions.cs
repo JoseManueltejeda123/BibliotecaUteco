@@ -101,6 +101,11 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
             //
             report.CurrentStateBooksCount = await context.Books.CountAsync(token);
 
+            report.CurrentStateNonAvailableBooks =  await context.Books.CountAsync(b =>
+                    b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null) < 1,
+                    token);
+
+
             report.CurrentStateAvailableBooksCount =
                 await context.Books.CountAsync(b =>
                     b.Stock - b.Loans.Count(l => l.Loan.ReturnedDate == null) >= 1,
