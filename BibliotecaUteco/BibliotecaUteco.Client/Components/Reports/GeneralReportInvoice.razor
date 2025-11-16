@@ -197,18 +197,20 @@
                         <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">
                         @if(!string.IsNullOrEmpty(loan.Reader.StudentLicence))
                         {
-                            @("MATRÍCULA")
+                            @("MATRÍCULA: ")
+                            @loan.Reader.StudentLicence
                         } 
                         else if(!string.IsNullOrEmpty(loan.Reader.IdentityCardNumber))
                         {
-                            @("CÉDULA")
+                            @("CÉDULA: ")
+                            @loan.Reader.IdentityCardNumber
                         } 
                         else if(!string.IsNullOrEmpty(loan.Reader.Passport))
                         {
-                            @("PASAPORTE")
+                            @("PASAPORTE: ")
+                            loan.Reader.Passport
                         } 
                         
-                        @(loan.Reader.StudentLicence ?? loan.Reader.IdentityCardNumber ?? loan.Reader.Passport ?? "------")</td>
                     </tr>
                 }
             </tbody>
