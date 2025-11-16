@@ -174,6 +174,25 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                     
 
                 }).ToList(),
+
+                CurrentStateCashBox = context.Transactions.Sum(t => t.Amount),
+                CurrentStateTrasactionsCount = context.Transactions.Count(),
+                Transactions = context.Transactions.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new TransactionResponse()
+                {
+                    Id = l.Id,
+                    CreatedAt = l.CreatedAt,
+                    Amount = l.Amount,
+                    User = new()
+                    {
+                        Username = l.User.Username
+                    }
+
+                   
+
+
+                    
+
+                }).ToList(),
                 
                 
                
@@ -249,6 +268,26 @@ namespace BibliotecaUteco.DataAccess.DbSetsActions
                         IdentityCardNumber = l.Reader.IdentityCardNumber ?? "",
                         Passport = l.Reader.Passport ?? ""
                     }
+
+
+                    
+
+                }).ToList(),
+
+                 CurrentStatePayedPenalties = context.Penalties.Count(p => !p.IsDue),
+                CurrentStateUnpayedPenalties = context.Penalties.Count(p => p.IsDue),
+                CurrentStateTotalPenalties = context.Penalties.Count(),
+                Penalties = context.Penalties.Where(b => b.CreatedAt >= startDate && b.CreatedAt < endDate).Select(l => new PenaltyResponse()
+                {
+                    Id = l.Id,
+                    CreatedAt = l.CreatedAt,
+                    IsDue = l.IsDue,
+                    TransactionId = l.TransactionId,
+                    DailyFineRate = l.DailyFineRate,
+                    OverdueDays = l.OverdueDays,
+                    TotalAmount = l.TotalAmount
+
+                   
 
 
                     

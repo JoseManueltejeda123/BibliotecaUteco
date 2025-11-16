@@ -216,7 +216,7 @@
             </tbody>
         </table>
 
-         <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+        <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
             <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">PENALIZACIONES</span>
             <hr style="border-bottom: 1px solid black; width: 100%;"/>
         </div>
@@ -275,6 +275,47 @@
                         } 
                          
                         </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div style="width: 100%; display: flex; align-items: center; gap: 2px; opacity: 0.7; margin: 10px 0px;">
+            <span style="font-size: 13px; text-wrap: nowrap; font-weight: 600; font-family: 'Inconsolata'">TRANSACCIONES</span>
+            <hr style="border-bottom: 1px solid black; width: 100%;"/>
+        </div>
+        <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            TOTAL TRANSACCIONES:
+            <span style="color: black; padding: 0 2px;">
+                 @Model.CurrentStateTrasactionsCount TRANSACCIONES
+            </span>
+        </p>
+         <p style="font-family: 'Inconsolata'; font-size: 13px; font-weight: 600;color: dimgray;  ">
+            ESTADO ACTUAL DE CAJA:
+            <span style="color: black; padding: 0 2px;">
+                RD$ @Model.CurrentStateCashBox.ToString("f2")
+            </span>
+        </p>
+       
+       
+         <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">ID</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">MONTO</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">F. CREACIÓN</th>
+                    <th style="font-family: Inconsolata; font-weight: bold; text-align: left; padding: 8px; font-size: 13px;">USUARIO</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var  transaction in Model.Transactions)
+                {
+                    <tr>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@transaction.Id</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">RD$ @transaction.Amount.ToString("f2")</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@(transaction.CreatedAtLocalFormatted)</td>
+                        <td style="font-family: Inconsolata; padding: 8px; font-size: 13px;">@("@")@transaction.User.Username</td>
                     </tr>
                 }
             </tbody>

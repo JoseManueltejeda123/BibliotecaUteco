@@ -61,5 +61,13 @@ public class GeneralReport
 
     public List<PenaltyResponse> Penalties {get; set;} = new();
 
+    //penalties
+    
+
+    public double CurrentStateCashBox {get; set;}
+    public int CurrentStateTrasactionsCount {get; set;}
+
+    public List<TransactionResponse> Transactions {get; set;} = new();
+
 
 }
