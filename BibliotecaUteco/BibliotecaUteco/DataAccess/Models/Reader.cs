@@ -75,7 +75,7 @@ public class Reader : BaseEntity
 
         if (IdentityCardNumber != command.IdentityCardNumber)
         {
-            IdentityCardNumber = command.IdentityCardNumber.Trim();
+            IdentityCardNumber = command.IdentityCardNumber?.Trim() ?? "";
             hasBeenUpdated = true;
         }
 
