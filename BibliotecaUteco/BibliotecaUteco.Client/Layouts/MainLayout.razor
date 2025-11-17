@@ -17,7 +17,7 @@
     <LightBoxHost/>
     <SideBar OnSideBarExpandedChanged="(e)=> SideBarExpanded = e" SideBarExpanded="SideBarExpanded"/>
     
-    <main class=@($"transition-all flex-1 ml-[250px] max-md:ml-[75px] {(RightBarContext.State.View != RightBarView.Default ? "mr-[350px] max-md:mr-[0px]" : "")}  {(!SideBarExpanded ? " !ml-[75px] " : "" )}")>
+    <main class=@($"transition-all flex-1 ml-[250px]  max-md:!ml-[0px] max-md:mt-[75px] {(RightBarContext.State.View != RightBarView.Default ? "mr-[350px] max-md:mr-[0px]" : "")}  {(!SideBarExpanded ? " !ml-[75px]" : "" )}")>
        
         <article class="content px-4 mt-[50px] max-w-full">
             @Body
