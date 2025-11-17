@@ -11,6 +11,6 @@ public abstract class CorsAllowedDomains
     #if DEBUG
         public static string DefaultDomain => "http://localhost:5000";
     #else
-        public static string DefaultDomain => "http://josemanueltejeda-001-site1.qtempurl.com";
+        public static string DefaultDomain => "https://bibliouteco-001-site1.anytempurl.com";
     #endif
 }
