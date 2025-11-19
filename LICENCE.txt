@@ -1,0 +1,66 @@
+LICENSE — BibliotecaUteco (Todos los Derechos Reservados)
+
+Copyright (c) 2025 José Manuel Tejeda López
+
+BibliotecaUteco es un software propietario. Todos los derechos sobre su código fuente, diseño, estructura, arquitectura, contenido, documentación y cualquier componente asociado están estrictamente reservados al titular mencionado anteriormente.
+
+1. Concesión de Uso
+
+Se concede únicamente una licencia de uso limitado, no exclusiva, no transferible y revocable, para acceder y utilizar la aplicación BibliotecaUteco tal como ha sido distribuida oficialmente por el titular.
+
+En ningún caso esta licencia otorga permisos para copiar, modificar o redistribuir la aplicación o su código.
+
+2. Prohibición de Modificación
+
+Queda prohibido total o parcialmente:
+
+Modificar el código fuente o el comportamiento del software.
+
+Realizar ingeniería inversa, descompilación o desensamblaje.
+
+Crear obras derivadas o adaptaciones basadas en la aplicación.
+
+Únicamente [TU NOMBRE COMPLETO] tiene derecho a realizar modificaciones, correcciones o actualizaciones.
+
+3. Prohibición de Distribución
+
+Sin autorización escrita y firmada del titular, queda prohibido:
+
+Copiar o distribuir el software en cualquier medio físico o digital.
+
+Publicarlo, republicarlo o alojarlo en cualquier servidor o plataforma.
+
+Comercializar, vender, arrendar o sublicenciar el software.
+
+Compartir total o parcialmente el código fuente o los archivos de la aplicación.
+
+Cualquier distribución no autorizada constituye una violación directa de los derechos del titular.
+
+4. Propiedad Intelectual
+
+Todo el contenido y el código de BibliotecaUteco están protegidos por la legislación vigente en materia de derechos de autor y propiedad intelectual.
+El titular conserva todos los derechos, incluyendo derechos patrimoniales y morales sobre la obra.
+
+5. Responsabilidad Legal
+
+Toda copia, modificación, uso indebido o distribución no autorizada podrá ser objeto de:
+
+Acciones civiles por daños y perjuicios.
+
+Acciones penales cuando así lo permita la legislación del país del titular.
+
+Reclamos y procedimientos judiciales ante los tribunales competentes.
+
+El usuario acepta someterse a la jurisdicción de dichos tribunales.
+
+6. Terminación de la Licencia
+
+El incumplimiento de cualquiera de estos términos provocará la revocación inmediata del derecho de uso, sin necesidad de notificación previa.
+
+7. Aceptación
+
+El uso de BibliotecaUteco implica la aceptación total e incondicional de esta licencia.
+
+
+
+Reública Dominicana, Sánchez Ramírez

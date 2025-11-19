@@ -56,16 +56,21 @@
 @using BibliotecaUteco.Client.Requests.Transactions.Actions
 @using System.ComponentModel.DataAnnotations
 @using BlazorAnimate
+@using BibliotecaUteco.Client.Requests.Reports.Books
+@using BibliotecaUteco.Client.Components.Reports.Books
+@using BibliotecaUteco.Client.Components.Reports.Loans
 
 
 @using Microsoft.IdentityModel.JsonWebTokens
 @using BibliotecaUteco.Client.Components.Loans.Common
+@using BibliotecaUteco.Client.Services.ApiServicesInterfaces
 @using BibliotecaUteco.Client.Stores
 @using Blazor.Sonner.Services
 @using Blazor.Sonner.Common
 @using BibliotecaUteco.Client.Settings
 @using BibliotecaUteco.Client.Utilities
-
+@using BibliotecaUteco.Client.Requests.Reports
+@using BibliotecaUteco.Client.Requests.Summaries.Queries
 @inject RightBarStore RightBarContext
 @inject  IJSRuntime JsRuntime
 @inject IUsersApiServices UsersApiServices
@@ -79,6 +84,8 @@
 @inject ILoansApiServices LoansApiServices
 @inject IPenaltiesApiServices PenaltiesApiServices
 @inject ITransactionsApiServices TransactionsApiServices
+@inject IApplicationSummariesApiServices ApplicationSummariesServices
+@inject IReportsApiServices ReportsApiServices
 @inject IDialogService DialogService
 @inject ILightBoxService LightBoxService
 @inject ISonnerService Toast

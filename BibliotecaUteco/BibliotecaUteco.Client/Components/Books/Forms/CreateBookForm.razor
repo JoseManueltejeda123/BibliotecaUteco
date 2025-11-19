@@ -270,7 +270,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Success("Libro registrado con exito");
+            await Toast.Success("Libro registrado con exito");
 
             await RightBarContext.SetCreatedBookAsync(result.Data);
             await RightBarContext.CloseAsync();

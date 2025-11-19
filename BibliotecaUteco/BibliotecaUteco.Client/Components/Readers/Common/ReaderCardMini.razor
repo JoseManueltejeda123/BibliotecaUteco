@@ -2,23 +2,32 @@
 <div
     class="w-full border-neutral-100 border rounded-xl  bg-neutral-50 hover:bg-neutral-100 flex  flex-col  gap-3 py-1 px-3 ">
 
-    <div class="w-full gap-2 items-center flex ">
+    <div class="w-full gap-2 items-start flex ">
         <img class="w-[35px] h-[35px] rounded-full object-cover"
              src=@($"https://hostedboringavatars.vercel.app/api/beam?name={Reader.FullName}")/>
         <div class="flex flex-col gap-1 ">
             <label class="text-[14px] font-semibold   ">@Reader.FullName</label>
+            <label class="text-[12px] font-normal opacity-70"> Cédula: 
+                @if(!string.IsNullOrEmpty(Reader.IdentityCardNumber))
+                {
+                    @Reader.IdentityCardNumber
+                }
+            </label>
             <label class="text-[12px] font-normal opacity-70">
-                @Reader.IdentityCardNumber
-                (
-                @if (!string.IsNullOrEmpty(Reader.StudentLicence))
+                Matrícula:
+                @if(!string.IsNullOrEmpty(Reader.StudentLicence))
                 {
                     @Reader.StudentLicence
                 }
-                else
+                
+            </label>
+            <label class="text-[12px] font-normal opacity-70">
+                Pasaporte:
+                @if(!string.IsNullOrEmpty(Reader.Passport))
                 {
-                    @(" -------")
+                    @Reader.Passport
                 }
-                )
+                
             </label>
 
 

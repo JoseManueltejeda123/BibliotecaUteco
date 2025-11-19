@@ -45,8 +45,10 @@ public static class PenaltiesDbSetActions
                 TransactionId = p.TransactionId,
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
-                ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
+                ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber ?? "",
                 ReaderStudentLicence = p.Loan.Reader.StudentLicence,
+                ReaderPassport = p.Loan.Reader.Passport ?? ""
+
             })
             .ToListAsync(cancellationToken);
     }
@@ -73,8 +75,9 @@ public static class PenaltiesDbSetActions
                 TransactionId = p.TransactionId,
                 ReaderId = p.Loan.ReaderId,
                 ReaderName = p.Loan.Reader.FullName,
-                ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber,
-                ReaderStudentLicence = p.Loan.Reader.StudentLicence,
+                ReaderIdentityCardNumber = p.Loan.Reader.IdentityCardNumber ?? "",
+                ReaderStudentLicence = p.Loan.Reader.StudentLicence ?? "",
+                ReaderPassport = p.Loan.Reader.Passport ?? ""
             })
             .FirstOrDefaultAsync(cancellationToken);
     }

@@ -1,0 +1,160 @@
+<div class="flex flex-col gap-3 w-full">
+    @if(ShowInvoice)
+    {
+        
+        <TopBooksInvoice Model="TopBooks" OnPrinted="()=>{SetShowInvoice();}"/>
+    }
+    <div class="flex items-center justify-between gap-3 mb-2">
+        <div class="flex flex-col">
+            <h3 class="text-[28px] font-semibold">Reportes</h3>
+            <label class="text-[13px] font-semibold opacity-80">Top libros mas prestados</label>
+
+        </div>
+        <div class="flex items-center justify-between gap-3 mb-2">
+            <LumexChip @onclick="() => { SetShowInvoice(); }" Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Info" Variant="ChipVariant.Flat">
+                <EndContent>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer-icon lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>                
+                </EndContent>
+                <ChildContent>Imprimir</ChildContent>
+
+            </LumexChip>
+            <LumexChip @onclick="async () => { await OnClose.InvokeAsync(); }" Class="cursor-pointer p-2" Size="Size.Medium"  Color="@ThemeColor.Danger" Variant="ChipVariant.Flat">
+                <EndContent>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>            </EndContent>
+                <ChildContent>Cerrar</ChildContent>
+            </LumexChip> 
+        </div>
+          
+    </div>
+    <YearPicker OnYearChanged="HandleYearChanged" SelectedYear="RequestModel.Year"/>
+   <MonthsPicker OnMonthChanged="HandleMonthChanged" SelectedMonth="RequestModel.Month"/>
+    <p class="text-xs font-normal">Selecciona el año para hacer el reporte</p>
+    <div class="flex flex-col gap-3 w-full">
+        
+        @if(TopBooks.Books.Any())
+        {
+             <SectionDivider Name=@($"Top 10 libros")/>
+        }
+        else if(!TopBooks.Books.Any() && !_fetching)
+        {
+            <div class="w-full flex items-center justify-center">
+                <p class="text-[13px] font-semibold opacity-80">No hay prestamos en este mes</p>
+            </div>
+
+        }
+        
+        @foreach(var book in TopBooks.Books)
+        {
+            <div class="flex w-full ites-center gap-3">
+                
+                @if(string.IsNullOrEmpty(book.CoverUrl))
+                {
+                    <div class="rounded-md w-[50px] aspect-[2/3] object-contain bg-black"></div>
+                }
+                else
+                {
+                    <img alt="@book.Name" src="@book.CoverUrl" class="rounded-md w-[50px] aspect-[2/3] object-contain"/>
+
+                }
+                <div class="flex-1 h-full">
+                    <p class="font-semibold line-clamp-1 text-[13px]  ">@book.Name</p>
+                    <p class="font-medium line-clamp-1 text-xs">
+
+                        @if (book.Authors.Any())
+                        {
+                            @(book.Authors.First().Author.FullName)
+                        }
+                       
+
+
+                    </p>
+                    @if (book.Authors.Count() >= 2)
+                    {
+                        <p class="font-medium line-clamp-1 text-xs">@($"{book.Authors.Count() - 1} mas")</p>
+                    }
+                    <p class="font-medium mt-auto text-green-700 line-clamp-1 text-xs">@($"Prestado {book.LoansCount} veces")</p>
+
+
+                </div>
+            </div>
+        }
+        
+        @if(_fetching)
+        {
+            <div class="w-full flex items-center justify-center"><LumexSpinner Size="Size.Small" Variant="SpinnerVariant.Classic"/></div>
+            
+
+        }
+
+    </div>
+
+
+</div>
+
+@code {
+
+
+    public bool _fetching { get; set; } = false;
+    public int Year {get; set;} = DateTime.Now.Year;
+    public TopBooksResponse TopBooks { get; set; } = new();
+    public GetTopBooksByDateRequest RequestModel {get; set;} = new();
+    
+    [Parameter]
+    public EventCallback OnClose {get; set;}
+    
+    public CancellationTokenSource? _cts = null;
+
+    public bool ShowInvoice {get; set;} = false;
+
+    
+   
+    
+}
+
+@functions{
+
+    public void SetShowInvoice()
+    {
+        ShowInvoice = !ShowInvoice;
+    }
+    public async Task HandleYearChanged(int? value)
+    {
+        RequestModel.Year = value ?? DateTime.Now.Year;
+        await FetchGetTopBooksAsync();
+        
+    }
+
+    public async Task HandleMonthChanged(int? value)
+    {
+        RequestModel.Month = value ?? DateTime.Now.Month;
+        await FetchGetTopBooksAsync();
+
+        
+    }
+    protected override async Task OnInitializedAsync()
+    {
+         await FetchGetTopBooksAsync();
+    }
+
+    
+
+    
+    public async Task FetchGetTopBooksAsync()
+    {
+        if(_cts is not null)
+        {
+            await _cts.CancelAsync();
+        }
+
+        _cts = new();
+        _fetching = true;
+        StateHasChanged();
+        var result = await ReportsApiServices.GetTopBooksByDateAsync(RequestModel, _cts.Token);
+
+        if (result.IsSuccessful()){
+           TopBooks = result.Data;
+        }
+        _fetching = false;
+        StateHasChanged();
+    }
+}

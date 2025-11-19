@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>e7d53999-9aa5-4cac-bf8f-f9049d71b12e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm run build:css" />
@@ -25,10 +26,15 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\BookCovers\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\UserPictures\" />
   </ItemGroup>
   <ItemGroup>
   <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
+  <Content Include="..\..\.dockerignore">
+    <Link>.dockerignore</Link>
+  </Content>
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\BookCovers\BookCovers_100 Años de Soledad.webp" />
@@ -41,5 +47,6 @@
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\bibliotecauteco.publishsettings" />
     <None Remove="Properties\PublishProfiles\bibliotecauteco.pubxml" />
+    <None Remove="Properties\PublishProfiles\production.PublishSettings" />
   </ItemGroup>
 </Project>

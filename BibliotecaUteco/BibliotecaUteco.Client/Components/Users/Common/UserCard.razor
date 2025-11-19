@@ -209,7 +209,7 @@
         if (result.IsSuccessful())
         {
             User.IsDisabled = !User.IsDisabled;
-            Toast.Show($"Usuario {(User.IsDisabled ? "deshabilitado" : "habilitado")} exitosamente");
+            await Toast.Show($"Usuario {(User.IsDisabled ? "deshabilitado" : "habilitado")} exitosamente");
         }
 
         _deletingUser = false;
@@ -225,7 +225,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Success("Contraseña restablecida a Uteco.2025");
+            await Toast.Success("Contraseña restablecida a Uteco.2025");
         }
 
         _resetingPassword = false;
@@ -257,7 +257,7 @@
 
         if (result.IsSuccessful())
         {
-            Toast.Show("Usuario eliminado exitosamente");
+            await Toast.Show("Usuario eliminado exitosamente");
             await OnDelete.InvokeAsync(User);
         }
 

@@ -3,7 +3,7 @@
 @if (IsExpanded)
 {
     <div @onclick="TriggerOnClick"
-         class=@($"gap-3 sidebar-button w-full cursor-pointer rounded-lg  flex items-center px-3 py-2 transition-all text-white text-[16px] {Class}")>
+         class=@($"gap-3  sidebar-button w-full cursor-pointer rounded-lg  flex items-center px-3 py-2 transition-all text-white text-[16px] {Class}")>
         @if (Icon is not null)
         {
             @(Icon)
@@ -15,7 +15,7 @@
 }
 else
 {
-    <button @onclick="HandleOnClick" class="text-white cursor-pointer py-2 text-[20px] icon-button">
+    <button @onclick="HandleOnClick" class="text-white max-md:hidden cursor-pointer py-2 text-[20px] icon-button">
         @if (Icon is not null)
         {
             @Icon

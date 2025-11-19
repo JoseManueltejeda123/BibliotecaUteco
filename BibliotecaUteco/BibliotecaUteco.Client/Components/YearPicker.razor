@@ -1,0 +1,44 @@
+<a class="text-xs">Seleccione un año</a>
+<div class="relative w-[300px] opacity-80 hover:opacity-100 transition-all">
+        <div id="years-container" class=" flex  px-[30px] gap-4 overflow-x-auto items-end scrollbar-none" style="scrollbar-width: none;">
+            @for(int i = DateTime.Now.Year; i >= 1980; i--)
+            {
+                var year = i;
+                <p id="@(year + "-year")" @key="year" @onclick="async ()=>{ await TriggerOnYearChanged(year);}" class=@($"{(SelectedYear == year ? "text-[16px] text-green-800" : "text-[13px] text-black  hover:scale-105")} transition-all font-semibold cursor-pointer")>@year</p>
+            }
+
+           
+        </div>
+         <div class="pointer-events-none absolute left-0 inset-y-0 w-6 z-10"
+                        style="background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
+
+            <!-- right shadow -->
+            <div class="pointer-events-none absolute right-0 inset-y-0 w-6 z-10"
+                    style="background: linear-gradient(270deg, rgba(255,255,255,0.95), rgba(255,255,255,0));"></div>
+</div>
+
+
+@code{
+
+    [Parameter]
+    public int SelectedYear {get; set;}
+
+    [Parameter]
+    public EventCallback<int?> OnYearChanged {get; set;}
+}
+
+@functions{
+
+    public async Task TriggerOnYearChanged(int value)
+    {
+        await FocusYear(value + "-year");
+        StateHasChanged();
+        await OnYearChanged.InvokeAsync(value);
+    }
+
+    public async Task FocusYear(string dateId)
+    {
+        await JsRuntime.InvokeVoidAsync("focusAndScrollYears", dateId);
+
+    }
+}
