@@ -47,5 +47,6 @@
     <Content Update="wwwroot/lib/**" ExcludeFromPublish="true" />
     <Content Update="wwwroot/BookCovers/**" ExcludeFromPublish="true" />
     <Content Update="wwwroot/UserPictures/**" ExcludeFromPublish="true" />
+
   </ItemGroup>
 </Project>
