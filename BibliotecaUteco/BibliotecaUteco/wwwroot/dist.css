@@ -721,9 +721,11 @@
   .mt-\[50px\] {
     margin-top: 50px;
   }
+
   .mt-\[250px\] {
     margin-top: 250px;
   }
+
   .mt-auto {
     margin-top: auto;
   }
@@ -1055,9 +1057,11 @@
   .min-h-screen {
     min-height: 100vh;
   }
+
   .w-1 {
     width: calc(var(--spacing) * 1);
   }
+
   .w-1\.5 {
     width: calc(var(--spacing) * 1.5);
   }
@@ -2007,9 +2011,11 @@
       background-color: color-mix(in oklab, var(--color-neutral-300) 50%, transparent);
     }
   }
+
   .bg-neutral-800 {
     background-color: var(--color-neutral-800);
   }
+
   .bg-neutral-800\/50 {
     background-color: color-mix(in srgb, oklch(26.9% 0 0) 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2076,9 +2082,11 @@
       background-color: color-mix(in oklab, var(--color-red-300) 50%, transparent);
     }
   }
+
   .bg-red-600 {
     background-color: var(--color-red-600);
   }
+
   .bg-red-600\/90 {
     background-color: color-mix(in srgb, oklch(57.7% 0.245 27.325) 90%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2393,8 +2401,8 @@
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
-  .py-5 {
-    padding-block: calc(var(--spacing) * 5);
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
   }
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
@@ -6039,9 +6047,27 @@
       margin-left: 0px !important;
     }
   }
+
   .max-md\:ml-\[75px\] {
+
+  .max-md\:block {
     @media (width < 48rem) {
-      margin-left: 75px;
+      display: block;
+    }
+  }
+  .max-md\:hidden {
+    @media (width < 48rem) {
+      display: none;
+    }
+  }
+  .max-md\:h-\[50px\] {
+    @media (width < 48rem) {
+      height: 50px;
+    }
+  }
+  .max-md\:w-\[100vw\] {
+    @media (width < 48rem) {
+      width: 100vw;
     }
   }
   .max-md\:block {
@@ -6119,11 +6145,13 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+
   .md\:\!ml-\[0px\] {
     @media (width >= 48rem) {
       margin-left: 0px !important;
     }
   }
+
   .md\:grid-cols-2 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
